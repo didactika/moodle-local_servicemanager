@@ -213,29 +213,17 @@ function merge_import_result(&$totals, $result) {
 
 echo $OUTPUT->header();
 
-// Back button.
-echo html_writer::start_div('mb-4');
-echo html_writer::link(
-    new moodle_url('/local/serviceschema/pages/dashboard.php'),
-    html_writer::tag('i', '', ['class' => 'fa fa-arrow-left mr-2']) . get_string('back'),
-    ['class' => 'btn btn-secondary']
-);
-echo html_writer::end_div();
-
-echo html_writer::start_div('serviceschema-import');
-
-// Instructions.
-echo html_writer::start_div('alert alert-info');
-echo html_writer::tag('h5', html_writer::tag('i', '', ['class' => 'fa fa-info-circle mr-2']) . get_string('import_info_title', 'local_serviceschema'));
-echo html_writer::tag('p', get_string('import_info_text', 'local_serviceschema'));
-echo html_writer::start_tag('ul');
-echo html_writer::tag('li', get_string('import_info_yaml', 'local_serviceschema'));
-echo html_writer::tag('li', get_string('import_info_zip', 'local_serviceschema'));
-echo html_writer::end_tag('ul');
-echo html_writer::end_div();
-
+// Capture form HTML.
+ob_start();
 $form->display();
+$formhtml = ob_get_clean();
 
-echo html_writer::end_div();
+$context = [
+    'backurl' => (new moodle_url('/local/serviceschema/pages/dashboard.php'))->out(false),
+    'docurl' => (new moodle_url('/local/serviceschema/pages/documentation.php'))->out(false),
+    'formhtml' => $formhtml
+];
+
+echo $OUTPUT->render_from_template('local_serviceschema/import_page', $context);
 
 echo $OUTPUT->footer();

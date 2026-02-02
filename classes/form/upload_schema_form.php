@@ -36,6 +36,21 @@ class upload_schema_form extends \moodleform {
     protected function definition() {
         $mform = $this->_form;
 
+        // Documentation link banner.
+        $docurl = new \moodle_url('/local/serviceschema/pages/documentation.php');
+        $doclink = \html_writer::link(
+            $docurl,
+            \html_writer::tag('i', '', ['class' => 'fa fa-book mr-2']) . 
+            get_string('view_documentation', 'local_serviceschema'),
+            ['class' => 'text-primary font-weight-bold']
+        );
+        $dochtml = \html_writer::div(
+            \html_writer::tag('i', '', ['class' => 'fa fa-info-circle mr-2']) .
+            get_string('view_documentation_desc', 'local_serviceschema') . ' ' . $doclink,
+            'alert alert-info d-flex align-items-center'
+        );
+        $mform->addElement('html', $dochtml);
+
         // File picker for YAML.
         $mform->addElement(
             'filepicker',

@@ -46,4 +46,24 @@ $tasks = [
         'month' => '*',
         'dayofweek' => '*',
     ],
+    // Version retention cleanup daily at 2:00 AM.
+    [
+        'classname' => 'local_serviceschema\task\version_cleanup_task',
+        'blocking' => 0,
+        'minute' => '0',
+        'hour' => '2',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
+    // Scheduled schema validation daily at 3:00 AM.
+    [
+        'classname' => 'local_serviceschema\task\scheduled_validation_task',
+        'blocking' => 0,
+        'minute' => '0',
+        'hour' => '3',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+    ],
 ];

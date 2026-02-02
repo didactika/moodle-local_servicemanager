@@ -77,7 +77,7 @@ class manager {
     public function create_schema(string $yamlcontent, bool $generatetoken = false): array {
         global $DB;
 
-        // Validate.
+
         $validation = $this->validator->validate_content($yamlcontent);
         if (!empty($validation['errors'])) {
             throw new \moodle_exception('error_invalid_yaml', 'local_serviceschema',
@@ -90,35 +90,35 @@ class manager {
         $extracaps = $this->parser->extract_extra_capabilities($data);
         $additionalusers = $this->parser->extract_additional_users($data);
 
-        // Create user.
+
         $userid = $this->usermanager->create_service_user($meta['id'], $meta['name']);
 
-        // Create role.
+
         $roleid = $this->rolemanager->create_service_role($meta['id'], $meta['name'], $meta['description']);
 
-        // Calculate and assign capabilities.
+
         $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
         $allcaps = array_unique(array_merge($functioncaps, $extracaps));
         $this->rolemanager->assign_capabilities($roleid, $allcaps);
 
-        // Assign role to user.
+
         $this->rolemanager->assign_role_to_user($roleid, $userid);
 
-        // Create service.
+
         $serviceid = $this->servicemanager->create_external_service($meta['id'], $meta['name']);
 
-        // Add functions to service.
+
         $this->servicemanager->add_functions_to_service($serviceid, $functions);
 
-        // Authorize primary user.
+
         $this->servicemanager->authorize_user($serviceid, $userid);
 
-        // Authorize additional users.
+
         $warnings = $validation['warnings'];
         $additionalwarnings = $this->servicemanager->authorize_additional_users($serviceid, $additionalusers);
         $warnings = array_merge($warnings, $additionalwarnings);
 
-        // Generate token if requested.
+
         $tokenid = null;
         $tokenvalue = null;
         if ($generatetoken) {
@@ -127,7 +127,7 @@ class manager {
             $tokenvalue = $tokenresult['token'];
         }
 
-        // Save schema record.
+
         $now = time();
         $record = new \stdClass();
         $record->schema_id = $meta['id'];
@@ -160,10 +160,11 @@ class manager {
      *
      * @param int $id Schema record ID
      * @param string $yamlcontent New YAML content
+     * @param bool $isRollback If true, skip version increment validation (used for rollback)
      * @return array ['warnings' => array]
      * @throws \moodle_exception If validation fails
      */
-    public function update_schema(int $id, string $yamlcontent): array {
+    public function update_schema(int $id, string $yamlcontent, bool $isRollback = false): array {
         global $DB;
 
         $existing = $this->get_schema($id);
@@ -171,7 +172,7 @@ class manager {
             throw new \moodle_exception('Schema not found');
         }
 
-        // Validate with exclusion of current ID.
+
         $validation = $this->validator->validate_content($yamlcontent, $id);
         if (!empty($validation['errors'])) {
             throw new \moodle_exception('error_invalid_yaml', 'local_serviceschema',
@@ -182,18 +183,45 @@ class manager {
         $meta = $this->parser->extract_meta($data);
         $newhash = $this->parser->get_hash($yamlcontent);
 
-        // Enforce version change if content changed (definition, etc).
-        // We compare hashes. If hash changed but version string is same, error.
-        if ($newhash !== $existing->yaml_hash && $meta['version'] === $existing->version) {
-            throw new \moodle_exception('error_version_change_required', 'local_serviceschema');
+
+        // Parse existing content to compare structural changes.
+        $old_data = $this->parser->parse($existing->yaml_content);
+
+        // Prepare "effective content" (exclude meta) to check for functional changes.
+        $new_content_check = $data;
+        unset($new_content_check['meta']);
+
+        $old_content_check = $old_data;
+        unset($old_content_check['meta']);
+
+        // Check if functional content has changed.
+        // Using strict comparison might fail on key order, but our parser is consistent.
+        // Serialize is safer for deep comparison.
+        $content_changed = (serialize($new_content_check) !== serialize($old_content_check));
+
+        if ($content_changed) {
+            // Functional content changed: Version MUST change (increment).
+            if ($meta['version'] === $existing->version) {
+                throw new \moodle_exception('error_version_change_required', 'local_serviceschema');
+            }
+            if (!$isRollback && version_compare($meta['version'], $existing->version, '<=')) {
+                throw new \moodle_exception('error_version_must_increment', 'local_serviceschema', '', 
+                    (object)['current' => $existing->version, 'new' => $meta['version']]);
+            }
+        } else {
+            // Content did NOT change (only metadata): Version MUST NOT change.
+            if ($meta['version'] !== $existing->version && !$isRollback) {
+                throw new \moodle_exception('error_version_change_forbidden', 'local_serviceschema');
+            }
         }
 
-        // Save history if definition or version changed.
+        // Save history if *any* change occurred (even just description/metadata).
+        // This allows updating metadata without bumping version.
         if($newhash !== $existing->yaml_hash || $meta['version'] !== $existing->version) {
             $historymanager = new history_manager();
             $historymanager->save_version(
                 $existing->id,
-                $existing->version,
+                $existing->version, // Use existing version if preserving, or new if changed.
                 $existing->yaml_content,
                 get_string('schema_updated_success', 'local_serviceschema', $meta['version'])
             );
@@ -203,31 +231,31 @@ class manager {
         $extracaps = $this->parser->extract_extra_capabilities($data);
         $additionalusers = $this->parser->extract_additional_users($data);
 
-        // Update user if name changed.
+
         if ($meta['name'] !== $existing->name) {
             $this->usermanager->update_user_name($existing->userid, $meta['name']);
         }
 
-        // Update role.
+
         $this->rolemanager->update_service_role($existing->roleid, $meta['name'], $meta['description']);
 
-        // Recalculate and update capabilities.
+
         $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
         $allcaps = array_unique(array_merge($functioncaps, $extracaps));
         $this->rolemanager->reset_capabilities($existing->roleid);
         $this->rolemanager->assign_capabilities($existing->roleid, $allcaps);
 
-        // Update service.
+
         $this->servicemanager->update_external_service($existing->serviceid, $meta['name']);
         $this->servicemanager->reset_functions($existing->serviceid);
         $this->servicemanager->add_functions_to_service($existing->serviceid, $functions);
 
-        // Update additional users.
+
         $warnings = $validation['warnings'];
         $additionalwarnings = $this->servicemanager->authorize_additional_users($existing->serviceid, $additionalusers);
         $warnings = array_merge($warnings, $additionalwarnings);
 
-        // Update schema record.
+
         $record = new \stdClass();
         $record->id = $id;
         $record->name = $meta['name'];
@@ -257,30 +285,26 @@ class manager {
             return false;
         }
 
-        // Delete token.
         if ($schema->tokenid) {
             $this->tokenmanager->delete_token($schema->tokenid);
         }
 
-        // Delete service.
         if ($schema->serviceid) {
             $this->servicemanager->delete_service($schema->serviceid);
         }
 
-        // Delete role.
         if ($schema->roleid) {
             $this->rolemanager->delete_role($schema->roleid);
         }
 
-        // Delete user.
         if ($schema->userid) {
             $this->usermanager->delete_user($schema->userid);
         }
 
-        // Delete health logs.
+
         $DB->delete_records('local_serviceschema_healthlog', ['schemaid' => $id]);
 
-        // Delete schema record.
+
         $DB->delete_records('local_serviceschema_schemas', ['id' => $id]);
 
         return true;
@@ -361,5 +385,81 @@ class manager {
         }
 
         return $DB->set_field('local_serviceschema_schemas', 'enabled', $enabled ? 1 : 0, ['id' => $id]);
+    }
+
+    /**
+     * Get schemas with pagination and filters.
+     *
+     * @param int $page Current page (0-indexed).
+     * @param int $perpage Items per page.
+     * @param array $filters Optional filters: 'status', 'name', 'datefrom', 'dateto'.
+     * @return array Array of schema records.
+     */
+    public function get_schemas_paginated(int $page = 0, int $perpage = 10, array $filters = []): array {
+        global $DB;
+
+        [$where, $params] = $this->build_filter_conditions($filters);
+        $sql = "SELECT * FROM {local_serviceschema_schemas}";
+        if ($where) {
+            $sql .= " WHERE " . $where;
+        }
+        $sql .= " ORDER BY name ASC";
+
+        return $DB->get_records_sql($sql, $params, $page * $perpage, $perpage);
+    }
+
+    /**
+     * Count schemas with filters applied.
+     *
+     * @param array $filters Optional filters: 'status', 'name', 'datefrom', 'dateto'.
+     * @return int Total count.
+     */
+    public function count_schemas(array $filters = []): int {
+        global $DB;
+
+        [$where, $params] = $this->build_filter_conditions($filters);
+        $sql = "SELECT COUNT(*) FROM {local_serviceschema_schemas}";
+        if ($where) {
+            $sql .= " WHERE " . $where;
+        }
+
+        return $DB->count_records_sql($sql, $params);
+    }
+
+    /**
+     * Build SQL WHERE conditions from filters.
+     *
+     * @param array $filters Filters array.
+     * @return array [$whereClause, $params]
+     */
+    protected function build_filter_conditions(array $filters): array {
+        global $DB;
+
+        $conditions = [];
+        $params = [];
+
+        if (!empty($filters['status']) && $filters['status'] !== 'all') {
+            $conditions[] = 'status = :status';
+            $params['status'] = $filters['status'];
+        }
+
+        if (!empty($filters['name'])) {
+            $conditions[] = $DB->sql_like('name', ':name', false);
+            $params['name'] = '%' . $DB->sql_like_escape($filters['name']) . '%';
+        }
+
+        if (!empty($filters['datefrom'])) {
+            $conditions[] = 'timecreated >= :datefrom';
+            $params['datefrom'] = $filters['datefrom'];
+        }
+
+        if (!empty($filters['dateto'])) {
+            // Add 1 day to include the entire end day.
+            $conditions[] = 'timecreated <= :dateto';
+            $params['dateto'] = $filters['dateto'] + 86400;
+        }
+
+        $where = implode(' AND ', $conditions);
+        return [$where, $params];
     }
 }

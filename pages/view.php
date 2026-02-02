@@ -146,6 +146,7 @@ $templatedata = [
     'can_manage' => $canmanage,
     'edit_url' => (new moodle_url('/local/serviceschema/pages/edit.php', ['id' => $id]))->out(false),
     'delete_url' => (new moodle_url('/local/serviceschema/pages/delete.php', ['id' => $id]))->out(false),
+    'history_url' => (new moodle_url('/local/serviceschema/pages/history.php', ['id' => $id]))->out(false),
     'regenerate_url' => (new moodle_url('/local/serviceschema/pages/regenerate_token.php', ['id' => $id]))->out(false),
     'dashboard_url' => (new moodle_url('/local/serviceschema/pages/dashboard.php'))->out(false),
     'sesskey' => sesskey(),

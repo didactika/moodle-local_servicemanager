@@ -64,7 +64,7 @@ class history_manager {
     public function get_history(int $schemaid, int $limit = 50): array {
         global $DB;
 
-        $sql = "SELECT h.*, u.firstname, u.lastname, u.middlename, u.alternatename, u.firstnamephonetic, u.lastnamephonetic
+        $sql = "SELECT h.*, u.firstname, u.lastname, u.middlename, u.alternatename, u.firstnamephonetic, u.lastnamephonetic, u.picture, u.email, u.imagealt
                 FROM {" . self::TABLE . "} h
                 JOIN {user} u ON u.id = h.changedby
                 WHERE h.schemaid = :schemaid
@@ -123,8 +123,8 @@ class history_manager {
             }
         }
 
-        // Update schema with historical content.
-        $manager->update_schema($schemaid, $history->yaml_content);
+        // Update schema with historical content (skip version validation for rollback).
+        $manager->update_schema($schemaid, $history->yaml_content, true);
 
         // DO NOT log a new history entry for the rollback result itself.
         // Ideally, we just moved the state to a previous point.
@@ -158,33 +158,32 @@ class history_manager {
         $lines2 = explode("\n", $v2->yaml_content);
 
         // Simple line-by-line diff.
-        $diff = [];
         $max = max(count($lines1), count($lines2));
+        $diff = [];
 
         for ($i = 0; $i < $max; $i++) {
-            $line1 = $lines1[$i] ?? '';
-            $line2 = $lines2[$i] ?? '';
+            $l1 = $lines1[$i] ?? null;
+            $l2 = $lines2[$i] ?? null;
 
-            if ($line1 === $line2) {
-                $diff[] = ['type' => 'same', 'content' => $line1];
+            if ($l1 === $l2) {
+                // Unchanged.
+                $diff[] = ['type' => 'unchanged', 'content' => $l1];
+            } elseif ($l1 !== null && $l2 === null) {
+                // Deleted.
+                $diff[] = ['type' => 'deleted', 'content' => $l1];
+            } elseif ($l1 === null && $l2 !== null) {
+                // Added.
+                $diff[] = ['type' => 'added', 'content' => $l2];
             } else {
-                if (!empty($line1)) {
-                    $diff[] = ['type' => 'remove', 'content' => $line1];
-                }
-                if (!empty($line2)) {
-                    $diff[] = ['type' => 'add', 'content' => $line2];
-                }
+                // Modified (show as deleted then added for simplicity in side-by-side).
+                $diff[] = ['type' => 'modified_deleted', 'content' => $l1];
+                $diff[] = ['type' => 'modified_added', 'content' => $l2];
             }
         }
 
-        return [
-            'lines1' => $lines1,
-            'lines2' => $lines2,
-            'diff' => $diff,
-            'version1' => $v1,
-            'version2' => $v2,
-        ];
+        return ['lines1' => $lines1, 'lines2' => $lines2, 'diff' => $diff];
     }
+
 
     /**
      * Delete history for a schema.
@@ -208,5 +207,93 @@ class history_manager {
         global $DB;
 
         return $DB->count_records(self::TABLE, ['schemaid' => $schemaid]);
+    }
+
+    /**
+     * Get version history with pagination and optional filters.
+     * Groups records by version, returning only the most recent record per version.
+     *
+     * @param int $schemaid Schema ID.
+     * @param int $page Current page (0-indexed).
+     * @param int $perpage Items per page.
+     * @param array $filters Optional filters: 'version', 'datefrom', 'dateto'.
+     * @return array Array of history records.
+     */
+    public function get_history_paginated(int $schemaid, int $page = 0, int $perpage = 10, array $filters = []): array {
+        global $DB;
+
+        $conditions = ['h.schemaid = :schemaid'];
+        $params = ['schemaid' => $schemaid];
+
+        if (!empty($filters['version'])) {
+            $conditions[] = $DB->sql_like('h.version', ':version', false);
+            $params['version'] = '%' . $DB->sql_like_escape($filters['version']) . '%';
+        }
+
+        if (!empty($filters['datefrom'])) {
+            $conditions[] = 'h.timecreated >= :datefrom';
+            $params['datefrom'] = $filters['datefrom'];
+        }
+
+        if (!empty($filters['dateto'])) {
+            $conditions[] = 'h.timecreated <= :dateto';
+            $params['dateto'] = $filters['dateto'] + 86400;
+        }
+
+        $where = implode(' AND ', $conditions);
+
+        // Get the most recent record for each version by using a subquery to get max id per version.
+        $sql = "SELECT h.*, u.firstname, u.lastname, u.middlename, u.alternatename, u.firstnamephonetic, u.lastnamephonetic, u.picture, u.email, u.imagealt
+                FROM {" . self::TABLE . "} h
+                JOIN {user} u ON u.id = h.changedby
+                WHERE " . $where . "
+                AND h.id IN (
+                    SELECT MAX(h2.id)
+                    FROM {" . self::TABLE . "} h2
+                    WHERE h2.schemaid = :schemaid2
+                    GROUP BY h2.version
+                )
+                ORDER BY h.timecreated DESC";
+        
+        $params['schemaid2'] = $schemaid;
+
+        return $DB->get_records_sql($sql, $params, $page * $perpage, $perpage);
+    }
+
+    /**
+     * Count history records with filters.
+     *
+     * @param int $schemaid Schema ID.
+     * @param array $filters Optional filters.
+     * @return int Total count.
+     */
+    public function count_history(int $schemaid, array $filters = []): int {
+        global $DB;
+
+        $conditions = ['schemaid = :schemaid'];
+        $params = ['schemaid' => $schemaid];
+
+        if (!empty($filters['version'])) {
+            $conditions[] = $DB->sql_like('version', ':version', false);
+            $params['version'] = '%' . $DB->sql_like_escape($filters['version']) . '%';
+        }
+
+        if (!empty($filters['datefrom'])) {
+            $conditions[] = 'timecreated >= :datefrom';
+            $params['datefrom'] = $filters['datefrom'];
+        }
+
+        if (!empty($filters['dateto'])) {
+            $conditions[] = 'timecreated <= :dateto';
+            $params['dateto'] = $filters['dateto'] + 86400;
+        }
+
+        $where = implode(' AND ', $conditions);
+
+        // Count distinct versions (to match grouped query behavior).
+        return $DB->count_records_sql(
+            "SELECT COUNT(DISTINCT version) FROM {" . self::TABLE . "} WHERE " . $where,
+            $params
+        );
     }
 }

@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 // General.
-$string['pluginname'] = 'Service Schema Manager';
+$string['pluginname'] = 'Service Manager';
 $string['privacy:metadata'] = 'The Service Schema Manager plugin does not store any personal data.';
 
 // Capabilities.
@@ -34,7 +34,7 @@ $string['serviceschema:manage'] = 'Manage service schemas';
 $string['serviceschema:view'] = 'View service schemas';
 
 // Navigation and pages.
-$string['dashboard'] = 'Service Schema Dashboard';
+$string['dashboard'] = 'Service Schemas Dashboard';
 $string['upload_schema'] = 'Upload Schema';
 $string['edit_schema'] = 'Edit Schema';
 $string['view_schema'] = 'View Schema';
@@ -42,9 +42,9 @@ $string['manage_schemas'] = 'Manage Schemas';
 
 // Form fields.
 $string['yamlfile'] = 'YAML Schema File';
-$string['yamlfile_help'] = 'Upload a YAML file containing the service schema definition. Only .yaml and .yml files are accepted.<br><br><a href="/local/serviceschema/pages/documentation.php" target="_blank"><strong>📖 View Documentation</strong></a>';
+$string['yamlfile_help'] = 'Upload a YAML file containing the service schema definition. Only .yaml and .yml files are accepted.<br><br><a href="/local/serviceschema/pages/documentation.php"><strong>📖 View Documentation</strong></a>';
 $string['yamlcontent'] = 'YAML Content';
-$string['yamlcontent_help'] = 'Edit the YAML schema definition directly.<br><br><a href="/local/serviceschema/pages/documentation.php" target="_blank"><strong>📖 View Documentation</strong></a>';
+$string['yamlcontent_help'] = 'Edit the YAML schema definition directly.<br><br><a href="/local/serviceschema/pages/documentation.php"><strong>📖 View Documentation</strong></a>';
 $string['generatetoken'] = 'Generate token automatically';
 $string['generatetoken_desc'] = 'If checked, a token will be generated for the service user and displayed after upload.';
 $string['upload'] = 'Upload Schema';
@@ -59,6 +59,9 @@ $string['schema_status'] = 'Status';
 $string['schema_enabled'] = 'Enabled';
 $string['schema_created'] = 'Created';
 $string['schema_modified'] = 'Last Modified';
+$string['modified'] = 'Modified';
+$string['description'] = 'Description';
+$string['actions'] = 'Actions';
 
 // Status labels.
 $string['status_healthy'] = 'Healthy';
@@ -73,6 +76,7 @@ $string['action_regenerate_token'] = 'Regenerate Token';
 $string['action_disable'] = 'Disable';
 $string['action_enable'] = 'Enable';
 $string['disabled'] = 'Disabled';
+$string['edit'] = 'Edit';
 
 // Token related.
 $string['token_generated'] = 'Token Generated Successfully';
@@ -104,6 +108,8 @@ $string['error_schema_id_exists'] = 'A schema with ID "{$a}" already exists.';
 $string['error_function_not_found'] = 'Function "{$a}" does not exist in this Moodle installation.';
 $string['error_critical_function_missing'] = 'Critical function "{$a}" is missing. Schema cannot be created.';
 $string['error_version_change_required'] = 'Content changes detected. You must update the version number in the YAML (e.g. increment the version) to save these changes.';
+$string['error_version_must_increment'] = 'New version ({$a->new}) must be greater than current version ({$a->current}). Versions can only decrease via history rollback.';
+$string['error_version_change_forbidden'] = 'The version can only be changed if the schema definition is modified. Metadata changes do not require a version update.';
 $string['error_plugin_not_installed'] = 'Required plugin "{$a}" is not installed.';
 
 // Warnings.
@@ -166,6 +172,16 @@ $string['cleanup_retention_days'] = 'Log retention (days)';
 $string['cleanup_retention_days_desc'] = 'Number of days to keep health check logs. Logs older than this will be deleted.';
 $string['cleanup_task'] = 'Service Schema Log Cleanup';
 
+// Version Retention.
+$string['settings_version_retention'] = 'Version Retention Policy';
+$string['settings_version_retention_desc'] = 'Configure automatic cleanup of old schema versions.';
+$string['version_retention_enabled'] = 'Enable Version Retention';
+$string['version_retention_enabled_desc'] = 'If enabled, old versions of schemas will be automatically deleted, keeping only the most recent ones.';
+$string['version_retention_max'] = 'Max Versions Per Schema';
+$string['version_retention_max_desc'] = 'Maximum number of historical versions to keep for each schema. The oldest versions will be deleted first.';
+$string['task_version_cleanup'] = 'Clean up old schema versions';
+$string['task_scheduled_validation'] = 'Scheduled schema validation';
+
 // Documentation.
 $string['documentation'] = 'Schema Documentation';
 $string['schema_reference'] = 'YAML Schema Reference';
@@ -179,6 +195,7 @@ $string['doc_definition'] = 'Definition Section';
 $string['doc_definition_desc'] = 'The definition section specifies the web service functions and capabilities.';
 $string['doc_naming'] = 'Naming Conventions';
 $string['doc_example'] = 'Complete Example';
+$string['doc_example_complete_desc'] = 'The example schema above shows a complete functional configuration. Download the example file from the link at the top to get started quickly.';
 $string['doc_functions_desc'] = 'Functions can be specified in simple or extended format:';
 $string['doc_meta_id'] = 'Unique identifier. Only letters, numbers, and dots (.) allowed.';
 $string['doc_meta_name'] = 'Human-readable name for the service.';
@@ -215,7 +232,7 @@ $string['no_schemas_to_export'] = 'There are no schemas to export.';
 $string['export_error'] = 'Error creating export file.';
 
 // Bulk operations.
-$string['selected'] = 'selected';
+$string['selected'] = 'Selected';
 $string['select_all'] = 'Select all';
 $string['bulk_enable'] = 'Enable';
 $string['bulk_disable'] = 'Disable';
@@ -244,3 +261,33 @@ $string['history_count'] = 'Showing {$a} version(s).';
 $string['historynotfound'] = 'History record not found.';
 $string['view_yaml'] = 'View YAML';
 
+// Pagination.
+$string['pagination_page_info'] = 'Page {$a->current} / {$a->total}';
+$string['pagination_first'] = 'First';
+$string['pagination_last'] = 'Last';
+$string['pagination_previous'] = 'Previous';
+$string['pagination_next'] = 'Next';
+
+// Filters.
+$string['filters'] = 'Filters';
+$string['filters_applied'] = 'Filters applied';
+$string['filters_active'] = 'Active filters';
+$string['filter_status'] = 'Status';
+$string['filter_status_all'] = 'All';
+$string['filter_name'] = 'Search name...';
+$string['filter_per_page'] = 'Per page';
+$string['filter_date_from'] = 'Date from';
+$string['filter_date_to'] = 'Date to';
+$string['filter_version'] = 'Version';
+$string['filter_clear'] = 'Clear';
+$string['filter_apply'] = 'Apply';
+$string['no_schemas_filtered'] = 'No schemas found with the applied filters.';
+
+// Comparison.
+$string['compare_versions'] = 'Compare Versions';
+$string['compare_select_two'] = 'Please select exactly two versions to compare.';
+$string['back_to_history'] = 'Back to History';
+
+// Documentation link.
+$string['view_documentation'] = 'View Documentation';
+$string['view_documentation_desc'] = 'See the full documentation for the YAML schema format.';

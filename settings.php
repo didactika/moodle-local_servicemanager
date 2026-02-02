@@ -40,11 +40,11 @@ if ($hassiteconfig) {
         'local/serviceschema:view'
     ));
 
-    // Add upload page.
+    // Add import page link.
     $ADMIN->add('local_serviceschema_category', new admin_externalpage(
-        'local_serviceschema_upload',
-        get_string('upload_schema', 'local_serviceschema'),
-        new moodle_url('/local/serviceschema/pages/upload.php'),
+        'local_serviceschema_import',
+        get_string('import_schemas', 'local_serviceschema'),
+        new moodle_url('/local/serviceschema/pages/import.php'),
         'local/serviceschema:manage'
     ));
 
@@ -134,6 +134,32 @@ if ($hassiteconfig) {
             get_string('cleanup_retention_days', 'local_serviceschema'),
             get_string('cleanup_retention_days_desc', 'local_serviceschema'),
             30,
+            PARAM_INT
+        ));
+
+        // =====================================
+        // TAB: Version Retention
+        // =====================================
+        $settings->add(new admin_setting_heading(
+            'local_serviceschema/version_retention_heading',
+            get_string('settings_version_retention', 'local_serviceschema'),
+            get_string('settings_version_retention_desc', 'local_serviceschema')
+        ));
+
+        // Version retention enabled.
+        $settings->add(new admin_setting_configcheckbox(
+            'local_serviceschema/version_retention_enabled',
+            get_string('version_retention_enabled', 'local_serviceschema'),
+            get_string('version_retention_enabled_desc', 'local_serviceschema'),
+            1
+        ));
+
+        // Max versions per schema.
+        $settings->add(new admin_setting_configtext(
+            'local_serviceschema/version_retention_max',
+            get_string('version_retention_max', 'local_serviceschema'),
+            get_string('version_retention_max_desc', 'local_serviceschema'),
+            10,
             PARAM_INT
         ));
     }

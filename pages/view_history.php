@@ -99,17 +99,12 @@ $templatedata = [
     'edit_url' => '',
     'delete_url' => '',
     'regenerate_url' => '',
-    'dashboard_url' => (new moodle_url('/local/serviceschema/pages/history.php', ['id' => $history->schemaid]))->out(false),
+    'dashboard_url' => '',
+    'back_url' => (new moodle_url('/local/serviceschema/pages/history.php', ['id' => $history->schemaid]))->out(false),
 ];
 
 // Start output.
 echo $OUTPUT->header();
-
-// Custom back button to history.
-$backurl = new moodle_url('/local/serviceschema/pages/history.php', ['id' => $history->schemaid]);
-echo html_writer::start_div('mb-4');
-echo html_writer::link($backurl, html_writer::tag('i', '', ['class' => 'fa fa-arrow-left mr-2']) . get_string('back'), ['class' => 'btn btn-secondary']);
-echo html_writer::end_div();
 
 echo $OUTPUT->render_from_template('local_serviceschema/schema_detail', $templatedata);
 echo $OUTPUT->footer();

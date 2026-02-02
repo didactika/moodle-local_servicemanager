@@ -28,6 +28,29 @@ $id = required_param('id', PARAM_INT);
 $action = optional_param('action', '', PARAM_ALPHA);
 $historyid = optional_param('historyid', 0, PARAM_INT);
 
+// Pagination parameters.
+$page = optional_param('page', 0, PARAM_INT);
+$perpage = optional_param('perpage', 10, PARAM_INT);
+
+// Filter parameters.
+$filterversion = optional_param('version', '', PARAM_TEXT);
+$datefrom = optional_param('datefrom', 0, PARAM_INT);
+$dateto = optional_param('dateto', 0, PARAM_INT);
+
+// Build filters array.
+$filters = [];
+if (!empty($filterversion)) {
+    $filters['version'] = $filterversion;
+}
+if ($datefrom > 0) {
+    $filters['datefrom'] = $datefrom;
+}
+if ($dateto > 0) {
+    $filters['dateto'] = $dateto;
+}
+
+$hasfilters = !empty($filters);
+
 require_login();
 require_capability('local/serviceschema:manage', context_system::instance());
 
@@ -39,7 +62,14 @@ if (!$schema) {
     throw new moodle_exception('schemanotfound', 'local_serviceschema');
 }
 
-$PAGE->set_url(new moodle_url('/local/serviceschema/pages/history.php', ['id' => $id]));
+$urlparams = [
+    'id' => $id,
+    'perpage' => $perpage,
+    'version' => $filterversion,
+    'datefrom' => $datefrom,
+    'dateto' => $dateto,
+];
+$PAGE->set_url(new moodle_url('/local/serviceschema/pages/history.php', $urlparams));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('pluginname', 'local_serviceschema') . ' - ' . get_string('version_history', 'local_serviceschema'));
 $PAGE->set_heading(get_string('version_history', 'local_serviceschema') . ': ' . $schema->name);
@@ -51,118 +81,136 @@ $PAGE->navbar->add($schema->name, new moodle_url('/local/serviceschema/pages/vie
 $PAGE->navbar->add(get_string('version_history', 'local_serviceschema'));
 
 // Handle rollback action.
+$confirm = optional_param('confirm', 0, PARAM_INT);
+
 if ($action === 'rollback' && $historyid && confirm_sesskey()) {
-    try {
-        $historymanager->rollback($id, $historyid);
-        redirect(
-            new moodle_url('/local/serviceschema/pages/view.php', ['id' => $id]),
-            get_string('rollback_success', 'local_serviceschema'),
-            null,
-            \core\output\notification::NOTIFY_SUCCESS
+    if ($confirm) {
+        // Confirmed - perform rollback.
+        try {
+            $historymanager->rollback($id, $historyid);
+            redirect(
+                new moodle_url('/local/serviceschema/pages/view.php', ['id' => $id]),
+                get_string('rollback_success', 'local_serviceschema'),
+                null,
+                \core\output\notification::NOTIFY_SUCCESS
+            );
+        } catch (Exception $e) {
+            redirect(
+                $PAGE->url,
+                get_string('rollback_error', 'local_serviceschema') . ': ' . $e->getMessage(),
+                null,
+                \core\output\notification::NOTIFY_ERROR
+            );
+        }
+    } else {
+        // Show confirmation page.
+        echo $OUTPUT->header();
+        
+        $confirmurl = new moodle_url('/local/serviceschema/pages/history.php', [
+            'id' => $id,
+            'action' => 'rollback',
+            'historyid' => $historyid,
+            'confirm' => 1,
+            'sesskey' => sesskey(),
+        ]);
+        $cancelurl = new moodle_url('/local/serviceschema/pages/history.php', ['id' => $id]);
+        
+        echo $OUTPUT->confirm(
+            get_string('rollback_confirm', 'local_serviceschema'),
+            $confirmurl,
+            $cancelurl
         );
-    } catch (Exception $e) {
-        redirect(
-            $PAGE->url,
-            get_string('rollback_error', 'local_serviceschema') . ': ' . $e->getMessage(),
-            null,
-            \core\output\notification::NOTIFY_ERROR
-        );
+        
+        echo $OUTPUT->footer();
+        exit;
     }
 }
 
 echo $OUTPUT->header();
 
-// Back button.
-$backurl = new moodle_url('/local/serviceschema/pages/view.php', ['id' => $id]);
-echo html_writer::start_div('mb-4');
-echo html_writer::link($backurl, html_writer::tag('i', '', ['class' => 'fa fa-arrow-left mr-2']) . get_string('back'), ['class' => 'btn btn-secondary']);
-echo html_writer::end_div();
+// Get paginated history.
+$totalcount = $historymanager->count_history($id, $filters);
+$history = $historymanager->get_history_paginated($id, $page, $perpage, $filters);
 
-// Get history.
-$history = $historymanager->get_history($id);
+// Prepare context for template.
+$context = [
+    'id' => $id,
+    'backurl' => (new moodle_url('/local/serviceschema/pages/view.php', ['id' => $id]))->out(false),
+    'hasfilters' => $hasfilters,
+    'filtercount' => count($filters),
+    'filterversion' => $filterversion,
+    'datefromval' => $datefrom > 0 ? date('Y-m-d', $datefrom) : '',
+    'datetoval' => $dateto > 0 ? date('Y-m-d', $dateto) : '',
+    'clearurl' => (new moodle_url($PAGE->url, ['id' => $id, 'page' => 0, 'perpage' => 10, 'version' => '', 'datefrom' => 0, 'dateto' => 0]))->out(false),
+    'compareaction' => (new moodle_url('/local/serviceschema/pages/compare.php'))->out(false),
+    'totalcount' => $totalcount,
+    'nohistory' => empty($history),
+];
 
-echo html_writer::start_div('serviceschema-history');
+// Per page options.
+$context['perpageoptions'] = [];
+foreach ([10, 25, 50, 100] as $opt) {
+    $context['perpageoptions'][] = [
+        'value' => $opt,
+        'selected' => ($perpage == $opt)
+    ];
+}
 
-if (empty($history)) {
-    echo html_writer::tag('div', get_string('no_history', 'local_serviceschema'), ['class' => 'alert alert-info']);
-} else {
-    echo html_writer::tag('p', get_string('history_count', 'local_serviceschema', count($history)), ['class' => 'text-muted']);
+// Current version info.
+if (!$hasfilters && $page === 0) {
+    $context['currentversion'] = [
+        'version' => $schema->version,
+        'timemodified' => userdate($schema->timemodified),
+        'editurl' => (new moodle_url('/local/serviceschema/pages/edit.php', ['id' => $id]))->out(false)
+    ];
+}
 
-    foreach ($history as $index => $record) {
-        $iscurrent = ($index === 0);
-        $classes = 'version-item' . ($iscurrent ? ' current' : '');
-
-        echo html_writer::start_div($classes);
-
-        // Version header.
-        echo html_writer::start_div('d-flex justify-content-between align-items-start');
-        echo html_writer::start_div();
-        echo html_writer::tag('strong', get_string('version') . ' ' . $record->version);
-        if ($iscurrent) {
-            echo ' ' . html_writer::tag('span', get_string('current', 'local_serviceschema'), ['class' => 'badge badge-success ml-2']);
-        }
-        echo html_writer::end_div();
-
-        // Rollback button (not for current version).
-        if (!$iscurrent) {
-            $rollbackurl = new moodle_url($PAGE->url, [
+// History table.
+if (!empty($history)) {
+    $historyrows = [];
+    foreach ($history as $record) {
+        $user = new stdClass();
+        $user->id = $record->changedby;
+        $user->firstname = $record->firstname;
+        $user->lastname = $record->lastname;
+        $user->middlename = $record->middlename;
+        $user->alternatename = $record->alternatename;
+        $user->firstnamephonetic = $record->firstnamephonetic;
+        $user->lastnamephonetic = $record->lastnamephonetic;
+        $user->picture = $record->picture;
+        $user->email = $record->email;
+        $user->imagealt = $record->imagealt;
+        
+        $userpic = $OUTPUT->user_picture($user, ['size' => 30, 'link' => false]);
+        $username = fullname($user);
+        
+        $row = [
+            'id' => $record->id,
+            'version' => $record->version,
+            'user_profile' => $userpic . ' ' . $username,
+            'date' => userdate($record->timecreated, get_string('strftimedatetimeshort')),
+            'change_reason' => format_text($record->change_reason, FORMAT_MOODLE),
+            'yaml_content' => $record->yaml_content,
+            'rollback_url' => (new moodle_url($PAGE->url, [
                 'action' => 'rollback',
                 'historyid' => $record->id,
                 'sesskey' => sesskey(),
-            ]);
-            echo html_writer::link(
-                $rollbackurl,
-                html_writer::tag('i', '', ['class' => 'fa fa-undo mr-1']) . get_string('rollback', 'local_serviceschema'),
-                ['class' => 'btn btn-sm btn-outline-warning', 'onclick' => "return confirm('" . get_string('rollback_confirm', 'local_serviceschema') . "');"]
-            );
-        }
-        echo html_writer::end_div();
-
-        // Meta info.
-        echo html_writer::start_div('version-meta mt-2');
-        echo html_writer::tag('i', '', ['class' => 'fa fa-user mr-1']);
-        echo fullname($record) . ' &bull; ';
-        echo html_writer::tag('i', '', ['class' => 'fa fa-clock-o mr-1']);
-        echo userdate($record->timecreated, get_string('strftimedatetimeshort'));
-
-        if (!empty($record->change_reason)) {
-            echo ' &bull; ';
-            echo html_writer::tag('em', $record->change_reason);
-        }
-        echo html_writer::end_div();
-
-        // Collapsible YAML content.
-        $collapseid = 'yaml-content-' . $record->id;
-        echo html_writer::start_div('mt-2');
-        echo html_writer::tag(
-            'a',
-            html_writer::tag('i', '', ['class' => 'fa fa-code mr-1']) . get_string('view_yaml', 'local_serviceschema'),
-            [
-                'class' => 'btn btn-sm btn-link',
-                'data-toggle' => 'collapse',
-                'href' => '#' . $collapseid,
-                'role' => 'button',
-                'aria-expanded' => 'false',
-            ]
-        );
-        
-        // View Detail Button.
-        $viewdetailurl = new moodle_url('/local/serviceschema/pages/view_history.php', ['historyid' => $record->id]);
-        echo html_writer::link(
-            $viewdetailurl,
-            html_writer::tag('i', '', ['class' => 'fa fa-info-circle mr-1']) . get_string('action_view', 'local_serviceschema'),
-            ['class' => 'btn btn-sm btn-link ml-2']
-        );
-
-        echo html_writer::start_div('collapse mt-2', ['id' => $collapseid]);
-        echo html_writer::tag('pre', html_writer::tag('code', s($record->yaml_content)), ['class' => 'bg-light p-3 rounded']);
-        echo html_writer::end_div();
-        echo html_writer::end_div();
-
-        echo html_writer::end_div(); // version-item
+            ]))->out(false),
+            'view_url' => (new moodle_url('/local/serviceschema/pages/view_history.php', ['historyid' => $record->id]))->out(false),
+        ];
+        $historyrows[] = $row;
     }
+    
+    $context['history_rows'] = $historyrows;
+
+    // Standard Moodle Pagination.
+    $pagingbar = new \core\output\paging_bar($totalcount, $page, $perpage, $PAGE->url);
+    $context['pagingbar'] = $OUTPUT->render($pagingbar);
 }
 
-echo html_writer::end_div(); // serviceschema-history
+// Load AMD module.
+$PAGE->requires->js_call_amd('local_serviceschema/history', 'init');
+
+echo $OUTPUT->render_from_template('local_serviceschema/history_page', $context);
 
 echo $OUTPUT->footer();

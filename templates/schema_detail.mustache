@@ -19,13 +19,22 @@
 
 <div class="serviceschema-detail">
     {{! Back button }}
-    {{^is_history_view}}
+    {{#back_url}}
     <div class="mb-4">
-        <a href="{{dashboard_url}}" class="btn btn-secondary">
-            <i class="fa fa-arrow-left mr-2"></i>{{#str}}dashboard, local_serviceschema{{/str}}
+        <a href="{{back_url}}" class="btn btn-secondary">
+            <i class="fa fa-arrow-left mr-2"></i>{{#str}}back, local_serviceschema{{/str}}
         </a>
     </div>
-    {{/is_history_view}}
+    {{/back_url}}
+    {{^back_url}}
+        {{^is_history_view}}
+        <div class="mb-4">
+            <a href="{{dashboard_url}}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left mr-2"></i>{{#str}}dashboard, local_serviceschema{{/str}}
+            </a>
+        </div>
+        {{/is_history_view}}
+    {{/back_url}}
 
     {{! Token display for newly generated tokens }}
     {{#show_new_token}}
@@ -98,8 +107,11 @@
             <a href="{{edit_url}}" class="btn btn-primary">
                 <i class="fa fa-edit mr-1"></i>{{#str}}action_edit, local_serviceschema{{/str}}
             </a>
+            <a href="{{history_url}}" class="btn btn-warning">
+                <i class="fa fa-history mr-1"></i>{{#str}}version_history, local_serviceschema{{/str}}
+            </a>
             {{#has_token}}
-            <a href="{{regenerate_url}}" class="btn btn-warning">
+            <a href="{{regenerate_url}}" class="btn btn-info">
                 <i class="fa fa-refresh mr-1"></i>{{#str}}action_regenerate_token, local_serviceschema{{/str}}
             </a>
             {{/has_token}}

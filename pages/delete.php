@@ -51,8 +51,7 @@ if ($confirm && confirm_sesskey()) {
     $schemaname = $schema->name;
     $manager->delete_schema($id);
 
-    \core\notification::success(get_string('schema_deleted_success', 'local_serviceschema', $schemaname));
-    redirect($dashboardurl);
+    redirect($dashboardurl, get_string('schema_deleted_success', 'local_serviceschema', $schemaname), null, \core\output\notification::NOTIFY_SUCCESS);
 }
 
 // Show confirmation.

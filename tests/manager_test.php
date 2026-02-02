@@ -50,20 +50,20 @@ YAML;
     /**
      * Test creating a schema from YAML content.
      */
-    public function test_create_from_yaml(): void {
+    public function test_create_schema(): void {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
 
         $manager = new \local_serviceschema\schema\manager();
-        $result = $manager->create_from_yaml($this->get_valid_yaml(), true);
+        $result = $manager->create_schema($this->get_valid_yaml(), true);
 
         $this->assertArrayHasKey('id', $result);
         $this->assertArrayHasKey('token', $result);
         $this->assertNotEmpty($result['token']);
 
         // Verify database record.
-        $schema = $DB->get_record('local_serviceschema', ['id' => $result['id']]);
+        $schema = $DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]);
         $this->assertNotFalse($schema);
         $this->assertEquals('test.service', $schema->schema_id);
         $this->assertEquals('Test Service', $schema->name);
@@ -78,7 +78,7 @@ YAML;
         $this->setAdminUser();
 
         $manager = new \local_serviceschema\schema\manager();
-        $result = $manager->create_from_yaml($this->get_valid_yaml(), false);
+        $result = $manager->create_schema($this->get_valid_yaml(), false);
 
         $schema = $manager->get_schema($result['id']);
 
@@ -101,7 +101,7 @@ YAML;
         $initialcount = count($schemas);
 
         // Create a schema.
-        $manager->create_from_yaml($this->get_valid_yaml(), false);
+        $manager->create_schema($this->get_valid_yaml(), false);
 
         // Should have one more.
         $schemas = $manager->get_all_schemas();
@@ -109,21 +109,54 @@ YAML;
     }
 
     /**
-     * Test updating a schema.
+     * Test updating a schema with content change (Valid).
+     * Content changes -> Version MUST increment.
      */
-    public function test_update_schema(): void {
+    public function test_update_schema_valid_content_change(): void {
         global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
 
         $manager = new \local_serviceschema\schema\manager();
-        $result = $manager->create_from_yaml($this->get_valid_yaml(), false);
+        $result = $manager->create_schema($this->get_valid_yaml(), false);
 
+        // Add a function (content change) AND increment version.
         $updateyaml = <<<YAML
 meta:
   id: "test.service"
   name: "Updated Test Service"
-  version: "2.0.0"
+  version: "1.1.0"
+definition:
+  functions:
+    - core_webservice_get_site_info
+    - core_user_get_users 
+YAML;
+
+        $manager->update_schema($result['id'], $updateyaml);
+
+        $schema = $DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]);
+        $this->assertEquals('Updated Test Service', $schema->name);
+        $this->assertEquals('1.1.0', $schema->version);
+    }
+
+    /**
+     * Test updating a schema with only metadata change (Valid).
+     * Content same -> Version MUST stay same.
+     */
+    public function test_update_schema_valid_metadata_only(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $manager = new \local_serviceschema\schema\manager();
+        $result = $manager->create_schema($this->get_valid_yaml(), false);
+
+        // Change name only, keep version 1.0.0.
+        $updateyaml = <<<YAML
+meta:
+  id: "test.service"
+  name: "Renamed Service"
+  version: "1.0.0"
 definition:
   functions:
     - core_webservice_get_site_info
@@ -131,9 +164,64 @@ YAML;
 
         $manager->update_schema($result['id'], $updateyaml);
 
-        $schema = $DB->get_record('local_serviceschema', ['id' => $result['id']]);
-        $this->assertEquals('Updated Test Service', $schema->name);
-        $this->assertEquals('2.0.0', $schema->version);
+        $schema = $DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]);
+        $this->assertEquals('Renamed Service', $schema->name);
+        $this->assertEquals('1.0.0', $schema->version);
+    }
+
+    /**
+     * Test updating schema: Content changed but Version NOT incremented (Invalid).
+     */
+    public function test_update_schema_invalid_content_same_version(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $manager = new \local_serviceschema\schema\manager();
+        $result = $manager->create_schema($this->get_valid_yaml(), false);
+
+        // Add function, keep 1.0.0.
+        $updateyaml = <<<YAML
+meta:
+  id: "test.service"
+  name: "Test Service"
+  version: "1.0.0"
+definition:
+  functions:
+    - core_webservice_get_site_info
+    - core_user_get_users
+YAML;
+
+        $this->expectException(\moodle_exception::class);
+        $this->expectExceptionMessage(get_string('error_version_change_required', 'local_serviceschema'));
+        $manager->update_schema($result['id'], $updateyaml);
+    }
+
+    /**
+     * Test updating schema: Content same but Version incremented (Invalid).
+     */
+    public function test_update_schema_invalid_metadata_new_version(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $manager = new \local_serviceschema\schema\manager();
+        $result = $manager->create_schema($this->get_valid_yaml(), false);
+
+        // Same content, but increment to 1.1.0.
+        $updateyaml = <<<YAML
+meta:
+  id: "test.service"
+  name: "Test Service"
+  version: "1.1.0"
+definition:
+  functions:
+    - core_webservice_get_site_info
+YAML;
+
+        $this->expectException(\moodle_exception::class);
+        $this->expectExceptionMessage(get_string('error_version_change_forbidden', 'local_serviceschema'));
+        $manager->update_schema($result['id'], $updateyaml);
     }
 
     /**
@@ -145,13 +233,13 @@ YAML;
         $this->setAdminUser();
 
         $manager = new \local_serviceschema\schema\manager();
-        $result = $manager->create_from_yaml($this->get_valid_yaml(), false);
+        $result = $manager->create_schema($this->get_valid_yaml(), false);
 
-        $this->assertNotFalse($DB->get_record('local_serviceschema', ['id' => $result['id']]));
+        $this->assertNotFalse($DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]));
 
         $manager->delete_schema($result['id']);
 
-        $this->assertFalse($DB->get_record('local_serviceschema', ['id' => $result['id']]));
+        $this->assertFalse($DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]));
     }
 
     /**
@@ -163,20 +251,20 @@ YAML;
         $this->setAdminUser();
 
         $manager = new \local_serviceschema\schema\manager();
-        $result = $manager->create_from_yaml($this->get_valid_yaml(), false);
+        $result = $manager->create_schema($this->get_valid_yaml(), false);
 
         // Initially enabled.
-        $schema = $DB->get_record('local_serviceschema', ['id' => $result['id']]);
+        $schema = $DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]);
         $this->assertEquals(1, $schema->enabled);
 
         // Disable.
         $manager->set_enabled($result['id'], false);
-        $schema = $DB->get_record('local_serviceschema', ['id' => $result['id']]);
+        $schema = $DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]);
         $this->assertEquals(0, $schema->enabled);
 
         // Re-enable.
         $manager->set_enabled($result['id'], true);
-        $schema = $DB->get_record('local_serviceschema', ['id' => $result['id']]);
+        $schema = $DB->get_record('local_serviceschema_schemas', ['id' => $result['id']]);
         $this->assertEquals(1, $schema->enabled);
     }
 }

@@ -5,6 +5,25 @@ All notable changes to the Service Schema Manager plugin will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-02-02
+
+### Changed
+
+- **UI Refactoring**: Replaced all inline HTML generation with Mustache templates (`history_page`, `compare_page`, `schema_detail`, `import_page`, `documentation_page`) for better maintainability and theme consistency.
+- **JavaScript Modularization**: Migrated legacy JavaScript to AMD modules with proper event delegation for improved stability.
+- **Strict Versioning**: Implemented content-aware version validation. Schema version MUST increment if functional content changes, and MUST NOT increment if only metadata changes.
+- **Comparator Improvements**: Fixed HTML escaping issues in version comparison view to correctly render YAML quotes.
+
+### Fixed
+
+- **Performance**: Optimized user profile fetching in history page (fetching `picture`, `email`, `imagealt` in bulk).
+- **Bug**: Fixed critical 500 error in `compare.php` by refactoring parameter handling and removing duplicate headers.
+- **UI**: Fixed "Select All" checkbox confusion in history page header.
+- **UX**: Replaced native browser alerts with Moodle's `Notification.alert()` for better user experience.
+- **Localization**: Added missing language strings (e.g., 'Edit', 'Selected', version change errors).
+
+---
+
 ## [1.1.0] - 2026-02-02
 
 ### Added
@@ -87,7 +106,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- API endpoint for programmatic management
 - Webhook notifications
-- Schema comparison view
-- Scheduled schema validation
