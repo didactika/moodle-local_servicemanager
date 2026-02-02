@@ -1,0 +1,190 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Language strings for local_serviceschema
+ *
+ * @package    local_serviceschema
+ * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
+ * @copyright  2026 ADSDR
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+// General.
+$string['pluginname'] = 'Service Schema Manager';
+$string['privacy:metadata'] = 'The Service Schema Manager plugin does not store any personal data.';
+
+// Capabilities.
+$string['serviceschema:manage'] = 'Manage service schemas';
+$string['serviceschema:view'] = 'View service schemas';
+
+// Navigation and pages.
+$string['dashboard'] = 'Service Schema Dashboard';
+$string['upload_schema'] = 'Upload Schema';
+$string['edit_schema'] = 'Edit Schema';
+$string['view_schema'] = 'View Schema';
+$string['manage_schemas'] = 'Manage Schemas';
+
+// Form fields.
+$string['yamlfile'] = 'YAML Schema File';
+$string['yamlfile_help'] = 'Upload a YAML file containing the service schema definition. Only .yaml and .yml files are accepted.<br><br><a href="/local/serviceschema/pages/documentation.php" target="_blank"><strong>📖 View Documentation</strong></a>';
+$string['yamlcontent'] = 'YAML Content';
+$string['yamlcontent_help'] = 'Edit the YAML schema definition directly.<br><br><a href="/local/serviceschema/pages/documentation.php" target="_blank"><strong>📖 View Documentation</strong></a>';
+$string['generatetoken'] = 'Generate token automatically';
+$string['generatetoken_desc'] = 'If checked, a token will be generated for the service user and displayed after upload.';
+$string['upload'] = 'Upload Schema';
+
+// Schema fields.
+$string['schema_id'] = 'Schema ID';
+$string['schema_name'] = 'Name';
+$string['schema_version'] = 'Version';
+$string['schema_maintainer'] = 'Maintainer';
+$string['schema_description'] = 'Description';
+$string['schema_status'] = 'Status';
+$string['schema_enabled'] = 'Enabled';
+$string['schema_created'] = 'Created';
+$string['schema_modified'] = 'Last Modified';
+
+// Status labels.
+$string['status_healthy'] = 'Healthy';
+$string['status_warning'] = 'Warning';
+$string['status_critical'] = 'Critical';
+
+// Actions.
+$string['action_view'] = 'View';
+$string['action_edit'] = 'Edit';
+$string['action_delete'] = 'Delete';
+$string['action_regenerate_token'] = 'Regenerate Token';
+$string['action_disable'] = 'Disable';
+$string['action_enable'] = 'Enable';
+
+// Token related.
+$string['token_generated'] = 'Token Generated Successfully';
+$string['token_regenerated'] = 'Token Regenerated Successfully';
+$string['token_copy_warning'] = 'Copy this token now. It will not be shown again for security reasons.';
+$string['copy'] = 'Copy';
+$string['copied'] = 'Copied!';
+$string['token_name'] = 'Token Name';
+$string['current_token'] = 'Current Token';
+$string['no_token'] = 'No token generated';
+
+// Messages.
+$string['schema_created_success'] = 'Schema "{$a}" was created successfully.';
+$string['schema_updated_success'] = 'Schema "{$a}" was updated successfully.';
+$string['schema_deleted_success'] = 'Schema "{$a}" was deleted successfully.';
+$string['no_schemas'] = 'No schemas have been defined yet. Upload a YAML file to create your first schema.';
+$string['changes_will_apply'] = 'Changes will be applied to the user, role, and service when you save.';
+
+// Validation errors.
+$string['error_invalid_yaml'] = 'Invalid YAML format: {$a}';
+$string['error_missing_meta'] = 'Missing required "meta" section in YAML.';
+$string['error_missing_meta_id'] = 'Missing required "meta.id" field.';
+$string['error_missing_meta_name'] = 'Missing required "meta.name" field.';
+$string['error_missing_meta_version'] = 'Missing required "meta.version" field.';
+$string['error_missing_definition'] = 'Missing required "definition" section.';
+$string['error_missing_functions'] = 'Missing required "definition.functions" array.';
+$string['error_invalid_schema_id'] = 'Schema ID "{$a}" is invalid. Only letters, numbers, and dots (.) are allowed.';
+$string['error_schema_id_exists'] = 'A schema with ID "{$a}" already exists.';
+$string['error_function_not_found'] = 'Function "{$a}" does not exist in this Moodle installation.';
+$string['error_critical_function_missing'] = 'Critical function "{$a}" is missing. Schema cannot be created.';
+$string['error_plugin_not_installed'] = 'Required plugin "{$a}" is not installed.';
+
+// Warnings.
+$string['warning_function_missing'] = 'Non-critical function "{$a}" is missing.';
+$string['warning_user_email_not_found'] = 'User with email "{$a}" not found. Skipping authorization.';
+$string['warning_plugin_not_installed'] = 'Recommended plugin "{$a}" is not installed.';
+
+// Health check.
+$string['healthcheck_task'] = 'Service Schema Health Check';
+$string['healthcheck_report_subject'] = 'Service Schema Health Report';
+$string['healthcheck_all_healthy'] = 'All service schemas are healthy.';
+$string['healthcheck_issues_found'] = 'Issues detected in {$a} schema(s).';
+
+// Confirmation dialogs.
+$string['confirm_delete'] = 'Are you sure you want to delete schema "{$a}"? This will also delete the associated user, role, and service.';
+$string['confirm_regenerate_token'] = 'Are you sure you want to regenerate the token? The current token will be invalidated immediately.';
+
+// Service user.
+$string['service_user'] = 'Service User';
+$string['service_role'] = 'Service Role';
+$string['external_service'] = 'External Service';
+$string['authorized_users'] = 'Authorized Users';
+
+// Functions.
+$string['functions'] = 'Functions';
+$string['function_name'] = 'Function Name';
+$string['function_critical'] = 'Critical';
+$string['function_status'] = 'Status';
+$string['function_exists'] = 'Exists';
+$string['function_missing'] = 'Missing';
+
+// Capabilities.
+$string['capabilities'] = 'Capabilities';
+$string['extra_capabilities'] = 'Extra Capabilities';
+$string['calculated_capabilities'] = 'Calculated from Functions';
+
+// Settings.
+$string['settings'] = 'Settings';
+$string['settings_notifications'] = 'Notifications';
+$string['settings_notifications_desc'] = 'Configure who receives health check notifications.';
+$string['settings_healthcheck'] = 'Health Check';
+$string['settings_healthcheck_desc'] = 'Configure automatic health monitoring.';
+$string['settings_cleanup'] = 'Log Cleanup';
+$string['settings_cleanup_desc'] = 'Configure automatic log cleanup to prevent database growth.';
+
+$string['notification_emails'] = 'Notification emails';
+$string['notification_emails_desc'] = 'Comma-separated list of email addresses to receive health notifications. Leave empty to use site administrators only.';
+$string['notify_admins'] = 'Also notify site administrators';
+$string['notify_admins_desc'] = 'Send notifications to site administrators in addition to the emails above.';
+$string['notification_level'] = 'Notification level';
+$string['notification_level_desc'] = 'Minimum status level to trigger notifications.';
+$string['notification_level_all'] = 'All (including healthy)';
+
+$string['healthcheck_enabled'] = 'Enable health check';
+$string['healthcheck_enabled_desc'] = 'Run automatic health checks on schemas.';
+
+$string['cleanup_enabled'] = 'Enable log cleanup';
+$string['cleanup_enabled_desc'] = 'Automatically delete old health check logs.';
+$string['cleanup_retention_days'] = 'Log retention (days)';
+$string['cleanup_retention_days_desc'] = 'Number of days to keep health check logs. Logs older than this will be deleted.';
+$string['cleanup_task'] = 'Service Schema Log Cleanup';
+
+// Documentation.
+$string['documentation'] = 'Schema Documentation';
+$string['schema_reference'] = 'YAML Schema Reference';
+$string['quick_links'] = 'Quick Links';
+$string['download_example'] = 'Download Example File';
+$string['download_example_desc'] = 'Get a working sample YAML schema file';
+$string['doc_structure'] = 'Schema Structure';
+$string['doc_structure_desc'] = 'A service schema YAML file must contain the following sections:';
+$string['doc_meta'] = 'Meta Section';
+$string['doc_definition'] = 'Definition Section';
+$string['doc_definition_desc'] = 'The definition section specifies the web service functions and capabilities.';
+$string['doc_naming'] = 'Naming Conventions';
+$string['doc_example'] = 'Complete Example';
+$string['doc_functions_desc'] = 'Functions can be specified in simple or extended format:';
+$string['doc_meta_id'] = 'Unique identifier. Only letters, numbers, and dots (.) allowed.';
+$string['doc_meta_name'] = 'Human-readable name for the service.';
+$string['doc_meta_version'] = 'Version string (semantic versioning recommended).';
+$string['doc_meta_maintainer'] = 'Person or team responsible for the schema.';
+$string['doc_meta_description'] = 'Brief description of the service purpose.';
+$string['field'] = 'Field';
+$string['resource'] = 'Resource';
+$string['pattern'] = 'Pattern';
+$string['back'] = 'Back';
+$string['doc_example_col'] = 'Example';

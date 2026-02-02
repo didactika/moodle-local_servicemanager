@@ -1,0 +1,89 @@
+{{!
+    @template local_serviceschema/dashboard
+
+    Dashboard template for Service Schema Manager.
+
+    Context variables required for this template:
+    * schemas - Array of schema objects
+    * has_schemas - Boolean
+    * upload_url - URL to upload page
+    * can_manage - Boolean
+
+    Example context (json):
+    {
+        "schemas": [{"id": 1, "name": "Test", "status": "healthy"}],
+        "has_schemas": true,
+        "upload_url": "/local/serviceschema/pages/upload.php",
+        "can_manage": true
+    }
+}}
+
+<div class="serviceschema-dashboard">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">{{#str}}dashboard, local_serviceschema{{/str}}</h2>
+        {{#can_manage}}
+        <a href="{{upload_url}}" class="btn btn-primary">
+            <i class="fa fa-upload mr-2"></i>{{#str}}upload_schema, local_serviceschema{{/str}}
+        </a>
+        {{/can_manage}}
+    </div>
+
+    {{#has_schemas}}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>{{#str}}schema_name, local_serviceschema{{/str}}</th>
+                    <th>{{#str}}schema_id, local_serviceschema{{/str}}</th>
+                    <th>{{#str}}schema_version, local_serviceschema{{/str}}</th>
+                    <th>{{#str}}schema_status, local_serviceschema{{/str}}</th>
+                    <th>{{#str}}schema_modified, local_serviceschema{{/str}}</th>
+                    <th class="text-right">{{#str}}actions{{/str}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#schemas}}
+                <tr>
+                    <td>
+                        <a href="{{view_url}}" class="font-weight-bold">{{name}}</a>
+                        {{^enabled}}
+                        <span class="badge badge-secondary ml-2">{{#str}}disabled{{/str}}</span>
+                        {{/enabled}}
+                    </td>
+                    <td><code>{{schema_id}}</code></td>
+                    <td>{{version}}</td>
+                    <td>
+                        <span class="badge {{status_class}}">
+                            <i class="fa {{status_icon}} mr-1"></i>{{status_label}}
+                        </span>
+                    </td>
+                    <td>{{timemodified}}</td>
+                    <td class="text-right">
+                        <div class="btn-group btn-group-sm">
+                            <a href="{{view_url}}" class="btn btn-outline-primary" title="{{#str}}action_view, local_serviceschema{{/str}}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            {{#can_manage}}
+                            <a href="{{edit_url}}" class="btn btn-outline-secondary" title="{{#str}}action_edit, local_serviceschema{{/str}}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="{{delete_url}}" class="btn btn-outline-danger" title="{{#str}}action_delete, local_serviceschema{{/str}}">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            {{/can_manage}}
+                        </div>
+                    </td>
+                </tr>
+                {{/schemas}}
+            </tbody>
+        </table>
+    </div>
+    {{/has_schemas}}
+
+    {{^has_schemas}}
+    <div class="alert alert-info">
+        <i class="fa fa-info-circle mr-2"></i>
+        {{#str}}no_schemas, local_serviceschema{{/str}}
+    </div>
+    {{/has_schemas}}
+</div>

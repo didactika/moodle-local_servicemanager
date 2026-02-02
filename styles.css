@@ -1,0 +1,105 @@
+/* Service Schema Manager styles */
+
+/* Dashboard styles */
+.serviceschema-dashboard .badge-lg {
+    font-size: 0.9rem;
+    padding: 0.5em 0.8em;
+}
+
+/* Detail view styles */
+.serviceschema-detail .badge-lg {
+    font-size: 1rem;
+    padding: 0.6em 1em;
+}
+
+.serviceschema-detail .font-monospace {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.serviceschema-detail .token-display {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 2px solid #28a745;
+}
+
+.serviceschema-detail .token-display input {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.95rem;
+    background-color: #fff;
+}
+
+/* Status colors */
+.serviceschema-dashboard .badge-success,
+.serviceschema-detail .badge-success {
+    background-color: #28a745;
+}
+
+.serviceschema-dashboard .badge-warning,
+.serviceschema-detail .badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.serviceschema-dashboard .badge-danger,
+.serviceschema-detail .badge-danger {
+    background-color: #dc3545;
+}
+
+/* Table improvements */
+.serviceschema-dashboard .table th,
+.serviceschema-detail .table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.serviceschema-dashboard .table code,
+.serviceschema-detail .table code {
+    background-color: #e9ecef;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+}
+
+/* Card improvements for Moodle 4.5+ */
+.serviceschema-detail .card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+}
+
+.serviceschema-detail .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Function status colors */
+.serviceschema-detail .text-success {
+    color: #28a745 !important;
+}
+
+.serviceschema-detail .text-danger {
+    color: #dc3545 !important;
+}
+
+/* Copy button cursor */
+.copy-token {
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .serviceschema-dashboard .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+    }
+
+    .serviceschema-detail .card-footer .btn {
+        margin-bottom: 0.5rem;
+        display: block;
+        width: 100%;
+    }
+
+    .serviceschema-detail .card-footer .float-right {
+        float: none !important;
+    }
+}

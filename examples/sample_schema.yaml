@@ -1,0 +1,44 @@
+# Sample Service Schema Definition
+
+# This is an example YAML file for the Service Schema Manager plugin.
+# Upload this file to create a new service schema.
+
+meta:
+  # Unique ID - only letters, numbers, and dots allowed
+  id: "example.service"
+
+  # Display name for the service
+  name: "Example Integration Service"
+
+  # Version number
+  version: "1.0.0"
+
+  # Maintainer information (optional)
+  maintainer: "Development Team"
+
+  # Description of what this service does
+  description: "An example service schema demonstrating the plugin functionality."
+
+requirements:
+  # List of plugins that must be installed (optional)
+  # The plugin will show warnings if these are not present
+  plugins: []
+
+definition:
+  # List of Moodle web service functions required
+  functions:
+    - name: "core_user_get_users"
+      critical: true              # If missing, schema creation fails
+    - name: "core_user_get_users_by_field"
+      critical: true
+    - name: "core_course_get_courses"
+      critical: false             # If missing, only a warning is shown
+
+  # Additional capabilities not derived from functions (optional)
+  extra_capabilities:
+    - "moodle/site:viewuseridentity"
+
+  # Additional users to authorize (by email, optional)
+  # These users will also be authorized to use the service
+  # If an email doesn't exist, a warning is shown but creation continues
+  additional_users: []
