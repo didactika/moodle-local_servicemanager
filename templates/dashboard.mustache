@@ -7,6 +7,9 @@
     * schemas - Array of schema objects
     * has_schemas - Boolean
     * upload_url - URL to upload page
+    * import_url - URL to import page
+    * export_all_url - URL to export all
+    * bulk_action_url - URL for bulk actions
     * can_manage - Boolean
 
     Example context (json):
@@ -21,18 +24,53 @@
 <div class="serviceschema-dashboard">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">{{#str}}dashboard, local_serviceschema{{/str}}</h2>
-        {{#can_manage}}
-        <a href="{{upload_url}}" class="btn btn-primary">
-            <i class="fa fa-upload mr-2"></i>{{#str}}upload_schema, local_serviceschema{{/str}}
-        </a>
-        {{/can_manage}}
+        <div class="btn-toolbar">
+            {{#can_manage}}
+            <div class="btn-group mr-2">
+                <a href="{{import_url}}" class="btn btn-primary">
+                    <i class="fa fa-download mr-2"></i>{{#str}}import_schemas, local_serviceschema{{/str}}
+                </a>
+            </div>
+            {{/can_manage}}
+            {{#has_schemas}}
+            <a href="{{export_all_url}}" class="btn btn-outline-secondary">
+                <i class="fa fa-file-archive-o mr-2"></i>{{#str}}export_all, local_serviceschema{{/str}}
+            </a>
+            {{/has_schemas}}
+        </div>
     </div>
 
     {{#has_schemas}}
+    {{#can_manage}}
+    <!-- Bulk actions bar -->
+    <form id="bulk-form" method="post" action="{{bulk_action_url}}">
+        <input type="hidden" name="sesskey" value="{{sesskey}}">
+        <div class="bulk-actions mb-3" id="bulk-actions-bar">
+            <span class="selected-count"><span id="selected-count">0</span> {{#str}}selected, local_serviceschema{{/str}}</span>
+            <button type="submit" name="action" value="enable" class="btn btn-sm btn-success bulk-btn-enable" style="display:none">
+                <i class="fa fa-check mr-1"></i>{{#str}}bulk_enable, local_serviceschema{{/str}}
+            </button>
+            <button type="submit" name="action" value="disable" class="btn btn-sm btn-secondary bulk-btn-disable" style="display:none">
+                <i class="fa fa-ban mr-1"></i>{{#str}}bulk_disable, local_serviceschema{{/str}}
+            </button>
+            <button type="submit" name="action" value="export" class="btn btn-sm btn-info">
+                <i class="fa fa-download mr-1"></i>{{#str}}bulk_export, local_serviceschema{{/str}}
+            </button>
+            <button type="submit" name="action" value="delete" class="btn btn-sm btn-danger" onclick="return confirm('{{#str}}bulk_delete_confirm, local_serviceschema{{/str}}');">
+                <i class="fa fa-trash mr-1"></i>{{#str}}bulk_delete, local_serviceschema{{/str}}
+            </button>
+        </div>
+    {{/can_manage}}
+
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="thead-light">
                 <tr>
+                    {{#can_manage}}
+                    <th class="text-center" style="width: 40px;">
+                        <input type="checkbox" id="select-all" class="bulk-checkbox-small" title="{{#str}}select_all, local_serviceschema{{/str}}">
+                    </th>
+                    {{/can_manage}}
                     <th>{{#str}}schema_name, local_serviceschema{{/str}}</th>
                     <th>{{#str}}schema_id, local_serviceschema{{/str}}</th>
                     <th>{{#str}}schema_version, local_serviceschema{{/str}}</th>
@@ -44,10 +82,15 @@
             <tbody>
                 {{#schemas}}
                 <tr>
+                    {{#can_manage}}
+                    <td class="text-center">
+                        <input type="checkbox" name="ids[]" value="{{id}}" class="bulk-checkbox-small schema-checkbox" data-enabled="{{#enabled}}1{{/enabled}}{{^enabled}}0{{/enabled}}">
+                    </td>
+                    {{/can_manage}}
                     <td>
                         <a href="{{view_url}}" class="font-weight-bold">{{name}}</a>
                         {{^enabled}}
-                        <span class="badge badge-secondary ml-2">{{#str}}disabled{{/str}}</span>
+                        <span class="badge badge-secondary ml-2">{{#str}}disabled, local_serviceschema{{/str}}</span>
                         {{/enabled}}
                     </td>
                     <td><code>{{schema_id}}</code></td>
@@ -67,6 +110,12 @@
                             <a href="{{edit_url}}" class="btn btn-outline-secondary" title="{{#str}}action_edit, local_serviceschema{{/str}}">
                                 <i class="fa fa-edit"></i>
                             </a>
+                            <a href="{{export_url}}" class="btn btn-outline-info" title="{{#str}}action_export, local_serviceschema{{/str}}">
+                                <i class="fa fa-download"></i>
+                            </a>
+                            <a href="{{history_url}}" class="btn btn-outline-warning" title="{{#str}}version_history, local_serviceschema{{/str}}">
+                                <i class="fa fa-history"></i>
+                            </a>
                             <a href="{{delete_url}}" class="btn btn-outline-danger" title="{{#str}}action_delete, local_serviceschema{{/str}}">
                                 <i class="fa fa-trash"></i>
                             </a>
@@ -78,6 +127,10 @@
             </tbody>
         </table>
     </div>
+
+    {{#can_manage}}
+    </form>
+    {{/can_manage}}
     {{/has_schemas}}
 
     {{^has_schemas}}
@@ -87,3 +140,60 @@
     </div>
     {{/has_schemas}}
 </div>
+
+{{#js}}
+require(['jquery'], function($) {
+    var $selectAll = $('#select-all');
+    var $checkboxes = $('.schema-checkbox');
+    var $bulkBar = $('#bulk-actions-bar');
+    var $selectedCount = $('#selected-count');
+    var $enableBtn = $('.bulk-btn-enable');
+    var $disableBtn = $('.bulk-btn-disable');
+
+    function updateBulkBar() {
+        var $checked = $checkboxes.filter(':checked');
+        var count = $checked.length;
+        $selectedCount.text(count);
+
+        if (count > 0) {
+            $bulkBar.addClass('show');
+
+            // Check if any checked item is disabled (to show enable button)
+            var hasDisabled = false;
+            var hasEnabled = false;
+
+            $checked.each(function() {
+                var enabled = $(this).data('enabled');
+                if (enabled == 0) hasDisabled = true;
+                if (enabled == 1) hasEnabled = true;
+            });
+
+            if (hasDisabled) {
+                $enableBtn.show();
+            } else {
+                $enableBtn.hide();
+            }
+
+            if (hasEnabled) {
+                $disableBtn.show();
+            } else {
+                $disableBtn.hide();
+            }
+
+        } else {
+            $bulkBar.removeClass('show');
+        }
+    }
+
+    $selectAll.on('change', function() {
+        $checkboxes.prop('checked', this.checked);
+        updateBulkBar();
+    });
+
+    $checkboxes.on('change', function() {
+        var allChecked = $checkboxes.length === $checkboxes.filter(':checked').length;
+        $selectAll.prop('checked', allChecked);
+        updateBulkBar();
+    });
+});
+{{/js}}

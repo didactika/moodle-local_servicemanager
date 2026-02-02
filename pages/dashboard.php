@@ -68,6 +68,9 @@ foreach ($schemas as $schema) {
         'view_url' => (new moodle_url('/local/serviceschema/pages/view.php', ['id' => $schema->id]))->out(false),
         'edit_url' => (new moodle_url('/local/serviceschema/pages/edit.php', ['id' => $schema->id]))->out(false),
         'delete_url' => (new moodle_url('/local/serviceschema/pages/delete.php', ['id' => $schema->id]))->out(false),
+        'export_url' => (new moodle_url('/local/serviceschema/pages/export.php', ['id' => $schema->id]))->out(false),
+        'history_url' => (new moodle_url('/local/serviceschema/pages/history.php', ['id' => $schema->id]))->out(false),
+        'can_manage' => has_capability('local/serviceschema:manage', $context),
     ];
 }
 
@@ -75,7 +78,11 @@ $templatedata = [
     'schemas' => $schemasdata,
     'has_schemas' => !empty($schemasdata),
     'upload_url' => (new moodle_url('/local/serviceschema/pages/upload.php'))->out(false),
+    'import_url' => (new moodle_url('/local/serviceschema/pages/import.php'))->out(false),
+    'export_all_url' => (new moodle_url('/local/serviceschema/pages/export.php', ['all' => 1]))->out(false),
+    'bulk_action_url' => (new moodle_url('/local/serviceschema/pages/bulk_action.php'))->out(false),
     'can_manage' => has_capability('local/serviceschema:manage', $context),
+    'sesskey' => sesskey(),
 ];
 
 echo $OUTPUT->header();

@@ -72,6 +72,7 @@ $string['action_delete'] = 'Delete';
 $string['action_regenerate_token'] = 'Regenerate Token';
 $string['action_disable'] = 'Disable';
 $string['action_enable'] = 'Enable';
+$string['disabled'] = 'Disabled';
 
 // Token related.
 $string['token_generated'] = 'Token Generated Successfully';
@@ -102,6 +103,7 @@ $string['error_invalid_schema_id'] = 'Schema ID "{$a}" is invalid. Only letters,
 $string['error_schema_id_exists'] = 'A schema with ID "{$a}" already exists.';
 $string['error_function_not_found'] = 'Function "{$a}" does not exist in this Moodle installation.';
 $string['error_critical_function_missing'] = 'Critical function "{$a}" is missing. Schema cannot be created.';
+$string['error_version_change_required'] = 'Content changes detected. You must update the version number in the YAML (e.g. increment the version) to save these changes.';
 $string['error_plugin_not_installed'] = 'Required plugin "{$a}" is not installed.';
 
 // Warnings.
@@ -188,3 +190,57 @@ $string['resource'] = 'Resource';
 $string['pattern'] = 'Pattern';
 $string['back'] = 'Back';
 $string['doc_example_col'] = 'Example';
+
+// Import/Export.
+$string['import_schemas'] = 'Import Schemas';
+$string['export_all'] = 'Export All';
+$string['action_export'] = 'Export';
+$string['import'] = 'Import';
+$string['import_file'] = 'Import File';
+$string['import_file_help'] = 'Upload a YAML schema file (.yaml, .yml) or a ZIP archive containing multiple schemas.';
+$string['conflict_handling'] = 'Conflict Handling';
+$string['conflict_action'] = 'When schema ID exists';
+$string['conflict_action_help'] = 'Choose what to do when a schema with the same ID already exists.';
+$string['conflict_skip'] = 'Skip (keep existing)';
+$string['conflict_overwrite'] = 'Overwrite (replace existing)';
+$string['conflict_rename'] = 'Rename (add .imported suffix)';
+$string['import_info_title'] = 'Import Schemas';
+$string['import_info_text'] = 'You can import schemas from YAML files or ZIP archives:';
+$string['import_info_yaml'] = 'Single YAML file (.yaml or .yml)';
+$string['import_info_zip'] = 'ZIP archive containing multiple YAML files';
+$string['import_complete'] = 'Import complete: {$a->imported} imported, {$a->skipped} skipped.';
+$string['import_error_no_id'] = 'YAML does not contain a valid meta.id field.';
+$string['no_file_uploaded'] = 'No file was uploaded.';
+$string['no_schemas_to_export'] = 'There are no schemas to export.';
+$string['export_error'] = 'Error creating export file.';
+
+// Bulk operations.
+$string['selected'] = 'selected';
+$string['select_all'] = 'Select all';
+$string['bulk_enable'] = 'Enable';
+$string['bulk_disable'] = 'Disable';
+$string['bulk_export'] = 'Export';
+$string['bulk_delete'] = 'Delete';
+$string['bulk_delete_confirm'] = 'Are you sure you want to delete the selected schemas? This action cannot be undone.';
+$string['bulk_enabled'] = '{$a} schema(s) have been enabled.';
+$string['bulk_disabled'] = '{$a} schema(s) have been disabled.';
+$string['bulk_deleted'] = '{$a} schema(s) have been deleted.';
+$string['bulk_deleted_with_errors'] = '{$a->count} schema(s) deleted, {$a->errors} error(s) occurred.';
+$string['no_schemas_selected'] = 'No schemas were selected.';
+$string['invalid_action'] = 'Invalid action.';
+
+// Version history.
+$string['version_history'] = 'Version History';
+$string['version'] = 'Version';
+$string['current'] = 'Current';
+$string['rollback'] = 'Rollback';
+$string['rollback_confirm'] = 'Are you sure you want to rollback to this version? Current changes will be saved as a backup.';
+$string['rollback_success'] = 'Schema has been rolled back successfully.';
+$string['rollback_error'] = 'Error rolling back schema';
+$string['rollback_backup'] = 'Backup before rollback';
+$string['rollback_to_version'] = 'Rolled back to version {$a}';
+$string['no_history'] = 'No version history available for this schema.';
+$string['history_count'] = 'Showing {$a} version(s).';
+$string['historynotfound'] = 'History record not found.';
+$string['view_yaml'] = 'View YAML';
+

@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_serviceschema';
-$plugin->version = 2026020200;
+$plugin->version = 2026020201;
 $plugin->requires = 2024042200; // Moodle 4.5+
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.0';
+$plugin->release = '1.1.0';
 $plugin->supported = [405, 500];

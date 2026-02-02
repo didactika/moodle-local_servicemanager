@@ -180,6 +180,25 @@ class manager {
 
         $data = $validation['data'];
         $meta = $this->parser->extract_meta($data);
+        $newhash = $this->parser->get_hash($yamlcontent);
+
+        // Enforce version change if content changed (definition, etc).
+        // We compare hashes. If hash changed but version string is same, error.
+        if ($newhash !== $existing->yaml_hash && $meta['version'] === $existing->version) {
+            throw new \moodle_exception('error_version_change_required', 'local_serviceschema');
+        }
+
+        // Save history if definition or version changed.
+        if($newhash !== $existing->yaml_hash || $meta['version'] !== $existing->version) {
+            $historymanager = new history_manager();
+            $historymanager->save_version(
+                $existing->id,
+                $existing->version,
+                $existing->yaml_content,
+                get_string('schema_updated_success', 'local_serviceschema', $meta['version'])
+            );
+        }
+
         $functions = $this->parser->extract_functions($data);
         $extracaps = $this->parser->extract_extra_capabilities($data);
         $additionalusers = $this->parser->extract_additional_users($data);
@@ -216,7 +235,7 @@ class manager {
         $record->version = $meta['version'];
         $record->maintainer = $meta['maintainer'];
         $record->yaml_content = $yamlcontent;
-        $record->yaml_hash = $this->parser->get_hash($yamlcontent);
+        $record->yaml_hash = $newhash;
         $record->timemodified = time();
 
         $DB->update_record('local_serviceschema_schemas', $record);

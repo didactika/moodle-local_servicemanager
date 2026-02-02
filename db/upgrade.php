@@ -36,7 +36,31 @@ function xmldb_local_serviceschema_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    // Future upgrade steps will be added here.
+    // Add history table for version tracking.
+    if ($oldversion < 2026020201) {
+        $table = new xmldb_table('local_serviceschema_history');
+
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('schemaid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('version', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('yaml_content', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('yaml_hash', XMLDB_TYPE_CHAR, '64', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('change_reason', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('changedby', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('schemaid_fk', XMLDB_KEY_FOREIGN, ['schemaid'], 'local_serviceschema_schemas', ['id']);
+        $table->add_key('changedby_fk', XMLDB_KEY_FOREIGN, ['changedby'], 'user', ['id']);
+
+        $table->add_index('schemaid_time_idx', XMLDB_INDEX_NOTUNIQUE, ['schemaid', 'timecreated']);
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2026020201, 'local', 'serviceschema');
+    }
 
     return true;
 }

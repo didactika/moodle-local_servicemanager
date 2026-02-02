@@ -19,11 +19,13 @@
 
 <div class="serviceschema-detail">
     {{! Back button }}
+    {{^is_history_view}}
     <div class="mb-4">
         <a href="{{dashboard_url}}" class="btn btn-secondary">
             <i class="fa fa-arrow-left mr-2"></i>{{#str}}dashboard, local_serviceschema{{/str}}
         </a>
     </div>
+    {{/is_history_view}}
 
     {{! Token display for newly generated tokens }}
     {{#show_new_token}}

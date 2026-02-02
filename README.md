@@ -43,7 +43,9 @@ Service Schema Manager allows administrators to define Moodle web services decla
 | **Multi-language** | English, Spanish, Portuguese, Italian, French |
 | **In-Browser Editor** | Edit schemas directly in Moodle |
 | **Validation** | Real-time syntax and function validation |
+| **Validation** | Real-time syntax and function validation |
 | **Capability Calculation** | Automatic capability assignment from functions |
+| **Versioning** | Full history tracking with rollback and diff view |
 
 ## Requirements
 
@@ -108,6 +110,13 @@ Click on a schema name to view:
 - Function status (available/missing)
 - Token information and regeneration
 - Health check history
+
+### Managing Versions
+
+1. Click on the **History** icon (clock) in the dashboard
+2. View past versions and their changes
+3. Click **"View Detail"** to see the full schema visualization
+4. Click **"Rollback"** to restore a previous version
 
 ### Deleting a Schema
 
