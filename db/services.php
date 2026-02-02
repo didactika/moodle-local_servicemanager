@@ -65,7 +65,7 @@ $functions = [
 ];
 
 $services = [
-    'ServiceSchema Manager' => [
+    'Web Service - Service Schema Manager' => [
         'functions' => [
             'local_serviceschema_get_schemas',
             'local_serviceschema_get_schema',
@@ -73,8 +73,8 @@ $services = [
             'local_serviceschema_update_schema',
             'local_serviceschema_delete_schema',
         ],
-        'restrictedusers' => 0,
+        'restrictedusers' => 1,
         'enabled' => 1,
-        'shortname' => 'serviceschema_manager',
+        'shortname' => 'ws_service_schema_manager',
     ],
 ];

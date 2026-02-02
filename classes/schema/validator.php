@@ -80,12 +80,22 @@ class validator {
         }
 
         // Validate functions.
+        $seenfunctions = [];
         foreach ($functions as $func) {
-            if (!$this->capcalc->function_exists($func['name'])) {
+            $funcname = $func['name'];
+            
+            // Check for duplicates.
+            if (isset($seenfunctions[$funcname])) {
+                $errors[] = get_string('error_duplicate_function', 'local_serviceschema', $funcname);
+                continue;
+            }
+            $seenfunctions[$funcname] = true;
+
+            if (!$this->capcalc->function_exists($funcname)) {
                 if ($func['critical']) {
-                    $errors[] = get_string('error_critical_function_missing', 'local_serviceschema', $func['name']);
+                    $errors[] = get_string('error_critical_function_missing', 'local_serviceschema', $funcname);
                 } else {
-                    $warnings[] = get_string('warning_function_missing', 'local_serviceschema', $func['name']);
+                    $warnings[] = get_string('warning_function_missing', 'local_serviceschema', $funcname);
                 }
             }
         }

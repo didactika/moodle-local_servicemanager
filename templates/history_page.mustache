@@ -127,9 +127,11 @@
                                 </div>
                             </td>
                             <td class="text-right">
+                                {{#rollback_url}}
                                 <a href="{{rollback_url}}" class="btn btn-sm btn-outline-warning mr-1" title="{{#str}}rollback, local_serviceschema{{/str}}">
                                     <i class="fa fa-undo mr-1"></i>{{#str}}rollback, local_serviceschema{{/str}}
                                 </a>
+                                {{/rollback_url}}
                                 <a href="{{view_url}}" class="btn btn-sm btn-secondary" title="{{#str}}action_view, local_serviceschema{{/str}}">
                                     <i class="fa fa-info-circle"></i>
                                 </a>

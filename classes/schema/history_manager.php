@@ -55,6 +55,18 @@ class history_manager {
     }
 
     /**
+     * Check if a version already exists for this schema.
+     *
+     * @param int $schemaid Schema ID.
+     * @param string $version Version string.
+     * @return bool True if exists.
+     */
+    public function version_exists(int $schemaid, string $version): bool {
+        global $DB;
+        return $DB->record_exists(self::TABLE, ['schemaid' => $schemaid, 'version' => $version]);
+    }
+
+    /**
      * Get version history for a schema.
      *
      * @param int $schemaid Schema ID.
@@ -248,7 +260,7 @@ class history_manager {
                 JOIN {user} u ON u.id = h.changedby
                 WHERE " . $where . "
                 AND h.id IN (
-                    SELECT MAX(h2.id)
+                    SELECT MIN(h2.id)
                     FROM {" . self::TABLE . "} h2
                     WHERE h2.schemaid = :schemaid2
                     GROUP BY h2.version

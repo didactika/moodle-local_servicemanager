@@ -148,6 +148,17 @@ class manager {
 
         $id = $DB->insert_record('local_serviceschema_schemas', $record);
 
+        // create initial history entry.
+        $historymanager = new history_manager();
+        if (!$historymanager->version_exists($id, $meta['version'])) {
+            $historymanager->save_version(
+                $id,
+                $meta['version'],
+                $yamlcontent,
+                get_string('schema_created_success', 'local_serviceschema', $meta['version'])
+            );
+        }
+
         return [
             'id' => $id,
             'token' => $tokenvalue,
@@ -184,6 +195,11 @@ class manager {
         $newhash = $this->parser->get_hash($yamlcontent);
 
 
+        // ID must not change.
+        if ($meta['id'] !== $existing->schema_id) {
+            throw new \moodle_exception('error_id_change_forbidden', 'local_serviceschema');
+        }
+
         // Parse existing content to compare structural changes.
         $old_data = $this->parser->parse($existing->yaml_content);
 
@@ -215,16 +231,18 @@ class manager {
             }
         }
 
-        // Save history if *any* change occurred (even just description/metadata).
-        // This allows updating metadata without bumping version.
+        // Save history of the NEW version.
+        // This ensures the history log reflects the timeline of installed versions.
         if($newhash !== $existing->yaml_hash || $meta['version'] !== $existing->version) {
             $historymanager = new history_manager();
-            $historymanager->save_version(
-                $existing->id,
-                $existing->version, // Use existing version if preserving, or new if changed.
-                $existing->yaml_content,
-                get_string('schema_updated_success', 'local_serviceschema', $meta['version'])
-            );
+            if (!$historymanager->version_exists($id, $meta['version'])) {
+                $historymanager->save_version(
+                    $id,
+                    $meta['version'],
+                    $yamlcontent,
+                    get_string('schema_updated_success', 'local_serviceschema', $meta['version'])
+                );
+            }
         }
 
         $functions = $this->parser->extract_functions($data);
@@ -232,9 +250,8 @@ class manager {
         $additionalusers = $this->parser->extract_additional_users($data);
 
 
-        if ($meta['name'] !== $existing->name) {
-            $this->usermanager->update_user_name($existing->userid, $meta['name']);
-        }
+        // Always update user name to ensure sync.
+        $this->usermanager->update_user_name($existing->userid, $meta['name']);
 
 
         $this->rolemanager->update_service_role($existing->roleid, $meta['name'], $meta['description']);
@@ -399,13 +416,31 @@ class manager {
         global $DB;
 
         [$where, $params] = $this->build_filter_conditions($filters);
-        $sql = "SELECT * FROM {local_serviceschema_schemas}";
+        
+        // Select all from schemas, but override 'enabled' with the service's actual state.
+        $sql = "SELECT s.*, es.enabled AS service_enabled 
+                  FROM {local_serviceschema_schemas} s
+             LEFT JOIN {external_services} es ON s.serviceid = es.id";
+        
         if ($where) {
             $sql .= " WHERE " . $where;
         }
-        $sql .= " ORDER BY name ASC";
+        $sql .= " ORDER BY s.name ASC";
 
-        return $DB->get_records_sql($sql, $params, $page * $perpage, $perpage);
+        $records = $DB->get_records_sql($sql, $params, $page * $perpage, $perpage);
+
+        // Normalize the enabled flag.
+        foreach ($records as $record) {
+            // If service exists, use its status. Otherwise fallback to schema status (shouldn't happen in healthy state).
+            if (property_exists($record, 'service_enabled') && $record->service_enabled !== null) {
+                // If there's a mismatch, we might want to update our local record, 
+                // but for display purposes, the service status is the truth.
+                $record->enabled = $record->service_enabled;
+            }
+            unset($record->service_enabled);
+        }
+
+        return $records;
     }
 
     /**

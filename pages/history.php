@@ -191,13 +191,18 @@ if (!empty($history)) {
             'date' => userdate($record->timecreated, get_string('strftimedatetimeshort')),
             'change_reason' => format_text($record->change_reason, FORMAT_MOODLE),
             'yaml_content' => $record->yaml_content,
-            'rollback_url' => (new moodle_url($PAGE->url, [
+            'view_url' => (new moodle_url('/local/serviceschema/pages/view_history.php', ['historyid' => $record->id]))->out(false),
+        ];
+
+        // Only show rollback if version is different from current.
+        if ($record->version !== $schema->version) {
+            $row['rollback_url'] = (new moodle_url($PAGE->url, [
                 'action' => 'rollback',
                 'historyid' => $record->id,
                 'sesskey' => sesskey(),
-            ]))->out(false),
-            'view_url' => (new moodle_url('/local/serviceschema/pages/view_history.php', ['historyid' => $record->id]))->out(false),
-        ];
+            ]))->out(false);
+        }
+
         $historyrows[] = $row;
     }
     

@@ -156,7 +156,7 @@
                 <tr>
                     {{#can_manage}}
                     <td class="text-center">
-                        <input type="checkbox" name="ids[]" value="{{id}}" class="bulk-checkbox-small schema-checkbox" data-enabled="{{#enabled}}1{{/enabled}}{{^enabled}}0{{/enabled}}">
+                        <input type="checkbox" name="ids[]" value="{{id}}" form="bulk-form" class="bulk-checkbox-small schema-checkbox" data-enabled="{{#enabled}}1{{/enabled}}{{^enabled}}0{{/enabled}}">
                     </td>
                     {{/can_manage}}
                     <td>
@@ -185,9 +185,7 @@
                             <a href="{{export_url}}" class="btn btn-outline-info" title="{{#str}}action_export, local_serviceschema{{/str}}">
                                 <i class="fa fa-download"></i>
                             </a>
-                            <a href="{{history_url}}" class="btn btn-outline-warning" title="{{#str}}version_history, local_serviceschema{{/str}}">
-                                <i class="fa fa-history"></i>
-                            </a>
+
                             <a href="{{delete_url}}" class="btn btn-outline-danger" title="{{#str}}action_delete, local_serviceschema{{/str}}">
                                 <i class="fa fa-trash"></i>
                             </a>
@@ -284,39 +282,57 @@ require(['jquery'], function($) {
     function updateBulkBar() {
         var $checked = $checkboxes.filter(':checked');
         var count = $checked.length;
+        
+        // Update count text.
         $selectedCount.text(count);
 
         if (count > 0) {
             $bulkBar.removeClass('d-none');
+            $bulkBar.show(); // Ensure visibility.
 
             var hasDisabled = false;
             var hasEnabled = false;
 
             $checked.each(function() {
                 var enabled = $(this).data('enabled');
+                // Use loose comparison.
                 if (enabled == 0) hasDisabled = true;
                 if (enabled == 1) hasEnabled = true;
             });
 
-            $enableBtn.toggle(hasDisabled);
-            $disableBtn.toggle(hasEnabled);
+            // Toggle buttons based on selection state.
+            if (hasDisabled) {
+                $enableBtn.show();
+                $enableBtn.removeClass('d-none');
+            } else {
+                $enableBtn.hide();
+            }
+
+            if (hasEnabled) {
+                $disableBtn.show();
+                $disableBtn.removeClass('d-none');
+            } else {
+                $disableBtn.hide();
+            }
         } else {
             $bulkBar.addClass('d-none');
+            $bulkBar.hide();
         }
     }
 
+    // Event listeners.
     $selectAll.on('change', function() {
         $checkboxes.prop('checked', this.checked);
         updateBulkBar();
     });
 
     $checkboxes.on('change', function() {
-        var allChecked = $checkboxes.length === $checkboxes.filter(':checked').length;
+        var allChecked = $checkboxes.length > 0 && $checkboxes.length === $checkboxes.filter(':checked').length;
         $selectAll.prop('checked', allChecked);
         updateBulkBar();
     });
 
-    // Handle date conversion for filters
+    // Handle date conversion for filters.
     $('#filter-form').on('submit', function(e) {
         var datefrom = $('#datefrom_date').val();
         var dateto = $('#dateto_date').val();
@@ -328,9 +344,12 @@ require(['jquery'], function($) {
             $('#dateto-timestamp').val(Math.floor(new Date(dateto).getTime() / 1000));
         }
         
-        // Remove the date inputs from submission
+        // Remove the date inputs from submission to avoid cluttering URL.
         $('#datefrom_date').prop('disabled', true);
         $('#dateto_date').prop('disabled', true);
     });
+    
+    // Initial check.
+    updateBulkBar();
 });
 {{/js}}
