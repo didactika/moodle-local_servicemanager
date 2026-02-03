@@ -75,6 +75,7 @@ $string['action_delete'] = 'Eliminar';
 $string['action_regenerate_token'] = 'Regenerar Token';
 $string['action_disable'] = 'Deshabilitar';
 $string['action_enable'] = 'Habilitar';
+$string['action_generate_token'] = 'Generar Token';
 $string['disabled'] = 'Deshabilitado';
 
 // Token related.

@@ -52,6 +52,8 @@ class health_check extends \core\task\scheduled_task {
 
         $issues = [];
 
+        // Collect issues and healthy schemas.
+        $healthyschemas = [];
         foreach ($schemas as $schema) {
             if (!$schema->enabled) {
                 continue;
@@ -71,13 +73,23 @@ class health_check extends \core\task\scheduled_task {
                     'schema' => $schema,
                     'result' => $result,
                 ];
+            } else {
+                $healthyschemas[] = $schema;
             }
         }
 
-        // Send notifications if there are issues.
-        if (!empty($issues)) {
+        // Send notifications based on configuration.
+        $notifylevel = get_config('local_serviceschema', 'notification_level');
+        $shouldnotify = !empty($issues);
+
+        // If no issues, but level is 'all', notify anyway.
+        if (empty($issues) && $notifylevel === 'all') {
+            $shouldnotify = true;
+        }
+
+        if ($shouldnotify) {
             $notifier = new notification_manager();
-            $notifier->send_daily_report($issues);
+            $notifier->send_daily_report($issues, $healthyschemas);
         }
 
         mtrace('Service Schema Health Check completed. Checked ' . count($schemas) .

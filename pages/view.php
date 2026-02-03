@@ -38,8 +38,9 @@ $PAGE->set_title(get_string('view_schema', 'local_serviceschema'));
 $PAGE->set_heading(get_string('view_schema', 'local_serviceschema'));
 $PAGE->set_pagelayout('admin');
 
-// Load AMD module for token management.
+// Load AMD module for token management and log filtering.
 $PAGE->requires->js_call_amd('local_serviceschema/token_manager', 'init');
+$PAGE->requires->js_call_amd('local_serviceschema/health_log_filter', 'init');
 
 $manager = new \local_serviceschema\schema\manager();
 $schema = $manager->get_schema($id);
@@ -99,7 +100,7 @@ $healthlogs = $DB->get_records('local_serviceschema_healthlog',
     'timecreated DESC',
     '*',
     0,
-    10
+    100
 );
 
 $logsdata = [];

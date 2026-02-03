@@ -115,6 +115,11 @@
                 <i class="fa fa-refresh mr-1"></i>{{#str}}action_regenerate_token, local_serviceschema{{/str}}
             </a>
             {{/has_token}}
+            {{^has_token}}
+            <a href="{{regenerate_url}}" class="btn btn-success">
+                <i class="fa fa-key mr-1"></i>{{#str}}action_generate_token, local_serviceschema{{/str}}
+            </a>
+            {{/has_token}}
             <a href="{{delete_url}}" class="btn btn-danger float-right">
                 <i class="fa fa-trash mr-1"></i>{{#str}}action_delete, local_serviceschema{{/str}}
             </a>
@@ -175,12 +180,18 @@
     {{! Health logs section }}
     {{#has_health_logs}}
     <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">{{#str}}healthcheck_task, local_serviceschema{{/str}}</h5>
+            <select class="form-control form-control-sm" style="width: auto;" id="healthlog-status-filter">
+                <option value="">{{#str}}all{{/str}}</option>
+                <option value="healthy">{{#str}}status_healthy, local_serviceschema{{/str}}</option>
+                <option value="warning">{{#str}}status_warning, local_serviceschema{{/str}}</option>
+                <option value="critical">{{#str}}status_critical, local_serviceschema{{/str}}</option>
+            </select>
         </div>
-        <div class="card-body p-0">
-            <table class="table table-sm mb-0">
-                <thead>
+        <div class="card-body p-0" style="max-height: 350px; overflow-y: auto;">
+            <table class="table table-sm mb-0" id="healthlog-table">
+                <thead style="position: sticky; top: 0; background: #fff; z-index: 1;">
                     <tr>
                         <th style="width: 200px;">{{#str}}time{{/str}}</th>
                         <th style="width: 100px;">{{#str}}status{{/str}}</th>
@@ -189,7 +200,7 @@
                 </thead>
                 <tbody>
                     {{#health_logs}}
-                    <tr>
+                    <tr data-status="{{status}}">
                         <td>{{time}}</td>
                         <td><span class="badge {{status_class}}">{{status}}</span></td>
                         <td>{{message}}</td>

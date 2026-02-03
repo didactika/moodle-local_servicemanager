@@ -75,6 +75,7 @@ $string['action_delete'] = 'Delete';
 $string['action_regenerate_token'] = 'Regenerate Token';
 $string['action_disable'] = 'Disable';
 $string['action_enable'] = 'Enable';
+$string['action_generate_token'] = 'Generate Token';
 $string['disabled'] = 'Disabled';
 $string['edit'] = 'Edit';
 
@@ -120,8 +121,12 @@ $string['warning_user_email_not_found'] = 'User with email "{$a}" not found. Ski
 $string['warning_plugin_not_installed'] = 'Recommended plugin "{$a}" is not installed.';
 
 // Health check.
+$string['healthcheck_issues_summary'] = 'Some schemas require attention. Please review the details below.';
+$string['healthcheck_healthy_summary'] = 'All service schemas are operating normally. No action is required.';
+$string['issues'] = 'Issues Detected';
+$string['email_footer'] = 'You are receiving this email because you are listed as a notification recipient for Service Schema Manager.';
 $string['healthcheck_task'] = 'Service Schema Health Check';
-$string['healthcheck_report_subject'] = 'Service Schema Health Report';
+$string['healthcheck_report_subject'] = 'Informe de Salud de Esquemas de Servicios Web';
 $string['healthcheck_all_healthy'] = 'All service schemas are healthy.';
 $string['healthcheck_issues_found'] = 'Issues detected in {$a} schema(s).';
 
