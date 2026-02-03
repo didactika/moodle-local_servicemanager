@@ -121,8 +121,6 @@ create_version_tag:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       when: never
-    - if: '$CI_COMMIT_BRANCH'  # Auto only on direct push to branches
-      when: never
     - if: '$CI_COMMIT_BRANCH'  # Auto on all branches
       when: on_success
   allow_failure: true
