@@ -1,0 +1,151 @@
+# GitLab CI/CD Pipeline for Moodle Plugin
+# Automatically creates version tags based on version.php
+# Includes SonarQube quality checks
+# Author: Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
+stages:
+  - validate
+  - sonarqube-check
+  - sonarqube-vulnerability-report
+  - tag
+variables:
+  VERSION_FILE: "version.php"
+  SONAR_FILE: "sonar-project.properties"
+  GIT_DEPTH: 0  # Clone full history for tags and SonarQube
+  SCRIPTS_DIR: ".ci/tag-control"
+# ============================================
+# STAGE: VALIDATE
+# ============================================
+# Job to validate version.php exists and extract version info
+validate_version:
+  stage: validate
+  image: php:8.3-cli
+  tags:
+    - docker
+  before_script:
+    - apt-get update && apt-get install -y grep sed
+    - chmod +x ${SCRIPTS_DIR}/validate_version.sh
+  script:
+    - bash ${SCRIPTS_DIR}/validate_version.sh ${VERSION_FILE}
+  artifacts:
+    reports:
+      dotenv: version.env
+    paths:
+      - version.env
+      - release.txt
+      - maturity.txt
+      - tag_name.txt
+    expire_in: 1 day
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'  # Run only on direct push to branches
+# Job to update sonar-project.properties version before SonarQube scan
+update_sonar_version:
+  stage: validate
+  image: php:8.1-cli
+  tags:
+    - docker
+  before_script:
+    - apt-get update && apt-get install -y grep sed
+    - chmod +x ${SCRIPTS_DIR}/update_sonar_version.sh
+  script:
+    - bash ${SCRIPTS_DIR}/update_sonar_version.sh ${VERSION_FILE} ${SONAR_FILE}
+    - echo "Updated sonar-project.properties:"
+    - cat ${SONAR_FILE}
+  artifacts:
+    paths:
+      - ${SONAR_FILE}
+    expire_in: 1 day
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+# ============================================
+# STAGE: SONARQUBE-CHECK
+# ============================================
+sonarqube-check:
+  stage: sonarqube-check
+  image:
+    name: sonarsource/sonar-scanner-cli:5.0
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+  tags:
+    - docker
+  allow_failure: true
+  dependencies:
+    - update_sonar_version
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+# ============================================
+# STAGE: SONARQUBE-VULNERABILITY-REPORT
+# ============================================
+sonarqube-vulnerability-report:
+  stage: sonarqube-vulnerability-report
+  image: curlimages/curl:latest
+  script:
+    - 'curl -u "${SONAR_TOKEN}:" "${SONAR_HOST_URL}/api/issues/gitlab_sast_export?projectKey=teaching-action_plugins-development_local-message-broker_f51de715-231f-445e-9a30-fa7b9afe159f&branch=${CI_COMMIT_BRANCH}&pullRequest=${CI_MERGE_REQUEST_IID}" -o gl-sast-sonar-report.json'
+  allow_failure: true
+  tags:
+    - docker
+  artifacts:
+    expire_in: 1 day
+    reports:
+      sast: gl-sast-sonar-report.json
+  dependencies:
+    - sonarqube-check
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+# ============================================
+# STAGE: TAG
+# ============================================
+# Job to create git tag if it doesn't exist
+create_version_tag:
+  stage: tag
+  image: alpine:latest
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash git grep coreutils
+    - chmod +x ${SCRIPTS_DIR}/setup_git.sh ${SCRIPTS_DIR}/create_tag.sh
+    - bash ${SCRIPTS_DIR}/setup_git.sh
+  script:
+    - bash ${SCRIPTS_DIR}/create_tag.sh
+  dependencies:
+    - validate_version
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'  # Auto only on direct push to branches
+      when: never
+    - if: '$CI_COMMIT_BRANCH'  # Auto on all branches
+      when: on_success
+  allow_failure: true
+# Optional: Job to verify tag was created
+verify_tag:
+  stage: tag
+  image: alpine:latest
+  tags:
+    - docker
+  before_script:
+    - apk add --no-cache bash git grep coreutils
+    - chmod +x ${SCRIPTS_DIR}/verify_tag.sh
+  script:
+    - bash ${SCRIPTS_DIR}/verify_tag.sh
+
+  dependencies:
+    - validate_version
+    - create_version_tag
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: on_success
+    - if: '$CI_COMMIT_BRANCH =~ /^release\/.*/'
+      when: on_success
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+  allow_failure: true

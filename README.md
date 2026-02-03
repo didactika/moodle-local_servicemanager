@@ -1,93 +1,417 @@
-# Local Service Schema
+# Service Schema Manager
 
+A Moodle plugin for declarative web service management using YAML schema files.
 
+[![Moodle Plugin CI](https://img.shields.io/badge/Moodle-4.5+-blue.svg)](https://moodle.org)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-## Getting started
+## Table of Contents
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- [Overview](#overview)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [YAML Schema Format](#yaml-schema-format)
+- [Configuration](#configuration)
+- [API Reference](#api-reference)
+- [Testing](#testing)
+- [Security](#security)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Overview
 
-## Add your files
+Service Schema Manager allows administrators to define Moodle web services declaratively using YAML files. Instead of manually configuring users, roles, capabilities, and services through the Moodle interface, you can define everything in a single YAML file.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+### Why Use This Plugin?
 
-```
-cd existing_repo
-git remote add origin https://gitlab.fbr.group/teaching-action/plugins-development/service-schema/local_serviceschema.git
-git branch -M master
-git push -uf origin master
-```
+- **Reproducibility**: Schema files can be version-controlled and deployed across environments
+- **Automation**: Integrate web service provisioning into CI/CD pipelines
+- **Documentation**: YAML files serve as self-documenting service configurations
+- **Efficiency**: Create complete web service setups in seconds instead of minutes
 
-## Integrate with your tools
+## Features
 
-- [ ] [Set up project integrations](https://gitlab.fbr.group/teaching-action/plugins-development/service-schema/local_serviceschema/-/settings/integrations)
+| Feature | Description |
+|---------|-------------|
+| **Declarative Configuration** | Define web services using YAML files |
+| **Automatic Provisioning** | Users, roles, services, and tokens created automatically |
+| **Health Monitoring** | Scheduled health checks with email notifications |
+| **Token Management** | Secure token generation, display, and regeneration |
+| **Multi-language** | English, Spanish, Portuguese, Italian, French |
+| **In-Browser Editor** | Edit schemas directly in Moodle |
+| **Validation** | Real-time syntax and function validation |
+| **Validation** | Real-time syntax and function validation |
+| **Capability Calculation** | Automatic capability assignment from functions |
+| **Versioning** | Full history tracking with rollback and diff view |
 
-## Collaborate with your team
+## Requirements
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+| Requirement | Version |
+|-------------|---------|
+| Moodle | 4.5 or later |
+| PHP | 8.1 or later |
+| PHP YAML Extension | Recommended (fallback parser included) |
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+### Method 1: Direct Download
+
+1. Download the latest release
+2. Extract to `/local/serviceschema/`
+3. Visit **Site Administration → Notifications**
+4. Complete the installation wizard
+
+### Method 2: Git Clone
+
+```bash
+cd /path/to/moodle/local
+git clone https://github.com/your-org/moodle-local_serviceschema.git serviceschema
+```
+
+### Method 3: Composer
+
+```json
+{
+  "require": {
+    "your-org/moodle-local_serviceschema": "^1.0"
+  }
+}
+```
+
+After installation, visit **Site Administration → Notifications** to complete setup.
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Accessing the Dashboard
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Navigate to: **Site Administration → Plugins → Local Plugins → Service Schema Manager**
+
+### Creating a Schema
+
+1. Click **"Upload Schema"**
+2. Upload a YAML file or download the example
+3. Check **"Generate token automatically"** if needed
+4. Click **"Upload"**
+
+### Editing a Schema
+
+1. From the dashboard, click the **edit icon** (pencil)
+2. Modify the YAML content in the editor
+3. Click **"Save Changes"**
+
+### Viewing Schema Details
+
+Click on a schema name to view:
+
+- Associated user, role, and service links
+- Function status (available/missing)
+- Token information and regeneration
+- Health check history
+
+### Managing Versions
+
+1. Click on the **History** icon (clock) in the dashboard
+2. View past versions and their changes
+3. Click **"View Detail"** to see the full schema visualization
+4. Click **"Rollback"** to restore a previous version
+
+### Deleting a Schema
+
+1. Click on the schema name to view details
+2. Click **"Delete"** button
+3. Confirm deletion
+
+> ⚠️ **Warning**: Deleting a schema removes the associated user, role, service, and tokens.
+
+## YAML Schema Format
+
+### Complete Example
+
+```yaml
+meta:
+  id: "myapp.users"                    # Required: Unique identifier
+  name: "My Application User Service"  # Required: Display name
+  version: "1.0.0"                     # Required: Version number
+  maintainer: "IT Department"          # Optional: Maintainer info
+  description: "User management API"   # Optional: Description
+
+requirements:                          # Optional section
+  plugins:
+    - mod_forum                        # List of required plugins
+    - mod_assign
+
+definition:
+  functions:                           # Required: Web service functions
+    - core_user_get_users              # Simple format (critical: true)
+    - core_user_create_users
+    - name: core_user_update_users     # Extended format
+      critical: true                   # Blocks creation if missing
+    - name: mod_forum_get_forums
+      critical: false                  # Warning only if missing
+  
+  extra_capabilities:                  # Optional: Additional capabilities
+    - moodle/user:viewdetails
+    - moodle/course:view
+  
+  additional_users:                    # Optional: Users to authorize
+    - admin@example.com
+    - apiuser@example.com
+```
+
+### Field Reference
+
+#### Meta Section (Required)
+
+| Field | Required | Description |
+|-------|:--------:|-------------|
+| `id` | ✅ | Unique identifier. Only letters, numbers, and dots (.) |
+| `name` | ✅ | Human-readable display name |
+| `version` | ✅ | Semantic version string (e.g., "1.0.0") |
+| `maintainer` | ❌ | Responsible person or team |
+| `description` | ❌ | Brief description of the service |
+
+#### Requirements Section (Optional)
+
+| Field | Description |
+|-------|-------------|
+| `plugins` | Array of plugin names that must be installed |
+
+#### Definition Section (Required)
+
+| Field | Required | Description |
+|-------|:--------:|-------------|
+| `functions` | ✅ | Array of web service function names |
+| `extra_capabilities` | ❌ | Additional Moodle capabilities to assign |
+| `additional_users` | ❌ | Email addresses of users to authorize |
+
+### Naming Conventions
+
+When a schema is created, resources follow these patterns:
+
+| Resource | Pattern | Example |
+|----------|---------|---------|
+| Username | `ws.{id}` | `ws.myapp.users` |
+| Email | `ws.{id}@devnull.{domain}` | `ws.myapp.users@devnull.campus.edu` |
+| Role | `ws_{id}` (dots → underscores) | `ws_myapp_users` |
+| Service | `ws_{id}` | `ws_myapp_users` |
+| Token Name | `Token - {name}` | `Token - My Application User Service` |
+
+## Configuration
+
+### Settings Location
+
+**Site Administration → Plugins → Local Plugins → Service Schema Manager → Settings**
+
+### Notification Settings
+
+| Setting | Description |
+|---------|-------------|
+| Email recipients | Comma-separated list of notification recipients |
+| Notify admins | Also send notifications to site administrators |
+| Notification level | Minimum severity (All, Warning, Error, Critical) |
+
+### Health Check Settings
+
+| Setting | Description |
+|---------|-------------|
+| Enable health check | Run scheduled health monitoring |
+| Check interval | Configured via Moodle scheduled tasks |
+
+### Log Cleanup Settings
+
+| Setting | Description |
+|---------|-------------|
+| Enable cleanup | Automatically delete old health logs |
+| Retention days | Number of days to keep logs (default: 30) |
+
+## API Reference
+
+### PHP Classes
+
+```php
+// Schema Manager - Main entry point
+$manager = new \local_serviceschema\schema\manager();
+$result = $manager->create_from_yaml($yaml_content, $generate_token);
+$schema = $manager->get_schema($id);
+$manager->update_schema($id, $new_yaml);
+$manager->delete_schema($id);
+
+// YAML Parser
+$parser = new \local_serviceschema\schema\yaml_parser();
+$data = $parser->parse($yaml_content);
+$meta = $parser->get_meta($data);
+$functions = $parser->get_functions($data);
+
+// Validator
+$validator = new \local_serviceschema\schema\validator();
+$result = $validator->validate_content($yaml_content);
+// Returns: ['errors' => [...], 'warnings' => [...]]
+```
+
+### Scheduled Tasks
+
+| Task | Description | Default Schedule |
+|------|-------------|------------------|
+| `health_check_task` | Validates all schemas | Daily at 2:00 AM |
+| `cleanup_logs_task` | Removes old health logs | Daily at 3:00 AM |
+
+## Testing
+
+### PHPUnit Tests
+
+```bash
+# Run all plugin tests
+vendor/bin/phpunit --testsuite local_serviceschema_testsuite
+
+# Run specific test class
+vendor/bin/phpunit local/serviceschema/tests/yaml_parser_test.php
+```
+
+### Behat Tests
+
+```bash
+# Initialize Behat
+php admin/tool/behat/cli/init.php
+
+# Run plugin tests
+vendor/bin/behat --config /path/to/behatrun/behat.yml --tags=@local_serviceschema
+```
+
+### Test Coverage
+
+| Test File | Covers |
+|-----------|--------|
+| `yaml_parser_test.php` | YAML parsing, ID validation, data extraction |
+| `validator_test.php` | Schema validation, error detection |
+| `user_manager_test.php` | Service user CRUD operations |
+| `role_manager_test.php` | Role creation, capability assignment |
+| `service_manager_test.php` | External service management |
+| `capability_calculator_test.php` | Capability calculation |
+| `manager_test.php` | Full schema lifecycle |
+
+## Security
+
+### Design Principles
+
+- **Isolation**: Each schema gets its own user, role, and service
+- **Restricted Access**: Services are restricted to authorized users only
+- **Non-routable Emails**: Service user emails use `@devnull.{domain}` pattern
+- **Token Security**: Tokens displayed only once after generation
+- **Capability Minimization**: Only required capabilities are assigned
+
+### Best Practices
+
+1. **Version Control**: Keep schema YAML files in version control
+2. **Environment Separation**: Use different schema IDs per environment
+3. **Token Rotation**: Regenerate tokens periodically
+4. **Audit Logging**: Monitor health check logs for anomalies
+5. **Principle of Least Privilege**: Only include necessary functions
+
+## Troubleshooting
+
+### Schema Not Creating
+
+| Issue | Solution |
+|-------|----------|
+| YAML syntax error | Validate YAML at [yamllint.com](https://www.yamllint.com/) |
+| Invalid schema ID | Use only letters, numbers, and dots |
+| Missing critical function | Install required plugin or mark as non-critical |
+| Duplicate ID | Choose a unique schema ID |
+
+### Token Issues
+
+| Issue | Solution |
+|-------|----------|
+| Token not copying | Enable JavaScript, use HTTPS |
+| Token lost | Regenerate from schema detail page |
+| Token not working | Verify service and user are enabled |
+
+### Health Check Issues
+
+| Issue | Solution |
+|-------|----------|
+| Not running | Check cron configuration |
+| No notifications | Verify email settings |
+| False positives | Review function availability |
+
+### Common Errors
+
+```
+Error: Schema ID already exists
+→ Use a unique ID or delete existing schema
+
+Error: Invalid YAML syntax  
+→ Check for indentation issues, missing quotes
+
+Error: Critical function not found
+→ Install required plugin or set critical: false
+```
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+### Development Setup
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+```bash
+# Clone repository
+git clone https://github.com/your-org/moodle-local_serviceschema.git
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+# Install dependencies
+cd moodle-local_serviceschema
+npm install
+
+# Run code checks
+grunt
+```
+
+### Pull Request Process
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`vendor/bin/phpunit --testsuite local_serviceschema_testsuite`)
+5. Run code checks (`grunt`)
+6. Commit changes (`git commit -m 'Add amazing feature'`)
+7. Push to branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
+
+### Code Standards
+
+- Follow [Moodle Coding Style](https://moodledev.io/general/development/policies/codingstyle)
+- Add PHPDoc comments to all public methods
+- Write tests for new functionality
+- Update documentation as needed
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This plugin is licensed under the [MIT License](LICENSE).
+
+```
+MIT License
+
+Copyright (c) 2026 Your Organization
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+**Made with ❤️ for the Moodle community**
