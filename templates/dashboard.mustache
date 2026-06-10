@@ -15,6 +15,7 @@
 }}
 
 <div class="serviceschema-dashboard">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">{{#str}}dashboard, local_serviceschema{{/str}}</h2>
         <div class="btn-toolbar">
@@ -28,6 +29,61 @@
                 <i class="fa fa-file-archive-o mr-2"></i>{{#str}}export_all, local_serviceschema{{/str}}
             </a>
             {{/has_any_schemas}}
+        </div>
+    </div>
+
+    {{! Web Service Status Panel — accordion }}
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             data-toggle="collapse" data-target="#ws-status-details"
+             aria-expanded="false" aria-controls="ws-status-details"
+             style="cursor: pointer;">
+            <div>
+                <i class="fa fa-plug mr-2"></i>
+                <strong>{{#str}}ws_status_panel, local_serviceschema{{/str}}</strong>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="badge {{ws_status.status_class}} mr-2">
+                    <i class="fa fa-circle mr-1"></i>{{ws_status.status_label}}
+                </span>
+                <i class="fa fa-chevron-down"></i>
+            </div>
+        </div>
+        <div id="ws-status-details" class="collapse">
+            <div class="card-body py-3">
+                <div class="row">
+                    <div class="col-md-6 border-right">
+                        <div class="text-muted small text-uppercase mb-1">
+                            {{#str}}ws_services_label, local_serviceschema{{/str}}
+                        </div>
+                        <span class="{{ws_status.ws_enabled_class}} font-weight-bold">
+                            <i class="fa fa-circle mr-1"></i>{{ws_status.ws_enabled_label}}
+                        </span>
+                    </div>
+                    <div class="col-md-6 pl-4">
+                        <div class="text-muted small text-uppercase mb-1">
+                            {{#str}}ws_protocols_label, local_serviceschema{{/str}}
+                            ({{ws_status.enabled_protocols_count}})
+                        </div>
+                        {{#ws_status.protocols}}
+                        <span class="badge {{badge_class}} mr-1">{{name}}</span>
+                        {{/ws_status.protocols}}
+                    </div>
+                </div>
+            </div>
+            {{#ws_status.can_manage}}
+            <div class="card-footer py-2 text-muted small">
+                <a href="{{ws_status.overview_url}}" target="_blank">
+                    {{#str}}ws_overview_link, local_serviceschema{{/str}}
+                    <i class="fa fa-external-link ml-1"></i>
+                </a>
+                <span class="mx-2">·</span>
+                <a href="{{ws_status.protocols_url}}" target="_blank">
+                    {{#str}}ws_manage_protocols_link, local_serviceschema{{/str}}
+                    <i class="fa fa-external-link ml-1"></i>
+                </a>
+            </div>
+            {{/ws_status.can_manage}}
         </div>
     </div>
 

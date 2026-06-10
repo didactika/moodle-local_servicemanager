@@ -40,6 +40,18 @@ $string['edit_schema'] = 'Edit Schema';
 $string['view_schema'] = 'View Schema';
 $string['manage_schemas'] = 'Manage Schemas';
 
+// Web service status panel.
+$string['ws_status_panel'] = 'Web Services Status';
+$string['ws_status_operational'] = 'Operational';
+$string['ws_status_warning'] = 'No protocols enabled';
+$string['ws_status_disabled'] = 'Disabled';
+$string['ws_enabled_label'] = 'Enabled';
+$string['ws_disabled_label'] = 'Disabled';
+$string['ws_services_label'] = 'Web Services';
+$string['ws_protocols_label'] = 'Enabled Protocols';
+$string['ws_overview_link'] = 'Web services overview';
+$string['ws_manage_protocols_link'] = 'Manage protocols';
+
 // Form fields.
 $string['yamlfile'] = 'YAML Schema File';
 $string['yamlfile_help'] = 'Upload a YAML file containing the service schema definition. Only .yaml and .yml files are accepted.<br><br><a href="/local/serviceschema/pages/documentation.php"><strong>📖 View Documentation</strong></a>';

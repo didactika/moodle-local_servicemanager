@@ -40,6 +40,18 @@ $string['edit_schema'] = 'Modifier le Schéma';
 $string['view_schema'] = 'Voir le Schéma';
 $string['manage_schemas'] = 'Gérer les Schémas';
 
+// Web service status panel.
+$string['ws_status_panel'] = 'État des Services Web';
+$string['ws_status_operational'] = 'Opérationnel';
+$string['ws_status_warning'] = 'Aucun protocole activé';
+$string['ws_status_disabled'] = 'Désactivé';
+$string['ws_enabled_label'] = 'Activé';
+$string['ws_disabled_label'] = 'Désactivé';
+$string['ws_services_label'] = 'Services Web';
+$string['ws_protocols_label'] = 'Protocoles Activés';
+$string['ws_overview_link'] = 'Vue d\'ensemble des services web';
+$string['ws_manage_protocols_link'] = 'Gérer les protocoles';
+
 // Form fields.
 $string['yamlfile'] = 'Fichier Schéma YAML';
 $string['yamlfile_help'] = 'Téléversez un fichier YAML contenant la définition du schéma de service. Seuls les fichiers .yaml et .yml sont acceptés.<br><br><a href="/local/serviceschema/pages/documentation.php"><strong>📖 Voir la Documentation</strong></a>';
