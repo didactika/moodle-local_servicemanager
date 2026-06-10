@@ -72,6 +72,12 @@ class validator {
             $errors[] = get_string('error_schema_id_exists', 'local_serviceschema', $meta['id']);
         }
 
+        // Check schema name uniqueness (role and service names are derived from meta.name and must be unique).
+        $existingbyname = $DB->get_record('local_serviceschema_schemas', ['name' => $meta['name']]);
+        if ($existingbyname && ($excludeschemaid === null || $existingbyname->id != $excludeschemaid)) {
+            $errors[] = get_string('error_schema_name_exists', 'local_serviceschema', $meta['name']);
+        }
+
         // Validate required plugins.
         foreach ($requiredplugins as $plugin) {
             if (!$this->plugin_exists($plugin)) {

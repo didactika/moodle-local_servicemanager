@@ -209,6 +209,8 @@ class yaml_parser {
             $errors[] = get_string('error_missing_meta_id', 'local_serviceschema');
         } elseif (!$this->validate_schema_id($meta['id'])) {
             $errors[] = get_string('error_invalid_schema_id', 'local_serviceschema', $meta['id']);
+        } elseif (\strlen($meta['id']) > 50) {
+            $errors[] = get_string('error_schema_id_too_long', 'local_serviceschema', \strlen($meta['id']));
         }
 
         if (empty($meta['name'])) {

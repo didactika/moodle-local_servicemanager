@@ -90,80 +90,89 @@ class manager {
         $extracaps = $this->parser->extract_extra_capabilities($data);
         $additionalusers = $this->parser->extract_additional_users($data);
 
+        $userid = null;
+        $roleid = null;
+        $serviceid = null;
 
-        $userid = $this->usermanager->create_service_user($meta['id'], $meta['name']);
+        try {
+            $userid = $this->usermanager->create_service_user($meta['id'], $meta['name']);
 
+            $roleid = $this->rolemanager->create_service_role($meta['id'], $meta['name'], $meta['description']);
 
-        $roleid = $this->rolemanager->create_service_role($meta['id'], $meta['name'], $meta['description']);
+            $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
+            $allcaps = array_unique(array_merge($functioncaps, $extracaps, ['webservice/rest:use', 'webservice/soap:use']));
+            $this->rolemanager->assign_capabilities($roleid, $allcaps);
 
+            $this->rolemanager->assign_role_to_user($roleid, $userid);
 
-        $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
-        $allcaps = array_unique(array_merge($functioncaps, $extracaps));
-        $this->rolemanager->assign_capabilities($roleid, $allcaps);
+            $serviceid = $this->servicemanager->create_external_service($meta['id'], $meta['name']);
 
+            $this->servicemanager->add_functions_to_service($serviceid, $functions);
 
-        $this->rolemanager->assign_role_to_user($roleid, $userid);
+            $this->servicemanager->authorize_user($serviceid, $userid);
 
+            $warnings = $validation['warnings'];
+            $additionalwarnings = $this->servicemanager->authorize_additional_users($serviceid, $additionalusers);
+            $warnings = array_merge($warnings, $additionalwarnings);
 
-        $serviceid = $this->servicemanager->create_external_service($meta['id'], $meta['name']);
+            $tokenid = null;
+            $tokenvalue = null;
+            if ($generatetoken) {
+                $tokenresult = $this->tokenmanager->generate_token($userid, $serviceid, $meta['name']);
+                $tokenid = $tokenresult['tokenid'];
+                $tokenvalue = $tokenresult['token'];
+            }
 
+            $now = time();
+            $record = new \stdClass();
+            $record->schema_id = $meta['id'];
+            $record->name = $meta['name'];
+            $record->description = $meta['description'];
+            $record->version = $meta['version'];
+            $record->maintainer = $meta['maintainer'];
+            $record->yaml_content = $yamlcontent;
+            $record->yaml_hash = $this->parser->get_hash($yamlcontent);
+            $record->enabled = 1;
+            $record->status = 'healthy';
+            $record->userid = $userid;
+            $record->roleid = $roleid;
+            $record->serviceid = $serviceid;
+            $record->tokenid = $tokenid;
+            $record->timecreated = $now;
+            $record->timemodified = $now;
 
-        $this->servicemanager->add_functions_to_service($serviceid, $functions);
+            $id = $DB->insert_record('local_serviceschema_schemas', $record);
 
+            // create initial history entry.
+            $historymanager = new history_manager();
+            if (!$historymanager->version_exists($id, $meta['version'])) {
+                $historymanager->save_version(
+                    $id,
+                    $meta['version'],
+                    $yamlcontent,
+                    get_string('schema_created_success', 'local_serviceschema', $meta['version'])
+                );
+            }
 
-        $this->servicemanager->authorize_user($serviceid, $userid);
+            return [
+                'id' => $id,
+                'token' => $tokenvalue,
+                'warnings' => $warnings,
+            ];
 
-
-        $warnings = $validation['warnings'];
-        $additionalwarnings = $this->servicemanager->authorize_additional_users($serviceid, $additionalusers);
-        $warnings = array_merge($warnings, $additionalwarnings);
-
-
-        $tokenid = null;
-        $tokenvalue = null;
-        if ($generatetoken) {
-            $tokenresult = $this->tokenmanager->generate_token($userid, $serviceid, $meta['name']);
-            $tokenid = $tokenresult['tokenid'];
-            $tokenvalue = $tokenresult['token'];
+        } catch (\Exception $e) {
+            // Rollback any partially created resources.
+            if ($serviceid) {
+                $this->servicemanager->delete_service($serviceid);
+            }
+            if ($roleid) {
+                $this->rolemanager->delete_role($roleid);
+            }
+            if ($userid) {
+                $this->usermanager->delete_user($userid);
+            }
+            throw $e;
         }
-
-
-        $now = time();
-        $record = new \stdClass();
-        $record->schema_id = $meta['id'];
-        $record->name = $meta['name'];
-        $record->description = $meta['description'];
-        $record->version = $meta['version'];
-        $record->maintainer = $meta['maintainer'];
-        $record->yaml_content = $yamlcontent;
-        $record->yaml_hash = $this->parser->get_hash($yamlcontent);
-        $record->enabled = 1;
-        $record->status = 'healthy';
-        $record->userid = $userid;
-        $record->roleid = $roleid;
-        $record->serviceid = $serviceid;
-        $record->tokenid = $tokenid;
-        $record->timecreated = $now;
-        $record->timemodified = $now;
-
-        $id = $DB->insert_record('local_serviceschema_schemas', $record);
-
-        // create initial history entry.
-        $historymanager = new history_manager();
-        if (!$historymanager->version_exists($id, $meta['version'])) {
-            $historymanager->save_version(
-                $id,
-                $meta['version'],
-                $yamlcontent,
-                get_string('schema_created_success', 'local_serviceschema', $meta['version'])
-            );
-        }
-
-        return [
-            'id' => $id,
-            'token' => $tokenvalue,
-            'warnings' => $warnings,
-        ];
     }
 
     /**
@@ -258,7 +267,7 @@ class manager {
 
 
         $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
-        $allcaps = array_unique(array_merge($functioncaps, $extracaps));
+        $allcaps = array_unique(array_merge($functioncaps, $extracaps, ['webservice/rest:use', 'webservice/soap:use']));
         $this->rolemanager->reset_capabilities($existing->roleid);
         $this->rolemanager->assign_capabilities($existing->roleid, $allcaps);
 

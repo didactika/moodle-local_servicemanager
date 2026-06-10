@@ -102,7 +102,13 @@ if ($form->is_cancelled()) {
         merge_import_result($results, $importresult);
     }
 
+    // Show each error as a separate notification so the user knows what went wrong.
+    foreach ($results['errors'] as $error) {
+        \core\notification::error($error);
+    }
+
     // Generate result message.
+    $results['errors_count'] = count($results['errors']);
     $message = get_string('import_complete', 'local_serviceschema', $results);
     $notifytype = empty($results['errors']) ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_WARNING;
 
@@ -176,8 +182,8 @@ function import_single_schema($manager, $validator, $yamlcontent, $conflictactio
             }
         }
 
-        // Validate content.
-        $validation = $validator->validate_content($yamlcontent, true); // Skip duplicate check since we handled it.
+        // Validate content. For rename, exclude the original schema from name/ID uniqueness checks.
+        $validation = $validator->validate_content($yamlcontent, $existing->id ?? null);
         if (!empty($validation['errors'])) {
             $result['errors'] = array_merge($result['errors'], $validation['errors']);
             return $result;
@@ -192,7 +198,7 @@ function import_single_schema($manager, $validator, $yamlcontent, $conflictactio
         }
 
     } catch (Exception $e) {
-        $result['errors'][] = $e->getMessage();
+        $result['errors'][] = ($schemaid ?? '?') . ': ' . $e->getMessage();
     }
 
     return $result;
