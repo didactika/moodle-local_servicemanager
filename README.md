@@ -3,7 +3,7 @@
 A Moodle plugin for declarative web service management using YAML schema files.
 
 [![Moodle Plugin CI](https://img.shields.io/badge/Moodle-4.5+-blue.svg)](https://moodle.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Table of Contents
 
@@ -166,7 +166,7 @@ definition:
 
 | Field | Required | Description |
 |-------|:--------:|-------------|
-| `id` | ✅ | Unique identifier. Only letters, numbers, and dots (.) |
+| `id` | ✅ | Unique identifier. Only letters, numbers, and dots (.). Max 50 characters. |
 | `name` | ✅ | Human-readable display name |
 | `version` | ✅ | Semantic version string (e.g., "1.0.0") |
 | `maintainer` | ❌ | Responsible person or team |
@@ -193,10 +193,11 @@ When a schema is created, resources follow these patterns:
 | Resource | Pattern | Example |
 |----------|---------|---------|
 | Username | `ws.{id}` | `ws.myapp.users` |
+| Display name | `User Webservice {name}` | `User Webservice My Application` |
 | Email | `ws.{id}@devnull.{domain}` | `ws.myapp.users@devnull.campus.edu` |
-| Role | `ws_{id}` (dots → underscores) | `ws_myapp_users` |
-| Service | `ws_{id}` | `ws_myapp_users` |
-| Token Name | `Token - {name}` | `Token - My Application User Service` |
+| Role shortname | `ws_{id}` (dots → underscores) | `ws_myapp_users` |
+| Service shortname | `ws_{id}` | `ws_myapp_users` |
+| Token Name | `Token - {name}` | `Token - My Application` |
 
 ## Configuration
 
@@ -233,7 +234,7 @@ When a schema is created, resources follow these patterns:
 ```php
 // Schema Manager - Main entry point
 $manager = new \local_serviceschema\schema\manager();
-$result = $manager->create_from_yaml($yaml_content, $generate_token);
+$result = $manager->create_schema($yaml_content, $generate_token);
 $schema = $manager->get_schema($id);
 $manager->update_schema($id, $new_yaml);
 $manager->delete_schema($id);
@@ -319,6 +320,7 @@ vendor/bin/behat --config /path/to/behatrun/behat.yml --tags=@local_serviceschem
 | Invalid schema ID | Use only letters, numbers, and dots |
 | Missing critical function | Install required plugin or mark as non-critical |
 | Duplicate ID | Choose a unique schema ID |
+| Duplicate name | Schema names must be unique — use a different `meta.name` |
 
 ### Token Issues
 
@@ -354,15 +356,14 @@ Error: Critical function not found
 ### Development Setup
 
 ```bash
-# Clone repository
-git clone https://github.com/your-org/moodle-local_serviceschema.git
+# Clone into your Moodle installation
+git clone https://github.com/your-org/moodle-local_serviceschema.git /path/to/moodle/local/serviceschema
 
-# Install dependencies
-cd moodle-local_serviceschema
-npm install
+# Run tests
+vendor/bin/phpunit --testsuite local_serviceschema_testsuite
 
-# Run code checks
-grunt
+# Run code style checks (requires PHP_CodeSniffer with Moodle standard)
+vendor/bin/phpcs --standard=moodle local/serviceschema/
 ```
 
 ### Pull Request Process
@@ -371,7 +372,7 @@ grunt
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
 4. Run tests (`vendor/bin/phpunit --testsuite local_serviceschema_testsuite`)
-5. Run code checks (`grunt`)
+5. Run code checks (`vendor/bin/phpcs --standard=moodle local/serviceschema/`)
 6. Commit changes (`git commit -m 'Add amazing feature'`)
 7. Push to branch (`git push origin feature/amazing-feature`)
 8. Open a Pull Request
@@ -385,7 +386,7 @@ grunt
 
 ## License
 
-This plugin is licensed under the [MIT License](LICENSE).
+This plugin is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0) or later.
 
 ---
 
