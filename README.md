@@ -43,7 +43,6 @@ Service Schema Manager allows administrators to define Moodle web services decla
 | **Multi-language** | English, Spanish, Portuguese, Italian, French |
 | **In-Browser Editor** | Edit schemas directly in Moodle |
 | **Validation** | Real-time syntax and function validation |
-| **Validation** | Real-time syntax and function validation |
 | **Capability Calculation** | Automatic capability assignment from functions |
 | **Versioning** | Full history tracking with rollback and diff view |
 
@@ -61,7 +60,7 @@ Service Schema Manager allows administrators to define Moodle web services decla
 
 1. Download the latest release
 2. Extract to `/local/serviceschema/`
-3. Visit **Site Administration → Notifications**
+3. Visit **Site Administration**
 4. Complete the installation wizard
 
 ### Method 2: Git Clone
@@ -81,18 +80,18 @@ git clone https://github.com/your-org/moodle-local_serviceschema.git servicesche
 }
 ```
 
-After installation, visit **Site Administration → Notifications** to complete setup.
+After installation, visit **Site Administration** to complete the setup.
 
 ## Usage
 
 ### Accessing the Dashboard
 
-Navigate to: **Site Administration → Plugins → Local Plugins → Service Schema Manager**
+Navigate to: **Site Administration → Server → Service Manager → Service Schemas Dashboard**
 
 ### Creating a Schema
 
-1. Click **"Upload Schema"**
-2. Upload a YAML file or download the example
+1. Click **"Import Schemas"**
+2. Upload a YAML file or download the example by going to **View Documentation**
 3. Check **"Generate token automatically"** if needed
 4. Click **"Upload"**
 
@@ -113,9 +112,9 @@ Click on a schema name to view:
 
 ### Managing Versions
 
-1. Click on the **History** icon (clock) in the dashboard
+1. Click on **Version History** while viewing an specific schema
 2. View past versions and their changes
-3. Click **"View Detail"** to see the full schema visualization
+3. Select two versions and Click **"Compare Versions"** to view the definitions difference.
 4. Click **"Rollback"** to restore a previous version
 
 ### Deleting a Schema
@@ -387,30 +386,6 @@ grunt
 ## License
 
 This plugin is licensed under the [MIT License](LICENSE).
-
-```
-MIT License
-
-Copyright (c) 2026 Your Organization
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
 
 ---
 

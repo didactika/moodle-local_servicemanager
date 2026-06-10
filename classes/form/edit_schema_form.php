@@ -56,7 +56,7 @@ class edit_schema_form extends \moodleform {
         $mform->setType('id', PARAM_INT);
 
         // Schema info header.
-        $mform->addElement('header', 'schemainfo', get_string('schema_id', 'local_serviceschema'));
+        $mform->addElement('header', 'schemainfo', get_string('schema_information', 'local_serviceschema'));
 
         // Read-only schema ID display.
         if (!empty($this->_customdata['schema'])) {
@@ -68,6 +68,12 @@ class edit_schema_form extends \moodleform {
             $mform->addElement('static', 'schema_version_display',
                 get_string('schema_version', 'local_serviceschema'),
                 $schema->version
+            );
+            $mform->addElement('advcheckbox', 'enabled',
+                get_string('schema_enabled', 'local_serviceschema'),
+                '',
+                null,
+                [0, 1]
             );
         }
 

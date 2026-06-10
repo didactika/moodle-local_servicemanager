@@ -51,6 +51,7 @@ $string['upload'] = 'Carregar Esquema';
 
 // Schema fields.
 $string['schema_id'] = 'ID do Esquema';
+$string['schema_information'] = 'Informações do Esquema';
 $string['schema_name'] = 'Nome';
 $string['schema_version'] = 'Versão';
 $string['schema_maintainer'] = 'Mantenedor';

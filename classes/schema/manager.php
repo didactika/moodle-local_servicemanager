@@ -401,6 +401,15 @@ class manager {
             $DB->set_field('external_services', 'enabled', $enabled ? 1 : 0, ['id' => $schema->serviceid]);
         }
 
+        // Mirror enabled state on the service user.
+        if ($schema->userid) {
+            if ($enabled) {
+                $this->usermanager->unsuspend_user($schema->userid);
+            } else {
+                $this->usermanager->suspend_user($schema->userid);
+            }
+        }
+
         return $DB->set_field('local_serviceschema_schemas', 'enabled', $enabled ? 1 : 0, ['id' => $id]);
     }
 

@@ -53,6 +53,7 @@ $form = new \local_serviceschema\form\edit_schema_form(null, ['schema' => $schem
 $form->set_data([
     'id' => $schema->id,
     'yaml_content' => $schema->yaml_content,
+    'enabled' => (int)$schema->enabled,
 ]);
 
 if ($form->is_cancelled()) {
@@ -60,6 +61,9 @@ if ($form->is_cancelled()) {
 } elseif ($data = $form->get_data()) {
     try {
         $result = $manager->update_schema($data->id, $data->yaml_content);
+
+        // Apply enabled state (independent of YAML content).
+        $manager->set_enabled($data->id, (bool)$data->enabled);
 
         // Show warnings if any.
         if (!empty($result['warnings'])) {

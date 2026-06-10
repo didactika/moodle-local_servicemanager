@@ -51,6 +51,7 @@ $string['upload'] = 'Téléverser le Schéma';
 
 // Schema fields.
 $string['schema_id'] = 'ID du Schéma';
+$string['schema_information'] = 'Informations du Schéma';
 $string['schema_name'] = 'Nom';
 $string['schema_version'] = 'Version';
 $string['schema_maintainer'] = 'Mainteneur';

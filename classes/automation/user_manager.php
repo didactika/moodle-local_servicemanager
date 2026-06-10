@@ -30,9 +30,9 @@ class user_manager {
      * Create a service user following naming convention
      *
      * username: ws.{id}
-     * firstname: {meta.name}
-     * lastname: Name
-     * email: ws.{id}@devnull.{domain}
+     * firstname: User Webservice
+     * lastname: {meta.name}
+     * email: ws.{id}@devnull.{parent_domain}
      *
      * @param string $schemaid Schema ID (e.g., "crm.integration")
      * @param string $metaname Display name from meta.name
@@ -43,14 +43,18 @@ class user_manager {
 
         require_once($CFG->dirroot . '/user/lib.php');
 
-        // Extract domain from wwwroot.
+        // Extract domain from wwwroot, stripping any leading subdomain.
         $parsed = parse_url($CFG->wwwroot);
         $domain = $parsed['host'] ?? 'localhost';
+        $parts = explode('.', $domain);
+        if (count($parts) > 2) {
+            $domain = implode('.', array_slice($parts, 1));
+        }
 
         $user = new \stdClass();
         $user->username = 'ws.' . $schemaid;
-        $user->firstname = $metaname;
-        $user->lastname = 'Name';
+        $user->firstname = 'User Webservice';
+        $user->lastname = $metaname;
         $user->email = 'ws.' . $schemaid . '@devnull.' . $domain;
         $user->auth = 'webservice';
         $user->confirmed = 1;
@@ -73,7 +77,7 @@ class user_manager {
 
         $user = new \stdClass();
         $user->id = $userid;
-        $user->firstname = $metaname;
+        $user->lastname = $metaname;
         $user->timemodified = time();
 
         return $DB->update_record('user', $user);
