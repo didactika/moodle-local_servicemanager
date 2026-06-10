@@ -41,7 +41,12 @@ $manager = new \local_serviceschema\schema\manager();
 $schema = $manager->get_schema($id);
 
 if (!$schema) {
-    throw new moodle_exception('Schema not found');
+    redirect(
+        new moodle_url('/local/serviceschema/pages/dashboard.php'),
+        get_string('schema_not_found', 'local_serviceschema'),
+        null,
+        \core\output\notification::NOTIFY_WARNING
+    );
 }
 
 $dashboardurl = new moodle_url('/local/serviceschema/pages/dashboard.php');

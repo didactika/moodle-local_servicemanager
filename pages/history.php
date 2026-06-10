@@ -59,7 +59,12 @@ $historymanager = new \local_serviceschema\schema\history_manager();
 
 $schema = $manager->get_schema($id);
 if (!$schema) {
-    throw new moodle_exception('schemanotfound', 'local_serviceschema');
+    redirect(
+        new moodle_url('/local/serviceschema/pages/dashboard.php'),
+        get_string('schema_not_found', 'local_serviceschema'),
+        null,
+        \core\output\notification::NOTIFY_WARNING
+    );
 }
 
 $urlparams = [

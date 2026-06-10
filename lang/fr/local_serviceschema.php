@@ -58,6 +58,7 @@ $string['schema_maintainer'] = 'Mainteneur';
 $string['schema_description'] = 'Description';
 $string['schema_status'] = 'Statut';
 $string['schema_enabled'] = 'Activé';
+$string['schema_not_found'] = 'Schéma introuvable. Il a peut-être été supprimé.';
 $string['schema_created'] = 'Créé';
 $string['schema_modified'] = 'Dernière Modification';
 
