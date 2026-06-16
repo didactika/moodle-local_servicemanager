@@ -263,6 +263,9 @@
         {{/has_filters}}
         {{^has_filters}}
         {{#str}}no_schemas, local_serviceschema{{/str}}
+        <a href="{{documentation_url}}" class="ml-2 text-info">
+            <i class="fa fa-book mr-1"></i>{{#str}}view_documentation, local_serviceschema{{/str}}
+        </a>
         {{/has_filters}}
     </div>
     {{/schemas_length}}

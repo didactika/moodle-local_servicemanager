@@ -142,6 +142,7 @@ $string['confirm_delete'] = 'Tem certeza de que deseja excluir o esquema "{$a}"?
 $string['confirm_regenerate_token'] = 'Tem certeza de que deseja regenerar o token? O token atual será invalidado imediatamente.';
 
 // Service user.
+$string['provisioned_resources'] = 'Recursos Provisionados';
 $string['service_user'] = 'Usuário de Serviço';
 $string['service_role'] = 'Função de Serviço';
 $string['external_service'] = 'Serviço Externo';
@@ -209,13 +210,15 @@ $string['doc_definition'] = 'Seção de Definição';
 $string['doc_definition_desc'] = 'A seção de definição especifica as funções de serviço web e as capacidades.';
 $string['doc_naming'] = 'Convenções de Nomenclatura';
 $string['doc_example'] = 'Exemplo Completo';
-$string['doc_example_complete_desc'] = 'O esquema de exemplo acima mostra uma configuração funcional completa. Baixe o arquivo de exemplo no link no topo para começar rapidamente.';
+$string['doc_example_complete_desc'] = 'O esquema de exemplo acima mostra uma configuração funcional completa.';
+$string['doc_example_to_get_started'] = 'para começar rapidamente.';
 $string['doc_functions_desc'] = 'As funções podem ser especificadas em formato simples ou estendido:';
-$string['doc_meta_id'] = 'Identificador único. Apenas letras, números e pontos (.) são permitidos.';
-$string['doc_meta_name'] = 'Nome legível por humanos para o serviço.';
-$string['doc_meta_version'] = 'String de versão (versionamento semântico recomendado).';
+$string['doc_meta_id'] = 'Identificador único. Apenas letras, números e pontos (.) são permitidos. Máximo 50 caracteres.';
+$string['doc_meta_name'] = 'Nome legível por humanos para o serviço. Deve ser único entre todos os esquemas.';
+$string['doc_meta_version'] = 'String de versão (versionamento semântico recomendado). Deve ser incrementada quando a definição (funções ou capacidades) muda; alterações apenas de metadados (nome, mantenedor, descrição) não requerem atualização da versão.';
 $string['doc_meta_maintainer'] = 'Pessoa ou equipe responsável pelo esquema.';
 $string['doc_meta_description'] = 'Breve descrição do objetivo do serviço.';
+$string['doc_default_capabilities'] = 'As seguintes capacidades são adicionadas automaticamente a cada esquema, independentemente das funções definidas:';
 $string['field'] = 'Campo';
 $string['resource'] = 'Recurso';
 $string['pattern'] = 'Padrão';

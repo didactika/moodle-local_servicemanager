@@ -142,6 +142,7 @@ $string['confirm_delete'] = 'Sei sicuro di voler eliminare lo schema "{$a}"? Que
 $string['confirm_regenerate_token'] = 'Sei sicuro di voler rigenerare il token? Il token attuale verrà invalidato immediatamente.';
 
 // Service user.
+$string['provisioned_resources'] = 'Risorse Provisionate';
 $string['service_user'] = 'Utente di Servizio';
 $string['service_role'] = 'Ruolo di Servizio';
 $string['external_service'] = 'Servizio Esterno';
@@ -209,13 +210,15 @@ $string['doc_definition'] = 'Sezione Definizione';
 $string['doc_definition_desc'] = 'La sezione definizione specifica le funzioni del servizio web e le capacità.';
 $string['doc_naming'] = 'Convenzioni di Denominazione';
 $string['doc_example'] = 'Esempio Completo';
-$string['doc_example_complete_desc'] = 'L\'esempio di schema sopra mostra una configurazione funzionale completa. Scarica il file di esempio dal link in alto per iniziare rapidamente.';
+$string['doc_example_complete_desc'] = 'L\'esempio di schema sopra mostra una configurazione funzionale completa.';
+$string['doc_example_to_get_started'] = 'per iniziare rapidamente.';
 $string['doc_functions_desc'] = 'Le funzioni possono essere specificate in formato semplice o esteso:';
-$string['doc_meta_id'] = 'Identificatore unico. Sono consentiti solo lettere, numeri e punti (.).';
-$string['doc_meta_name'] = 'Nome leggibile dall\'uomo per il servizio.';
-$string['doc_meta_version'] = 'Stringa di versione (versionamento semantico raccomandato).';
+$string['doc_meta_id'] = 'Identificatore unico. Sono consentiti solo lettere, numeri e punti (.). Massimo 50 caratteri.';
+$string['doc_meta_name'] = 'Nome leggibile dall\'uomo per il servizio. Deve essere unico tra tutti gli schemi.';
+$string['doc_meta_version'] = 'Stringa di versione (versionamento semantico raccomandato). Deve essere incrementata quando la definizione (funzioni o capacità) cambia; le modifiche solo ai metadati (nome, manutentore, descrizione) non richiedono aggiornamento della versione.';
 $string['doc_meta_maintainer'] = 'Persona o team responsabile dello schema.';
 $string['doc_meta_description'] = 'Breve descrizione dello scopo del servizio.';
+$string['doc_default_capabilities'] = 'Le seguenti capacità vengono aggiunte automaticamente a ogni schema, indipendentemente dalle funzioni definite:';
 $string['field'] = 'Campo';
 $string['resource'] = 'Risorsa';
 $string['pattern'] = 'Modello';

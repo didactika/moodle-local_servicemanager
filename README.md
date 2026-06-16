@@ -8,6 +8,9 @@ A Moodle plugin for declarative web service management using YAML schema files.
 ## Table of Contents
 
 - [Overview](#overview)
+  - [The Security Model](#the-security-model)
+  - [Automatic Capability Resolution](#automatic-capability-resolution)
+  - [Full Lifecycle Management](#full-lifecycle-management)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -15,6 +18,7 @@ A Moodle plugin for declarative web service management using YAML schema files.
 - [YAML Schema Format](#yaml-schema-format)
 - [Configuration](#configuration)
 - [API Reference](#api-reference)
+  - [Plugin Web Service API](#plugin-web-service-api)
 - [Testing](#testing)
 - [Security](#security)
 - [Troubleshooting](#troubleshooting)
@@ -23,14 +27,43 @@ A Moodle plugin for declarative web service management using YAML schema files.
 
 ## Overview
 
-Service Schema Manager allows administrators to define Moodle web services declaratively using YAML files. Instead of manually configuring users, roles, capabilities, and services through the Moodle interface, you can define everything in a single YAML file.
+Service Schema Manager allows administrators to define Moodle web services declaratively using YAML files. Instead of navigating multiple Moodle admin screens to manually create users, roles, capabilities, and services, you declare everything in a single YAML file and the plugin provisions and maintains the full infrastructure automatically.
+
+### The Security Model
+
+Each schema creates a **fully isolated, scoped environment** for one web service consumer:
+
+- **Dedicated service user** — a system account created exclusively for this service, suspended automatically if the schema is disabled
+- **Dedicated role** — a custom role assigned to that user at the system level, containing only the capabilities this service actually needs
+- **Dedicated external service** — a Moodle web service restricted to that user and those functions only
+- **Scoped token** — a token tied to that user and service, never shared across consumers
+
+This means a compromised token or misbehaving consumer can only access exactly what its schema declares — nothing more. Revoking access is as simple as disabling or deleting the schema.
+
+### Automatic Capability Resolution
+
+Moodle web service functions each declare the capabilities they require in their PHP definition files. This plugin reads those declarations at provisioning time and automatically assigns all necessary capabilities to the service role — you don't need to know or look them up manually. You can also declare additional capabilities in the YAML for access patterns beyond the standard function requirements. The capabilities `webservice/rest:use` and `webservice/soap:use` are always included.
+
+### Full Lifecycle Management
+
+The plugin keeps all Moodle resources in sync with the schema throughout its lifetime:
+
+| Action | What happens automatically |
+|--------|---------------------------|
+| **Create** | User, role, capabilities, service, token all provisioned in one step |
+| **Update** | Role name, capabilities, and service functions updated to match the new YAML |
+| **Enable / Disable** | User account unsuspended / suspended; service toggled |
+| **Delete** | User, role, service, and token all removed cleanly |
 
 ### Why Use This Plugin?
 
-- **Reproducibility**: Schema files can be version-controlled and deployed across environments
-- **Automation**: Integrate web service provisioning into CI/CD pipelines
-- **Documentation**: YAML files serve as self-documenting service configurations
-- **Efficiency**: Create complete web service setups in seconds instead of minutes
+- **Security by default**: Every consumer gets its own isolated user, role, and service — no shared credentials, minimal blast radius
+- **No manual capability hunting**: Required capabilities are derived automatically from the function declarations in Moodle's codebase
+- **Efficiency**: Create a complete, production-ready web service setup in seconds instead of navigating multiple Moodle admin screens
+- **Reproducibility**: Schema files can be version-controlled and deployed identically across environments
+- **Documentation**: YAML files serve as self-documenting service configurations — the schema is the spec
+- **Auditability**: Version history, health check logs, and YAML diffs give a complete record of every change
+- **Automation**: Import schemas via ZIP archive, integrate provisioning into CI/CD pipelines, or manage schemas programmatically via the plugin's own REST web service API
 
 ## Features
 
@@ -257,6 +290,31 @@ $result = $validator->validate_content($yaml_content);
 |------|-------------|------------------|
 | `health_check_task` | Validates all schemas | Daily at 2:00 AM |
 | `cleanup_logs_task` | Removes old health logs | Daily at 3:00 AM |
+
+### Plugin Web Service API
+
+The plugin exposes its own REST API so schemas can be managed programmatically — useful for CI/CD pipelines, deployment scripts, or any external tooling that needs to provision or update web services without accessing the Moodle UI.
+
+A pre-configured external service (`ws_service_schema_manager`) is installed automatically. Authorize a user with the `local/serviceschema:manage` capability to that service and use the token to call these functions:
+
+| Function | Type | Description |
+|----------|------|-------------|
+| `local_serviceschema_get_schemas` | read | List all schemas |
+| `local_serviceschema_get_schema` | read | Get a single schema by ID |
+| `local_serviceschema_create_schema` | write | Create a new schema from YAML content |
+| `local_serviceschema_update_schema` | write | Update an existing schema with new YAML content |
+| `local_serviceschema_delete_schema` | write | Delete a schema and all its provisioned resources |
+
+**Example — create a schema via REST:**
+
+```bash
+curl -X POST "https://yourmoodle.example.com/webservice/rest/server.php" \
+  -d "wstoken=YOUR_TOKEN" \
+  -d "wsfunction=local_serviceschema_create_schema" \
+  -d "moodlewsrestformat=json" \
+  -d "yamlcontent=meta:%0A  id: my.service%0A  ..." \
+  -d "generatetoken=1"
+```
 
 ## Testing
 

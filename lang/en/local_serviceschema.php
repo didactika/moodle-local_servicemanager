@@ -151,6 +151,7 @@ $string['confirm_delete'] = 'Are you sure you want to delete schema "{$a}"? This
 $string['confirm_regenerate_token'] = 'Are you sure you want to regenerate the token? The current token will be invalidated immediately.';
 
 // Service user.
+$string['provisioned_resources'] = 'Provisioned Resources';
 $string['service_user'] = 'Service User';
 $string['service_role'] = 'Service Role';
 $string['external_service'] = 'External Service';
@@ -218,13 +219,15 @@ $string['doc_definition'] = 'Definition Section';
 $string['doc_definition_desc'] = 'The definition section specifies the web service functions and capabilities.';
 $string['doc_naming'] = 'Naming Conventions';
 $string['doc_example'] = 'Complete Example';
-$string['doc_example_complete_desc'] = 'The example schema above shows a complete functional configuration. Download the example file from the link at the top to get started quickly.';
+$string['doc_example_complete_desc'] = 'The example schema above shows a complete functional configuration.';
+$string['doc_example_to_get_started'] = 'to get started quickly.';
 $string['doc_functions_desc'] = 'Functions can be specified in simple or extended format:';
-$string['doc_meta_id'] = 'Unique identifier. Only letters, numbers, and dots (.) allowed.';
-$string['doc_meta_name'] = 'Human-readable name for the service.';
-$string['doc_meta_version'] = 'Version string (semantic versioning recommended).';
+$string['doc_meta_id'] = 'Unique identifier. Only letters, numbers, and dots (.) allowed. Max 50 characters.';
+$string['doc_meta_name'] = 'Human-readable name for the service. Must be unique across all schemas.';
+$string['doc_meta_version'] = 'Version string (semantic versioning recommended). Must be incremented when the definition (functions or capabilities) changes; metadata-only edits (name, maintainer, description) do not require a version bump.';
 $string['doc_meta_maintainer'] = 'Person or team responsible for the schema.';
 $string['doc_meta_description'] = 'Brief description of the service purpose.';
+$string['doc_default_capabilities'] = 'The following capabilities are automatically added to every schema regardless of the functions defined:';
 $string['field'] = 'Field';
 $string['resource'] = 'Resource';
 $string['pattern'] = 'Pattern';

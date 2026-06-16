@@ -142,6 +142,7 @@ $string['confirm_delete'] = 'Êtes-vous sûr de vouloir supprimer le schéma "{$
 $string['confirm_regenerate_token'] = 'Êtes-vous sûr de vouloir régénérer le jeton ? Le jeton actuel sera invalidé immédiatement.';
 
 // Service user.
+$string['provisioned_resources'] = 'Ressources Provisionnées';
 $string['service_user'] = 'Utilisateur de Service';
 $string['service_role'] = 'Rôle de Service';
 $string['external_service'] = 'Service Externe';
@@ -209,13 +210,15 @@ $string['doc_definition'] = 'Section de Définition';
 $string['doc_definition_desc'] = 'La section de définition spécifie les fonctions de service web et les capacités.';
 $string['doc_naming'] = 'Conventions de Nommage';
 $string['doc_example'] = 'Exemple Complet';
-$string['doc_example_complete_desc'] = 'L\'exemple de schéma ci-dessus montre une configuration fonctionnelle complète. Téléchargez le fichier d\'exemple à partir du lien en haut pour commencer rapidement.';
+$string['doc_example_complete_desc'] = 'L\'exemple de schéma ci-dessus montre une configuration fonctionnelle complète.';
+$string['doc_example_to_get_started'] = 'pour commencer rapidement.';
 $string['doc_functions_desc'] = 'Les fonctions peuvent être spécifiées au format simple ou étendu :';
-$string['doc_meta_id'] = 'Identifiant unique. Seuls les lettres, les chiffres et les points (.) sont autorisés.';
-$string['doc_meta_name'] = 'Nom lisible par l\'homme pour le service.';
-$string['doc_meta_version'] = 'Chaîne de version (versionnement sémantique recommandé).';
+$string['doc_meta_id'] = 'Identifiant unique. Seuls les lettres, les chiffres et les points (.) sont autorisés. Maximum 50 caractères.';
+$string['doc_meta_name'] = 'Nom lisible par l\'homme pour le service. Doit être unique parmi tous les schémas.';
+$string['doc_meta_version'] = 'Chaîne de version (versionnement sémantique recommandé). Doit être incrémentée lorsque la définition (fonctions ou capacités) change ; les modifications de métadonnées seules (nom, mainteneur, description) ne nécessitent pas de mise à jour de version.';
 $string['doc_meta_maintainer'] = 'Personne ou équipe responsable du schéma.';
 $string['doc_meta_description'] = 'Brève description de l\'objectif du service.';
+$string['doc_default_capabilities'] = 'Les capacités suivantes sont automatiquement ajoutées à chaque schéma, quelles que soient les fonctions définies :';
 $string['field'] = 'Champ';
 $string['resource'] = 'Ressource';
 $string['pattern'] = 'Modèle';

@@ -98,8 +98,45 @@ if ($schema->status === 'warning') {
     $statusicon = 'fa-times-circle';
 }
 
-// Get health logs.
+// Load provisioned resources linked to this schema.
 global $DB;
+$resourceuser = null;
+$resourcerole = null;
+$resourceservice = null;
+
+if ($schema->userid) {
+    $u = $DB->get_record('user', ['id' => $schema->userid],
+        'id, username, firstname, lastname, firstnamephonetic, lastnamephonetic, middlename, alternatename');
+    if ($u) {
+        $resourceuser = [
+            'name'     => fullname($u),
+            'username' => $u->username,
+            'url'      => (new moodle_url('/user/profile.php', ['id' => $u->id]))->out(false),
+        ];
+    }
+}
+if ($schema->roleid) {
+    $r = $DB->get_record('role', ['id' => $schema->roleid], 'id, name, shortname');
+    if ($r) {
+        $resourcerole = [
+            'name'      => !empty($r->name) ? $r->name : $r->shortname,
+            'shortname' => $r->shortname,
+            'url'       => (new moodle_url('/admin/roles/define.php', ['action' => 'view', 'roleid' => $r->id]))->out(false),
+        ];
+    }
+}
+if ($schema->serviceid) {
+    $s = $DB->get_record('external_services', ['id' => $schema->serviceid], 'id, name, shortname');
+    if ($s) {
+        $resourceservice = [
+            'name'      => $s->name,
+            'shortname' => $s->shortname,
+            'url'       => (new moodle_url('/admin/webservice/service.php', ['id' => $s->id]))->out(false),
+        ];
+    }
+}
+
+// Get health logs.
 $healthlogs = $DB->get_records('local_serviceschema_healthlog',
     ['schemaid' => $id],
     'timecreated DESC',
@@ -145,6 +182,19 @@ $templatedata = [
     'show_new_token' => !empty($tokenvalue),
     'functions' => $functionsdata,
     'has_functions' => !empty($functionsdata),
+    'has_resources' => ($resourceuser || $resourcerole || $resourceservice),
+    'has_resource_user' => !empty($resourceuser),
+    'resource_user_name' => $resourceuser['name'] ?? '',
+    'resource_user_username' => $resourceuser['username'] ?? '',
+    'resource_user_url' => $resourceuser['url'] ?? '',
+    'has_resource_role' => !empty($resourcerole),
+    'resource_role_name' => $resourcerole['name'] ?? '',
+    'resource_role_shortname' => $resourcerole['shortname'] ?? '',
+    'resource_role_url' => $resourcerole['url'] ?? '',
+    'has_resource_service' => !empty($resourceservice),
+    'resource_service_name' => $resourceservice['name'] ?? '',
+    'resource_service_shortname' => $resourceservice['shortname'] ?? '',
+    'resource_service_url' => $resourceservice['url'] ?? '',
     'extra_capabilities' => $extracaps,
     'has_extra_capabilities' => !empty($extracaps),
     'health_logs' => $logsdata,

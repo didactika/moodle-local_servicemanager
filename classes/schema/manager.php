@@ -471,7 +471,7 @@ class manager {
         global $DB;
 
         [$where, $params] = $this->build_filter_conditions($filters);
-        $sql = "SELECT COUNT(*) FROM {local_serviceschema_schemas}";
+        $sql = "SELECT COUNT(*) FROM {local_serviceschema_schemas} s";
         if ($where) {
             $sql .= " WHERE " . $where;
         }
@@ -492,23 +492,23 @@ class manager {
         $params = [];
 
         if (!empty($filters['status']) && $filters['status'] !== 'all') {
-            $conditions[] = 'status = :status';
+            $conditions[] = 's.status = :status';
             $params['status'] = $filters['status'];
         }
 
         if (!empty($filters['name'])) {
-            $conditions[] = $DB->sql_like('name', ':name', false);
+            $conditions[] = $DB->sql_like('s.name', ':name', false);
             $params['name'] = '%' . $DB->sql_like_escape($filters['name']) . '%';
         }
 
         if (!empty($filters['datefrom'])) {
-            $conditions[] = 'timecreated >= :datefrom';
+            $conditions[] = 's.timecreated >= :datefrom';
             $params['datefrom'] = $filters['datefrom'];
         }
 
         if (!empty($filters['dateto'])) {
             // Add 1 day to include the entire end day.
-            $conditions[] = 'timecreated <= :dateto';
+            $conditions[] = 's.timecreated <= :dateto';
             $params['dateto'] = $filters['dateto'] + 86400;
         }
 
