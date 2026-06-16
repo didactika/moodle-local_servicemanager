@@ -89,6 +89,7 @@ class manager {
         $functions = $this->parser->extract_functions($data);
         $extracaps = $this->parser->extract_extra_capabilities($data);
         $additionalusers = $this->parser->extract_additional_users($data);
+        $servicesettings = $this->parser->extract_service_settings($data);
 
         $userid = null;
         $roleid = null;
@@ -105,7 +106,12 @@ class manager {
 
             $this->rolemanager->assign_role_to_user($roleid, $userid);
 
-            $serviceid = $this->servicemanager->create_external_service($meta['id'], $meta['name']);
+            $serviceid = $this->servicemanager->create_external_service(
+                $meta['id'],
+                $meta['name'],
+                $servicesettings['download_files'],
+                $servicesettings['upload_files']
+            );
 
             $this->servicemanager->add_functions_to_service($serviceid, $functions);
 
@@ -257,6 +263,7 @@ class manager {
         $functions = $this->parser->extract_functions($data);
         $extracaps = $this->parser->extract_extra_capabilities($data);
         $additionalusers = $this->parser->extract_additional_users($data);
+        $servicesettings = $this->parser->extract_service_settings($data);
 
 
         // Always update user name to ensure sync.
@@ -272,7 +279,12 @@ class manager {
         $this->rolemanager->assign_capabilities($existing->roleid, $allcaps);
 
 
-        $this->servicemanager->update_external_service($existing->serviceid, $meta['name']);
+        $this->servicemanager->update_external_service(
+            $existing->serviceid,
+            $meta['name'],
+            $servicesettings['download_files'],
+            $servicesettings['upload_files']
+        );
         $this->servicemanager->reset_functions($existing->serviceid);
         $this->servicemanager->add_functions_to_service($existing->serviceid, $functions);
 

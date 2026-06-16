@@ -72,6 +72,33 @@
                 </tbody>
             </table>
 
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{#str}}field, local_serviceschema{{/str}}</th>
+                        <th>{{#str}}required{{/str}}</th>
+                        <th>{{#str}}description{{/str}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>plugins</code></td>
+                        <td><span class="badge badge-secondary">{{#str}}no{{/str}}</span></td>
+                        <td>{{#str}}doc_requirements_plugins, local_serviceschema{{/str}}</td>
+                    </tr>
+                    <tr>
+                        <td><code>download_files</code></td>
+                        <td><span class="badge badge-secondary">{{#str}}no{{/str}}</span></td>
+                        <td>{{#str}}doc_requirements_download_files, local_serviceschema{{/str}}</td>
+                    </tr>
+                    <tr>
+                        <td><code>upload_files</code></td>
+                        <td><span class="badge badge-secondary">{{#str}}no{{/str}}</span></td>
+                        <td>{{#str}}doc_requirements_upload_files, local_serviceschema{{/str}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
             {{! Definition section }}
             <h4 id="definition" class="mt-4 mb-3 text-primary">{{#str}}doc_definition, local_serviceschema{{/str}}</h4>
             <p>{{#str}}doc_definition_desc, local_serviceschema{{/str}}</p>

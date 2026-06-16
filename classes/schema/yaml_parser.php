@@ -320,4 +320,19 @@ class yaml_parser {
     public function extract_required_plugins(array $data): array {
         return $data['requirements']['plugins'] ?? [];
     }
+
+    /**
+     * Extract file transfer flags from the requirements section.
+     * Defaults to false for any flag not explicitly set.
+     *
+     * @param array $data Parsed YAML data
+     * @return array ['download_files' => bool, 'upload_files' => bool]
+     */
+    public function extract_service_settings(array $data): array {
+        $requirements = $data['requirements'] ?? [];
+        return [
+            'download_files' => !empty($requirements['download_files']),
+            'upload_files'   => !empty($requirements['upload_files']),
+        ];
+    }
 }

@@ -174,6 +174,8 @@ requirements:                          # Optional section
   plugins:
     - mod_forum                        # List of required plugins
     - mod_assign
+  download_files: false                # Allow file downloads (default: false)
+  upload_files: false                  # Allow file uploads (default: false)
 
 definition:
   functions:                           # Required: Web service functions
