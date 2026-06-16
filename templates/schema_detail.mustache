@@ -203,6 +203,46 @@
     </div>
     {{/has_resources}}
 
+    {{! Requirements section }}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">{{#str}}schema_requirements, local_serviceschema{{/str}}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 {{#has_required_plugins}}border-right{{/has_required_plugins}}">
+                    <div class="text-muted small text-uppercase mb-2">{{#str}}req_file_access, local_serviceschema{{/str}}</div>
+                    <div class="mb-1">
+                        {{#service_download_files}}
+                        <span class="badge badge-success mr-1"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_serviceschema{{/str}}</span>
+                        {{/service_download_files}}
+                        {{^service_download_files}}
+                        <span class="badge badge-secondary mr-1"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_serviceschema{{/str}}</span>
+                        {{/service_download_files}}
+                        {{#service_upload_files}}
+                        <span class="badge badge-success mr-1"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_serviceschema{{/str}}</span>
+                        {{/service_upload_files}}
+                        {{^service_upload_files}}
+                        <span class="badge badge-secondary mr-1"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_serviceschema{{/str}}</span>
+                        {{/service_upload_files}}
+                    </div>
+                </div>
+                {{#has_required_plugins}}
+                <div class="col-md-6 pl-4">
+                    <div class="text-muted small text-uppercase mb-2">{{#str}}req_plugins, local_serviceschema{{/str}}</div>
+                    {{#required_plugins}}
+                    <div class="mb-1">
+                        <span class="{{status_class}}"><i class="fa {{status_icon}} mr-1"></i></span>
+                        <code>{{name}}</code>
+                        <small class="text-muted ml-1">{{status_label}}</small>
+                    </div>
+                    {{/required_plugins}}
+                </div>
+                {{/has_required_plugins}}
+            </div>
+        </div>
+    </div>
+
     {{! Extra capabilities section }}
     {{#has_extra_capabilities}}
     <div class="card mb-4">

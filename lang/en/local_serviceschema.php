@@ -150,6 +150,13 @@ $string['healthcheck_issues_found'] = 'Issues detected in {$a} schema(s).';
 $string['confirm_delete'] = 'Are you sure you want to delete schema "{$a}"? This will also delete the associated user, role, and service.';
 $string['confirm_regenerate_token'] = 'Are you sure you want to regenerate the token? The current token will be invalidated immediately.';
 
+// Requirements.
+$string['schema_requirements'] = 'Requirements';
+$string['req_file_access'] = 'File Access';
+$string['req_download_files'] = 'Can download files';
+$string['req_upload_files'] = 'Can upload files';
+$string['req_plugins'] = 'Required Plugins';
+
 // Service user.
 $string['provisioned_resources'] = 'Provisioned Resources';
 $string['service_user'] = 'Service User';

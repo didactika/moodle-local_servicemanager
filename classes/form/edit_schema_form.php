@@ -42,7 +42,7 @@ class edit_schema_form extends \moodleform {
             $docurl,
             \html_writer::tag('i', '', ['class' => 'fa fa-book mr-2']) . 
             get_string('view_documentation', 'local_serviceschema'),
-            ['class' => 'text-primary font-weight-bold']
+            ['class' => 'text-primary font-weight-bold ml-2']
         );
         $dochtml = \html_writer::div(
             \html_writer::tag('i', '', ['class' => 'fa fa-info-circle mr-2']) .

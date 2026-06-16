@@ -59,6 +59,7 @@ $parser = new \local_serviceschema\schema\yaml_parser();
 $yamldata = $parser->parse($schema->yaml_content);
 $functions = $parser->extract_functions($yamldata);
 $extracaps = $parser->extract_extra_capabilities($yamldata);
+$requiredplugins = $parser->extract_required_plugins($yamldata);
 
 // Get calculated capabilities.
 $capcalc = new \local_serviceschema\automation\capability_calculator();
@@ -125,15 +126,35 @@ if ($schema->roleid) {
         ];
     }
 }
+$servicedownloadfiles = false;
+$serviceuploadfiles = false;
 if ($schema->serviceid) {
-    $s = $DB->get_record('external_services', ['id' => $schema->serviceid], 'id, name, shortname');
+    $s = $DB->get_record('external_services', ['id' => $schema->serviceid], 'id, name, shortname, downloadfiles, uploadfiles');
     if ($s) {
         $resourceservice = [
             'name'      => $s->name,
             'shortname' => $s->shortname,
             'url'       => (new moodle_url('/admin/webservice/service.php', ['id' => $s->id]))->out(false),
         ];
+        $servicedownloadfiles = (bool) $s->downloadfiles;
+        $serviceuploadfiles   = (bool) $s->uploadfiles;
     }
+}
+
+// Build requirements data.
+$pluginmanager = core_plugin_manager::instance();
+$pluginsdata = [];
+foreach ($requiredplugins as $pluginname) {
+    $info = $pluginmanager->get_plugin_info($pluginname);
+    $installed = $info !== null;
+    $pluginsdata[] = [
+        'name'         => $pluginname,
+        'installed'    => $installed,
+        'status_class' => $installed ? 'text-success' : 'text-warning',
+        'status_icon'  => $installed ? 'fa-check' : 'fa-exclamation-triangle',
+        'status_label' => $installed ? get_string('function_exists', 'local_serviceschema')
+                                     : get_string('function_missing', 'local_serviceschema'),
+    ];
 }
 
 // Get health logs.
@@ -180,6 +201,10 @@ $templatedata = [
     'has_token' => !empty($schema->tokenid),
     'new_token' => $tokenvalue,
     'show_new_token' => !empty($tokenvalue),
+    'required_plugins' => $pluginsdata,
+    'has_required_plugins' => !empty($pluginsdata),
+    'service_download_files' => $servicedownloadfiles,
+    'service_upload_files' => $serviceuploadfiles,
     'functions' => $functionsdata,
     'has_functions' => !empty($functionsdata),
     'has_resources' => ($resourceuser || $resourcerole || $resourceservice),

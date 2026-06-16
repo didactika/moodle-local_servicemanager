@@ -142,6 +142,11 @@ $string['confirm_delete'] = 'Êtes-vous sûr de vouloir supprimer le schéma "{$
 $string['confirm_regenerate_token'] = 'Êtes-vous sûr de vouloir régénérer le jeton ? Le jeton actuel sera invalidé immédiatement.';
 
 // Service user.
+$string['schema_requirements'] = 'Prérequis';
+$string['req_file_access'] = 'Accès aux Fichiers';
+$string['req_download_files'] = 'Peut télécharger des fichiers';
+$string['req_upload_files'] = 'Peut téléverser des fichiers';
+$string['req_plugins'] = 'Plugins Requis';
 $string['provisioned_resources'] = 'Ressources Provisionnées';
 $string['service_user'] = 'Utilisateur de Service';
 $string['service_role'] = 'Rôle de Service';

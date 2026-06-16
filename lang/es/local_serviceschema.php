@@ -146,6 +146,11 @@ $string['confirm_delete'] = '¿Estás seguro de que quieres eliminar el esquema 
 $string['confirm_regenerate_token'] = '¿Estás seguro de que quieres regenerar el token? El token actual será invalidado inmediatamente.';
 
 // Service user.
+$string['schema_requirements'] = 'Requisitos';
+$string['req_file_access'] = 'Acceso a Archivos';
+$string['req_download_files'] = 'Puede descargar archivos';
+$string['req_upload_files'] = 'Puede subir archivos';
+$string['req_plugins'] = 'Plugins Requeridos';
 $string['provisioned_resources'] = 'Recursos Aprovisionados';
 $string['service_user'] = 'Usuario de Servicio';
 $string['service_role'] = 'Rol de Servicio';
