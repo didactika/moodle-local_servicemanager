@@ -50,6 +50,7 @@ if ($form->is_cancelled()) {
         'imported' => 0,
         'skipped' => 0,
         'errors' => [],
+        'warnings' => [],
     ];
 
     // Get uploaded file.
@@ -106,6 +107,11 @@ if ($form->is_cancelled()) {
         \core\notification::error($error);
     }
 
+    // Show warnings (e.g. non-critical functions not installed in this Moodle instance).
+    foreach ($results['warnings'] as $warning) {
+        \core\notification::warning($warning);
+    }
+
     // Generate result message.
     $results['errors_count'] = count($results['errors']);
     $message = get_string('import_complete', 'local_serviceschema', $results);
@@ -126,12 +132,12 @@ if ($form->is_cancelled()) {
  * @param \local_serviceschema\schema\validator $validator Validator.
  * @param string $yamlcontent YAML content.
  * @param string $conflictaction Conflict action: skip, overwrite, rename.
- * @return array Result with imported, skipped, errors.
+ * @return array Result with imported, skipped, errors, warnings.
  */
 function import_single_schema($manager, $validator, $yamlcontent, $conflictaction) {
     global $DB;
 
-    $result = ['imported' => 0, 'skipped' => 0, 'errors' => []];
+    $result = ['imported' => 0, 'skipped' => 0, 'errors' => [], 'warnings' => []];
 
     try {
         // Parse YAML first to get ID.
@@ -156,8 +162,9 @@ function import_single_schema($manager, $validator, $yamlcontent, $conflictactio
 
                 case 'overwrite':
                     // Update existing schema.
-                    $manager->update_schema($existing->id, $yamlcontent);
+                    $updateresult = $manager->update_schema($existing->id, $yamlcontent);
                     $result['imported']++;
+                    $result['warnings'] = array_merge($result['warnings'], $updateresult['warnings']);
                     return $result;
 
                 case 'rename':
@@ -188,8 +195,9 @@ function import_single_schema($manager, $validator, $yamlcontent, $conflictactio
         }
 
         // Create schema.
-        $manager->create_schema($yamlcontent);
+        $createresult = $manager->create_schema($yamlcontent);
         $result['imported']++;
+        $result['warnings'] = array_merge($result['warnings'], $createresult['warnings']);
 
     } catch (Exception $e) {
         $result['errors'][] = ($schemaid ?? '?') . ': ' . $e->getMessage();
@@ -208,6 +216,7 @@ function merge_import_result(&$totals, $result) {
     $totals['imported'] += $result['imported'];
     $totals['skipped'] += $result['skipped'];
     $totals['errors'] = array_merge($totals['errors'], $result['errors']);
+    $totals['warnings'] = array_merge($totals['warnings'], $result['warnings']);
 }
 
 echo $OUTPUT->header();

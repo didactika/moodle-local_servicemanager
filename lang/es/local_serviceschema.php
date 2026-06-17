@@ -49,6 +49,7 @@ $string['ws_enabled_label'] = 'Habilitado';
 $string['ws_disabled_label'] = 'Deshabilitado';
 $string['ws_services_label'] = 'Servicios Web';
 $string['ws_protocols_label'] = 'Protocolos Habilitados';
+$string['ws_health_label'] = 'Resumen de Salud';
 $string['ws_overview_link'] = 'Resumen de servicios web';
 $string['ws_manage_protocols_link'] = 'Gestionar protocolos';
 

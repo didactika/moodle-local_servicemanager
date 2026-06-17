@@ -52,7 +52,7 @@
         <div id="ws-status-details" class="collapse">
             <div class="card-body py-3">
                 <div class="row">
-                    <div class="col-md-6 border-right">
+                    <div class="col-md-4 border-right">
                         <div class="text-muted small text-uppercase mb-1">
                             {{#str}}ws_services_label, local_serviceschema{{/str}}
                         </div>
@@ -60,7 +60,7 @@
                             <i class="fa fa-circle mr-1"></i>{{ws_status.ws_enabled_label}}
                         </span>
                     </div>
-                    <div class="col-md-6 pl-4">
+                    <div class="col-md-4 pl-4 border-right">
                         <div class="text-muted small text-uppercase mb-1">
                             {{#str}}ws_protocols_label, local_serviceschema{{/str}}
                             ({{ws_status.enabled_protocols_count}})
@@ -68,6 +68,27 @@
                         {{#ws_status.protocols}}
                         <span class="badge {{badge_class}} mr-1">{{name}}</span>
                         {{/ws_status.protocols}}
+                    </div>
+                    <div class="col-md-4 pl-4">
+                        <div class="text-muted small text-uppercase mb-1">
+                            {{#str}}ws_health_label, local_serviceschema{{/str}}
+                        </div>
+                        <div>
+                            <span class="text-success mr-3">
+                                <i class="fa fa-circle mr-1"></i>{{ws_status.health_healthy}}
+                            </span>
+                            <span class="text-warning mr-3">
+                                <i class="fa fa-circle mr-1"></i>{{ws_status.health_warning}}
+                            </span>
+                            <span class="text-danger">
+                                <i class="fa fa-circle mr-1"></i>{{ws_status.health_critical}}
+                            </span>
+                        </div>
+                        <div class="text-muted small mt-1">
+                            {{#str}}status_healthy, local_serviceschema{{/str}} ·
+                            {{#str}}status_warning, local_serviceschema{{/str}} ·
+                            {{#str}}status_critical, local_serviceschema{{/str}}
+                        </div>
                     </div>
                 </div>
             </div>

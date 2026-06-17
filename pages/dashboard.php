@@ -194,6 +194,14 @@ if (!$wsenabled) {
     $wsstatuslabel = get_string('ws_status_operational', 'local_serviceschema');
 }
 
+// Schema health summary counts.
+$healthrows = $DB->get_records_sql(
+    "SELECT status, COUNT(*) AS cnt FROM {local_serviceschema_schemas} GROUP BY status"
+);
+$healthhealthy  = (int)($healthrows['healthy']->cnt  ?? 0);
+$healthwarning  = (int)($healthrows['warning']->cnt  ?? 0);
+$healthcritical = (int)($healthrows['critical']->cnt ?? 0);
+
 $templatedata = [
     'schemas' => $schemasdata,
     'schemas_length' => count($schemasdata),
@@ -213,6 +221,9 @@ $templatedata = [
         'overview_url'            => (new moodle_url('/admin/settings.php', ['section' => 'webservicesoverview']))->out(false),
         'protocols_url'           => (new moodle_url('/admin/settings.php', ['section' => 'webserviceprotocols']))->out(false),
         'can_manage'              => $canmanage,
+        'health_healthy'          => $healthhealthy,
+        'health_warning'          => $healthwarning,
+        'health_critical'         => $healthcritical,
     ],
     'sesskey' => sesskey(),
     'has_any_schemas' => $totalcount > 0,

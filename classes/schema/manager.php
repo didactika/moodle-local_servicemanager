@@ -139,7 +139,7 @@ class manager {
             $record->yaml_content = $yamlcontent;
             $record->yaml_hash = $this->parser->get_hash($yamlcontent);
             $record->enabled = 1;
-            $record->status = 'healthy';
+            $record->status = empty($warnings) ? 'healthy' : 'warning';
             $record->userid = $userid;
             $record->roleid = $roleid;
             $record->serviceid = $serviceid;
@@ -265,32 +265,64 @@ class manager {
         $additionalusers = $this->parser->extract_additional_users($data);
         $servicesettings = $this->parser->extract_service_settings($data);
 
+        // --- User: update name, or recreate if deleted ---
+        $userid = $existing->userid;
+        if (!$userid || !$this->usermanager->user_exists($userid)) {
+            $userid = $this->usermanager->create_service_user($meta['id'], $meta['name']);
+            $DB->set_field('local_serviceschema_schemas', 'userid', $userid, ['id' => $id]);
+        } else {
+            $this->usermanager->update_user_name($userid, $meta['name']);
+        }
 
-        // Always update user name to ensure sync.
-        $this->usermanager->update_user_name($existing->userid, $meta['name']);
-
-
-        $this->rolemanager->update_service_role($existing->roleid, $meta['name'], $meta['description']);
-
+        // --- Role: update, or recreate if deleted ---
+        $roleid = $existing->roleid;
+        if (!$roleid || !$this->rolemanager->role_exists($roleid)) {
+            $roleid = $this->rolemanager->create_service_role($meta['id'], $meta['name'], $meta['description']);
+            $DB->set_field('local_serviceschema_schemas', 'roleid', $roleid, ['id' => $id]);
+            $this->rolemanager->assign_role_to_user($roleid, $userid);
+        } else {
+            $this->rolemanager->update_service_role($roleid, $meta['name'], $meta['description']);
+        }
 
         $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
         $allcaps = array_unique(array_merge($functioncaps, $extracaps, ['webservice/rest:use', 'webservice/soap:use']));
-        $this->rolemanager->reset_capabilities($existing->roleid);
-        $this->rolemanager->assign_capabilities($existing->roleid, $allcaps);
+        $this->rolemanager->reset_capabilities($roleid);
+        $this->rolemanager->assign_capabilities($roleid, $allcaps);
 
+        // --- Service: update, or recreate if deleted ---
+        $serviceid = $existing->serviceid;
+        if (!$serviceid || !$this->servicemanager->service_exists($serviceid)) {
+            $serviceid = $this->servicemanager->create_external_service(
+                $meta['id'],
+                $meta['name'],
+                $servicesettings['download_files'],
+                $servicesettings['upload_files']
+            );
+            $DB->set_field('local_serviceschema_schemas', 'serviceid', $serviceid, ['id' => $id]);
+            $this->servicemanager->authorize_user($serviceid, $userid);
 
-        $this->servicemanager->update_external_service(
-            $existing->serviceid,
-            $meta['name'],
-            $servicesettings['download_files'],
-            $servicesettings['upload_files']
-        );
-        $this->servicemanager->reset_functions($existing->serviceid);
-        $this->servicemanager->add_functions_to_service($existing->serviceid, $functions);
-
+            // Reattach the existing token to the new service if it survived,
+            // otherwise clear the stale tokenid reference.
+            if ($existing->tokenid) {
+                if ($this->tokenmanager->token_exists($existing->tokenid)) {
+                    $this->tokenmanager->reattach_token($existing->tokenid, $serviceid);
+                } else {
+                    $DB->set_field('local_serviceschema_schemas', 'tokenid', 0, ['id' => $id]);
+                }
+            }
+        } else {
+            $this->servicemanager->update_external_service(
+                $serviceid,
+                $meta['name'],
+                $servicesettings['download_files'],
+                $servicesettings['upload_files']
+            );
+        }
+        $this->servicemanager->reset_functions($serviceid);
+        $this->servicemanager->add_functions_to_service($serviceid, $functions);
 
         $warnings = $validation['warnings'];
-        $additionalwarnings = $this->servicemanager->authorize_additional_users($existing->serviceid, $additionalusers);
+        $additionalwarnings = $this->servicemanager->authorize_additional_users($serviceid, $additionalusers);
         $warnings = array_merge($warnings, $additionalwarnings);
 
 
@@ -302,6 +334,7 @@ class manager {
         $record->maintainer = $meta['maintainer'];
         $record->yaml_content = $yamlcontent;
         $record->yaml_hash = $newhash;
+        $record->status = empty($warnings) ? 'healthy' : 'warning';
         $record->timemodified = time();
 
         $DB->update_record('local_serviceschema_schemas', $record);
@@ -341,7 +374,7 @@ class manager {
 
 
         $DB->delete_records('local_serviceschema_healthlog', ['schemaid' => $id]);
-
+        $DB->delete_records('local_serviceschema_history', ['schemaid' => $id]);
 
         $DB->delete_records('local_serviceschema_schemas', ['id' => $id]);
 
