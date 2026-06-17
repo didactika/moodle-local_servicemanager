@@ -50,7 +50,6 @@ if ($form->is_cancelled()) {
         'imported' => 0,
         'skipped' => 0,
         'errors' => [],
-        'tokens' => [],
     ];
 
     // Get uploaded file.
@@ -90,7 +89,7 @@ if ($form->is_cancelled()) {
                 }
 
                 $yamlcontent = $zip->getFromIndex($i);
-                $importresult = import_single_schema($manager, $validator, $yamlcontent, $data->conflict_action, $data->generatetokens);
+                $importresult = import_single_schema($manager, $validator, $yamlcontent, $data->conflict_action);
                 merge_import_result($results, $importresult);
             }
             $zip->close();
@@ -98,7 +97,7 @@ if ($form->is_cancelled()) {
         unlink($zippath);
     } else {
         // Process single YAML file.
-        $importresult = import_single_schema($manager, $validator, $content, $data->conflict_action, $data->generatetokens);
+        $importresult = import_single_schema($manager, $validator, $content, $data->conflict_action);
         merge_import_result($results, $importresult);
     }
 
@@ -127,13 +126,12 @@ if ($form->is_cancelled()) {
  * @param \local_serviceschema\schema\validator $validator Validator.
  * @param string $yamlcontent YAML content.
  * @param string $conflictaction Conflict action: skip, overwrite, rename.
- * @param bool $generatetoken Whether to generate token.
- * @return array Result with imported, skipped, errors, tokens.
+ * @return array Result with imported, skipped, errors.
  */
-function import_single_schema($manager, $validator, $yamlcontent, $conflictaction, $generatetoken) {
+function import_single_schema($manager, $validator, $yamlcontent, $conflictaction) {
     global $DB;
 
-    $result = ['imported' => 0, 'skipped' => 0, 'errors' => [], 'tokens' => []];
+    $result = ['imported' => 0, 'skipped' => 0, 'errors' => []];
 
     try {
         // Parse YAML first to get ID.
@@ -190,12 +188,8 @@ function import_single_schema($manager, $validator, $yamlcontent, $conflictactio
         }
 
         // Create schema.
-        $createresult = $manager->create_schema($yamlcontent, $generatetoken);
+        $manager->create_schema($yamlcontent);
         $result['imported']++;
-
-        if (!empty($createresult['token'])) {
-            $result['tokens'][$schemaid] = $createresult['token'];
-        }
 
     } catch (Exception $e) {
         $result['errors'][] = ($schemaid ?? '?') . ': ' . $e->getMessage();
@@ -214,7 +208,6 @@ function merge_import_result(&$totals, $result) {
     $totals['imported'] += $result['imported'];
     $totals['skipped'] += $result['skipped'];
     $totals['errors'] = array_merge($totals['errors'], $result['errors']);
-    $totals['tokens'] = array_merge($totals['tokens'], $result['tokens']);
 }
 
 echo $OUTPUT->header();
