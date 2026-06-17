@@ -17,34 +17,35 @@
 /**
  * Schema documentation page
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../config.php');
 
 require_login();
-require_capability('local/serviceschema:view', context_system::instance());
+require_capability('local/wsmanager:view', context_system::instance());
 
 $returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
-$PAGE->set_url(new moodle_url('/local/serviceschema/pages/documentation.php'));
+$PAGE->set_url(new moodle_url('/local/wsmanager/pages/documentation.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title(get_string('pluginname', 'local_serviceschema') . ' - ' . get_string('documentation', 'local_serviceschema'));
-$PAGE->set_heading(get_string('documentation', 'local_serviceschema'));
+$PAGE->set_title(get_string('pluginname', 'local_wsmanager') . ' - ' . get_string('documentation', 'local_wsmanager'));
+$PAGE->set_heading(get_string('documentation', 'local_wsmanager'));
 $PAGE->set_pagelayout('admin');
 
 // Navigation.
-$PAGE->navbar->add(get_string('pluginname', 'local_serviceschema'), new moodle_url('/local/serviceschema/pages/dashboard.php'));
-$PAGE->navbar->add(get_string('documentation', 'local_serviceschema'));
+$PAGE->navbar->add(get_string('pluginname', 'local_wsmanager'), new moodle_url('/local/wsmanager/pages/dashboard.php'));
+$PAGE->navbar->add(get_string('documentation', 'local_wsmanager'));
 
 echo $OUTPUT->header();
 
 // Back button URL.
-$backurl = !empty($returnurl) ? $returnurl : new moodle_url('/local/serviceschema/pages/dashboard.php');
-$downloadurl = new moodle_url('/local/serviceschema/pages/download_example.php');
+$backurl = !empty($returnurl) ? $returnurl : new moodle_url('/local/wsmanager/pages/dashboard.php');
+$downloadurl = new moodle_url('/local/wsmanager/pages/download_example.php');
 
 // Define parameters for template.
 $structureCode = <<<'YAML'
@@ -95,6 +96,6 @@ $context = [
     'function_code' => $funcCode
 ];
 
-echo $OUTPUT->render_from_template('local_serviceschema/documentation_page', $context);
+echo $OUTPUT->render_from_template('local_wsmanager/documentation_page', $context);
 
 echo $OUTPUT->footer();

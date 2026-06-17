@@ -14,19 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema;
+namespace local_wsmanager;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Unit tests for role manager class.
  *
- * @package    local_serviceschema
+ * @package    local_wsmanager
  * @category   test
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_serviceschema\automation\role_manager
+ * @covers     \local_wsmanager\automation\role_manager
  */
 final class role_manager_test extends \advanced_testcase {
 
@@ -37,7 +38,7 @@ final class role_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\role_manager();
+        $manager = new \local_wsmanager\automation\role_manager();
         $roleid = $manager->create_role('test.service', 'Test Service');
 
         $this->assertIsInt($roleid);
@@ -55,7 +56,7 @@ final class role_manager_test extends \advanced_testcase {
     public function test_get_role_id(): void {
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\role_manager();
+        $manager = new \local_wsmanager\automation\role_manager();
 
         // Role doesn't exist yet.
         $this->assertNull($manager->get_role_id('test.service'));
@@ -74,7 +75,7 @@ final class role_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\role_manager();
+        $manager = new \local_wsmanager\automation\role_manager();
 
         // Test with dots.
         $roleid = $manager->create_role('myapp.users.v2', 'My App');
@@ -89,7 +90,7 @@ final class role_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\role_manager();
+        $manager = new \local_wsmanager\automation\role_manager();
 
         // Create role.
         $roleid = $manager->create_role('test.service', 'Test Service');
@@ -118,7 +119,7 @@ final class role_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\role_manager();
+        $manager = new \local_wsmanager\automation\role_manager();
 
         // Create role.
         $roleid = $manager->create_role('test.service', 'Test Service');

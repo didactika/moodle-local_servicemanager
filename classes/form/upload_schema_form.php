@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\form;
+namespace local_wsmanager\form;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -23,9 +23,10 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * Form for uploading a new YAML schema
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class upload_schema_form extends \moodleform {
@@ -37,16 +38,16 @@ class upload_schema_form extends \moodleform {
         $mform = $this->_form;
 
         // Documentation link banner.
-        $docurl = new \moodle_url('/local/serviceschema/pages/documentation.php');
+        $docurl = new \moodle_url('/local/wsmanager/pages/documentation.php');
         $doclink = \html_writer::link(
             $docurl,
             \html_writer::tag('i', '', ['class' => 'fa fa-book mr-2']) . 
-            get_string('view_documentation', 'local_serviceschema'),
+            get_string('view_documentation', 'local_wsmanager'),
             ['class' => 'text-primary font-weight-bold']
         );
         $dochtml = \html_writer::div(
             \html_writer::tag('i', '', ['class' => 'fa fa-info-circle mr-2']) .
-            get_string('view_documentation_desc', 'local_serviceschema') . ' ' . $doclink,
+            get_string('view_documentation_desc', 'local_wsmanager') . ' ' . $doclink,
             'alert alert-info d-flex align-items-center'
         );
         $mform->addElement('html', $dochtml);
@@ -55,24 +56,24 @@ class upload_schema_form extends \moodleform {
         $mform->addElement(
             'filepicker',
             'yamlfile',
-            get_string('yamlfile', 'local_serviceschema'),
+            get_string('yamlfile', 'local_wsmanager'),
             null,
             ['accepted_types' => ['.yaml', '.yml']]
         );
         $mform->addRule('yamlfile', null, 'required');
-        $mform->addHelpButton('yamlfile', 'yamlfile', 'local_serviceschema');
+        $mform->addHelpButton('yamlfile', 'yamlfile', 'local_wsmanager');
 
         // Checkbox for generating token automatically.
         $mform->addElement(
             'advcheckbox',
             'generatetoken',
-            get_string('generatetoken', 'local_serviceschema'),
-            get_string('generatetoken_desc', 'local_serviceschema')
+            get_string('generatetoken', 'local_wsmanager'),
+            get_string('generatetoken_desc', 'local_wsmanager')
         );
         $mform->setDefault('generatetoken', 1);
 
         // Action buttons.
-        $this->add_action_buttons(true, get_string('upload', 'local_serviceschema'));
+        $this->add_action_buttons(true, get_string('upload', 'local_wsmanager'));
     }
 
     /**
@@ -88,7 +89,7 @@ class upload_schema_form extends \moodleform {
         // Get the file content and validate YAML.
         $content = $this->get_yaml_file_content('yamlfile');
         if ($content) {
-            $validator = new \local_serviceschema\schema\validator();
+            $validator = new \local_wsmanager\schema\validator();
             $result = $validator->validate_content($content);
             if (!empty($result['errors'])) {
                 $errors['yamlfile'] = implode('<br>', $result['errors']);

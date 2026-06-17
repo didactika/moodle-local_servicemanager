@@ -1,6 +1,6 @@
 # Service Schema YAML Reference
 
-This document describes the YAML schema format used by the Service Schema Manager plugin.
+This document describes the YAML schema format used by the Web Service Manager plugin.
 
 ## Schema Structure
 

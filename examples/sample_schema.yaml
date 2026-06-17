@@ -1,6 +1,6 @@
 # Sample Service Schema Definition
 
-# This is an example YAML file for the Service Schema Manager plugin.
+# This is an example YAML file for the Web Service Manager plugin.
 # Upload this file to create a new service schema.
 
 meta:

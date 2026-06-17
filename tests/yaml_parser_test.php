@@ -14,19 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema;
+namespace local_wsmanager;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Unit tests for YAML parser class.
  *
- * @package    local_serviceschema
+ * @package    local_wsmanager
  * @category   test
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_serviceschema\schema\yaml_parser
+ * @covers     \local_wsmanager\schema\yaml_parser
  */
 final class yaml_parser_test extends \advanced_testcase {
 
@@ -44,7 +45,7 @@ definition:
     - core_user_get_users
 YAML;
 
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
         $result = $parser->parse($yaml);
 
         $this->assertIsArray($result);
@@ -59,7 +60,7 @@ YAML;
     public function test_parse_invalid_yaml(): void {
         $yaml = "invalid: yaml: content: [broken";
 
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
 
         $this->expectException(\moodle_exception::class);
         $parser->parse($yaml);
@@ -69,7 +70,7 @@ YAML;
      * Test schema ID validation with valid ID.
      */
     public function test_validate_schema_id_valid(): void {
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
 
         $this->assertTrue($parser->validate_schema_id('test.service'));
         $this->assertTrue($parser->validate_schema_id('myapp.users.v2'));
@@ -81,7 +82,7 @@ YAML;
      * Test schema ID validation with invalid ID.
      */
     public function test_validate_schema_id_invalid(): void {
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
 
         $this->assertFalse($parser->validate_schema_id('test_service'));
         $this->assertFalse($parser->validate_schema_id('test-service'));
@@ -106,7 +107,7 @@ definition:
     - core_user_get_users
 YAML;
 
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
         $data = $parser->parse($yaml);
         $meta = $parser->get_meta($data);
 
@@ -135,7 +136,7 @@ definition:
       critical: false
 YAML;
 
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
         $data = $parser->parse($yaml);
         $functions = $parser->get_functions($data);
 
@@ -171,7 +172,7 @@ definition:
     - moodle/course:view
 YAML;
 
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
         $data = $parser->parse($yaml);
         $caps = $parser->get_extra_capabilities($data);
 

@@ -14,19 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema;
+namespace local_wsmanager;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Unit tests for user manager class.
  *
- * @package    local_serviceschema
+ * @package    local_wsmanager
  * @category   test
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_serviceschema\automation\user_manager
+ * @covers     \local_wsmanager\automation\user_manager
  */
 final class user_manager_test extends \advanced_testcase {
 
@@ -37,7 +38,7 @@ final class user_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\user_manager();
+        $manager = new \local_wsmanager\automation\user_manager();
         $userid = $manager->create_user('test.service', 'Test Service');
 
         $this->assertIsInt($userid);
@@ -58,7 +59,7 @@ final class user_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\user_manager();
+        $manager = new \local_wsmanager\automation\user_manager();
 
         // User doesn't exist yet.
         $this->assertNull($manager->get_user_id('test.service'));
@@ -77,7 +78,7 @@ final class user_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\user_manager();
+        $manager = new \local_wsmanager\automation\user_manager();
 
         // Test with dots.
         $userid = $manager->create_user('myapp.users.v2', 'My App');
@@ -97,7 +98,7 @@ final class user_manager_test extends \advanced_testcase {
         global $DB;
         $this->resetAfterTest();
 
-        $manager = new \local_serviceschema\automation\user_manager();
+        $manager = new \local_wsmanager\automation\user_manager();
 
         // Create user.
         $userid = $manager->create_user('test.service', 'Test Service');

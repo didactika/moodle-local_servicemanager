@@ -17,7 +17,7 @@
 /**
  * Schema version history page.
  *
- * @package    local_serviceschema
+ * @package    local_wsmanager
  * @copyright  2026 Your Organization
  * @license    http://www.opensource.org/licenses/MIT MIT License
  */
@@ -52,16 +52,16 @@ if ($dateto > 0) {
 $hasfilters = !empty($filters);
 
 require_login();
-require_capability('local/serviceschema:manage', context_system::instance());
+require_capability('local/wsmanager:manage', context_system::instance());
 
-$manager = new \local_serviceschema\schema\manager();
-$historymanager = new \local_serviceschema\schema\history_manager();
+$manager = new \local_wsmanager\schema\manager();
+$historymanager = new \local_wsmanager\schema\history_manager();
 
 $schema = $manager->get_schema($id);
 if (!$schema) {
     redirect(
-        new moodle_url('/local/serviceschema/pages/dashboard.php'),
-        get_string('schema_not_found', 'local_serviceschema'),
+        new moodle_url('/local/wsmanager/pages/dashboard.php'),
+        get_string('schema_not_found', 'local_wsmanager'),
         null,
         \core\output\notification::NOTIFY_WARNING
     );
@@ -74,16 +74,16 @@ $urlparams = [
     'datefrom' => $datefrom,
     'dateto' => $dateto,
 ];
-$PAGE->set_url(new moodle_url('/local/serviceschema/pages/history.php', $urlparams));
+$PAGE->set_url(new moodle_url('/local/wsmanager/pages/history.php', $urlparams));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title(get_string('pluginname', 'local_serviceschema') . ' - ' . get_string('version_history', 'local_serviceschema'));
-$PAGE->set_heading(get_string('version_history', 'local_serviceschema') . ': ' . $schema->name);
+$PAGE->set_title(get_string('pluginname', 'local_wsmanager') . ' - ' . get_string('version_history', 'local_wsmanager'));
+$PAGE->set_heading(get_string('version_history', 'local_wsmanager') . ': ' . $schema->name);
 $PAGE->set_pagelayout('admin');
 
 // Navigation.
-$PAGE->navbar->add(get_string('pluginname', 'local_serviceschema'), new moodle_url('/local/serviceschema/pages/dashboard.php'));
-$PAGE->navbar->add($schema->name, new moodle_url('/local/serviceschema/pages/view.php', ['id' => $id]));
-$PAGE->navbar->add(get_string('version_history', 'local_serviceschema'));
+$PAGE->navbar->add(get_string('pluginname', 'local_wsmanager'), new moodle_url('/local/wsmanager/pages/dashboard.php'));
+$PAGE->navbar->add($schema->name, new moodle_url('/local/wsmanager/pages/view.php', ['id' => $id]));
+$PAGE->navbar->add(get_string('version_history', 'local_wsmanager'));
 
 // Handle rollback action.
 $confirm = optional_param('confirm', 0, PARAM_INT);
@@ -94,15 +94,15 @@ if ($action === 'rollback' && $historyid && confirm_sesskey()) {
         try {
             $historymanager->rollback($id, $historyid);
             redirect(
-                new moodle_url('/local/serviceschema/pages/view.php', ['id' => $id]),
-                get_string('rollback_success', 'local_serviceschema'),
+                new moodle_url('/local/wsmanager/pages/view.php', ['id' => $id]),
+                get_string('rollback_success', 'local_wsmanager'),
                 null,
                 \core\output\notification::NOTIFY_SUCCESS
             );
         } catch (Exception $e) {
             redirect(
                 $PAGE->url,
-                get_string('rollback_error', 'local_serviceschema') . ': ' . $e->getMessage(),
+                get_string('rollback_error', 'local_wsmanager') . ': ' . $e->getMessage(),
                 null,
                 \core\output\notification::NOTIFY_ERROR
             );
@@ -111,17 +111,17 @@ if ($action === 'rollback' && $historyid && confirm_sesskey()) {
         // Show confirmation page.
         echo $OUTPUT->header();
         
-        $confirmurl = new moodle_url('/local/serviceschema/pages/history.php', [
+        $confirmurl = new moodle_url('/local/wsmanager/pages/history.php', [
             'id' => $id,
             'action' => 'rollback',
             'historyid' => $historyid,
             'confirm' => 1,
             'sesskey' => sesskey(),
         ]);
-        $cancelurl = new moodle_url('/local/serviceschema/pages/history.php', ['id' => $id]);
+        $cancelurl = new moodle_url('/local/wsmanager/pages/history.php', ['id' => $id]);
         
         echo $OUTPUT->confirm(
-            get_string('rollback_confirm', 'local_serviceschema'),
+            get_string('rollback_confirm', 'local_wsmanager'),
             $confirmurl,
             $cancelurl
         );
@@ -140,14 +140,14 @@ $history = $historymanager->get_history_paginated($id, $page, $perpage, $filters
 // Prepare context for template.
 $context = [
     'id' => $id,
-    'backurl' => (new moodle_url('/local/serviceschema/pages/view.php', ['id' => $id]))->out(false),
+    'backurl' => (new moodle_url('/local/wsmanager/pages/view.php', ['id' => $id]))->out(false),
     'hasfilters' => $hasfilters,
     'filtercount' => count($filters),
     'filterversion' => $filterversion,
     'datefromval' => $datefrom > 0 ? date('Y-m-d', $datefrom) : '',
     'datetoval' => $dateto > 0 ? date('Y-m-d', $dateto) : '',
     'clearurl' => (new moodle_url($PAGE->url, ['id' => $id, 'page' => 0, 'perpage' => 10, 'version' => '', 'datefrom' => 0, 'dateto' => 0]))->out(false),
-    'compareaction' => (new moodle_url('/local/serviceschema/pages/compare.php'))->out(false),
+    'compareaction' => (new moodle_url('/local/wsmanager/pages/compare.php'))->out(false),
     'totalcount' => $totalcount,
     'nohistory' => empty($history),
 ];
@@ -166,7 +166,7 @@ if (!$hasfilters && $page === 0) {
     $context['currentversion'] = [
         'version' => $schema->version,
         'timemodified' => userdate($schema->timemodified),
-        'editurl' => (new moodle_url('/local/serviceschema/pages/edit.php', ['id' => $id]))->out(false)
+        'editurl' => (new moodle_url('/local/wsmanager/pages/edit.php', ['id' => $id]))->out(false)
     ];
 }
 
@@ -196,7 +196,7 @@ if (!empty($history)) {
             'date' => userdate($record->timecreated, get_string('strftimedatetimeshort')),
             'change_reason' => format_text($record->change_reason, FORMAT_MOODLE),
             'yaml_content' => $record->yaml_content,
-            'view_url' => (new moodle_url('/local/serviceschema/pages/view_history.php', ['historyid' => $record->id]))->out(false),
+            'view_url' => (new moodle_url('/local/wsmanager/pages/view_history.php', ['historyid' => $record->id]))->out(false),
         ];
 
         // Only show rollback if version is different from current.
@@ -219,8 +219,8 @@ if (!empty($history)) {
 }
 
 // Load AMD module.
-$PAGE->requires->js_call_amd('local_serviceschema/history', 'init');
+$PAGE->requires->js_call_amd('local_wsmanager/history', 'init');
 
-echo $OUTPUT->render_from_template('local_serviceschema/history_page', $context);
+echo $OUTPUT->render_from_template('local_wsmanager/history_page', $context);
 
 echo $OUTPUT->footer();

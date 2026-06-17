@@ -1,10 +1,11 @@
 /**
- * History page logic for Service Schema Manager.
+ * History page logic for Web Service Manager.
  *
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @module     local_serviceschema/history
+ * @module     local_wsmanager/history
  */
 
 import $ from 'jquery';
@@ -16,7 +17,7 @@ import Notification from 'core/notification';
  */
 export const init = () => {
     const compareBtn = $('#compare-btn');
-    const container = $('.serviceschema-history'); // Main container
+    const container = $('.wsmanager-history'); // Main container
 
     // Use event delegation for checkboxes since they might be inside a dynamic table or late-bound
     container.on('change', '.compare-checkbox', function () {
@@ -24,7 +25,7 @@ export const init = () => {
 
         if (checked.length > 2) {
             $(this).prop('checked', false); // Uncheck the one just clicked
-            getString('compare_select_two', 'local_serviceschema').then(s => {
+            getString('compare_select_two', 'local_wsmanager').then(s => {
                 Notification.alert('', s);
             });
             // Re-calculate checked after unchecking
@@ -72,7 +73,7 @@ export const init = () => {
     }
 
     // Keep dropdown open on click inside.
-    $('.serviceschema-filter-dropdown').on('click', function (e) {
+    $('.wsmanager-filter-dropdown').on('click', function (e) {
         e.stopPropagation();
     });
 };

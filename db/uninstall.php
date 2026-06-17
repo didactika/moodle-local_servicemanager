@@ -19,15 +19,15 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom uninstall cleanup
  */
-function xmldb_local_serviceschema_uninstall() {
+function xmldb_local_wsmanager_uninstall() {
     global $DB;
 
     // We need to delete all resources created by the schemas (users, roles, services).
     // The tables will be dropped automatically by Moodle after this function returns.
     
     try {
-        if ($schemas = $DB->get_records('local_serviceschema_schemas')) {
-            $manager = new \local_serviceschema\schema\manager();
+        if ($schemas = $DB->get_records('local_wsmanager_schemas')) {
+            $manager = new \local_wsmanager\schema\manager();
             foreach ($schemas as $schema) {
                 // Delete schema resources.
                 // We use the manager's delete_schema method which handles cleaning up
@@ -37,7 +37,7 @@ function xmldb_local_serviceschema_uninstall() {
         }
     } catch (Exception $e) {
         // Log error but allow uninstall to proceed.
-        debugging('Error cleaning up local_serviceschema resources: ' . $e->getMessage());
+        debugging('Error cleaning up local_wsmanager resources: ' . $e->getMessage());
     }
 
     return true;

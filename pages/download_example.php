@@ -17,16 +17,17 @@
 /**
  * Download example YAML file
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../config.php');
 
 require_login();
-require_capability('local/serviceschema:view', context_system::instance());
+require_capability('local/wsmanager:view', context_system::instance());
 
 $filepath = __DIR__ . '/../examples/sample_schema.yaml';
 

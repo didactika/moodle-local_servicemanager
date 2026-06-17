@@ -17,61 +17,61 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = [
-    'local_serviceschema_get_schemas' => [
-        'classname' => 'local_serviceschema_external',
+    'local_wsmanager_get_schemas' => [
+        'classname' => 'local_wsmanager_external',
         'methodname' => 'get_schemas',
-        'classpath' => 'local/serviceschema/externallib.php',
+        'classpath' => 'local/wsmanager/externallib.php',
         'description' => 'Get all service schemas.',
         'type' => 'read',
         'ajax' => true,
-        'capabilities' => 'local/serviceschema:view',
+        'capabilities' => 'local/wsmanager:view',
     ],
-    'local_serviceschema_get_schema' => [
-        'classname' => 'local_serviceschema_external',
+    'local_wsmanager_get_schema' => [
+        'classname' => 'local_wsmanager_external',
         'methodname' => 'get_schema',
-        'classpath' => 'local/serviceschema/externallib.php',
+        'classpath' => 'local/wsmanager/externallib.php',
         'description' => 'Get a single service schema by ID.',
         'type' => 'read',
         'ajax' => true,
-        'capabilities' => 'local/serviceschema:view',
+        'capabilities' => 'local/wsmanager:view',
     ],
-    'local_serviceschema_create_schema' => [
-        'classname' => 'local_serviceschema_external',
+    'local_wsmanager_create_schema' => [
+        'classname' => 'local_wsmanager_external',
         'methodname' => 'create_schema',
-        'classpath' => 'local/serviceschema/externallib.php',
+        'classpath' => 'local/wsmanager/externallib.php',
         'description' => 'Create a new service schema.',
         'type' => 'write',
         'ajax' => true,
-        'capabilities' => 'local/serviceschema:manage',
+        'capabilities' => 'local/wsmanager:manage',
     ],
-    'local_serviceschema_update_schema' => [
-        'classname' => 'local_serviceschema_external',
+    'local_wsmanager_update_schema' => [
+        'classname' => 'local_wsmanager_external',
         'methodname' => 'update_schema',
-        'classpath' => 'local/serviceschema/externallib.php',
+        'classpath' => 'local/wsmanager/externallib.php',
         'description' => 'Update an existing service schema.',
         'type' => 'write',
         'ajax' => true,
-        'capabilities' => 'local/serviceschema:manage',
+        'capabilities' => 'local/wsmanager:manage',
     ],
-    'local_serviceschema_delete_schema' => [
-        'classname' => 'local_serviceschema_external',
+    'local_wsmanager_delete_schema' => [
+        'classname' => 'local_wsmanager_external',
         'methodname' => 'delete_schema',
-        'classpath' => 'local/serviceschema/externallib.php',
+        'classpath' => 'local/wsmanager/externallib.php',
         'description' => 'Delete a service schema.',
         'type' => 'write',
         'ajax' => true,
-        'capabilities' => 'local/serviceschema:manage',
+        'capabilities' => 'local/wsmanager:manage',
     ],
 ];
 
 $services = [
-    'Web Service - Service Schema Manager' => [
+    'Web Service - Web Service Manager' => [
         'functions' => [
-            'local_serviceschema_get_schemas',
-            'local_serviceschema_get_schema',
-            'local_serviceschema_create_schema',
-            'local_serviceschema_update_schema',
-            'local_serviceschema_delete_schema',
+            'local_wsmanager_get_schemas',
+            'local_wsmanager_get_schema',
+            'local_wsmanager_create_schema',
+            'local_wsmanager_update_schema',
+            'local_wsmanager_delete_schema',
         ],
         'restrictedusers' => 1,
         'enabled' => 1,

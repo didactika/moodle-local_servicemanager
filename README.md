@@ -1,11 +1,13 @@
-# Service Schema Manager
+# Web Service Manager
 
-A Moodle plugin for declarative web service management using YAML schema files.
+A Moodle local plugin for managing web service integrations from declarative YAML schemas.
+
+Web Service Manager lets administrators define a complete Moodle web service setup in one version-controlled file. For each schema, the plugin provisions the service user, role, capabilities, external service, authorized functions, and token, then keeps those resources synchronized as the schema changes.
 
 [![Moodle Plugin CI](https://img.shields.io/badge/Moodle-4.5+-blue.svg)](https://moodle.org)
 [![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-## Table of Contents
+## Contents
 
 - [Overview](#overview)
   - [The Security Model](#the-security-model)
@@ -27,7 +29,7 @@ A Moodle plugin for declarative web service management using YAML schema files.
 
 ## Overview
 
-Service Schema Manager allows administrators to define Moodle web services declaratively using YAML files. Instead of navigating multiple Moodle admin screens to manually create users, roles, capabilities, and services, you declare everything in a single YAML file and the plugin provisions and maintains the full infrastructure automatically.
+Web Service Manager allows administrators to define Moodle web services declaratively using YAML files. Instead of navigating multiple Moodle admin screens to manually create users, roles, capabilities, and services, you declare everything in a single YAML file and the plugin provisions and maintains the full infrastructure automatically.
 
 ### The Security Model
 
@@ -92,15 +94,15 @@ The plugin keeps all Moodle resources in sync with the schema throughout its lif
 ### Method 1: Direct Download
 
 1. Download the latest release
-2. Extract to `/local/serviceschema/`
-3. Visit **Site Administration**
-4. Complete the installation wizard
+2. Extract it into `local/wsmanager`.
+3. Visit **Site administration** in Moodle.
+4. Complete the plugin installation wizard.
 
 ### Method 2: Git Clone
 
 ```bash
 cd /path/to/moodle/local
-git clone https://github.com/your-org/moodle-local_serviceschema.git serviceschema
+git clone https://github.com/didactika/moodle-local_wsmanager.git wsmanager
 ```
 
 ### Method 3: Composer
@@ -108,7 +110,7 @@ git clone https://github.com/your-org/moodle-local_serviceschema.git servicesche
 ```json
 {
   "require": {
-    "your-org/moodle-local_serviceschema": "^1.0"
+    "your-org/moodle-local_wsmanager": "^1.0"
   }
 }
 ```
@@ -119,7 +121,7 @@ After installation, visit **Site Administration** to complete the setup.
 
 ### Accessing the Dashboard
 
-Navigate to: **Site Administration → Server → Service Manager → Service Schemas Dashboard**
+Navigate to: **Site Administration → Server → Service Manager → Dashboard**
 
 ### Creating a Schema
 
@@ -209,9 +211,11 @@ definition:
 
 #### Requirements Section (Optional)
 
-| Field | Description |
-|-------|-------------|
-| `plugins` | Array of plugin names that must be installed |
+| Field | Required | Description |
+|---|:---:|---|
+| `plugins` | ❌ | List of plugins that must be installed |
+| `download_files` | ❌ | Whether the service may download files. Defaults to `false`. |
+| `upload_files` | ❌ | Whether the service may upload files. Defaults to `false`. |
 
 #### Definition Section (Required)
 
@@ -238,7 +242,7 @@ When a schema is created, resources follow these patterns:
 
 ### Settings Location
 
-**Site Administration → Plugins → Local Plugins → Service Schema Manager → Settings**
+**Site Administration → Plugins → Local Plugins → Web Service Manager → Settings**
 
 ### Notification Settings
 
@@ -268,20 +272,20 @@ When a schema is created, resources follow these patterns:
 
 ```php
 // Schema Manager - Main entry point
-$manager = new \local_serviceschema\schema\manager();
+$manager = new \local_wsmanager\schema\manager();
 $result = $manager->create_schema($yaml_content, $generate_token);
 $schema = $manager->get_schema($id);
 $manager->update_schema($id, $new_yaml);
 $manager->delete_schema($id);
 
 // YAML Parser
-$parser = new \local_serviceschema\schema\yaml_parser();
+$parser = new \local_wsmanager\schema\yaml_parser();
 $data = $parser->parse($yaml_content);
 $meta = $parser->get_meta($data);
 $functions = $parser->get_functions($data);
 
 // Validator
-$validator = new \local_serviceschema\schema\validator();
+$validator = new \local_wsmanager\schema\validator();
 $result = $validator->validate_content($yaml_content);
 // Returns: ['errors' => [...], 'warnings' => [...]]
 ```
@@ -297,22 +301,22 @@ $result = $validator->validate_content($yaml_content);
 
 The plugin exposes its own REST API so schemas can be managed programmatically — useful for CI/CD pipelines, deployment scripts, or any external tooling that needs to provision or update web services without accessing the Moodle UI.
 
-A pre-configured external service (`ws_service_schema_manager`) is installed automatically. Authorize a user with the `local/serviceschema:manage` capability to that service and use the token to call these functions:
+A pre-configured external service (`ws_service_schema_manager`) is installed automatically. Authorize a user with the `local/wsmanager:manage` capability to that service and use the token to call these functions:
 
 | Function | Type | Description |
 |----------|------|-------------|
-| `local_serviceschema_get_schemas` | read | List all schemas |
-| `local_serviceschema_get_schema` | read | Get a single schema by ID |
-| `local_serviceschema_create_schema` | write | Create a new schema from YAML content |
-| `local_serviceschema_update_schema` | write | Update an existing schema with new YAML content |
-| `local_serviceschema_delete_schema` | write | Delete a schema and all its provisioned resources |
+| `local_wsmanager_get_schemas` | read | List all schemas |
+| `local_wsmanager_get_schema` | read | Get a single schema by ID |
+| `local_wsmanager_create_schema` | write | Create a new schema from YAML content |
+| `local_wsmanager_update_schema` | write | Update an existing schema with new YAML content |
+| `local_wsmanager_delete_schema` | write | Delete a schema and all its provisioned resources |
 
 **Example — create a schema via REST:**
 
 ```bash
 curl -X POST "https://yourmoodle.example.com/webservice/rest/server.php" \
   -d "wstoken=YOUR_TOKEN" \
-  -d "wsfunction=local_serviceschema_create_schema" \
+  -d "wsfunction=local_wsmanager_create_schema" \
   -d "moodlewsrestformat=json" \
   -d "yamlcontent=meta:%0A  id: my.service%0A  ..." \
   -d "generatetoken=1"
@@ -324,10 +328,10 @@ curl -X POST "https://yourmoodle.example.com/webservice/rest/server.php" \
 
 ```bash
 # Run all plugin tests
-vendor/bin/phpunit --testsuite local_serviceschema_testsuite
+vendor/bin/phpunit --testsuite local_wsmanager_testsuite
 
 # Run specific test class
-vendor/bin/phpunit local/serviceschema/tests/yaml_parser_test.php
+vendor/bin/phpunit local/wsmanager/tests/yaml_parser_test.php
 ```
 
 ### Behat Tests
@@ -337,7 +341,7 @@ vendor/bin/phpunit local/serviceschema/tests/yaml_parser_test.php
 php admin/tool/behat/cli/init.php
 
 # Run plugin tests
-vendor/bin/behat --config /path/to/behatrun/behat.yml --tags=@local_serviceschema
+vendor/bin/behat --config /path/to/behatrun/behat.yml --tags=@local_wsmanager
 ```
 
 ### Test Coverage
@@ -417,13 +421,13 @@ Error: Critical function not found
 
 ```bash
 # Clone into your Moodle installation
-git clone https://github.com/your-org/moodle-local_serviceschema.git /path/to/moodle/local/serviceschema
+git clone https://github.com/didactika/moodle-local_wsmanager.git /path/to/moodle/local/wsmanager
 
 # Run tests
-vendor/bin/phpunit --testsuite local_serviceschema_testsuite
+vendor/bin/phpunit --testsuite local_wsmanager_testsuite
 
 # Run code style checks (requires PHP_CodeSniffer with Moodle standard)
-vendor/bin/phpcs --standard=moodle local/serviceschema/
+vendor/bin/phpcs --standard=moodle local/wsmanager/
 ```
 
 ### Pull Request Process
@@ -431,8 +435,8 @@ vendor/bin/phpcs --standard=moodle local/serviceschema/
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests (`vendor/bin/phpunit --testsuite local_serviceschema_testsuite`)
-5. Run code checks (`vendor/bin/phpcs --standard=moodle local/serviceschema/`)
+4. Run tests (`vendor/bin/phpunit --testsuite local_wsmanager_testsuite`)
+5. Run code checks (`vendor/bin/phpcs --standard=moodle local/wsmanager/`)
 6. Commit changes (`git commit -m 'Add amazing feature'`)
 7. Push to branch (`git push origin feature/amazing-feature`)
 8. Open a Pull Request

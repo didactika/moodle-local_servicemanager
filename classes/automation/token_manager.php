@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\automation;
+namespace local_wsmanager\automation;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Manager for web service tokens
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class token_manager {
@@ -74,7 +75,7 @@ class token_manager {
     public function regenerate_token(int $schemaid): array {
         global $DB;
 
-        $schema = $DB->get_record('local_serviceschema_schemas', ['id' => $schemaid]);
+        $schema = $DB->get_record('local_wsmanager_schemas', ['id' => $schemaid]);
         if (!$schema) {
             throw new \moodle_exception('Schema not found');
         }
@@ -85,7 +86,7 @@ class token_manager {
         }
 
         // Get meta name from YAML.
-        $parser = new \local_serviceschema\schema\yaml_parser();
+        $parser = new \local_wsmanager\schema\yaml_parser();
         $yamldata = $parser->parse($schema->yaml_content);
         $metaname = $yamldata['meta']['name'] ?? $schema->name;
 
@@ -93,8 +94,8 @@ class token_manager {
         $result = $this->generate_token($schema->userid, $schema->serviceid, $metaname);
 
         // Update schema with new token id.
-        $DB->set_field('local_serviceschema_schemas', 'tokenid', $result['tokenid'], ['id' => $schemaid]);
-        $DB->set_field('local_serviceschema_schemas', 'timemodified', time(), ['id' => $schemaid]);
+        $DB->set_field('local_wsmanager_schemas', 'tokenid', $result['tokenid'], ['id' => $schemaid]);
+        $DB->set_field('local_wsmanager_schemas', 'timemodified', time(), ['id' => $schemaid]);
 
         return $result;
     }

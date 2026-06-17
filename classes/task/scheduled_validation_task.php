@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\task;
+namespace local_wsmanager\task;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Task to validate all schemas periodically.
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class scheduled_validation_task extends \core\task\scheduled_task {
@@ -34,7 +35,7 @@ class scheduled_validation_task extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name() {
-        return get_string('task_scheduled_validation', 'local_serviceschema');
+        return get_string('task_scheduled_validation', 'local_wsmanager');
     }
 
     /**
@@ -45,8 +46,8 @@ class scheduled_validation_task extends \core\task\scheduled_task {
 
         mtrace('Starting scheduled schema validation...');
 
-        $schemas = $DB->get_records('local_serviceschema_schemas');
-        $validator = new \local_serviceschema\schema\validator();
+        $schemas = $DB->get_records('local_wsmanager_schemas');
+        $validator = new \local_wsmanager\schema\validator();
         $issues = 0;
 
         foreach ($schemas as $schema) {

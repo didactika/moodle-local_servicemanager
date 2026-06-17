@@ -14,14 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\automation;
+namespace local_wsmanager\automation;
 
 /**
  * Manager for service roles at system level
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class role_manager {
@@ -83,7 +84,7 @@ class role_manager {
      */
     public function assign_role_to_user(int $roleid, int $userid): int {
         $systemcontext = \context_system::instance();
-        return role_assign($roleid, $userid, $systemcontext->id, 'local_serviceschema');
+        return role_assign($roleid, $userid, $systemcontext->id, 'local_wsmanager');
     }
 
     /**
@@ -95,7 +96,7 @@ class role_manager {
      */
     public function unassign_role_from_user(int $roleid, int $userid): bool {
         $systemcontext = \context_system::instance();
-        role_unassign($roleid, $userid, $systemcontext->id, 'local_serviceschema');
+        role_unassign($roleid, $userid, $systemcontext->id, 'local_wsmanager');
         return true;
     }
 

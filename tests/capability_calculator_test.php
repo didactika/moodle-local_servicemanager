@@ -14,19 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema;
+namespace local_wsmanager;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Unit tests for capability calculator class.
  *
- * @package    local_serviceschema
+ * @package    local_wsmanager
  * @category   test
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_serviceschema\automation\capability_calculator
+ * @covers     \local_wsmanager\automation\capability_calculator
  */
 final class capability_calculator_test extends \advanced_testcase {
 
@@ -36,7 +37,7 @@ final class capability_calculator_test extends \advanced_testcase {
     public function test_get_capabilities_for_function(): void {
         $this->resetAfterTest();
 
-        $calculator = new \local_serviceschema\automation\capability_calculator();
+        $calculator = new \local_wsmanager\automation\capability_calculator();
 
         // core_webservice_get_site_info should always exist.
         $caps = $calculator->get_capabilities_for_function('core_webservice_get_site_info');
@@ -51,7 +52,7 @@ final class capability_calculator_test extends \advanced_testcase {
     public function test_calculate_capabilities(): void {
         $this->resetAfterTest();
 
-        $calculator = new \local_serviceschema\automation\capability_calculator();
+        $calculator = new \local_wsmanager\automation\capability_calculator();
 
         $functions = [
             ['name' => 'core_webservice_get_site_info', 'critical' => true],
@@ -68,7 +69,7 @@ final class capability_calculator_test extends \advanced_testcase {
     public function test_merge_extra_capabilities(): void {
         $this->resetAfterTest();
 
-        $calculator = new \local_serviceschema\automation\capability_calculator();
+        $calculator = new \local_wsmanager\automation\capability_calculator();
 
         $functions = [
             ['name' => 'core_webservice_get_site_info', 'critical' => true],
@@ -88,7 +89,7 @@ final class capability_calculator_test extends \advanced_testcase {
     public function test_unknown_function(): void {
         $this->resetAfterTest();
 
-        $calculator = new \local_serviceschema\automation\capability_calculator();
+        $calculator = new \local_wsmanager\automation\capability_calculator();
 
         $caps = $calculator->get_capabilities_for_function('nonexistent_function_xyz');
 
@@ -102,7 +103,7 @@ final class capability_calculator_test extends \advanced_testcase {
     public function test_deduplicate_capabilities(): void {
         $this->resetAfterTest();
 
-        $calculator = new \local_serviceschema\automation\capability_calculator();
+        $calculator = new \local_wsmanager\automation\capability_calculator();
 
         // Same capability added multiple times.
         $extra = [

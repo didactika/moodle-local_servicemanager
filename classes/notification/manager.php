@@ -14,14 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\notification;
+namespace local_wsmanager\notification;
 
 /**
  * Notification manager for health alerts
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class manager {
@@ -48,7 +49,7 @@ class manager {
             'site_name' => $site->fullname,
             'site_url' => $CFG->wwwroot,
             'report_date' => userdate(time()),
-            'dashboard_url' => (new \moodle_url('/local/serviceschema/pages/dashboard.php'))->out(false),
+            'dashboard_url' => (new \moodle_url('/local/wsmanager/pages/dashboard.php'))->out(false),
             'has_issues' => $hasissues,
             'has_healthy' => !empty($healthyschemas),
         ];
@@ -78,12 +79,12 @@ class manager {
         // Determine overall status.
         if ($hasissues) {
             $context['status_class'] = 'danger';
-            $context['status_text'] = get_string('healthcheck_issues_found', 'local_serviceschema', count($issues));
-            $context['summary_text'] = get_string('healthcheck_issues_summary', 'local_serviceschema');
+            $context['status_text'] = get_string('healthcheck_issues_found', 'local_wsmanager', count($issues));
+            $context['summary_text'] = get_string('healthcheck_issues_summary', 'local_wsmanager');
         } else {
             $context['status_class'] = 'success';
-            $context['status_text'] = get_string('healthcheck_all_healthy', 'local_serviceschema');
-            $context['summary_text'] = get_string('healthcheck_healthy_summary', 'local_serviceschema');
+            $context['status_text'] = get_string('healthcheck_all_healthy', 'local_wsmanager');
+            $context['summary_text'] = get_string('healthcheck_healthy_summary', 'local_wsmanager');
         }
 
         // Process issues data.
@@ -99,7 +100,7 @@ class manager {
                 'status' => $result['status'], // 'warning' or 'critical'
                 'status_label' => strtoupper($result['status']),
                 'messages' => $msgs,
-                'view_url' => (new \moodle_url('/local/serviceschema/pages/view.php', ['id' => $schema->id]))->out(false),
+                'view_url' => (new \moodle_url('/local/wsmanager/pages/view.php', ['id' => $schema->id]))->out(false),
             ];
         }
         $context['issues'] = $issuesdata;
@@ -115,9 +116,9 @@ class manager {
         $context['healthy_schemas'] = $healthydata;
 
         // Render email content.
-        $htmlbody = $OUTPUT->render_from_template('local_serviceschema/email_health_report', $context);
+        $htmlbody = $OUTPUT->render_from_template('local_wsmanager/email_health_report', $context);
         $textbody = strip_tags($htmlbody); // Fallback text.
-        $subject = 'Campus ' . $site->shortname . ': ' . get_string('healthcheck_report_subject', 'local_serviceschema');
+        $subject = 'Campus ' . $site->shortname . ': ' . get_string('healthcheck_report_subject', 'local_wsmanager');
 
         $noreplyuser = \core_user::get_noreply_user();
 
@@ -149,7 +150,7 @@ class manager {
 
         $subject = '[CRITICAL] Service Schema: ' . $schema->name;
         $body = "Critical issue detected with schema '{$schema->name}':\n\n{$message}";
-        $htmlbody = nl2br(s($body)) . '<br><br><a href="'.$CFG->wwwroot.'/local/serviceschema/pages/view.php?id='.$schema->id.'">View Schema</a>';
+        $htmlbody = nl2br(s($body)) . '<br><br><a href="'.$CFG->wwwroot.'/local/wsmanager/pages/view.php?id='.$schema->id.'">View Schema</a>';
 
         $noreplyuser = \core_user::get_noreply_user();
 
@@ -183,7 +184,7 @@ class manager {
         $addedemails = [];
 
         // Get configured emails.
-        $emailsconfig = get_config('local_serviceschema', 'notification_emails');
+        $emailsconfig = get_config('local_wsmanager', 'notification_emails');
         if (!empty($emailsconfig)) {
             $emails = array_map('trim', explode(',', $emailsconfig));
             foreach ($emails as $email) {
@@ -215,7 +216,7 @@ class manager {
         }
 
         // Add site admins if configured.
-        $notifyadmins = get_config('local_serviceschema', 'notify_admins');
+        $notifyadmins = get_config('local_wsmanager', 'notify_admins');
         if ($notifyadmins === false || $notifyadmins) { // Default to true.
             $admins = get_admins();
             foreach ($admins as $admin) {

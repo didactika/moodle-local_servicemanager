@@ -15,11 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Dashboard page for Service Schema Manager
+ * Dashboard page for Web Service Manager
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,7 +28,7 @@ require_once(__DIR__ . '/../../../config.php');
 
 require_login();
 $context = context_system::instance();
-require_capability('local/serviceschema:view', $context);
+require_capability('local/wsmanager:view', $context);
 
 // Pagination parameters.
 $page = optional_param('page', 0, PARAM_INT);
@@ -57,7 +58,7 @@ if ($dateto > 0) {
 $hasfilters = !empty($filters);
 
 $PAGE->set_context($context);
-$PAGE->set_url(new moodle_url('/local/serviceschema/pages/dashboard.php', [
+$PAGE->set_url(new moodle_url('/local/wsmanager/pages/dashboard.php', [
     'page' => $page,
     'perpage' => $perpage,
     'status' => $filterstatus,
@@ -65,12 +66,12 @@ $PAGE->set_url(new moodle_url('/local/serviceschema/pages/dashboard.php', [
     'datefrom' => $datefrom,
     'dateto' => $dateto,
 ]));
-$PAGE->set_title(get_string('dashboard', 'local_serviceschema'));
-$PAGE->set_heading(get_string('pluginname', 'local_serviceschema'));
+$PAGE->set_title(get_string('dashboard', 'local_wsmanager'));
+$PAGE->set_heading(get_string('pluginname', 'local_wsmanager'));
 $PAGE->set_pagelayout('admin');
 
 // Get paginated schemas.
-$manager = new \local_serviceschema\schema\manager();
+$manager = new \local_wsmanager\schema\manager();
 $totalcount = $manager->count_schemas($filters);
 $schemas = $manager->get_schemas_paginated($page, $perpage, $filters);
 
@@ -93,19 +94,19 @@ foreach ($schemas as $schema) {
         'name' => $schema->name,
         'version' => $schema->version,
         'status' => $schema->status,
-        'status_label' => get_string('status_' . $schema->status, 'local_serviceschema'),
+        'status_label' => get_string('status_' . $schema->status, 'local_wsmanager'),
         'status_class' => $statusclass,
         'status_icon' => $statusicon,
         'enabled' => (bool) $schema->enabled,
         'has_token' => !empty($schema->tokenid),
         'timecreated' => userdate($schema->timecreated),
         'timemodified' => userdate($schema->timemodified),
-        'view_url' => (new moodle_url('/local/serviceschema/pages/view.php', ['id' => $schema->id]))->out(false),
-        'edit_url' => (new moodle_url('/local/serviceschema/pages/edit.php', ['id' => $schema->id]))->out(false),
-        'delete_url' => (new moodle_url('/local/serviceschema/pages/delete.php', ['id' => $schema->id]))->out(false),
-        'export_url' => (new moodle_url('/local/serviceschema/pages/export.php', ['id' => $schema->id]))->out(false),
-        'history_url' => (new moodle_url('/local/serviceschema/pages/history.php', ['id' => $schema->id]))->out(false),
-        'can_manage' => has_capability('local/serviceschema:manage', $context),
+        'view_url' => (new moodle_url('/local/wsmanager/pages/view.php', ['id' => $schema->id]))->out(false),
+        'edit_url' => (new moodle_url('/local/wsmanager/pages/edit.php', ['id' => $schema->id]))->out(false),
+        'delete_url' => (new moodle_url('/local/wsmanager/pages/delete.php', ['id' => $schema->id]))->out(false),
+        'export_url' => (new moodle_url('/local/wsmanager/pages/export.php', ['id' => $schema->id]))->out(false),
+        'history_url' => (new moodle_url('/local/wsmanager/pages/history.php', ['id' => $schema->id]))->out(false),
+        'can_manage' => has_capability('local/wsmanager:manage', $context),
     ];
 }
 
@@ -113,7 +114,7 @@ foreach ($schemas as $schema) {
 $totalpages = ceil($totalcount / $perpage);
 $paginationdata = [];
 if ($totalpages > 1) {
-    $baseurl = new moodle_url('/local/serviceschema/pages/dashboard.php', [
+    $baseurl = new moodle_url('/local/wsmanager/pages/dashboard.php', [
         'perpage' => $perpage,
         'status' => $filterstatus,
         'name' => $filtername,
@@ -162,7 +163,7 @@ if ($totalpages > 1) {
 }
 $haspagination = $totalpages > 1;
 
-$canmanage = has_capability('local/serviceschema:manage', $context);
+$canmanage = has_capability('local/wsmanager:manage', $context);
 
 // Build web service status panel data.
 global $CFG;
@@ -185,18 +186,18 @@ $enabledcount = count($activeprotos);
 
 if (!$wsenabled) {
     $wsstatusclass = 'badge-danger';
-    $wsstatuslabel = get_string('ws_status_disabled', 'local_serviceschema');
+    $wsstatuslabel = get_string('ws_status_disabled', 'local_wsmanager');
 } elseif ($enabledcount === 0) {
     $wsstatusclass = 'badge-warning';
-    $wsstatuslabel = get_string('ws_status_warning', 'local_serviceschema');
+    $wsstatuslabel = get_string('ws_status_warning', 'local_wsmanager');
 } else {
     $wsstatusclass = 'badge-success';
-    $wsstatuslabel = get_string('ws_status_operational', 'local_serviceschema');
+    $wsstatuslabel = get_string('ws_status_operational', 'local_wsmanager');
 }
 
 // Schema health summary counts.
 $healthrows = $DB->get_records_sql(
-    "SELECT status, COUNT(*) AS cnt FROM {local_serviceschema_schemas} GROUP BY status"
+    "SELECT status, COUNT(*) AS cnt FROM {local_wsmanager_schemas} GROUP BY status"
 );
 $healthhealthy  = (int)($healthrows['healthy']->cnt  ?? 0);
 $healthwarning  = (int)($healthrows['warning']->cnt  ?? 0);
@@ -205,14 +206,14 @@ $healthcritical = (int)($healthrows['critical']->cnt ?? 0);
 $templatedata = [
     'schemas' => $schemasdata,
     'schemas_length' => count($schemasdata),
-    'import_url' => (new moodle_url('/local/serviceschema/pages/import.php'))->out(false),
-    'export_all_url' => (new moodle_url('/local/serviceschema/pages/export.php', ['all' => 1]))->out(false),
-    'bulk_action_url' => (new moodle_url('/local/serviceschema/pages/bulk_action.php'))->out(false),
-    'documentation_url' => (new moodle_url('/local/serviceschema/pages/documentation.php'))->out(false),
+    'import_url' => (new moodle_url('/local/wsmanager/pages/import.php'))->out(false),
+    'export_all_url' => (new moodle_url('/local/wsmanager/pages/export.php', ['all' => 1]))->out(false),
+    'bulk_action_url' => (new moodle_url('/local/wsmanager/pages/bulk_action.php'))->out(false),
+    'documentation_url' => (new moodle_url('/local/wsmanager/pages/documentation.php'))->out(false),
     'can_manage' => $canmanage,
     'ws_status' => [
         'ws_enabled'              => $wsenabled,
-        'ws_enabled_label'        => get_string($wsenabled ? 'ws_enabled_label' : 'ws_disabled_label', 'local_serviceschema'),
+        'ws_enabled_label'        => get_string($wsenabled ? 'ws_enabled_label' : 'ws_disabled_label', 'local_wsmanager'),
         'ws_enabled_class'        => $wsenabled ? 'text-success' : 'text-danger',
         'status_class'            => $wsstatusclass,
         'status_label'            => $wsstatuslabel,
@@ -252,5 +253,5 @@ $templatedata = [
 ];
 
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_serviceschema/dashboard', $templatedata);
+echo $OUTPUT->render_from_template('local_wsmanager/dashboard', $templatedata);
 echo $OUTPUT->footer();

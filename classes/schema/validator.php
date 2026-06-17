@@ -14,16 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\schema;
+namespace local_wsmanager\schema;
 
-use local_serviceschema\automation\capability_calculator;
+use local_wsmanager\automation\capability_calculator;
 
 /**
  * Validator for service schema definitions
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class validator {
@@ -67,21 +68,21 @@ class validator {
         $additionalusers = $this->parser->extract_additional_users($data);
 
         // Check schema ID uniqueness.
-        $existing = $DB->get_record('local_serviceschema_schemas', ['schema_id' => $meta['id']]);
+        $existing = $DB->get_record('local_wsmanager_schemas', ['schema_id' => $meta['id']]);
         if ($existing && ($excludeschemaid === null || $existing->id != $excludeschemaid)) {
-            $errors[] = get_string('error_schema_id_exists', 'local_serviceschema', $meta['id']);
+            $errors[] = get_string('error_schema_id_exists', 'local_wsmanager', $meta['id']);
         }
 
         // Check schema name uniqueness (role and service names are derived from meta.name and must be unique).
-        $existingbyname = $DB->get_record('local_serviceschema_schemas', ['name' => $meta['name']]);
+        $existingbyname = $DB->get_record('local_wsmanager_schemas', ['name' => $meta['name']]);
         if ($existingbyname && ($excludeschemaid === null || $existingbyname->id != $excludeschemaid)) {
-            $errors[] = get_string('error_schema_name_exists', 'local_serviceschema', $meta['name']);
+            $errors[] = get_string('error_schema_name_exists', 'local_wsmanager', $meta['name']);
         }
 
         // Validate required plugins.
         foreach ($requiredplugins as $plugin) {
             if (!$this->plugin_exists($plugin)) {
-                $warnings[] = get_string('warning_plugin_not_installed', 'local_serviceschema', $plugin);
+                $warnings[] = get_string('warning_plugin_not_installed', 'local_wsmanager', $plugin);
             }
         }
 
@@ -92,16 +93,16 @@ class validator {
             
             // Check for duplicates.
             if (isset($seenfunctions[$funcname])) {
-                $errors[] = get_string('error_duplicate_function', 'local_serviceschema', $funcname);
+                $errors[] = get_string('error_duplicate_function', 'local_wsmanager', $funcname);
                 continue;
             }
             $seenfunctions[$funcname] = true;
 
             if (!$this->capcalc->function_exists($funcname)) {
                 if ($func['critical']) {
-                    $errors[] = get_string('error_critical_function_missing', 'local_serviceschema', $funcname);
+                    $errors[] = get_string('error_critical_function_missing', 'local_wsmanager', $funcname);
                 } else {
-                    $warnings[] = get_string('warning_function_missing', 'local_serviceschema', $funcname);
+                    $warnings[] = get_string('warning_function_missing', 'local_wsmanager', $funcname);
                 }
             }
         }
@@ -109,7 +110,7 @@ class validator {
         // Validate additional user emails.
         foreach ($additionalusers as $email) {
             if (!$this->user_exists_by_email($email)) {
-                $warnings[] = get_string('warning_user_email_not_found', 'local_serviceschema', $email);
+                $warnings[] = get_string('warning_user_email_not_found', 'local_wsmanager', $email);
             }
         }
 
@@ -160,7 +161,7 @@ class validator {
             $data = $this->parser->parse($content);
             if ($data === null) {
                 return [
-                    'errors' => [get_string('error_invalid_yaml', 'local_serviceschema', 'Empty or invalid content')],
+                    'errors' => [get_string('error_invalid_yaml', 'local_wsmanager', 'Empty or invalid content')],
                     'warnings' => [],
                     'data' => null,
                 ];

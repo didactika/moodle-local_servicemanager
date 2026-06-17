@@ -1,4 +1,4 @@
-@local @local_serviceschema
+@local @local_wsmanager
 Feature: Schema editing
   In order to update web service configurations
   As an administrator
@@ -10,7 +10,7 @@ Feature: Schema editing
 
   @javascript
   Scenario: Edit schema content
-    Given I navigate to "Plugins > Local plugins > Service Schema Manager" in site administration
+    Given I navigate to "Plugins > Local plugins > Web Service Manager" in site administration
     When I click on "Edit" "link" in the "test.service" "table_row"
     Then I should see "Edit Schema"
     And I should see "YAML Content"
@@ -18,7 +18,7 @@ Feature: Schema editing
 
   @javascript
   Scenario: Save schema changes
-    Given I navigate to "Plugins > Local plugins > Service Schema Manager" in site administration
+    Given I navigate to "Plugins > Local plugins > Web Service Manager" in site administration
     When I click on "Edit" "link" in the "test.service" "table_row"
     And I set the field "YAML Content" to multiline:
       """
@@ -36,7 +36,7 @@ Feature: Schema editing
 
   @javascript
   Scenario: Cancel editing
-    Given I navigate to "Plugins > Local plugins > Service Schema Manager" in site administration
+    Given I navigate to "Plugins > Local plugins > Web Service Manager" in site administration
     When I click on "Edit" "link" in the "test.service" "table_row"
     And I click on "Cancel" "link"
-    Then I should see "Service Schema Manager"
+    Then I should see "Web Service Manager"

@@ -15,11 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Language strings for local_serviceschema
+ * Language strings for local_wsmanager
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,11 +28,11 @@ defined('MOODLE_INTERNAL') || die();
 
 // General.
 $string['pluginname'] = 'Service Manager';
-$string['privacy:metadata'] = 'The Service Schema Manager plugin does not store any personal data.';
+$string['privacy:metadata'] = 'The Web Service Manager plugin does not store any personal data.';
 
 // Capabilities.
-$string['serviceschema:manage'] = 'Manage service schemas';
-$string['serviceschema:view'] = 'View service schemas';
+$string['wsmanager:manage'] = 'Manage service schemas';
+$string['wsmanager:view'] = 'View service schemas';
 
 // Navigation and pages.
 $string['dashboard'] = 'Service Schemas Dashboard';
@@ -55,9 +56,9 @@ $string['ws_manage_protocols_link'] = 'Manage protocols';
 
 // Form fields.
 $string['yamlfile'] = 'YAML Schema File';
-$string['yamlfile_help'] = 'Upload a YAML file containing the service schema definition. Only .yaml and .yml files are accepted.<br><br><a href="/local/serviceschema/pages/documentation.php"><strong>📖 View Documentation</strong></a>';
+$string['yamlfile_help'] = 'Upload a YAML file containing the service schema definition. Only .yaml and .yml files are accepted.<br><br><a href="/local/wsmanager/pages/documentation.php"><strong>📖 View Documentation</strong></a>';
 $string['yamlcontent'] = 'YAML Content';
-$string['yamlcontent_help'] = 'Edit the YAML schema definition directly.<br><br><a href="/local/serviceschema/pages/documentation.php"><strong>📖 View Documentation</strong></a>';
+$string['yamlcontent_help'] = 'Edit the YAML schema definition directly.<br><br><a href="/local/wsmanager/pages/documentation.php"><strong>📖 View Documentation</strong></a>';
 $string['generatetoken'] = 'Generate token automatically';
 $string['generatetoken_desc'] = 'If checked, a token will be generated for the service user and displayed after upload.';
 $string['upload'] = 'Upload Schema';
@@ -141,7 +142,7 @@ $string['warning_plugin_not_installed'] = 'Recommended plugin "{$a}" is not inst
 $string['healthcheck_issues_summary'] = 'Some schemas require attention. Please review the details below.';
 $string['healthcheck_healthy_summary'] = 'All service schemas are operating normally. No action is required.';
 $string['issues'] = 'Issues Detected';
-$string['email_footer'] = 'You are receiving this email because you are listed as a notification recipient for Service Schema Manager.';
+$string['email_footer'] = 'You are receiving this email because you are listed as a notification recipient for Web Service Manager.';
 $string['healthcheck_task'] = 'Service Schema Health Check';
 $string['healthcheck_report_subject'] = 'Informe de Salud de Esquemas de Servicios Web';
 $string['healthcheck_all_healthy'] = 'All service schemas are healthy.';

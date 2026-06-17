@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Behat context for local_serviceschema
+ * Behat context for local_wsmanager
  *
- * @package    local_serviceschema
+ * @package    local_wsmanager
  * @category   test
  * @copyright  2026 Your Organization
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,9 +28,9 @@ require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 use Behat\Gherkin\Node\TableNode;
 
 /**
- * Local serviceschema behat context class.
+ * Local wsmanager behat context class.
  */
-class behat_local_serviceschema extends behat_base {
+class behat_local_wsmanager extends behat_base {
 
     /**
      * Create a schema for testing.
@@ -51,7 +51,7 @@ definition:
     - core_webservice_get_site_info
 YAML;
 
-        $manager = new \local_serviceschema\schema\manager();
+        $manager = new \local_wsmanager\schema\manager();
         $manager->create_from_yaml($yaml, false);
     }
 
@@ -62,7 +62,7 @@ YAML;
      * @param TableNode $data
      */
     public function the_following_schemas_exist(TableNode $data) {
-        $manager = new \local_serviceschema\schema\manager();
+        $manager = new \local_wsmanager\schema\manager();
 
         foreach ($data->getHash() as $row) {
             $yaml = <<<YAML
@@ -87,7 +87,7 @@ YAML;
     public function a_schema_with_id_should_exist($schemaid) {
         global $DB;
 
-        $exists = $DB->record_exists('local_serviceschema', ['schema_id' => $schemaid]);
+        $exists = $DB->record_exists('local_wsmanager', ['schema_id' => $schemaid]);
         if (!$exists) {
             throw new Exception("Schema with ID '{$schemaid}' does not exist");
         }
@@ -102,7 +102,7 @@ YAML;
     public function a_schema_with_id_should_not_exist($schemaid) {
         global $DB;
 
-        $exists = $DB->record_exists('local_serviceschema', ['schema_id' => $schemaid]);
+        $exists = $DB->record_exists('local_wsmanager', ['schema_id' => $schemaid]);
         if ($exists) {
             throw new Exception("Schema with ID '{$schemaid}' still exists");
         }

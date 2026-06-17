@@ -15,19 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for local_serviceschema
+ * Version information for local_wsmanager
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_serviceschema';
+$plugin->component = 'local_wsmanager';
 $plugin->version = 2026061700;
-$plugin->requires = 2024042200; // Moodle 4.5+
+$plugin->requires = 2024100700; // Moodle 4.5+
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.2.0';
-$plugin->supported = [405, 500];
+$plugin->release = '1.0.0';
+$plugin->supported = [405, 503]; // Moodle 4.5 to 5.3

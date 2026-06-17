@@ -1,4 +1,4 @@
-@local @local_serviceschema
+@local @local_wsmanager
 Feature: Schema dashboard
   In order to manage web service schemas
   As an administrator
@@ -6,11 +6,11 @@ Feature: Schema dashboard
 
   Background:
     Given I log in as "admin"
-    And I navigate to "Plugins > Local plugins > Service Schema Manager" in site administration
+    And I navigate to "Plugins > Local plugins > Web Service Manager" in site administration
 
   @javascript
   Scenario: View empty dashboard
-    Then I should see "Service Schema Manager"
+    Then I should see "Web Service Manager"
     And I should see "Upload Schema"
     And I should see "No schemas found"
 

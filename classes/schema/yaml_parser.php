@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\schema;
+namespace local_wsmanager\schema;
 
 /**
  * YAML parser for service schema definitions
@@ -22,9 +22,10 @@ namespace local_serviceschema\schema;
  * Uses PHP's native yaml_parse if available, otherwise falls back to
  * a simple custom parser for the supported YAML subset.
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class yaml_parser {
@@ -41,7 +42,7 @@ class yaml_parser {
         if (function_exists('yaml_parse')) {
             $data = @yaml_parse($content);
             if ($data === false) {
-                throw new \moodle_exception('error_invalid_yaml', 'local_serviceschema', '', 'Unable to parse YAML');
+                throw new \moodle_exception('error_invalid_yaml', 'local_wsmanager', '', 'Unable to parse YAML');
             }
             return is_array($data) ? $data : null;
         }
@@ -51,7 +52,7 @@ class yaml_parser {
             $data = $this->simple_parse($content);
             return is_array($data) ? $data : null;
         } catch (\Exception $e) {
-            throw new \moodle_exception('error_invalid_yaml', 'local_serviceschema', '', $e->getMessage());
+            throw new \moodle_exception('error_invalid_yaml', 'local_wsmanager', '', $e->getMessage());
         }
     }
 
@@ -219,7 +220,7 @@ class yaml_parser {
 
         // Check meta section.
         if (!isset($data['meta']) || !is_array($data['meta'])) {
-            $errors[] = get_string('error_missing_meta', 'local_serviceschema');
+            $errors[] = get_string('error_missing_meta', 'local_wsmanager');
             return $errors; // Can't continue without meta.
         }
 
@@ -227,24 +228,24 @@ class yaml_parser {
 
         // Check required meta fields.
         if (empty($meta['id'])) {
-            $errors[] = get_string('error_missing_meta_id', 'local_serviceschema');
+            $errors[] = get_string('error_missing_meta_id', 'local_wsmanager');
         } elseif (!$this->validate_schema_id($meta['id'])) {
-            $errors[] = get_string('error_invalid_schema_id', 'local_serviceschema', $meta['id']);
+            $errors[] = get_string('error_invalid_schema_id', 'local_wsmanager', $meta['id']);
         } elseif (\strlen($meta['id']) > 50) {
-            $errors[] = get_string('error_schema_id_too_long', 'local_serviceschema', \strlen($meta['id']));
+            $errors[] = get_string('error_schema_id_too_long', 'local_wsmanager', \strlen($meta['id']));
         }
 
         if (empty($meta['name'])) {
-            $errors[] = get_string('error_missing_meta_name', 'local_serviceschema');
+            $errors[] = get_string('error_missing_meta_name', 'local_wsmanager');
         }
 
         if (empty($meta['version'])) {
-            $errors[] = get_string('error_missing_meta_version', 'local_serviceschema');
+            $errors[] = get_string('error_missing_meta_version', 'local_wsmanager');
         }
 
         // Check definition section.
         if (!isset($data['definition']) || !is_array($data['definition'])) {
-            $errors[] = get_string('error_missing_definition', 'local_serviceschema');
+            $errors[] = get_string('error_missing_definition', 'local_wsmanager');
             return $errors;
         }
 
@@ -252,7 +253,7 @@ class yaml_parser {
 
         // Check functions array.
         if (!isset($definition['functions']) || !is_array($definition['functions']) || empty($definition['functions'])) {
-            $errors[] = get_string('error_missing_functions', 'local_serviceschema');
+            $errors[] = get_string('error_missing_functions', 'local_wsmanager');
         }
 
         return $errors;

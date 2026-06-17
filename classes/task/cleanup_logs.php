@@ -14,14 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\task;
+namespace local_wsmanager\task;
 
 /**
  * Scheduled task for log cleanup
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class cleanup_logs extends \core\task\scheduled_task {
@@ -32,7 +33,7 @@ class cleanup_logs extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name(): string {
-        return get_string('cleanup_task', 'local_serviceschema');
+        return get_string('cleanup_task', 'local_wsmanager');
     }
 
     /**
@@ -42,14 +43,14 @@ class cleanup_logs extends \core\task\scheduled_task {
         global $DB;
 
         // Check if cleanup is enabled.
-        $enabled = get_config('local_serviceschema', 'cleanup_enabled');
+        $enabled = get_config('local_wsmanager', 'cleanup_enabled');
         if (!$enabled) {
             mtrace('Service Schema log cleanup is disabled.');
             return;
         }
 
         // Get retention days.
-        $retentiondays = get_config('local_serviceschema', 'cleanup_retention_days');
+        $retentiondays = get_config('local_wsmanager', 'cleanup_retention_days');
         if (!$retentiondays || $retentiondays < 1) {
             $retentiondays = 30; // Default to 30 days.
         }
@@ -58,8 +59,8 @@ class cleanup_logs extends \core\task\scheduled_task {
         $cutoff = time() - ($retentiondays * 24 * 60 * 60);
 
         // Delete old health logs.
-        $deleted = $DB->count_records_select('local_serviceschema_healthlog', 'timecreated < :cutoff', ['cutoff' => $cutoff]);
-        $DB->delete_records_select('local_serviceschema_healthlog', 'timecreated < :cutoff', ['cutoff' => $cutoff]);
+        $deleted = $DB->count_records_select('local_wsmanager_healthlog', 'timecreated < :cutoff', ['cutoff' => $cutoff]);
+        $DB->delete_records_select('local_wsmanager_healthlog', 'timecreated < :cutoff', ['cutoff' => $cutoff]);
 
         mtrace("Service Schema log cleanup completed. Deleted {$deleted} records older than {$retentiondays} days.");
     }

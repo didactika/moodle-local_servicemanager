@@ -14,20 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\schema;
+namespace local_wsmanager\schema;
 
-use local_serviceschema\automation\user_manager;
-use local_serviceschema\automation\role_manager;
-use local_serviceschema\automation\service_manager;
-use local_serviceschema\automation\token_manager;
-use local_serviceschema\automation\capability_calculator;
+use local_wsmanager\automation\user_manager;
+use local_wsmanager\automation\role_manager;
+use local_wsmanager\automation\service_manager;
+use local_wsmanager\automation\token_manager;
+use local_wsmanager\automation\capability_calculator;
 
 /**
  * Manager for service schema CRUD operations
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class manager {
@@ -80,7 +81,7 @@ class manager {
 
         $validation = $this->validator->validate_content($yamlcontent);
         if (!empty($validation['errors'])) {
-            throw new \moodle_exception('error_invalid_yaml', 'local_serviceschema',
+            throw new \moodle_exception('error_invalid_yaml', 'local_wsmanager',
                 '', implode('; ', $validation['errors']));
         }
 
@@ -147,7 +148,7 @@ class manager {
             $record->timecreated = $now;
             $record->timemodified = $now;
 
-            $id = $DB->insert_record('local_serviceschema_schemas', $record);
+            $id = $DB->insert_record('local_wsmanager_schemas', $record);
 
             // create initial history entry.
             $historymanager = new history_manager();
@@ -156,7 +157,7 @@ class manager {
                     $id,
                     $meta['version'],
                     $yamlcontent,
-                    get_string('schema_created_success', 'local_serviceschema', $meta['version'])
+                    get_string('schema_created_success', 'local_wsmanager', $meta['version'])
                 );
             }
 
@@ -201,7 +202,7 @@ class manager {
 
         $validation = $this->validator->validate_content($yamlcontent, $id);
         if (!empty($validation['errors'])) {
-            throw new \moodle_exception('error_invalid_yaml', 'local_serviceschema',
+            throw new \moodle_exception('error_invalid_yaml', 'local_wsmanager',
                 '', implode('; ', $validation['errors']));
         }
 
@@ -212,7 +213,7 @@ class manager {
 
         // ID must not change.
         if ($meta['id'] !== $existing->schema_id) {
-            throw new \moodle_exception('error_id_change_forbidden', 'local_serviceschema');
+            throw new \moodle_exception('error_id_change_forbidden', 'local_wsmanager');
         }
 
         // Parse existing content to compare structural changes.
@@ -233,16 +234,16 @@ class manager {
         if ($content_changed) {
             // Functional content changed: Version MUST change (increment).
             if ($meta['version'] === $existing->version) {
-                throw new \moodle_exception('error_version_change_required', 'local_serviceschema');
+                throw new \moodle_exception('error_version_change_required', 'local_wsmanager');
             }
             if (!$isRollback && version_compare($meta['version'], $existing->version, '<=')) {
-                throw new \moodle_exception('error_version_must_increment', 'local_serviceschema', '', 
+                throw new \moodle_exception('error_version_must_increment', 'local_wsmanager', '', 
                     (object)['current' => $existing->version, 'new' => $meta['version']]);
             }
         } else {
             // Content did NOT change (only metadata): Version MUST NOT change.
             if ($meta['version'] !== $existing->version && !$isRollback) {
-                throw new \moodle_exception('error_version_change_forbidden', 'local_serviceschema');
+                throw new \moodle_exception('error_version_change_forbidden', 'local_wsmanager');
             }
         }
 
@@ -255,7 +256,7 @@ class manager {
                     $id,
                     $meta['version'],
                     $yamlcontent,
-                    get_string('schema_updated_success', 'local_serviceschema', $meta['version'])
+                    get_string('schema_updated_success', 'local_wsmanager', $meta['version'])
                 );
             }
         }
@@ -269,7 +270,7 @@ class manager {
         $userid = $existing->userid;
         if (!$userid || !$this->usermanager->user_exists($userid)) {
             $userid = $this->usermanager->create_service_user($meta['id'], $meta['name']);
-            $DB->set_field('local_serviceschema_schemas', 'userid', $userid, ['id' => $id]);
+            $DB->set_field('local_wsmanager_schemas', 'userid', $userid, ['id' => $id]);
         } else {
             $this->usermanager->update_user_name($userid, $meta['name']);
         }
@@ -278,7 +279,7 @@ class manager {
         $roleid = $existing->roleid;
         if (!$roleid || !$this->rolemanager->role_exists($roleid)) {
             $roleid = $this->rolemanager->create_service_role($meta['id'], $meta['name'], $meta['description']);
-            $DB->set_field('local_serviceschema_schemas', 'roleid', $roleid, ['id' => $id]);
+            $DB->set_field('local_wsmanager_schemas', 'roleid', $roleid, ['id' => $id]);
             $this->rolemanager->assign_role_to_user($roleid, $userid);
         } else {
             $this->rolemanager->update_service_role($roleid, $meta['name'], $meta['description']);
@@ -298,7 +299,7 @@ class manager {
                 $servicesettings['download_files'],
                 $servicesettings['upload_files']
             );
-            $DB->set_field('local_serviceschema_schemas', 'serviceid', $serviceid, ['id' => $id]);
+            $DB->set_field('local_wsmanager_schemas', 'serviceid', $serviceid, ['id' => $id]);
             $this->servicemanager->authorize_user($serviceid, $userid);
 
             // Reattach the existing token to the new service if it survived,
@@ -307,7 +308,7 @@ class manager {
                 if ($this->tokenmanager->token_exists($existing->tokenid)) {
                     $this->tokenmanager->reattach_token($existing->tokenid, $serviceid);
                 } else {
-                    $DB->set_field('local_serviceschema_schemas', 'tokenid', 0, ['id' => $id]);
+                    $DB->set_field('local_wsmanager_schemas', 'tokenid', 0, ['id' => $id]);
                 }
             }
         } else {
@@ -337,7 +338,7 @@ class manager {
         $record->status = empty($warnings) ? 'healthy' : 'warning';
         $record->timemodified = time();
 
-        $DB->update_record('local_serviceschema_schemas', $record);
+        $DB->update_record('local_wsmanager_schemas', $record);
 
         return ['warnings' => $warnings];
     }
@@ -373,10 +374,10 @@ class manager {
         }
 
 
-        $DB->delete_records('local_serviceschema_healthlog', ['schemaid' => $id]);
-        $DB->delete_records('local_serviceschema_history', ['schemaid' => $id]);
+        $DB->delete_records('local_wsmanager_healthlog', ['schemaid' => $id]);
+        $DB->delete_records('local_wsmanager_history', ['schemaid' => $id]);
 
-        $DB->delete_records('local_serviceschema_schemas', ['id' => $id]);
+        $DB->delete_records('local_wsmanager_schemas', ['id' => $id]);
 
         return true;
     }
@@ -389,7 +390,7 @@ class manager {
      */
     public function get_schema(int $id): ?\stdClass {
         global $DB;
-        return $DB->get_record('local_serviceschema_schemas', ['id' => $id]) ?: null;
+        return $DB->get_record('local_wsmanager_schemas', ['id' => $id]) ?: null;
     }
 
     /**
@@ -400,7 +401,7 @@ class manager {
      */
     public function get_schema_by_schema_id(string $schemaid): ?\stdClass {
         global $DB;
-        return $DB->get_record('local_serviceschema_schemas', ['schema_id' => $schemaid]) ?: null;
+        return $DB->get_record('local_wsmanager_schemas', ['schema_id' => $schemaid]) ?: null;
     }
 
     /**
@@ -410,7 +411,7 @@ class manager {
      */
     public function get_all_schemas(): array {
         global $DB;
-        return $DB->get_records('local_serviceschema_schemas', null, 'name ASC');
+        return $DB->get_records('local_wsmanager_schemas', null, 'name ASC');
     }
 
     /**
@@ -421,7 +422,7 @@ class manager {
      */
     public function get_schemas_by_status(string $status): array {
         global $DB;
-        return $DB->get_records('local_serviceschema_schemas', ['status' => $status], 'name ASC');
+        return $DB->get_records('local_wsmanager_schemas', ['status' => $status], 'name ASC');
     }
 
     /**
@@ -433,7 +434,7 @@ class manager {
      */
     public function update_status(int $id, string $status): bool {
         global $DB;
-        return $DB->set_field('local_serviceschema_schemas', 'status', $status, ['id' => $id]);
+        return $DB->set_field('local_wsmanager_schemas', 'status', $status, ['id' => $id]);
     }
 
     /**
@@ -464,7 +465,7 @@ class manager {
             }
         }
 
-        return $DB->set_field('local_serviceschema_schemas', 'enabled', $enabled ? 1 : 0, ['id' => $id]);
+        return $DB->set_field('local_wsmanager_schemas', 'enabled', $enabled ? 1 : 0, ['id' => $id]);
     }
 
     /**
@@ -482,7 +483,7 @@ class manager {
         
         // Select all from schemas, but override 'enabled' with the service's actual state.
         $sql = "SELECT s.*, es.enabled AS service_enabled 
-                  FROM {local_serviceschema_schemas} s
+                  FROM {local_wsmanager_schemas} s
              LEFT JOIN {external_services} es ON s.serviceid = es.id";
         
         if ($where) {
@@ -516,7 +517,7 @@ class manager {
         global $DB;
 
         [$where, $params] = $this->build_filter_conditions($filters);
-        $sql = "SELECT COUNT(*) FROM {local_serviceschema_schemas} s";
+        $sql = "SELECT COUNT(*) FROM {local_wsmanager_schemas} s";
         if ($where) {
             $sql .= " WHERE " . $where;
         }

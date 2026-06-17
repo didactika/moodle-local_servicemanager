@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Data generator for local_serviceschema.
+ * Data generator for local_wsmanager.
  *
- * @package    local_serviceschema
+ * @package    local_wsmanager
  * @category   test
  * @copyright  2026 Your Organization
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Data generator class for local_serviceschema.
+ * Data generator class for local_wsmanager.
  */
-class local_serviceschema_generator extends testing_module_generator {
+class local_wsmanager_generator extends testing_module_generator {
 
     /** @var int Counter for unique schema IDs */
     protected $schemacount = 0;
@@ -77,7 +77,7 @@ YAML;
         $record->timecreated = time();
         $record->timemodified = time();
 
-        $record->id = $DB->insert_record('local_serviceschema', $record);
+        $record->id = $DB->insert_record('local_wsmanager', $record);
 
         return $record;
     }
@@ -90,7 +90,7 @@ YAML;
      * @return array Result with id and optional token.
      */
     public function create_schema_from_yaml($yaml, $generatetoken = false) {
-        $manager = new \local_serviceschema\schema\manager();
+        $manager = new \local_wsmanager\schema\manager();
         return $manager->create_from_yaml($yaml, $generatetoken);
     }
 }

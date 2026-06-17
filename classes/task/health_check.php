@@ -14,22 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_serviceschema\task;
+namespace local_wsmanager\task;
 
-use local_serviceschema\schema\manager;
-use local_serviceschema\schema\yaml_parser;
-use local_serviceschema\automation\user_manager;
-use local_serviceschema\automation\service_manager;
-use local_serviceschema\automation\token_manager;
-use local_serviceschema\automation\capability_calculator;
-use local_serviceschema\notification\manager as notification_manager;
+use local_wsmanager\schema\manager;
+use local_wsmanager\schema\yaml_parser;
+use local_wsmanager\automation\user_manager;
+use local_wsmanager\automation\service_manager;
+use local_wsmanager\automation\token_manager;
+use local_wsmanager\automation\capability_calculator;
+use local_wsmanager\notification\manager as notification_manager;
 
 /**
  * Scheduled task for health checks
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class health_check extends \core\task\scheduled_task {
@@ -40,7 +41,7 @@ class health_check extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name(): string {
-        return get_string('healthcheck_task', 'local_serviceschema');
+        return get_string('healthcheck_task', 'local_wsmanager');
     }
 
     /**
@@ -79,7 +80,7 @@ class health_check extends \core\task\scheduled_task {
         }
 
         // Send notifications based on configuration.
-        $notifylevel = get_config('local_serviceschema', 'notification_level');
+        $notifylevel = get_config('local_wsmanager', 'notification_level');
         $shouldnotify = !empty($issues);
 
         // If no issues, but level is 'all', notify anyway.
@@ -338,11 +339,11 @@ class health_check extends \core\task\scheduled_task {
         $record->details = json_encode($result['details']);
         $record->timecreated = time();
 
-        $DB->insert_record('local_serviceschema_healthlog', $record);
+        $DB->insert_record('local_wsmanager_healthlog', $record);
 
         // Clean old logs (keep last 30 days).
         $cutoff = time() - (30 * 24 * 60 * 60);
-        $DB->delete_records_select('local_serviceschema_healthlog',
+        $DB->delete_records_select('local_wsmanager_healthlog',
             'schemaid = :schemaid AND timecreated < :cutoff',
             ['schemaid' => $schemaid, 'cutoff' => $cutoff]
         );

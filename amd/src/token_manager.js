@@ -1,10 +1,11 @@
 /**
- * Token manager AMD module for Service Schema Manager
+ * Token manager AMD module for Web Service Manager
  *
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @module     local_serviceschema/token_manager
+ * @module     local_wsmanager/token_manager
  */
 
 import { get_string as getString } from 'core/str';
@@ -97,7 +98,7 @@ const showCopySuccess = (button) => {
     button.innerHTML = '<i class="fa fa-check mr-1"></i>Copied!';
     button.className = button.className.replace('btn-success', '').replace('btn-outline-secondary', '') + ' btn-success';
 
-    getString('copied', 'local_serviceschema').then((copiedStr) => {
+    getString('copied', 'local_wsmanager').then((copiedStr) => {
         button.innerHTML = '<i class="fa fa-check mr-1"></i>' + copiedStr;
     }).catch(() => {
     });

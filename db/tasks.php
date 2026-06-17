@@ -15,11 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Scheduled tasks for local_serviceschema
+ * Scheduled tasks for local_wsmanager
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 $tasks = [
     // Daily health check at 7:00 AM.
     [
-        'classname' => 'local_serviceschema\task\health_check',
+        'classname' => 'local_wsmanager\task\health_check',
         'blocking' => 0,
         'minute' => '0',
         'hour' => '7',
@@ -38,7 +39,7 @@ $tasks = [
     ],
     // Log cleanup every minute (checks if enabled internally).
     [
-        'classname' => 'local_serviceschema\task\cleanup_logs',
+        'classname' => 'local_wsmanager\task\cleanup_logs',
         'blocking' => 0,
         'minute' => '*',
         'hour' => '*',
@@ -48,7 +49,7 @@ $tasks = [
     ],
     // Version retention cleanup daily at 2:00 AM.
     [
-        'classname' => 'local_serviceschema\task\version_cleanup_task',
+        'classname' => 'local_wsmanager\task\version_cleanup_task',
         'blocking' => 0,
         'minute' => '0',
         'hour' => '2',
@@ -58,7 +59,7 @@ $tasks = [
     ],
     // Scheduled schema validation daily at 3:00 AM.
     [
-        'classname' => 'local_serviceschema\task\scheduled_validation_task',
+        'classname' => 'local_wsmanager\task\scheduled_validation_task',
         'blocking' => 0,
         'minute' => '0',
         'hour' => '3',

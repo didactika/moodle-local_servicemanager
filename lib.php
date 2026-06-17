@@ -15,11 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library functions for local_serviceschema
+ * Library functions for local_wsmanager
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_wsmanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @param global_navigation $navigation
  */
-function local_serviceschema_extend_navigation(global_navigation $navigation) {
+function local_wsmanager_extend_navigation(global_navigation $navigation) {
     // Navigation is handled via settings.php for admin pages.
 }
 
@@ -39,7 +40,7 @@ function local_serviceschema_extend_navigation(global_navigation $navigation) {
  *
  * @return string The domain name
  */
-function local_serviceschema_get_domain(): string {
+function local_wsmanager_get_domain(): string {
     global $CFG;
     $parsed = parse_url($CFG->wwwroot);
     return $parsed['host'] ?? 'localhost';
@@ -51,7 +52,7 @@ function local_serviceschema_get_domain(): string {
  * @param string $schemaid The schema ID
  * @return string The shortname format
  */
-function local_serviceschema_id_to_shortname(string $schemaid): string {
+function local_wsmanager_id_to_shortname(string $schemaid): string {
     return str_replace('.', '_', $schemaid);
 }
 
@@ -61,6 +62,6 @@ function local_serviceschema_id_to_shortname(string $schemaid): string {
  * @param string $schemaid The schema ID to validate
  * @return bool True if valid
  */
-function local_serviceschema_validate_schema_id(string $schemaid): bool {
+function local_wsmanager_validate_schema_id(string $schemaid): bool {
     return preg_match('/^[a-zA-Z0-9.]+$/', $schemaid) === 1;
 }
