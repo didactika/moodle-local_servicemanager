@@ -166,6 +166,20 @@ class token_manager {
     }
 
     /**
+     * Update a token to point to a different external service.
+     *
+     * Used when a service is recreated and the existing token should carry over.
+     *
+     * @param int $tokenid Token ID
+     * @param int $serviceid New service ID
+     * @return bool
+     */
+    public function reattach_token(int $tokenid, int $serviceid): bool {
+        global $DB;
+        return $DB->set_field('external_tokens', 'externalserviceid', $serviceid, ['id' => $tokenid]);
+    }
+
+    /**
      * Get last access time for token
      *
      * @param int $tokenid Token ID

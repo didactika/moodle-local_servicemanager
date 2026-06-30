@@ -44,7 +44,7 @@ class role_manager {
 
         // Convert dots to underscores for shortname.
         $shortname = 'ws_' . str_replace('.', '_', $schemaid);
-        $name = 'Servicio ' . $metaname;
+        $name = 'Role for ' . $metaname;
 
         // Create role with no archetype.
         $roleid = create_role($name, $shortname, $metadescription, '');
@@ -68,7 +68,7 @@ class role_manager {
 
         $role = new \stdClass();
         $role->id = $roleid;
-        $role->name = 'Servicio ' . $metaname;
+        $role->name = 'Role for ' . $metaname;
         $role->description = $metadescription;
 
         return $DB->update_record('role', $role);

@@ -116,9 +116,9 @@ class yaml_parser {
                     $current = [];
                 }
 
-                if ($value === '' || $value === '[]') {
-                    // Empty value means nested object or array.
-                    $current[$key] = $value === '[]' ? [] : [];
+                if ($value === '' || $value === '[]' || str_starts_with($value, '#')) {
+                    // Empty value (or a pure inline comment) means nested object or array.
+                    $current[$key] = ($value === '[]') ? [] : [];
                     $stack[] = &$current[$key];
                     $indentStack[] = $indent;
                 } else {
@@ -139,10 +139,31 @@ class yaml_parser {
     protected function parse_value(string $value) {
         $value = trim($value);
 
-        // Handle quoted strings.
-        if ((str_starts_with($value, '"') && str_ends_with($value, '"')) ||
-            (str_starts_with($value, "'") && str_ends_with($value, "'"))) {
-            return substr($value, 1, -1);
+        // Handle quoted strings. Use strrpos so a trailing inline comment after the
+        // closing quote (e.g. "value" # comment) doesn't break the match.
+        if (str_starts_with($value, '"')) {
+            $endquote = strrpos($value, '"');
+            if ($endquote > 0) {
+                return substr($value, 1, $endquote - 1);
+            }
+        }
+        if (str_starts_with($value, "'")) {
+            $endquote = strrpos($value, "'");
+            if ($endquote > 0) {
+                return substr($value, 1, $endquote - 1);
+            }
+        }
+
+        // A value that is purely a comment (e.g. key: # note) means null.
+        if (str_starts_with($value, '#')) {
+            return null;
+        }
+
+        // Strip inline comments from unquoted values (e.g. "false  # comment" → "false").
+        // Per YAML spec, a comment starts at ' #' (space followed by #).
+        $commentpos = strpos($value, ' #');
+        if ($commentpos !== false) {
+            $value = trim(substr($value, 0, $commentpos));
         }
 
         // Handle booleans.
@@ -209,6 +230,8 @@ class yaml_parser {
             $errors[] = get_string('error_missing_meta_id', 'local_serviceschema');
         } elseif (!$this->validate_schema_id($meta['id'])) {
             $errors[] = get_string('error_invalid_schema_id', 'local_serviceschema', $meta['id']);
+        } elseif (\strlen($meta['id']) > 50) {
+            $errors[] = get_string('error_schema_id_too_long', 'local_serviceschema', \strlen($meta['id']));
         }
 
         if (empty($meta['name'])) {
@@ -317,5 +340,20 @@ class yaml_parser {
      */
     public function extract_required_plugins(array $data): array {
         return $data['requirements']['plugins'] ?? [];
+    }
+
+    /**
+     * Extract file transfer flags from the requirements section.
+     * Defaults to false for any flag not explicitly set.
+     *
+     * @param array $data Parsed YAML data
+     * @return array ['download_files' => bool, 'upload_files' => bool]
+     */
+    public function extract_service_settings(array $data): array {
+        $requirements = $data['requirements'] ?? [];
+        return [
+            'download_files' => !empty($requirements['download_files']),
+            'upload_files'   => !empty($requirements['upload_files']),
+        ];
     }
 }

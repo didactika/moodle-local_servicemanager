@@ -3,11 +3,14 @@
 A Moodle plugin for declarative web service management using YAML schema files.
 
 [![Moodle Plugin CI](https://img.shields.io/badge/Moodle-4.5+-blue.svg)](https://moodle.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Table of Contents
 
 - [Overview](#overview)
+  - [The Security Model](#the-security-model)
+  - [Automatic Capability Resolution](#automatic-capability-resolution)
+  - [Full Lifecycle Management](#full-lifecycle-management)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -15,6 +18,7 @@ A Moodle plugin for declarative web service management using YAML schema files.
 - [YAML Schema Format](#yaml-schema-format)
 - [Configuration](#configuration)
 - [API Reference](#api-reference)
+  - [Plugin Web Service API](#plugin-web-service-api)
 - [Testing](#testing)
 - [Security](#security)
 - [Troubleshooting](#troubleshooting)
@@ -23,14 +27,43 @@ A Moodle plugin for declarative web service management using YAML schema files.
 
 ## Overview
 
-Service Schema Manager allows administrators to define Moodle web services declaratively using YAML files. Instead of manually configuring users, roles, capabilities, and services through the Moodle interface, you can define everything in a single YAML file.
+Service Schema Manager allows administrators to define Moodle web services declaratively using YAML files. Instead of navigating multiple Moodle admin screens to manually create users, roles, capabilities, and services, you declare everything in a single YAML file and the plugin provisions and maintains the full infrastructure automatically.
+
+### The Security Model
+
+Each schema creates a **fully isolated, scoped environment** for one web service consumer:
+
+- **Dedicated service user** — a system account created exclusively for this service, suspended automatically if the schema is disabled
+- **Dedicated role** — a custom role assigned to that user at the system level, containing only the capabilities this service actually needs
+- **Dedicated external service** — a Moodle web service restricted to that user and those functions only
+- **Scoped token** — a token tied to that user and service, never shared across consumers
+
+This means a compromised token or misbehaving consumer can only access exactly what its schema declares — nothing more. Revoking access is as simple as disabling or deleting the schema.
+
+### Automatic Capability Resolution
+
+Moodle web service functions each declare the capabilities they require in their PHP definition files. This plugin reads those declarations at provisioning time and automatically assigns all necessary capabilities to the service role — you don't need to know or look them up manually. You can also declare additional capabilities in the YAML for access patterns beyond the standard function requirements. The capabilities `webservice/rest:use` and `webservice/soap:use` are always included.
+
+### Full Lifecycle Management
+
+The plugin keeps all Moodle resources in sync with the schema throughout its lifetime:
+
+| Action | What happens automatically |
+|--------|---------------------------|
+| **Create** | User, role, capabilities, service, token all provisioned in one step |
+| **Update** | Role name, capabilities, and service functions updated to match the new YAML |
+| **Enable / Disable** | User account unsuspended / suspended; service toggled |
+| **Delete** | User, role, service, and token all removed cleanly |
 
 ### Why Use This Plugin?
 
-- **Reproducibility**: Schema files can be version-controlled and deployed across environments
-- **Automation**: Integrate web service provisioning into CI/CD pipelines
-- **Documentation**: YAML files serve as self-documenting service configurations
-- **Efficiency**: Create complete web service setups in seconds instead of minutes
+- **Security by default**: Every consumer gets its own isolated user, role, and service — no shared credentials, minimal blast radius
+- **No manual capability hunting**: Required capabilities are derived automatically from the function declarations in Moodle's codebase
+- **Efficiency**: Create a complete, production-ready web service setup in seconds instead of navigating multiple Moodle admin screens
+- **Reproducibility**: Schema files can be version-controlled and deployed identically across environments
+- **Documentation**: YAML files serve as self-documenting service configurations — the schema is the spec
+- **Auditability**: Version history, health check logs, and YAML diffs give a complete record of every change
+- **Automation**: Import schemas via ZIP archive, integrate provisioning into CI/CD pipelines, or manage schemas programmatically via the plugin's own REST web service API
 
 ## Features
 
@@ -42,7 +75,6 @@ Service Schema Manager allows administrators to define Moodle web services decla
 | **Token Management** | Secure token generation, display, and regeneration |
 | **Multi-language** | English, Spanish, Portuguese, Italian, French |
 | **In-Browser Editor** | Edit schemas directly in Moodle |
-| **Validation** | Real-time syntax and function validation |
 | **Validation** | Real-time syntax and function validation |
 | **Capability Calculation** | Automatic capability assignment from functions |
 | **Versioning** | Full history tracking with rollback and diff view |
@@ -61,7 +93,7 @@ Service Schema Manager allows administrators to define Moodle web services decla
 
 1. Download the latest release
 2. Extract to `/local/serviceschema/`
-3. Visit **Site Administration → Notifications**
+3. Visit **Site Administration**
 4. Complete the installation wizard
 
 ### Method 2: Git Clone
@@ -81,18 +113,18 @@ git clone https://github.com/your-org/moodle-local_serviceschema.git servicesche
 }
 ```
 
-After installation, visit **Site Administration → Notifications** to complete setup.
+After installation, visit **Site Administration** to complete the setup.
 
 ## Usage
 
 ### Accessing the Dashboard
 
-Navigate to: **Site Administration → Plugins → Local Plugins → Service Schema Manager**
+Navigate to: **Site Administration → Server → Service Manager → Service Schemas Dashboard**
 
 ### Creating a Schema
 
-1. Click **"Upload Schema"**
-2. Upload a YAML file or download the example
+1. Click **"Import Schemas"**
+2. Upload a YAML file or download the example by going to **View Documentation**
 3. Check **"Generate token automatically"** if needed
 4. Click **"Upload"**
 
@@ -113,9 +145,9 @@ Click on a schema name to view:
 
 ### Managing Versions
 
-1. Click on the **History** icon (clock) in the dashboard
+1. Click on **Version History** while viewing an specific schema
 2. View past versions and their changes
-3. Click **"View Detail"** to see the full schema visualization
+3. Select two versions and Click **"Compare Versions"** to view the definitions difference.
 4. Click **"Rollback"** to restore a previous version
 
 ### Deleting a Schema
@@ -142,6 +174,8 @@ requirements:                          # Optional section
   plugins:
     - mod_forum                        # List of required plugins
     - mod_assign
+  download_files: false                # Allow file downloads (default: false)
+  upload_files: false                  # Allow file uploads (default: false)
 
 definition:
   functions:                           # Required: Web service functions
@@ -167,7 +201,7 @@ definition:
 
 | Field | Required | Description |
 |-------|:--------:|-------------|
-| `id` | ✅ | Unique identifier. Only letters, numbers, and dots (.) |
+| `id` | ✅ | Unique identifier. Only letters, numbers, and dots (.). Max 50 characters. |
 | `name` | ✅ | Human-readable display name |
 | `version` | ✅ | Semantic version string (e.g., "1.0.0") |
 | `maintainer` | ❌ | Responsible person or team |
@@ -194,10 +228,11 @@ When a schema is created, resources follow these patterns:
 | Resource | Pattern | Example |
 |----------|---------|---------|
 | Username | `ws.{id}` | `ws.myapp.users` |
+| Display name | `User Webservice {name}` | `User Webservice My Application` |
 | Email | `ws.{id}@devnull.{domain}` | `ws.myapp.users@devnull.campus.edu` |
-| Role | `ws_{id}` (dots → underscores) | `ws_myapp_users` |
-| Service | `ws_{id}` | `ws_myapp_users` |
-| Token Name | `Token - {name}` | `Token - My Application User Service` |
+| Role shortname | `ws_{id}` (dots → underscores) | `ws_myapp_users` |
+| Service shortname | `ws_{id}` | `ws_myapp_users` |
+| Token Name | `Token - {name}` | `Token - My Application` |
 
 ## Configuration
 
@@ -234,7 +269,7 @@ When a schema is created, resources follow these patterns:
 ```php
 // Schema Manager - Main entry point
 $manager = new \local_serviceschema\schema\manager();
-$result = $manager->create_from_yaml($yaml_content, $generate_token);
+$result = $manager->create_schema($yaml_content, $generate_token);
 $schema = $manager->get_schema($id);
 $manager->update_schema($id, $new_yaml);
 $manager->delete_schema($id);
@@ -257,6 +292,31 @@ $result = $validator->validate_content($yaml_content);
 |------|-------------|------------------|
 | `health_check_task` | Validates all schemas | Daily at 2:00 AM |
 | `cleanup_logs_task` | Removes old health logs | Daily at 3:00 AM |
+
+### Plugin Web Service API
+
+The plugin exposes its own REST API so schemas can be managed programmatically — useful for CI/CD pipelines, deployment scripts, or any external tooling that needs to provision or update web services without accessing the Moodle UI.
+
+A pre-configured external service (`ws_service_schema_manager`) is installed automatically. Authorize a user with the `local/serviceschema:manage` capability to that service and use the token to call these functions:
+
+| Function | Type | Description |
+|----------|------|-------------|
+| `local_serviceschema_get_schemas` | read | List all schemas |
+| `local_serviceschema_get_schema` | read | Get a single schema by ID |
+| `local_serviceschema_create_schema` | write | Create a new schema from YAML content |
+| `local_serviceschema_update_schema` | write | Update an existing schema with new YAML content |
+| `local_serviceschema_delete_schema` | write | Delete a schema and all its provisioned resources |
+
+**Example — create a schema via REST:**
+
+```bash
+curl -X POST "https://yourmoodle.example.com/webservice/rest/server.php" \
+  -d "wstoken=YOUR_TOKEN" \
+  -d "wsfunction=local_serviceschema_create_schema" \
+  -d "moodlewsrestformat=json" \
+  -d "yamlcontent=meta:%0A  id: my.service%0A  ..." \
+  -d "generatetoken=1"
+```
 
 ## Testing
 
@@ -320,6 +380,7 @@ vendor/bin/behat --config /path/to/behatrun/behat.yml --tags=@local_serviceschem
 | Invalid schema ID | Use only letters, numbers, and dots |
 | Missing critical function | Install required plugin or mark as non-critical |
 | Duplicate ID | Choose a unique schema ID |
+| Duplicate name | Schema names must be unique — use a different `meta.name` |
 
 ### Token Issues
 
@@ -355,15 +416,14 @@ Error: Critical function not found
 ### Development Setup
 
 ```bash
-# Clone repository
-git clone https://github.com/your-org/moodle-local_serviceschema.git
+# Clone into your Moodle installation
+git clone https://github.com/your-org/moodle-local_serviceschema.git /path/to/moodle/local/serviceschema
 
-# Install dependencies
-cd moodle-local_serviceschema
-npm install
+# Run tests
+vendor/bin/phpunit --testsuite local_serviceschema_testsuite
 
-# Run code checks
-grunt
+# Run code style checks (requires PHP_CodeSniffer with Moodle standard)
+vendor/bin/phpcs --standard=moodle local/serviceschema/
 ```
 
 ### Pull Request Process
@@ -372,7 +432,7 @@ grunt
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
 4. Run tests (`vendor/bin/phpunit --testsuite local_serviceschema_testsuite`)
-5. Run code checks (`grunt`)
+5. Run code checks (`vendor/bin/phpcs --standard=moodle local/serviceschema/`)
 6. Commit changes (`git commit -m 'Add amazing feature'`)
 7. Push to branch (`git push origin feature/amazing-feature`)
 8. Open a Pull Request
@@ -386,31 +446,7 @@ grunt
 
 ## License
 
-This plugin is licensed under the [MIT License](LICENSE).
-
-```
-MIT License
-
-Copyright (c) 2026 Your Organization
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+This plugin is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0) or later.
 
 ---
 

@@ -72,6 +72,33 @@
                 </tbody>
             </table>
 
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{#str}}field, local_serviceschema{{/str}}</th>
+                        <th>{{#str}}required{{/str}}</th>
+                        <th>{{#str}}description{{/str}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>plugins</code></td>
+                        <td><span class="badge badge-secondary">{{#str}}no{{/str}}</span></td>
+                        <td>{{#str}}doc_requirements_plugins, local_serviceschema{{/str}}</td>
+                    </tr>
+                    <tr>
+                        <td><code>download_files</code></td>
+                        <td><span class="badge badge-secondary">{{#str}}no{{/str}}</span></td>
+                        <td>{{#str}}doc_requirements_download_files, local_serviceschema{{/str}}</td>
+                    </tr>
+                    <tr>
+                        <td><code>upload_files</code></td>
+                        <td><span class="badge badge-secondary">{{#str}}no{{/str}}</span></td>
+                        <td>{{#str}}doc_requirements_upload_files, local_serviceschema{{/str}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
             {{! Definition section }}
             <h4 id="definition" class="mt-4 mb-3 text-primary">{{#str}}doc_definition, local_serviceschema{{/str}}</h4>
             <p>{{#str}}doc_definition_desc, local_serviceschema{{/str}}</p>
@@ -79,6 +106,11 @@
             <h5 class="mt-3">{{#str}}functions, local_serviceschema{{/str}}</h5>
             <p>{{#str}}doc_functions_desc, local_serviceschema{{/str}}</p>
             <pre class="bg-light p-3 rounded"><code>{{function_code}}</code></pre>
+            <div class="alert alert-info mt-3">
+                <i class="fa fa-info-circle mr-2"></i>
+                {{#str}}doc_default_capabilities, local_serviceschema{{/str}}
+                <code class="ml-1">webservice/rest:use</code>, <code>webservice/soap:use</code>.
+            </div>
 
             {{! Naming conventions }}
             <h4 id="naming" class="mt-4 mb-3 text-primary">{{#str}}doc_naming, local_serviceschema{{/str}}</h4>
@@ -95,6 +127,11 @@
                         <td>Username</td>
                         <td><code>ws.{id}</code></td>
                         <td><code>ws.example.service</code></td>
+                    </tr>
+                    <tr>
+                        <td>Display name</td>
+                        <td><code>User Webservice {name}</code></td>
+                        <td><code>User Webservice Example Service</code></td>
                     </tr>
                     <tr>
                         <td>Email</td>
@@ -121,7 +158,11 @@
 
             {{! Example section }}
             <h4 id="example" class="mt-4 mb-3 text-primary">{{#str}}doc_example, local_serviceschema{{/str}}</h4>
-            <p>{{#str}}doc_example_complete_desc, local_serviceschema{{/str}}</p>
+            <p>
+                {{#str}}doc_example_complete_desc, local_serviceschema{{/str}}
+                <a href="{{downloadurl}}"><i class="fa fa-download mr-1"></i>{{#str}}download_example, local_serviceschema{{/str}}</a>
+                {{#str}}doc_example_to_get_started, local_serviceschema{{/str}}
+            </p>
         </div>
     </div>
 </div>

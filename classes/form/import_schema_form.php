@@ -61,10 +61,6 @@ class import_schema_form extends \moodleform {
         $mform->setDefault('conflict_action', 'skip');
         $mform->addHelpButton('conflict_action', 'conflict_action', 'local_serviceschema');
 
-        // Generate tokens option.
-        $mform->addElement('advcheckbox', 'generatetokens', get_string('generatetoken', 'local_serviceschema'));
-        $mform->setDefault('generatetokens', 0);
-
         // Submit buttons.
         $this->add_action_buttons(true, get_string('import', 'local_serviceschema'));
     }

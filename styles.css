@@ -271,32 +271,13 @@
 }
 
 .serviceschema-pagination .page-item .page-link {
-    color: #495057;
-    border-color: #dee2e6;
     padding: 0.5rem 0.75rem;
     min-width: 2.5rem;
     text-align: center;
 }
 
 .serviceschema-pagination .page-item.active .page-link {
-    background-color: #28a745;
-    border-color: #28a745;
     color: #fff;
-}
-
-.serviceschema-pagination .page-item .page-link:hover {
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-}
-
-.serviceschema-pagination .page-item.active .page-link:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-}
-
-.serviceschema-pagination .page-item.disabled .page-link {
-    color: #6c757d;
-    background-color: #fff;
 }
 
 /* ===========================================

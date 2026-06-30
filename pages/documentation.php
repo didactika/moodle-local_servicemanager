@@ -58,6 +58,8 @@ meta:
 requirements:                     # Optional
   plugins:
     - mod_forum
+  download_files: false           # Allow file downloads (default: false)
+  upload_files: false             # Allow file uploads (default: false)
 
 definition:
   functions:                      # Required: Web service functions

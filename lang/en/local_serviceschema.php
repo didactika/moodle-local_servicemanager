@@ -40,6 +40,19 @@ $string['edit_schema'] = 'Edit Schema';
 $string['view_schema'] = 'View Schema';
 $string['manage_schemas'] = 'Manage Schemas';
 
+// Web service status panel.
+$string['ws_status_panel'] = 'Web Services Status';
+$string['ws_status_operational'] = 'Operational';
+$string['ws_status_warning'] = 'No protocols enabled';
+$string['ws_status_disabled'] = 'Disabled';
+$string['ws_enabled_label'] = 'Enabled';
+$string['ws_disabled_label'] = 'Disabled';
+$string['ws_services_label'] = 'Web Services';
+$string['ws_protocols_label'] = 'Enabled Protocols';
+$string['ws_health_label'] = 'Health Summary';
+$string['ws_overview_link'] = 'Web services overview';
+$string['ws_manage_protocols_link'] = 'Manage protocols';
+
 // Form fields.
 $string['yamlfile'] = 'YAML Schema File';
 $string['yamlfile_help'] = 'Upload a YAML file containing the service schema definition. Only .yaml and .yml files are accepted.<br><br><a href="/local/serviceschema/pages/documentation.php"><strong>📖 View Documentation</strong></a>';
@@ -51,12 +64,14 @@ $string['upload'] = 'Upload Schema';
 
 // Schema fields.
 $string['schema_id'] = 'Schema ID';
+$string['schema_information'] = 'Schema Information';
 $string['schema_name'] = 'Name';
 $string['schema_version'] = 'Version';
 $string['schema_maintainer'] = 'Maintainer';
 $string['schema_description'] = 'Description';
 $string['schema_status'] = 'Status';
 $string['schema_enabled'] = 'Enabled';
+$string['schema_not_found'] = 'Schema not found. It may have been deleted.';
 $string['schema_created'] = 'Created';
 $string['schema_modified'] = 'Last Modified';
 $string['modified'] = 'Modified';
@@ -105,8 +120,10 @@ $string['error_missing_meta_version'] = 'Missing required "meta.version" field.'
 $string['error_missing_definition'] = 'Missing required "definition" section.';
 $string['error_missing_functions'] = 'Missing required "definition.functions" array.';
 $string['error_invalid_schema_id'] = 'Schema ID "{$a}" is invalid. Only letters, numbers, and dots (.) are allowed.';
+$string['error_schema_id_too_long'] = 'Schema ID is too long ({$a} characters). Maximum allowed is 50 characters.';
 $string['error_id_change_forbidden'] = 'Changing the Schema ID is not allowed. Please Create a new schema instead.';
 $string['error_schema_id_exists'] = 'A schema with ID "{$a}" already exists.';
+$string['error_schema_name_exists'] = 'A schema with the name "{$a}" already exists. Schema names must be unique.';
 $string['error_duplicate_function'] = 'Function "{$a}" is duplicated in the definition.';
 $string['error_function_not_found'] = 'Function "{$a}" does not exist in this Moodle installation.';
 $string['error_critical_function_missing'] = 'Critical function "{$a}" is missing. Schema cannot be created.';
@@ -134,7 +151,15 @@ $string['healthcheck_issues_found'] = 'Issues detected in {$a} schema(s).';
 $string['confirm_delete'] = 'Are you sure you want to delete schema "{$a}"? This will also delete the associated user, role, and service.';
 $string['confirm_regenerate_token'] = 'Are you sure you want to regenerate the token? The current token will be invalidated immediately.';
 
+// Requirements.
+$string['schema_requirements'] = 'Requirements';
+$string['req_file_access'] = 'File Access';
+$string['req_download_files'] = 'Can download files';
+$string['req_upload_files'] = 'Can upload files';
+$string['req_plugins'] = 'Required Plugins';
+
 // Service user.
+$string['provisioned_resources'] = 'Provisioned Resources';
 $string['service_user'] = 'Service User';
 $string['service_role'] = 'Service Role';
 $string['external_service'] = 'External Service';
@@ -202,13 +227,18 @@ $string['doc_definition'] = 'Definition Section';
 $string['doc_definition_desc'] = 'The definition section specifies the web service functions and capabilities.';
 $string['doc_naming'] = 'Naming Conventions';
 $string['doc_example'] = 'Complete Example';
-$string['doc_example_complete_desc'] = 'The example schema above shows a complete functional configuration. Download the example file from the link at the top to get started quickly.';
+$string['doc_example_complete_desc'] = 'The example schema above shows a complete functional configuration.';
+$string['doc_example_to_get_started'] = 'to get started quickly.';
 $string['doc_functions_desc'] = 'Functions can be specified in simple or extended format:';
-$string['doc_meta_id'] = 'Unique identifier. Only letters, numbers, and dots (.) allowed.';
-$string['doc_meta_name'] = 'Human-readable name for the service.';
-$string['doc_meta_version'] = 'Version string (semantic versioning recommended).';
+$string['doc_meta_id'] = 'Unique identifier. Only letters, numbers, and dots (.) allowed. Max 50 characters.';
+$string['doc_meta_name'] = 'Human-readable name for the service. Must be unique across all schemas.';
+$string['doc_meta_version'] = 'Version string (semantic versioning recommended). Must be incremented when the definition (functions or capabilities) changes; metadata-only edits (name, maintainer, description) do not require a version bump.';
 $string['doc_meta_maintainer'] = 'Person or team responsible for the schema.';
 $string['doc_meta_description'] = 'Brief description of the service purpose.';
+$string['doc_requirements_plugins'] = 'Array of Moodle plugin names that must be installed. A warning is shown if any are missing, but schema creation is not blocked.';
+$string['doc_requirements_download_files'] = 'Boolean. If true, consumers of this service may download files via the Moodle webservice file endpoint. Defaults to false.';
+$string['doc_requirements_upload_files'] = 'Boolean. If true, consumers of this service may upload files via the Moodle webservice upload endpoint. Defaults to false.';
+$string['doc_default_capabilities'] = 'The following capabilities are automatically added to every schema regardless of the functions defined:';
 $string['field'] = 'Field';
 $string['resource'] = 'Resource';
 $string['pattern'] = 'Pattern';
@@ -232,7 +262,7 @@ $string['import_info_title'] = 'Import Schemas';
 $string['import_info_text'] = 'You can import schemas from YAML files or ZIP archives:';
 $string['import_info_yaml'] = 'Single YAML file (.yaml or .yml)';
 $string['import_info_zip'] = 'ZIP archive containing multiple YAML files';
-$string['import_complete'] = 'Import complete: {$a->imported} imported, {$a->skipped} skipped.';
+$string['import_complete'] = 'Import complete: {$a->imported} imported, {$a->skipped} skipped, {$a->errors_count} with errors.';
 $string['import_error_no_id'] = 'YAML does not contain a valid meta.id field.';
 $string['no_file_uploaded'] = 'No file was uploaded.';
 $string['no_schemas_to_export'] = 'There are no schemas to export.';

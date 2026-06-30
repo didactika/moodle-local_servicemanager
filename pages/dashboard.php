@@ -162,6 +162,46 @@ if ($totalpages > 1) {
 }
 $haspagination = $totalpages > 1;
 
+$canmanage = has_capability('local/serviceschema:manage', $context);
+
+// Build web service status panel data.
+global $CFG;
+$wsenabled = !empty($CFG->enablewebservices);
+$activeprotos = ($wsenabled && !empty($CFG->webserviceprotocols))
+    ? array_map('trim', explode(',', $CFG->webserviceprotocols))
+    : [];
+
+$wsplugins = core_plugin_manager::instance()->get_plugins_of_type('webservice');
+$protocolsdata = [];
+foreach ($wsplugins as $protokey => $plugin) {
+    $ison = in_array($protokey, $activeprotos);
+    $protocolsdata[] = [
+        'name'        => strtoupper($protokey),
+        'enabled'     => $ison,
+        'badge_class' => $ison ? 'badge-success' : 'badge-secondary',
+    ];
+}
+$enabledcount = count($activeprotos);
+
+if (!$wsenabled) {
+    $wsstatusclass = 'badge-danger';
+    $wsstatuslabel = get_string('ws_status_disabled', 'local_serviceschema');
+} elseif ($enabledcount === 0) {
+    $wsstatusclass = 'badge-warning';
+    $wsstatuslabel = get_string('ws_status_warning', 'local_serviceschema');
+} else {
+    $wsstatusclass = 'badge-success';
+    $wsstatuslabel = get_string('ws_status_operational', 'local_serviceschema');
+}
+
+// Schema health summary counts.
+$healthrows = $DB->get_records_sql(
+    "SELECT status, COUNT(*) AS cnt FROM {local_serviceschema_schemas} GROUP BY status"
+);
+$healthhealthy  = (int)($healthrows['healthy']->cnt  ?? 0);
+$healthwarning  = (int)($healthrows['warning']->cnt  ?? 0);
+$healthcritical = (int)($healthrows['critical']->cnt ?? 0);
+
 $templatedata = [
     'schemas' => $schemasdata,
     'schemas_length' => count($schemasdata),
@@ -169,7 +209,22 @@ $templatedata = [
     'export_all_url' => (new moodle_url('/local/serviceschema/pages/export.php', ['all' => 1]))->out(false),
     'bulk_action_url' => (new moodle_url('/local/serviceschema/pages/bulk_action.php'))->out(false),
     'documentation_url' => (new moodle_url('/local/serviceschema/pages/documentation.php'))->out(false),
-    'can_manage' => has_capability('local/serviceschema:manage', $context),
+    'can_manage' => $canmanage,
+    'ws_status' => [
+        'ws_enabled'              => $wsenabled,
+        'ws_enabled_label'        => get_string($wsenabled ? 'ws_enabled_label' : 'ws_disabled_label', 'local_serviceschema'),
+        'ws_enabled_class'        => $wsenabled ? 'text-success' : 'text-danger',
+        'status_class'            => $wsstatusclass,
+        'status_label'            => $wsstatuslabel,
+        'protocols'               => $protocolsdata,
+        'enabled_protocols_count' => $enabledcount,
+        'overview_url'            => (new moodle_url('/admin/settings.php', ['section' => 'webservicesoverview']))->out(false),
+        'protocols_url'           => (new moodle_url('/admin/settings.php', ['section' => 'webserviceprotocols']))->out(false),
+        'can_manage'              => $canmanage,
+        'health_healthy'          => $healthhealthy,
+        'health_warning'          => $healthwarning,
+        'health_critical'         => $healthcritical,
+    ],
     'sesskey' => sesskey(),
     'has_any_schemas' => $totalcount > 0,
     // Pagination.

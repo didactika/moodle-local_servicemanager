@@ -50,7 +50,7 @@ if ($form->is_cancelled()) {
         'imported' => 0,
         'skipped' => 0,
         'errors' => [],
-        'tokens' => [],
+        'warnings' => [],
     ];
 
     // Get uploaded file.
@@ -90,7 +90,7 @@ if ($form->is_cancelled()) {
                 }
 
                 $yamlcontent = $zip->getFromIndex($i);
-                $importresult = import_single_schema($manager, $validator, $yamlcontent, $data->conflict_action, $data->generatetokens);
+                $importresult = import_single_schema($manager, $validator, $yamlcontent, $data->conflict_action);
                 merge_import_result($results, $importresult);
             }
             $zip->close();
@@ -98,11 +98,22 @@ if ($form->is_cancelled()) {
         unlink($zippath);
     } else {
         // Process single YAML file.
-        $importresult = import_single_schema($manager, $validator, $content, $data->conflict_action, $data->generatetokens);
+        $importresult = import_single_schema($manager, $validator, $content, $data->conflict_action);
         merge_import_result($results, $importresult);
     }
 
+    // Show each error as a separate notification so the user knows what went wrong.
+    foreach ($results['errors'] as $error) {
+        \core\notification::error($error);
+    }
+
+    // Show warnings (e.g. non-critical functions not installed in this Moodle instance).
+    foreach ($results['warnings'] as $warning) {
+        \core\notification::warning($warning);
+    }
+
     // Generate result message.
+    $results['errors_count'] = count($results['errors']);
     $message = get_string('import_complete', 'local_serviceschema', $results);
     $notifytype = empty($results['errors']) ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_WARNING;
 
@@ -121,13 +132,12 @@ if ($form->is_cancelled()) {
  * @param \local_serviceschema\schema\validator $validator Validator.
  * @param string $yamlcontent YAML content.
  * @param string $conflictaction Conflict action: skip, overwrite, rename.
- * @param bool $generatetoken Whether to generate token.
- * @return array Result with imported, skipped, errors, tokens.
+ * @return array Result with imported, skipped, errors, warnings.
  */
-function import_single_schema($manager, $validator, $yamlcontent, $conflictaction, $generatetoken) {
+function import_single_schema($manager, $validator, $yamlcontent, $conflictaction) {
     global $DB;
 
-    $result = ['imported' => 0, 'skipped' => 0, 'errors' => [], 'tokens' => []];
+    $result = ['imported' => 0, 'skipped' => 0, 'errors' => [], 'warnings' => []];
 
     try {
         // Parse YAML first to get ID.
@@ -152,8 +162,9 @@ function import_single_schema($manager, $validator, $yamlcontent, $conflictactio
 
                 case 'overwrite':
                     // Update existing schema.
-                    $manager->update_schema($existing->id, $yamlcontent);
+                    $updateresult = $manager->update_schema($existing->id, $yamlcontent);
                     $result['imported']++;
+                    $result['warnings'] = array_merge($result['warnings'], $updateresult['warnings']);
                     return $result;
 
                 case 'rename':
@@ -176,23 +187,20 @@ function import_single_schema($manager, $validator, $yamlcontent, $conflictactio
             }
         }
 
-        // Validate content.
-        $validation = $validator->validate_content($yamlcontent, true); // Skip duplicate check since we handled it.
+        // Validate content. For rename, exclude the original schema from name/ID uniqueness checks.
+        $validation = $validator->validate_content($yamlcontent, $existing->id ?? null);
         if (!empty($validation['errors'])) {
             $result['errors'] = array_merge($result['errors'], $validation['errors']);
             return $result;
         }
 
         // Create schema.
-        $createresult = $manager->create_schema($yamlcontent, $generatetoken);
+        $createresult = $manager->create_schema($yamlcontent);
         $result['imported']++;
-
-        if (!empty($createresult['token'])) {
-            $result['tokens'][$schemaid] = $createresult['token'];
-        }
+        $result['warnings'] = array_merge($result['warnings'], $createresult['warnings']);
 
     } catch (Exception $e) {
-        $result['errors'][] = $e->getMessage();
+        $result['errors'][] = ($schemaid ?? '?') . ': ' . $e->getMessage();
     }
 
     return $result;
@@ -208,7 +216,7 @@ function merge_import_result(&$totals, $result) {
     $totals['imported'] += $result['imported'];
     $totals['skipped'] += $result['skipped'];
     $totals['errors'] = array_merge($totals['errors'], $result['errors']);
-    $totals['tokens'] = array_merge($totals['tokens'], $result['tokens']);
+    $totals['warnings'] = array_merge($totals['warnings'], $result['warnings']);
 }
 
 echo $OUTPUT->header();

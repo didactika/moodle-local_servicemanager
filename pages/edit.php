@@ -41,7 +41,12 @@ $manager = new \local_serviceschema\schema\manager();
 $schema = $manager->get_schema($id);
 
 if (!$schema) {
-    throw new moodle_exception('Schema not found');
+    redirect(
+        new moodle_url('/local/serviceschema/pages/dashboard.php'),
+        get_string('schema_not_found', 'local_serviceschema'),
+        null,
+        \core\output\notification::NOTIFY_WARNING
+    );
 }
 
 $dashboardurl = new moodle_url('/local/serviceschema/pages/dashboard.php');
@@ -53,6 +58,7 @@ $form = new \local_serviceschema\form\edit_schema_form(null, ['schema' => $schem
 $form->set_data([
     'id' => $schema->id,
     'yaml_content' => $schema->yaml_content,
+    'enabled' => (int)$schema->enabled,
 ]);
 
 if ($form->is_cancelled()) {
@@ -60,6 +66,9 @@ if ($form->is_cancelled()) {
 } elseif ($data = $form->get_data()) {
     try {
         $result = $manager->update_schema($data->id, $data->yaml_content);
+
+        // Apply enabled state (independent of YAML content).
+        $manager->set_enabled($data->id, (bool)$data->enabled);
 
         // Show warnings if any.
         if (!empty($result['warnings'])) {

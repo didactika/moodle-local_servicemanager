@@ -36,7 +36,12 @@ class service_manager {
      * @param string $metaname Display name from meta.name
      * @return int Service ID
      */
-    public function create_external_service(string $schemaid, string $metaname): int {
+    public function create_external_service(
+        string $schemaid,
+        string $metaname,
+        bool $downloadfiles = false,
+        bool $uploadfiles = false
+    ): int {
         global $CFG;
         require_once($CFG->dirroot . '/webservice/lib.php');
 
@@ -48,8 +53,8 @@ class service_manager {
         $service->shortname = $shortname;
         $service->enabled = 1;
         $service->restrictedusers = 1; // Only authorized users.
-        $service->downloadfiles = 0;
-        $service->uploadfiles = 0;
+        $service->downloadfiles = (int) $downloadfiles;
+        $service->uploadfiles = (int) $uploadfiles;
         $service->component = 'local_serviceschema';
 
         $webservicemanager = new \webservice();
@@ -63,12 +68,19 @@ class service_manager {
      * @param string $metaname New display name
      * @return bool
      */
-    public function update_external_service(int $serviceid, string $metaname): bool {
+    public function update_external_service(
+        int $serviceid,
+        string $metaname,
+        bool $downloadfiles = false,
+        bool $uploadfiles = false
+    ): bool {
         global $DB;
 
         $service = new \stdClass();
         $service->id = $serviceid;
         $service->name = 'Web Service - ' . $metaname;
+        $service->downloadfiles = (int) $downloadfiles;
+        $service->uploadfiles = (int) $uploadfiles;
         $service->timemodified = time();
 
         return $DB->update_record('external_services', $service);

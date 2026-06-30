@@ -163,6 +163,86 @@
     </div>
     {{/has_functions}}
 
+    {{! Provisioned resources section }}
+    {{#has_resources}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fa fa-server mr-2"></i>{{#str}}provisioned_resources, local_serviceschema{{/str}}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {{#has_resource_user}}
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="text-muted small text-uppercase mb-1">{{#str}}service_user, local_serviceschema{{/str}}</div>
+                    <a href="{{resource_user_url}}" target="_blank">
+                        <i class="fa fa-user mr-1"></i>{{resource_user_name}}
+                    </a>
+                    <div class="text-muted small mt-1"><code>{{resource_user_username}}</code></div>
+                </div>
+                {{/has_resource_user}}
+                {{#has_resource_role}}
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="text-muted small text-uppercase mb-1">{{#str}}service_role, local_serviceschema{{/str}}</div>
+                    <a href="{{resource_role_url}}" target="_blank">
+                        <i class="fa fa-shield mr-1"></i>{{resource_role_name}}
+                    </a>
+                    <div class="text-muted small mt-1"><code>{{resource_role_shortname}}</code></div>
+                </div>
+                {{/has_resource_role}}
+                {{#has_resource_service}}
+                <div class="col-md-4">
+                    <div class="text-muted small text-uppercase mb-1">{{#str}}external_service, local_serviceschema{{/str}}</div>
+                    <a href="{{resource_service_url}}" target="_blank">
+                        <i class="fa fa-plug mr-1"></i>{{resource_service_name}}
+                    </a>
+                    <div class="text-muted small mt-1"><code>{{resource_service_shortname}}</code></div>
+                </div>
+                {{/has_resource_service}}
+            </div>
+        </div>
+    </div>
+    {{/has_resources}}
+
+    {{! Requirements section }}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">{{#str}}schema_requirements, local_serviceschema{{/str}}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 {{#has_required_plugins}}border-right{{/has_required_plugins}}">
+                    <div class="text-muted small text-uppercase mb-2">{{#str}}req_file_access, local_serviceschema{{/str}}</div>
+                    <div class="mb-1">
+                        {{#service_download_files}}
+                        <span class="badge badge-success mr-1"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_serviceschema{{/str}}</span>
+                        {{/service_download_files}}
+                        {{^service_download_files}}
+                        <span class="badge badge-secondary mr-1"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_serviceschema{{/str}}</span>
+                        {{/service_download_files}}
+                        {{#service_upload_files}}
+                        <span class="badge badge-success mr-1"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_serviceschema{{/str}}</span>
+                        {{/service_upload_files}}
+                        {{^service_upload_files}}
+                        <span class="badge badge-secondary mr-1"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_serviceschema{{/str}}</span>
+                        {{/service_upload_files}}
+                    </div>
+                </div>
+                {{#has_required_plugins}}
+                <div class="col-md-6 pl-4">
+                    <div class="text-muted small text-uppercase mb-2">{{#str}}req_plugins, local_serviceschema{{/str}}</div>
+                    {{#required_plugins}}
+                    <div class="mb-1">
+                        <span class="{{status_class}}"><i class="fa {{status_icon}} mr-1"></i></span>
+                        <code>{{name}}</code>
+                        <small class="text-muted ml-1">{{status_label}}</small>
+                    </div>
+                    {{/required_plugins}}
+                </div>
+                {{/has_required_plugins}}
+            </div>
+        </div>
+    </div>
+
     {{! Extra capabilities section }}
     {{#has_extra_capabilities}}
     <div class="card mb-4">
