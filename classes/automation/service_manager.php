@@ -27,6 +27,17 @@ namespace local_servicemanager\automation;
  */
 class service_manager {
     /**
+     * Sentinel component for provisioned services.
+     *
+     * A non-empty component makes Moodle lock the service's functions from manual
+     * editing, but the plugin's own component would make external_update_descriptions()
+     * delete these runtime services (not in db/services.php) on upgrade. This sentinel
+     * keeps them locked while never matching a core deletion path.
+     * Kept in sync with the literal in db/upgrade.php.
+     */
+    const MANAGED_COMPONENT = 'local_servicemanager_managed';
+
+    /**
      * Create an external service (restricted to authorized users only)
      *
      * name: Web Service - {meta.name}
@@ -55,7 +66,8 @@ class service_manager {
         $service->restrictedusers = 1; // Only authorized users.
         $service->downloadfiles = (int) $downloadfiles;
         $service->uploadfiles = (int) $uploadfiles;
-        $service->component = 'local_servicemanager';
+        // Sentinel component: locks functions from editing, survives upgrades.
+        $service->component = self::MANAGED_COMPONENT;
 
         $webservicemanager = new \webservice();
         return $webservicemanager->add_external_service($service);

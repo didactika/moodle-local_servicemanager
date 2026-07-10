@@ -15,51 +15,40 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrade steps for local_serviceschema
+ * Upgrade steps for local_servicemanager
  *
- * @package    local_serviceschema
- * @author     Hector Arrechea <hector.arrechea@ct.uneatlantico.es>
- * @copyright  2026 ADSDR
+ * @package    local_servicemanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @author     Hector Arrechea
+ * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Upgrade the local_serviceschema plugin.
+ * Upgrade the local_servicemanager plugin.
  *
  * @param int $oldversion The old version of the plugin
  * @return bool
  */
-function xmldb_local_serviceschema_upgrade($oldversion) {
+function xmldb_local_servicemanager_upgrade($oldversion) {
     global $DB;
 
-    $dbman = $DB->get_manager();
+    // Re-tag provisioned services to the sentinel component so they survive upgrades
+    // (external_update_descriptions() deletes services tagged with the plugin's own
+    // component that aren't in db/services.php). Normalises any current value
+    // (NULL or 'local_servicemanager') and leaves the declared ws_servicemanager
+    // alone. Literal matches service_manager::MANAGED_COMPONENT (upgrade steps are frozen).
+    if ($oldversion < 2026071000) {
+        $sql = "UPDATE {external_services}
+                   SET component = :sentinel
+                 WHERE id IN (SELECT serviceid
+                                FROM {local_servicemanager_schemas}
+                               WHERE serviceid IS NOT NULL)";
+        $DB->execute($sql, ['sentinel' => 'local_servicemanager_managed']);
 
-    // Add history table for version tracking.
-    if ($oldversion < 2026020201) {
-        $table = new xmldb_table('local_serviceschema_history');
-
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->add_field('schemaid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('version', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('yaml_content', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
-        $table->add_field('yaml_hash', XMLDB_TYPE_CHAR, '64', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('change_reason', XMLDB_TYPE_CHAR, '255', null, null, null, null);
-        $table->add_field('changedby', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('schemaid_fk', XMLDB_KEY_FOREIGN, ['schemaid'], 'local_serviceschema_schemas', ['id']);
-        $table->add_key('changedby_fk', XMLDB_KEY_FOREIGN, ['changedby'], 'user', ['id']);
-
-        $table->add_index('schemaid_time_idx', XMLDB_INDEX_NOTUNIQUE, ['schemaid', 'timecreated']);
-
-        if (!$dbman->table_exists($table)) {
-            $dbman->create_table($table);
-        }
-
-        upgrade_plugin_savepoint(true, 2026020201, 'local', 'serviceschema');
+        upgrade_plugin_savepoint(true, 2026071000, 'local', 'servicemanager');
     }
 
     return true;
