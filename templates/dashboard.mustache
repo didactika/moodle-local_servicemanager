@@ -293,7 +293,7 @@
 
     {{#has_pagination}}
     <!-- Pagination -->
-    <nav aria-label="Schema pagination" class="servicemanager-pagination mt-4">
+    <nav aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}" class="servicemanager-pagination mt-4">
         <ul class="pagination justify-content-center">
             {{#pagination.show_first}}
             <li class="page-item">

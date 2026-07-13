@@ -79,9 +79,13 @@ const fallbackCopy = (text, button) => {
     if (success) {
         showCopySuccess(button);
     } else {
-        addNotification({
-            message: 'Failed to copy token to clipboard',
-            type: 'error'
+        getString('copy_token_failed', 'local_servicemanager').then((message) => {
+            addNotification({
+                message: message,
+                type: 'error'
+            });
+            return message;
+        }).catch(() => {
         });
     }
 };
