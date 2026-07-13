@@ -44,15 +44,9 @@ if ($form->is_cancelled()) {
     redirect(new moodle_url('/local/servicemanager/pages/dashboard.php'));
 } else if ($data = $form->get_data()) {
     // Process the import.
-    $manager = new \local_servicemanager\schema\manager();
-    $validator = new \local_servicemanager\schema\validator();
+    $importer = new \local_servicemanager\schema\importer();
 
-    $results = [
-        'imported' => 0,
-        'skipped' => 0,
-        'errors' => [],
-        'warnings' => [],
-    ];
+    $results = \local_servicemanager\schema\importer::empty_result();
 
     // Get uploaded file.
     $fs = get_file_storage();
@@ -91,16 +85,16 @@ if ($form->is_cancelled()) {
                 }
 
                 $yamlcontent = $zip->getFromIndex($i);
-                $importresult = import_single_schema($manager, $validator, $yamlcontent, $data->conflict_action);
-                merge_import_result($results, $importresult);
+                $importresult = $importer->import_single($yamlcontent, $data->conflict_action);
+                $importer->merge_result($results, $importresult);
             }
             $zip->close();
         }
         unlink($zippath);
     } else {
         // Process single YAML file.
-        $importresult = import_single_schema($manager, $validator, $content, $data->conflict_action);
-        merge_import_result($results, $importresult);
+        $importresult = $importer->import_single($content, $data->conflict_action);
+        $importer->merge_result($results, $importresult);
     }
 
     // Show each error as a separate notification so the user knows what went wrong.
@@ -124,99 +118,6 @@ if ($form->is_cancelled()) {
         null,
         $notifytype
     );
-}
-
-/**
- * Import a single schema.
- *
- * @param \local_servicemanager\schema\manager $manager Schema manager.
- * @param \local_servicemanager\schema\validator $validator Validator.
- * @param string $yamlcontent YAML content.
- * @param string $conflictaction Conflict action: skip, overwrite, rename.
- * @return array Result with imported, skipped, errors, warnings.
- */
-function import_single_schema($manager, $validator, $yamlcontent, $conflictaction) {
-    global $DB;
-
-    $result = ['imported' => 0, 'skipped' => 0, 'errors' => [], 'warnings' => []];
-
-    try {
-        // Parse YAML first to get ID.
-        $parser = new \local_servicemanager\schema\yaml_parser();
-        $data = $parser->parse($yamlcontent);
-        $meta = $parser->extract_meta($data);
-        $schemaid = $meta['id'] ?? null;
-
-        if (!$schemaid) {
-            $result['errors'][] = get_string('import_error_no_id', 'local_servicemanager');
-            return $result;
-        }
-
-        // Check for conflicts.
-        $existing = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid]);
-
-        if ($existing) {
-            switch ($conflictaction) {
-                case 'skip':
-                    $result['skipped']++;
-                    return $result;
-
-                case 'overwrite':
-                    // Update existing schema.
-                    $updateresult = $manager->update_schema($existing->id, $yamlcontent);
-                    $result['imported']++;
-                    $result['warnings'] = array_merge($result['warnings'], $updateresult['warnings']);
-                    return $result;
-
-                case 'rename':
-                    // Generate new ID.
-                    $counter = 1;
-                    $newidbase = $schemaid . '.imported';
-                    $newid = $newidbase;
-                    while ($DB->record_exists('local_servicemanager_schemas', ['schema_id' => $newid])) {
-                        $newid = $newidbase . $counter;
-                        $counter++;
-                    }
-
-                    // Update YAML content with new ID.
-                    $yamlcontent = preg_replace(
-                        '/^(\s*id:\s*["\']?)' . preg_quote($schemaid, '/') . '(["\']?\s*)$/m',
-                        '${1}' . $newid . '${2}',
-                        $yamlcontent
-                    );
-                    break;
-            }
-        }
-
-        // Validate content. For rename, exclude the original schema from name/ID uniqueness checks.
-        $validation = $validator->validate_content($yamlcontent, $existing->id ?? null);
-        if (!empty($validation['errors'])) {
-            $result['errors'] = array_merge($result['errors'], $validation['errors']);
-            return $result;
-        }
-
-        // Create schema.
-        $createresult = $manager->create_schema($yamlcontent);
-        $result['imported']++;
-        $result['warnings'] = array_merge($result['warnings'], $createresult['warnings']);
-    } catch (Exception $e) {
-        $result['errors'][] = ($schemaid ?? '?') . ': ' . $e->getMessage();
-    }
-
-    return $result;
-}
-
-/**
- * Merge import result into totals.
- *
- * @param array $totals Total results (modified in place).
- * @param array $result Single import result.
- */
-function merge_import_result(&$totals, $result) {
-    $totals['imported'] += $result['imported'];
-    $totals['skipped'] += $result['skipped'];
-    $totals['errors'] = array_merge($totals['errors'], $result['errors']);
-    $totals['warnings'] = array_merge($totals['warnings'], $result['warnings']);
 }
 
 echo $OUTPUT->header();
