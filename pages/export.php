@@ -37,7 +37,7 @@ $manager = new \local_servicemanager\schema\manager();
 if ($id) {
     $schema = $manager->get_schema($id);
     if (!$schema) {
-        throw new moodle_exception('schemanotfound', 'local_servicemanager');
+        throw new moodle_exception('schemanotfound_error', 'local_servicemanager');
     }
 
     $filename = $schema->schema_id . '.yaml';
@@ -71,7 +71,7 @@ if ($all) {
 
     $zip = new ZipArchive();
     if ($zip->open($zipfilepath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-        throw new moodle_exception('zipcreationfailed', 'local_servicemanager');
+        throw new moodle_exception('zipcreationfailed_error', 'local_servicemanager');
     }
 
     foreach ($schemas as $schema) {
