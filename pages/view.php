@@ -81,12 +81,15 @@ foreach ($functions as $func) {
     ];
 }
 
-// Check for new token in session.
+// Check for a freshly generated token to display once.
 $tokenvalue = null;
-if ($newtoken && isset($SESSION->servicemanager_new_token) && $SESSION->servicemanager_schema_id == $id) {
-    $tokenvalue = $SESSION->servicemanager_new_token;
-    unset($SESSION->servicemanager_new_token);
-    unset($SESSION->servicemanager_schema_id);
+if ($newtoken) {
+    $tokencache = \core_cache\cache::make('local_servicemanager', 'newtoken');
+    $cachedtoken = $tokencache->get($id);
+    if ($cachedtoken !== false) {
+        $tokenvalue = $cachedtoken;
+        $tokencache->delete($id);
+    }
 }
 
 // Build status info.

@@ -58,9 +58,9 @@ if ($confirm && confirm_sesskey()) {
     $tokenmanager = new \local_servicemanager\automation\token_manager();
     $result = $tokenmanager->regenerate_token($id);
 
-    // Store token in session for display.
-    $SESSION->servicemanager_new_token = $result['token'];
-    $SESSION->servicemanager_schema_id = $id;
+    // Stash the token so the view page can show it once.
+    $tokencache = \core_cache\cache::make('local_servicemanager', 'newtoken');
+    $tokencache->set($id, $result['token']);
 
     \core\notification::success(get_string('token_regenerated', 'local_servicemanager'));
     redirect(new moodle_url('/local/servicemanager/pages/view.php', ['id' => $id, 'newtoken' => 1]));
