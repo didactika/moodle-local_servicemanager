@@ -58,10 +58,10 @@ if ($form->is_cancelled()) {
 
         $message = get_string('schema_created_success', 'local_servicemanager', $schemaname);
 
-        // If token was generated, show it.
+        // If a token was generated, stash it so the view page can show it once.
         if (!empty($result['token'])) {
-            $SESSION->servicemanager_new_token = $result['token'];
-            $SESSION->servicemanager_schema_id = $result['id'];
+            $tokencache = \core_cache\cache::make('local_servicemanager', 'newtoken');
+            $tokencache->set($result['id'], $result['token']);
         }
 
         // Show warnings if any.
