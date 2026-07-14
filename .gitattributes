@@ -1,0 +1,6 @@
+# Files excluded from `git archive` output (the release package built by
+# .github/workflows/release.yml). These are development/CI/VCS-only files that
+# should not ship inside the installable plugin zip.
+/.github        export-ignore
+/.gitignore     export-ignore
+/.gitattributes export-ignore
