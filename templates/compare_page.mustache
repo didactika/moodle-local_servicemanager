@@ -1,3 +1,27 @@
+{{!
+    @template local_servicemanager/compare_page
+
+    Side-by-side comparison of two schema versions.
+
+    Context variables required for this template:
+    * backurl - URL back to the history page
+    * pagetitle - Heading describing the two versions being compared
+    * v1 - First version { version, date }
+    * v2 - Second version { version, date }
+    * lines - Array of diff rows { class1, content1, class2, content2 }
+
+    Example context (json):
+    {
+        "backurl": "https://example.com/local/servicemanager/pages/history.php?id=1",
+        "pagetitle": "Comparing version 1.0.0 with 1.0.1",
+        "v1": { "version": "1.0.0", "date": "1 January 2026" },
+        "v2": { "version": "1.0.1", "date": "2 January 2026" },
+        "lines": [
+            { "class1": "diff-context", "content1": "meta:", "class2": "diff-context", "content2": "meta:" },
+            { "class1": "diff-removed", "content1": "  version: 1.0.0", "class2": "diff-added", "content2": "  version: 1.0.1" }
+        ]
+    }
+}}
 <div class="servicemanager-compare-page">
     <div class="mb-3">
         <a href="{{backurl}}" class="btn btn-secondary">
@@ -11,11 +35,11 @@
         <table class="table table-bordered table-sm comparison-table">
             <thead>
                 <tr>
-                    <th width="50%">
+                    <th style="width: 50%;">
                         {{#str}}version, local_servicemanager{{/str}} {{v1.version}} 
                         <small class="text-muted d-block">{{v1.date}}</small>
                     </th>
-                    <th width="50%">
+                    <th style="width: 50%;">
                         {{#str}}version, local_servicemanager{{/str}} {{v2.version}}
                         <small class="text-muted d-block">{{v2.date}}</small>
                     </th>

@@ -1,3 +1,20 @@
+{{!
+    @template local_servicemanager/documentation_page
+
+    YAML schema reference documentation page.
+
+    Context variables required for this template:
+    * backurl - URL back to the dashboard
+    * downloadurl - URL to download the example schema file
+    * function_code - Example function name shown in the docs
+
+    Example context (json):
+    {
+        "backurl": "https://example.com/local/servicemanager/pages/dashboard.php",
+        "downloadurl": "https://example.com/local/servicemanager/pages/download_example.php",
+        "function_code": "core_user_get_users"
+    }
+}}
 <div class="servicemanager-documentation">
     {{! Back button }}
     <div class="mb-4">
