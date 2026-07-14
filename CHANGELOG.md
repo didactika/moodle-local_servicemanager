@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-07-14
+
+Maintenance release: an upgrade bug fix and Moodle plugin-directory compliance.
+
+### Added
+
+- Privacy (GDPR) provider implementing the Moodle Privacy API.
+- GitHub Actions CI (moodle-plugin-ci) and automated, cleanly-packaged releases.
+
+### Changed
+
+- Web service functions moved from `externallib.php` to per-function classes in `classes/external/`.
+- Schema import logic extracted into a dedicated `importer` class.
+- Freshly generated tokens stored via the Cache API (`MODE_SESSION`) instead of `$SESSION`.
+
+### Fixed
+
+- Provisioned services and tokens are no longer removed on plugin upgrade.
+- Added missing language strings and replaced hard-coded user-facing text with `get_string()`.
+
 ## [1.0.0] - 2026-06-25
 
 Initial release.
@@ -26,5 +46,6 @@ Initial release.
 
 - Tokens shown only once; service users use non-routable emails; services restricted to authorized users; least-privilege roles.
 
-[Unreleased]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/didactika/moodle-local_servicemanager/releases/tag/v1.0.0
