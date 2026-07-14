@@ -1,3 +1,20 @@
+{{!
+    @template local_servicemanager/import_page
+
+    Import schemas page: intro text and the embedded import form.
+
+    Context variables required for this template:
+    * backurl - URL back to the dashboard
+    * docurl - URL to the documentation page
+    * formhtml - Pre-rendered import form HTML
+
+    Example context (json):
+    {
+        "backurl": "https://example.com/local/servicemanager/pages/dashboard.php",
+        "docurl": "https://example.com/local/servicemanager/pages/documentation.php",
+        "formhtml": "<p>Import form.</p>"
+    }
+}}
 <div class="servicemanager-import-page">
     <div class="mb-4">
         <a href="{{backurl}}" class="btn btn-secondary">
