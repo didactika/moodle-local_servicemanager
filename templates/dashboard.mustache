@@ -12,6 +12,16 @@
     * pagination - Pagination data object
     * has_filters - Boolean indicating if filters are applied
     * filter_count - Number of active filters
+
+    Example context (json):
+    {
+        "import_url": "https://example.com/local/servicemanager/pages/import.php",
+        "bulk_action_url": "https://example.com/local/servicemanager/pages/bulk_action.php",
+        "can_manage": true,
+        "has_schemas": false,
+        "has_filters": false,
+        "has_pagination": false
+    }
 }}
 
 <div class="servicemanager-dashboard">
@@ -36,8 +46,9 @@
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center"
              data-toggle="collapse" data-target="#ws-status-details"
+             data-bs-toggle="collapse" data-bs-target="#ws-status-details"
              aria-expanded="false" aria-controls="ws-status-details"
-             style="cursor: pointer;">
+             role="button" style="cursor: pointer;">
             <div>
                 <i class="fa fa-plug mr-2"></i>
                 <strong>{{#str}}ws_status_panel, local_servicemanager{{/str}}</strong>
@@ -136,16 +147,16 @@
 
         <!-- Right side: Filter Dropdown -->
         <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" 
-                    type="button" id="filtersDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-outline-secondary dropdown-toggle"
+                    type="button" id="filtersDropdown" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-filter mr-1"></i>
                 {{#str}}filters, local_servicemanager{{/str}}
                 {{#has_filters}}
                 <span class="badge badge-primary ml-1">{{filter_count}}</span>
                 {{/has_filters}}
             </button>
-            <div class="dropdown-menu dropdown-menu-right p-3" style="min-width: 280px;" aria-labelledby="filtersDropdown" onclick="event.stopPropagation();">
-                <form method="get" action="" id="filter-form">
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-end p-3" style="min-width: 280px;" aria-labelledby="filtersDropdown" onclick="event.stopPropagation();">
+                <form method="get" id="filter-form">
                     <!-- Status -->
                     <div class="mb-3">
                         <label for="status">{{#str}}filter_status, local_servicemanager{{/str}}</label>
@@ -156,7 +167,7 @@
                             <option value="critical" {{#filter_status_critical}}selected{{/filter_status_critical}}>{{#str}}status_critical, local_servicemanager{{/str}}</option>
                         </select>
                     </div>
-                    
+
                     <!-- Per page -->
                     <div class="mb-3">
                         <label for="perpage">{{#str}}filter_per_page, local_servicemanager{{/str}}</label>
@@ -166,30 +177,30 @@
                             {{/perpage_options}}
                         </select>
                     </div>
-                    
+
                     <!-- Name search -->
                     <div class="mb-3">
                         <label for="name">{{#str}}schema_name, local_servicemanager{{/str}}</label>
                         <input type="text" name="name" id="name" value="{{filter_name}}" class="form-control" placeholder="{{#str}}filter_name, local_servicemanager{{/str}}">
                     </div>
-                    
+
                     <!-- Date from -->
                     <div class="mb-3">
                         <label for="datefrom_date">{{#str}}filter_date_from, local_servicemanager{{/str}}</label>
                         <input type="date" name="datefrom_date" id="datefrom_date" value="{{filter_datefrom}}" class="form-control">
                     </div>
-                    
+
                     <!-- Date to -->
                     <div class="mb-3">
                         <label for="dateto_date">{{#str}}filter_date_to, local_servicemanager{{/str}}</label>
                         <input type="date" name="dateto_date" id="dateto_date" value="{{filter_dateto}}" class="form-control">
                     </div>
-                    
+
                     <input type="hidden" name="datefrom" id="datefrom-timestamp" value="">
                     <input type="hidden" name="dateto" id="dateto-timestamp" value="">
-                    
+
                     <div class="dropdown-divider"></div>
-                    
+
                     <div class="d-flex justify-content-between">
                         <a href="?" class="btn btn-secondary">
                             <i class="fa fa-times mr-1"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
@@ -302,7 +313,7 @@
                 </a>
             </li>
             {{/pagination.show_first}}
-            
+
             {{#pagination.show_previous}}
             <li class="page-item">
                 <a class="page-link" href="{{pagination.previous_url}}" title="{{#str}}pagination_previous, local_servicemanager{{/str}}">
@@ -310,27 +321,27 @@
                 </a>
             </li>
             {{/pagination.show_previous}}
-            
+
             {{#pagination.show_start_dots}}
             <li class="page-item disabled"><span class="page-link">...</span></li>
             {{/pagination.show_start_dots}}
-            
+
             {{#pagination.pages}}
             <li class="page-item {{#is_current}}active{{/is_current}}">
                 <a class="page-link" href="{{page_url}}">{{page_num}}</a>
             </li>
             {{/pagination.pages}}
-            
+
             {{#pagination.show_end_dots}}
             <li class="page-item disabled"><span class="page-link">...</span></li>
             {{/pagination.show_end_dots}}
-            
+
             {{#pagination.show_last}}
             <li class="page-item">
                 <a class="page-link" href="{{pagination.last_url}}">{{pagination.last_page_num}}</a>
             </li>
             {{/pagination.show_last}}
-            
+
             {{#pagination.show_next}}
             <li class="page-item">
                 <a class="page-link" href="{{pagination.next_url}}" title="{{#str}}pagination_next, local_servicemanager{{/str}}">
@@ -344,10 +355,6 @@
         </div>
     </nav>
     {{/has_pagination}}
-
-    {{#can_manage}}
-    </form>
-    {{/can_manage}}
 </div>
 
 {{#js}}
@@ -362,7 +369,7 @@ require(['jquery'], function($) {
     function updateBulkBar() {
         var $checked = $checkboxes.filter(':checked');
         var count = $checked.length;
-        
+
         // Update count text.
         $selectedCount.text(count);
 
@@ -376,8 +383,12 @@ require(['jquery'], function($) {
             $checked.each(function() {
                 var enabled = $(this).data('enabled');
                 // Use loose comparison.
-                if (enabled == 0) hasDisabled = true;
-                if (enabled == 1) hasEnabled = true;
+                if (enabled == 0) {
+                    hasDisabled = true;
+                }
+                if (enabled == 1) {
+                    hasEnabled = true;
+                }
             });
 
             // Toggle buttons based on selection state.
@@ -413,22 +424,22 @@ require(['jquery'], function($) {
     });
 
     // Handle date conversion for filters.
-    $('#filter-form').on('submit', function(e) {
+    $('#filter-form').on('submit', function() {
         var datefrom = $('#datefrom_date').val();
         var dateto = $('#dateto_date').val();
-        
+
         if (datefrom) {
             $('#datefrom-timestamp').val(Math.floor(new Date(datefrom).getTime() / 1000));
         }
         if (dateto) {
             $('#dateto-timestamp').val(Math.floor(new Date(dateto).getTime() / 1000));
         }
-        
+
         // Remove the date inputs from submission to avoid cluttering URL.
         $('#datefrom_date').prop('disabled', true);
         $('#dateto_date').prop('disabled', true);
     });
-    
+
     // Initial check.
     updateBulkBar();
 });

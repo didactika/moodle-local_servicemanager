@@ -45,6 +45,8 @@ class service_manager {
      *
      * @param string $schemaid Schema ID (e.g., "crm.integration")
      * @param string $metaname Display name from meta.name
+     * @param bool $downloadfiles Whether the service may download files
+     * @param bool $uploadfiles Whether the service may upload files
      * @return int Service ID
      */
     public function create_external_service(
@@ -78,6 +80,8 @@ class service_manager {
      *
      * @param int $serviceid Service ID
      * @param string $metaname New display name
+     * @param bool $downloadfiles Whether the service may download files
+     * @param bool $uploadfiles Whether the service may upload files
      * @return bool
      */
     public function update_external_service(

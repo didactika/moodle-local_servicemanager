@@ -42,7 +42,6 @@ class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\request\plugin\provider {
-
     /**
      * Returns metadata about the personal data stored by this plugin.
      *
@@ -85,8 +84,10 @@ class provider implements
 
         $contextlist = new contextlist();
 
-        if ($DB->record_exists('local_servicemanager_history', ['changedby' => $userid])
-                || $DB->record_exists('local_servicemanager_schemas', ['userid' => $userid])) {
+        if (
+            $DB->record_exists('local_servicemanager_history', ['changedby' => $userid])
+            || $DB->record_exists('local_servicemanager_schemas', ['userid' => $userid])
+        ) {
             $contextlist->add_system_context();
         }
 
@@ -233,10 +234,10 @@ class provider implements
             return;
         }
 
-        list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        [$insql, $inparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
         $DB->set_field_select('local_servicemanager_history', 'changedby', 0, "changedby {$insql}", $inparams);
 
-        list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        [$insql, $inparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
         $DB->set_field_select('local_servicemanager_schemas', 'userid', null, "userid {$insql}", $inparams);
     }
 }

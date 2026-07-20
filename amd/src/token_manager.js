@@ -23,8 +23,8 @@
  * @module     local_servicemanager/token_manager
  */
 
-import { get_string as getString } from 'core/str';
-import { addNotification } from 'core/notification';
+import {get_string as getString} from 'core/str';
+import {addNotification} from 'core/notification';
 
 /**
  * Copy text to clipboard
@@ -51,6 +51,7 @@ const copyToClipboard = (text, button, targetId) => {
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
             showCopySuccess(button);
+            return button;
         }).catch((err) => {
             // eslint-disable-next-line no-console
             console.log('Clipboard API failed, using fallback', err);
@@ -101,6 +102,7 @@ const fallbackCopy = (text, button) => {
             });
             return message;
         }).catch(() => {
+            // Ignore: the notification string could not be loaded.
         });
     }
 };
@@ -119,7 +121,9 @@ const showCopySuccess = (button) => {
 
     getString('copied', 'local_servicemanager').then((copiedStr) => {
         button.innerHTML = '<i class="fa fa-check mr-1"></i>' + copiedStr;
+        return copiedStr;
     }).catch(() => {
+        // Ignore: the "copied" string could not be loaded.
     });
 
     setTimeout(() => {
