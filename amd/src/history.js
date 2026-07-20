@@ -24,7 +24,7 @@
  */
 
 import $ from 'jquery';
-import { get_string as getString } from 'core/str';
+import {get_string as getString} from 'core/str';
 import Notification from 'core/notification';
 
 /**
@@ -35,14 +35,15 @@ export const init = () => {
     const container = $('.servicemanager-history'); // Main container
 
     // Use event delegation for checkboxes since they might be inside a dynamic table or late-bound
-    container.on('change', '.compare-checkbox', function () {
+    container.on('change', '.compare-checkbox', function() {
         let checked = $('.compare-checkbox:checked');
 
         if (checked.length > 2) {
             $(this).prop('checked', false); // Uncheck the one just clicked
             getString('compare_select_two', 'local_servicemanager').then(s => {
                 Notification.alert('', s);
-            });
+                return s;
+            }).catch(Notification.exception);
             // Re-calculate checked after unchecking
             checked = $('.compare-checkbox:checked');
         }
@@ -55,7 +56,7 @@ export const init = () => {
     });
 
     // YAML Content Toggle - delegation
-    container.on('click', '.toggle-yaml-btn', function (e) {
+    container.on('click', '.toggle-yaml-btn', function(e) {
         e.preventDefault();
         const targetId = $(this).attr('data-target');
         const targetEl = document.getElementById(targetId);
@@ -88,7 +89,7 @@ export const init = () => {
     }
 
     // Keep dropdown open on click inside.
-    $('.servicemanager-filter-dropdown').on('click', function (e) {
+    $('.servicemanager-filter-dropdown').on('click', function(e) {
         e.stopPropagation();
     });
 };
