@@ -1,3 +1,18 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * History page logic for Web Service Manager.
  *
@@ -9,7 +24,7 @@
  */
 
 import $ from 'jquery';
-import { get_string as getString } from 'core/str';
+import {get_string as getString} from 'core/str';
 import Notification from 'core/notification';
 
 /**
@@ -20,14 +35,15 @@ export const init = () => {
     const container = $('.servicemanager-history'); // Main container
 
     // Use event delegation for checkboxes since they might be inside a dynamic table or late-bound
-    container.on('change', '.compare-checkbox', function () {
+    container.on('change', '.compare-checkbox', function() {
         let checked = $('.compare-checkbox:checked');
 
         if (checked.length > 2) {
             $(this).prop('checked', false); // Uncheck the one just clicked
             getString('compare_select_two', 'local_servicemanager').then(s => {
                 Notification.alert('', s);
-            });
+                return s;
+            }).catch(Notification.exception);
             // Re-calculate checked after unchecking
             checked = $('.compare-checkbox:checked');
         }
@@ -40,7 +56,7 @@ export const init = () => {
     });
 
     // YAML Content Toggle - delegation
-    container.on('click', '.toggle-yaml-btn', function (e) {
+    container.on('click', '.toggle-yaml-btn', function(e) {
         e.preventDefault();
         const targetId = $(this).attr('data-target');
         const targetEl = document.getElementById(targetId);
@@ -73,7 +89,7 @@ export const init = () => {
     }
 
     // Keep dropdown open on click inside.
-    $('.servicemanager-filter-dropdown').on('click', function (e) {
+    $('.servicemanager-filter-dropdown').on('click', function(e) {
         e.stopPropagation();
     });
 };

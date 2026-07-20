@@ -1,3 +1,4 @@
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,37 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Health logs filter for Service Schema view page.
+ * Cache definitions for local_servicemanager
  *
+ * @package    local_servicemanager
  * @author     Eduardo Estrada <me@e2rd0.com>
  * @author     Hector Arrechea
  * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @module     local_servicemanager/health_log_filter
  */
 
-/**
- * Initialize the filter.
- */
-export const init = () => {
-    const filter = document.getElementById('healthlog-status-filter');
-    const table = document.getElementById('healthlog-table');
+defined('MOODLE_INTERNAL') || die();
 
-    if (!filter || !table) {
-        return;
-    }
-
-    filter.addEventListener('change', (e) => {
-        const selectedStatus = e.target.value;
-        const rows = table.querySelectorAll('tbody tr');
-
-        rows.forEach(row => {
-            const status = row.getAttribute('data-status');
-            if (!selectedStatus || status === selectedStatus) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-};
+$definitions = [
+    // Holds a freshly generated web service token, keyed by schema record id, so it can
+    // be shown exactly once on the schema view page after a Post/Redirect/Get. Session
+    // scoped and short-lived so the plaintext token does not linger in the session.
+    'newtoken' => [
+        'mode' => cache_store::MODE_SESSION,
+        'simplekeys' => true,
+        'simpledata' => true,
+        'ttl' => 300,
+    ],
+];

@@ -14,11 +14,26 @@
     * issues - Array of issues
     * healthy_schemas - Array of healthy schemas (optional, if detailed report)
     * dashboard_url - Link to dashboard
+
+    Example context (json):
+    {
+        "site_name": "Example Moodle Site",
+        "site_url": "https://example.com",
+        "report_date": "1 January 2026, 12:00",
+        "primary_color": "#0f6674",
+        "status_class": "success",
+        "status_text": "All service schemas are healthy.",
+        "summary_text": "All service schemas are operating normally.",
+        "has_issues": false,
+        "has_healthy": false,
+        "dashboard_url": "https://example.com/local/servicemanager/pages/dashboard.php"
+    }
 }}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
+    <title>{{#str}}healthcheck_report_subject, local_servicemanager{{/str}}</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

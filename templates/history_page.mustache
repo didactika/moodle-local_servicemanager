@@ -1,3 +1,24 @@
+{{!
+    @template local_servicemanager/history_page
+
+    Version history page for a schema, with filters and a compare form.
+
+    Context variables required for this template:
+    * backurl - URL back to the schema
+    * id - Schema record id
+    * compareaction - Form action URL for comparing versions
+    * nohistory - Boolean, true when there are no versions to list
+    * hasfilters - Boolean, true when filters are applied
+
+    Example context (json):
+    {
+        "backurl": "https://example.com/local/servicemanager/pages/view.php?id=1",
+        "id": 1,
+        "compareaction": "https://example.com/local/servicemanager/pages/compare.php",
+        "hasfilters": false,
+        "nohistory": true
+    }
+}}
 <div class="servicemanager-history-page">
     <div class="mb-4 d-flex justify-content-between align-items-center">
         <a href="{{backurl}}" class="btn btn-secondary">
@@ -5,12 +26,12 @@
         </a>
 
         <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="historyFiltersDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="historyFiltersDropdown" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-filter mr-1"></i>{{#str}}filters, local_servicemanager{{/str}}
                 {{#hasfilters}} <span class="badge badge-primary ml-1">{{filtercount}}</span>{{/hasfilters}}
             </button>
-            <div class="servicemanager-filter-dropdown dropdown-menu dropdown-menu-right p-3" style="min-width: 280px;" aria-labelledby="historyFiltersDropdown">
-                <form method="get" action="" id="history-filter-form" class="servicemanager-filter-form">
+            <div class="servicemanager-filter-dropdown dropdown-menu dropdown-menu-right dropdown-menu-end p-3" style="min-width: 280px;" aria-labelledby="historyFiltersDropdown">
+                <form method="get" id="history-filter-form" class="servicemanager-filter-form">
                     <input type="hidden" name="id" value="{{id}}">
                     
                     <div class="mb-3">

@@ -1,3 +1,18 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Token manager AMD module for Web Service Manager
  *
@@ -8,8 +23,8 @@
  * @module     local_servicemanager/token_manager
  */
 
-import { get_string as getString } from 'core/str';
-import { addNotification } from 'core/notification';
+import {get_string as getString} from 'core/str';
+import {addNotification} from 'core/notification';
 
 /**
  * Copy text to clipboard
@@ -36,6 +51,7 @@ const copyToClipboard = (text, button, targetId) => {
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
             showCopySuccess(button);
+            return button;
         }).catch((err) => {
             // eslint-disable-next-line no-console
             console.log('Clipboard API failed, using fallback', err);
@@ -79,9 +95,14 @@ const fallbackCopy = (text, button) => {
     if (success) {
         showCopySuccess(button);
     } else {
-        addNotification({
-            message: 'Failed to copy token to clipboard',
-            type: 'error'
+        getString('copy_token_failed', 'local_servicemanager').then((message) => {
+            addNotification({
+                message: message,
+                type: 'error'
+            });
+            return message;
+        }).catch(() => {
+            // Ignore: the notification string could not be loaded.
         });
     }
 };
@@ -100,7 +121,9 @@ const showCopySuccess = (button) => {
 
     getString('copied', 'local_servicemanager').then((copiedStr) => {
         button.innerHTML = '<i class="fa fa-check mr-1"></i>' + copiedStr;
+        return copiedStr;
     }).catch(() => {
+        // Ignore: the "copied" string could not be loaded.
     });
 
     setTimeout(() => {

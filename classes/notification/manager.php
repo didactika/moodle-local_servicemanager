@@ -147,10 +147,14 @@ class manager {
             return;
         }
 
-        $subject = '[CRITICAL] Service Schema: ' . $schema->name;
-        $body = "Critical issue detected with schema '{$schema->name}':\n\n{$message}";
+        $subject = get_string('alert_critical_subject', 'local_servicemanager', $schema->name);
+        $body = get_string('alert_critical_body', 'local_servicemanager', (object) [
+            'name' => $schema->name,
+            'message' => $message,
+        ]);
         $htmlbody = nl2br(s($body)) . '<br><br><a href="' . $CFG->wwwroot
-            . '/local/servicemanager/pages/view.php?id=' . $schema->id . '">View Schema</a>';
+            . '/local/servicemanager/pages/view.php?id=' . $schema->id . '">'
+            . get_string('view_schema', 'local_servicemanager') . '</a>';
 
         $noreplyuser = \core_user::get_noreply_user();
 

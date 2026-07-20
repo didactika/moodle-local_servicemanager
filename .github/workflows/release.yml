@@ -63,12 +63,24 @@ jobs:
           echo "----- release notes -----"
           cat release_notes.md
 
+      - name: Build plugin release zip
+        if: steps.check.outputs.exists == 'false'
+        id: zip
+        run: |
+          # Package the plugin into a zip file
+          zipname="local_servicemanager-${{ steps.ver.outputs.tag }}.zip"
+          git archive --format=zip --prefix=servicemanager/ -o "$zipname" "${{ github.sha }}"
+          echo "zipname=$zipname" >> "$GITHUB_OUTPUT"
+          echo "----- contents of $zipname -----"
+          unzip -l "$zipname"
+
       - name: Create tag and release
         if: steps.check.outputs.exists == 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${{ steps.ver.outputs.tag }}" \
+            "${{ steps.zip.outputs.zipname }}" \
             --target "${{ github.sha }}" \
             --title "${{ steps.ver.outputs.tag }}" \
             --notes-file release_notes.md

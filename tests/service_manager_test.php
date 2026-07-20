@@ -50,6 +50,8 @@ final class service_manager_test extends \advanced_testcase {
         $this->assertEquals(1, $service->enabled);
         $this->assertEquals(0, $service->downloadfiles);
         $this->assertEquals(0, $service->uploadfiles);
+        // Sentinel component locks functions from manual editing and survives upgrades.
+        $this->assertEquals('local_servicemanager_managed', $service->component);
     }
 
     /**
