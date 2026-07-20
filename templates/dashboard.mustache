@@ -355,10 +355,6 @@
         </div>
     </nav>
     {{/has_pagination}}
-
-    {{#can_manage}}
-    </form>
-    {{/can_manage}}
 </div>
 
 {{#js}}
@@ -387,8 +383,12 @@ require(['jquery'], function($) {
             $checked.each(function() {
                 var enabled = $(this).data('enabled');
                 // Use loose comparison.
-                if (enabled == 0) { hasDisabled = true; }
-                if (enabled == 1) { hasEnabled = true; }
+                if (enabled == 0) {
+                    hasDisabled = true;
+                }
+                if (enabled == 1) {
+                    hasEnabled = true;
+                }
             });
 
             // Toggle buttons based on selection state.

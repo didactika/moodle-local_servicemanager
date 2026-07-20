@@ -43,16 +43,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # This plugin targets Moodle 4.5–5.3 (see version.php $plugin->supported).
+        # This plugin targets Moodle 4.5–5.2 (see version.php $plugin->supported).
         # We test the floor (4.5) and the current highest stable (5.2). Moodle 5.3
         # is not branched yet (still on `main`), so MOODLE_503_STABLE cannot be
-        # tested until it is released — add it here on release day. Moodle 5.x
-        # requires PHP 8.2+, so PHP 8.1 is excluded from the 5.2 combinations.
+        # tested until it is released — add it here on release day. Moodle 5.2
+        # requires PHP 8.3+, so only PHP 8.3 is used for it; Moodle 4.5 runs on 8.1–8.3.
         php: ['8.1', '8.2', '8.3']
         moodle-branch: ['MOODLE_405_STABLE', 'MOODLE_502_STABLE']
         database: [pgsql, mariadb]
         exclude:
           - php: '8.1'
+            moodle-branch: 'MOODLE_502_STABLE'
+          - php: '8.2'
             moodle-branch: 'MOODLE_502_STABLE'
 
     steps:
