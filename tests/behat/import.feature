@@ -29,4 +29,4 @@ Feature: Schema import
     When I click on "Test Service" "link"
     Then I should see "test.service"
     And I should see "Functions"
-    And I should see "Back"
+    And I should see "Dashboard"

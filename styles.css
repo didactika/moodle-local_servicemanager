@@ -135,11 +135,11 @@
 }
 
 .servicemanager-detail .text-success {
-    color: #28a745 !important;
+    color: #28a745 !important; /* stylelint-disable-line declaration-no-important */
 }
 
 .servicemanager-detail .text-danger {
-    color: #dc3545 !important;
+    color: #dc3545 !important; /* stylelint-disable-line declaration-no-important */
 }
 
 /* ===========================================
@@ -255,7 +255,8 @@
     }
 
     .servicemanager-detail .card-footer .float-right {
-        float: none !important;
+        /* Overrides Bootstrap's `.float-right { float: right !important; }` so footer buttons stack on small screens. */
+        float: none !important; /* stylelint-disable-line declaration-no-important */
     }
 
     .servicemanager-history .version-item {
