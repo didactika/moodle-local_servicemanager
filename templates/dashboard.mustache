@@ -46,6 +46,7 @@
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center"
              data-toggle="collapse" data-target="#ws-status-details"
+             data-bs-toggle="collapse" data-bs-target="#ws-status-details"
              aria-expanded="false" aria-controls="ws-status-details"
              role="button" style="cursor: pointer;">
             <div>
@@ -147,14 +148,14 @@
         <!-- Right side: Filter Dropdown -->
         <div class="dropdown">
             <button class="btn btn-outline-secondary dropdown-toggle"
-                    type="button" id="filtersDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    type="button" id="filtersDropdown" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-filter mr-1"></i>
                 {{#str}}filters, local_servicemanager{{/str}}
                 {{#has_filters}}
                 <span class="badge badge-primary ml-1">{{filter_count}}</span>
                 {{/has_filters}}
             </button>
-            <div class="dropdown-menu dropdown-menu-right p-3" style="min-width: 280px;" aria-labelledby="filtersDropdown" onclick="event.stopPropagation();">
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-end p-3" style="min-width: 280px;" aria-labelledby="filtersDropdown" onclick="event.stopPropagation();">
                 <form method="get" id="filter-form">
                     <!-- Status -->
                     <div class="mb-3">

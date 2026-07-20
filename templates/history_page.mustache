@@ -26,11 +26,11 @@
         </a>
 
         <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="historyFiltersDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="historyFiltersDropdown" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-filter mr-1"></i>{{#str}}filters, local_servicemanager{{/str}}
                 {{#hasfilters}} <span class="badge badge-primary ml-1">{{filtercount}}</span>{{/hasfilters}}
             </button>
-            <div class="servicemanager-filter-dropdown dropdown-menu dropdown-menu-right p-3" style="min-width: 280px;" aria-labelledby="historyFiltersDropdown">
+            <div class="servicemanager-filter-dropdown dropdown-menu dropdown-menu-right dropdown-menu-end p-3" style="min-width: 280px;" aria-labelledby="historyFiltersDropdown">
                 <form method="get" id="history-filter-form" class="servicemanager-filter-form">
                     <input type="hidden" name="id" value="{{id}}">
                     
