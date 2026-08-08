@@ -39,8 +39,6 @@ class behat_local_servicemanager extends behat_base {
      * @param string $schemaid The schema ID.
      */
     public function i_have_uploaded_a_schema_with_id($schemaid) {
-        global $DB;
-
         $yaml = <<<YAML
 meta:
   id: "{$schemaid}"
@@ -52,7 +50,7 @@ definition:
 YAML;
 
         $manager = new \local_servicemanager\schema\manager();
-        $manager->create_schema($yaml, false);
+        $manager->create_schema($yaml);
     }
 
     /**
@@ -74,7 +72,7 @@ definition:
   functions:
     - core_webservice_get_site_info
 YAML;
-            $manager->create_schema($yaml, false);
+            $manager->create_schema($yaml);
         }
     }
 

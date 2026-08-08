@@ -48,190 +48,11 @@ class yaml_parser {
 
         // Fallback to simple parser.
         try {
-            $data = $this->simple_parse($content);
+            $data = (new simple_yaml())->parse($content);
             return is_array($data) ? $data : null;
         } catch (\Exception $e) {
             throw new \moodle_exception('error_invalid_yaml', 'local_servicemanager', '', $e->getMessage());
         }
-    }
-
-    /**
-     * Simple YAML parser for the subset we need
-     *
-     * Supports: key: value, nested objects, arrays with - prefix
-     *
-     * @param string $content YAML content
-     * @return array Parsed data
-     */
-    protected function simple_parse(string $content): array {
-        $lines = explode("\n", $content);
-        $result = [];
-        $stack = [&$result];
-        // Metadata for every open container on $stack, kept in parallel.
-        // type:        'map' | 'seq' | null   (null = not yet known)
-        // childindent: indent at which this container's direct children sit (null until first child)
-        // keyindent:   indent of the key that opened this container (-1 for the root).
-        $frames = [['type' => 'map', 'childindent' => 0, 'keyindent' => -1]];
-
-        foreach ($lines as $line) {
-            // Skip empty lines and whole-line comments.
-            $trimmed = trim($line);
-            if ($trimmed === '' || strpos($trimmed, '#') === 0) {
-                continue;
-            }
-
-            // Classify the line. A sequence item starts with "-"; a mapping key is
-            // "<key>:" where the colon is followed by whitespace or end-of-line (so
-            // values such as "moodle/role:assign" are NOT mistaken for keys).
-            $isseq = preg_match('/^\s*-(\s|$)/', $line) === 1;
-            $iskey = !$isseq && preg_match('/^\s*[^\s:#][^:]*:(\s|$)/', $line) === 1;
-            if (!$isseq && !$iskey) {
-                // Unsupported construct (block scalar, etc.); ignore.
-                continue;
-            }
-
-            $indent = strlen($line) - strlen(ltrim($line));
-
-            // Close any containers this line does not belong to. The rule mirrors
-            // block YAML: a sequence may share its key's indent, a mapping key must
-            // be deeper than its key, and the token type must match the container.
-            while (count($frames) > 1) {
-                $top = $frames[count($frames) - 1];
-                if ($top['childindent'] === null) {
-                    // Container opened but no child seen yet.
-                    if ($isseq && $indent >= $top['keyindent']) {
-                        break;
-                    }
-                    if ($iskey && $indent > $top['keyindent']) {
-                        break;
-                    }
-                } else {
-                    if ($indent > $top['childindent']) {
-                        break;
-                    }
-                    if ($indent === $top['childindent']) {
-                        if ($isseq && $top['type'] === 'seq') {
-                            break;
-                        }
-                        if ($iskey && $top['type'] === 'map') {
-                            break;
-                        }
-                    }
-                }
-                array_pop($stack);
-                array_pop($frames);
-            }
-
-            $topidx = count($stack) - 1;
-            $current = &$stack[$topidx];
-            if (!is_array($current)) {
-                $current = [];
-            }
-
-            // Resolve the container's type the first time a child is added to it.
-            if ($frames[$topidx]['childindent'] === null) {
-                $frames[$topidx]['childindent'] = $indent;
-                $frames[$topidx]['type'] = $isseq ? 'seq' : 'map';
-            }
-
-            if ($isseq) {
-                preg_match('/^(\s*-\s*)(.*)$/', $line, $sm);
-                $value = rtrim($sm[2]);
-
-                // Object in array (- key: value): open a map frame for further keys.
-                if (preg_match('/^([^\s:#][^:]*):(?:\s+(.*))?$/', $value, $om)) {
-                    $okey = rtrim($om[1]);
-                    $oval = isset($om[2]) ? trim($om[2]) : '';
-                    $innerindent = strlen($sm[1]);
-
-                    $current[] = [$okey => $this->parse_value($oval)];
-                    $last = array_key_last($current);
-                    $stack[] = &$current[$last];
-                    $frames[] = ['type' => 'map', 'childindent' => $innerindent, 'keyindent' => $innerindent];
-                } else {
-                    $current[] = $this->parse_value($value);
-                }
-                unset($current);
-                continue;
-            }
-
-            // Mapping key.
-            preg_match('/^\s*([^\s:#][^:]*):(?:\s+(.*))?$/', $line, $km);
-            $key = rtrim($km[1]);
-            $value = isset($km[2]) ? trim($km[2]) : '';
-
-            if ($value === '[]') {
-                $current[$key] = [];
-            } else if ($value === '' || str_starts_with($value, '#')) {
-                // Empty value (or a pure inline comment) means a nested map or sequence follows.
-                $current[$key] = [];
-                $stack[] = &$current[$key];
-                $frames[] = ['type' => null, 'childindent' => null, 'keyindent' => $indent];
-            } else {
-                $current[$key] = $this->parse_value($value);
-            }
-            unset($current);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Parse a YAML value (string, number, boolean, null)
-     *
-     * @param string $value Raw value
-     * @return mixed Parsed value
-     */
-    protected function parse_value(string $value) {
-        $value = trim($value);
-
-        // Handle quoted strings. Use strrpos so a trailing inline comment after the
-        // closing quote (e.g. "value" # comment) doesn't break the match.
-        if (str_starts_with($value, '"')) {
-            $endquote = strrpos($value, '"');
-            if ($endquote > 0) {
-                return substr($value, 1, $endquote - 1);
-            }
-        }
-        if (str_starts_with($value, "'")) {
-            $endquote = strrpos($value, "'");
-            if ($endquote > 0) {
-                return substr($value, 1, $endquote - 1);
-            }
-        }
-
-        // A value that is purely a comment (e.g. key: # note) means null.
-        if (str_starts_with($value, '#')) {
-            return null;
-        }
-
-        // Strip inline comments from unquoted values (e.g. "false  # comment" → "false").
-        // Per YAML spec, a comment starts at ' #' (space followed by #).
-        $commentpos = strpos($value, ' #');
-        if ($commentpos !== false) {
-            $value = trim(substr($value, 0, $commentpos));
-        }
-
-        // Handle booleans.
-        $lower = strtolower($value);
-        if ($lower === 'true' || $lower === 'yes') {
-            return true;
-        }
-        if ($lower === 'false' || $lower === 'no') {
-            return false;
-        }
-
-        // Handle null.
-        if ($lower === 'null' || $lower === '~' || $value === '') {
-            return null;
-        }
-
-        // Handle numbers.
-        if (is_numeric($value)) {
-            return strpos($value, '.') !== false ? (float) $value : (int) $value;
-        }
-
-        return $value;
     }
 
     /**
@@ -261,17 +82,30 @@ class yaml_parser {
      * @return array Array of error strings (empty if valid)
      */
     public function validate_structure(array $data): array {
-        $errors = [];
-
-        // Check meta section.
+        // Can't continue without meta.
         if (!isset($data['meta']) || !is_array($data['meta'])) {
-            $errors[] = get_string('error_missing_meta', 'local_servicemanager');
-            return $errors; // Can't continue without meta.
+            return [get_string('error_missing_meta', 'local_servicemanager')];
         }
 
-        $meta = $data['meta'];
+        $errors = $this->validate_meta($data['meta']);
 
-        // Check required meta fields.
+        if (!isset($data['definition']) || !is_array($data['definition'])) {
+            $errors[] = get_string('error_missing_definition', 'local_servicemanager');
+            return $errors;
+        }
+
+        return array_merge($errors, $this->validate_definition($data['definition']));
+    }
+
+    /**
+     * Check the required fields of the meta section
+     *
+     * @param array $meta Meta section
+     * @return array Array of error strings (empty if valid)
+     */
+    protected function validate_meta(array $meta): array {
+        $errors = [];
+
         if (empty($meta['id'])) {
             $errors[] = get_string('error_missing_meta_id', 'local_servicemanager');
         } else if (!$this->validate_schema_id($meta['id'])) {
@@ -288,20 +122,21 @@ class yaml_parser {
             $errors[] = get_string('error_missing_meta_version', 'local_servicemanager');
         }
 
-        // Check definition section.
-        if (!isset($data['definition']) || !is_array($data['definition'])) {
-            $errors[] = get_string('error_missing_definition', 'local_servicemanager');
-            return $errors;
-        }
-
-        $definition = $data['definition'];
-
-        // Check functions array.
-        if (!isset($definition['functions']) || !is_array($definition['functions']) || empty($definition['functions'])) {
-            $errors[] = get_string('error_missing_functions', 'local_servicemanager');
-        }
-
         return $errors;
+    }
+
+    /**
+     * Check the definition section, which has to declare at least one function
+     *
+     * @param array $definition Definition section
+     * @return array Array of error strings (empty if valid)
+     */
+    protected function validate_definition(array $definition): array {
+        if (empty($definition['functions']) || !is_array($definition['functions'])) {
+            return [get_string('error_missing_functions', 'local_servicemanager')];
+        }
+
+        return [];
     }
 
     /**

@@ -16,14 +16,11 @@
 
 namespace local_servicemanager\schema;
 
-use local_servicemanager\automation\user_manager;
-use local_servicemanager\automation\role_manager;
-use local_servicemanager\automation\service_manager;
-use local_servicemanager\automation\token_manager;
-use local_servicemanager\automation\capability_calculator;
-
 /**
  * Manager for service schema CRUD operations
+ *
+ * Decides what gets stored. The Moodle objects behind a schema belong to
+ * provisioner, and the rules about version numbers belong to version_policy.
  *
  * @package    local_servicemanager
  * @author     Eduardo Estrada <me@e2rd0.com>
@@ -38,20 +35,11 @@ class manager {
     /** @var validator */
     protected $validator;
 
-    /** @var user_manager */
-    protected $usermanager;
+    /** @var provisioner */
+    protected $provisioner;
 
-    /** @var role_manager */
-    protected $rolemanager;
-
-    /** @var service_manager */
-    protected $servicemanager;
-
-    /** @var token_manager */
-    protected $tokenmanager;
-
-    /** @var capability_calculator */
-    protected $capcalc;
+    /** @var version_policy */
+    protected $versionpolicy;
 
     /**
      * Constructor
@@ -59,128 +47,30 @@ class manager {
     public function __construct() {
         $this->parser = new yaml_parser();
         $this->validator = new validator();
-        $this->usermanager = new user_manager();
-        $this->rolemanager = new role_manager();
-        $this->servicemanager = new service_manager();
-        $this->tokenmanager = new token_manager();
-        $this->capcalc = new capability_calculator();
+        $this->provisioner = new provisioner();
+        $this->versionpolicy = new version_policy();
     }
 
     /**
      * Create a new schema from YAML content
      *
      * @param string $yamlcontent YAML content
-     * @param bool $generatetoken Whether to generate a token
-     * @return array ['id' => int, 'token' => string|null, 'warnings' => array]
+     * @return array ['id' => int, 'token' => null, 'warnings' => array]
      * @throws \moodle_exception If validation fails
      */
-    public function create_schema(string $yamlcontent, bool $generatetoken = false): array {
-        global $DB;
+    public function create_schema(string $yamlcontent): array {
+        return $this->store_new_schema($yamlcontent, false);
+    }
 
-        $validation = $this->validator->validate_content($yamlcontent);
-        if (!empty($validation['errors'])) {
-            throw new \moodle_exception(
-                'error_invalid_yaml',
-                'local_servicemanager',
-                '',
-                implode('; ', $validation['errors'])
-            );
-        }
-
-        $data = $validation['data'];
-        $meta = $this->parser->extract_meta($data);
-        $functions = $this->parser->extract_functions($data);
-        $extracaps = $this->parser->extract_extra_capabilities($data);
-        $additionalusers = $this->parser->extract_additional_users($data);
-        $servicesettings = $this->parser->extract_service_settings($data);
-
-        $userid = null;
-        $roleid = null;
-        $serviceid = null;
-
-        try {
-            $userid = $this->usermanager->create_service_user($meta['id'], $meta['name']);
-
-            $roleid = $this->rolemanager->create_service_role($meta['id'], $meta['name'], $meta['description']);
-
-            $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
-            $allcaps = array_unique(array_merge($functioncaps, $extracaps, ['webservice/rest:use', 'webservice/soap:use']));
-            $this->rolemanager->assign_capabilities($roleid, $allcaps);
-
-            $this->rolemanager->assign_role_to_user($roleid, $userid);
-
-            $serviceid = $this->servicemanager->create_external_service(
-                $meta['id'],
-                $meta['name'],
-                $servicesettings['download_files'],
-                $servicesettings['upload_files']
-            );
-
-            $this->servicemanager->add_functions_to_service($serviceid, $functions);
-
-            $this->servicemanager->authorize_user($serviceid, $userid);
-
-            $warnings = $validation['warnings'];
-            $additionalwarnings = $this->servicemanager->authorize_additional_users($serviceid, $additionalusers);
-            $warnings = array_merge($warnings, $additionalwarnings);
-
-            $tokenid = null;
-            $tokenvalue = null;
-            if ($generatetoken) {
-                $tokenresult = $this->tokenmanager->generate_token($userid, $serviceid, $meta['name']);
-                $tokenid = $tokenresult['tokenid'];
-                $tokenvalue = $tokenresult['token'];
-            }
-
-            $now = time();
-            $record = new \stdClass();
-            $record->schema_id = $meta['id'];
-            $record->name = $meta['name'];
-            $record->description = $meta['description'];
-            $record->version = $meta['version'];
-            $record->maintainer = $meta['maintainer'];
-            $record->yaml_content = $yamlcontent;
-            $record->yaml_hash = $this->parser->get_hash($yamlcontent);
-            $record->enabled = 1;
-            $record->status = empty($warnings) ? 'healthy' : 'warning';
-            $record->userid = $userid;
-            $record->roleid = $roleid;
-            $record->serviceid = $serviceid;
-            $record->tokenid = $tokenid;
-            $record->timecreated = $now;
-            $record->timemodified = $now;
-
-            $id = $DB->insert_record('local_servicemanager_schemas', $record);
-
-            // Create initial history entry.
-            $historymanager = new history_manager();
-            if (!$historymanager->version_exists($id, $meta['version'])) {
-                $historymanager->save_version(
-                    $id,
-                    $meta['version'],
-                    $yamlcontent,
-                    get_string('schema_created_success', 'local_servicemanager', $meta['version'])
-                );
-            }
-
-            return [
-                'id' => $id,
-                'token' => $tokenvalue,
-                'warnings' => $warnings,
-            ];
-        } catch (\Exception $e) {
-            // Rollback any partially created resources.
-            if ($serviceid) {
-                $this->servicemanager->delete_service($serviceid);
-            }
-            if ($roleid) {
-                $this->rolemanager->delete_role($roleid);
-            }
-            if ($userid) {
-                $this->usermanager->delete_user($userid);
-            }
-            throw $e;
-        }
+    /**
+     * Create a new schema and issue a web service token for it
+     *
+     * @param string $yamlcontent YAML content
+     * @return array ['id' => int, 'token' => string, 'warnings' => array]
+     * @throws \moodle_exception If validation fails
+     */
+    public function create_schema_with_token(string $yamlcontent): array {
+        return $this->store_new_schema($yamlcontent, true);
     }
 
     /**
@@ -188,165 +78,25 @@ class manager {
      *
      * @param int $id Schema record ID
      * @param string $yamlcontent New YAML content
-     * @param bool $isrollback If true, skip version increment validation (used for rollback)
      * @return array ['warnings' => array]
      * @throws \moodle_exception If validation fails
      */
-    public function update_schema(int $id, string $yamlcontent, bool $isrollback = false): array {
-        global $DB;
+    public function update_schema(int $id, string $yamlcontent): array {
+        return $this->apply_update($id, $yamlcontent, false);
+    }
 
-        $existing = $this->get_schema($id);
-        if (!$existing) {
-            throw new \moodle_exception('Schema not found');
-        }
-
-        $validation = $this->validator->validate_content($yamlcontent, $id);
-        if (!empty($validation['errors'])) {
-            throw new \moodle_exception(
-                'error_invalid_yaml',
-                'local_servicemanager',
-                '',
-                implode('; ', $validation['errors'])
-            );
-        }
-
-        $data = $validation['data'];
-        $meta = $this->parser->extract_meta($data);
-        $newhash = $this->parser->get_hash($yamlcontent);
-
-        // ID must not change.
-        if ($meta['id'] !== $existing->schema_id) {
-            throw new \moodle_exception('error_id_change_forbidden', 'local_servicemanager');
-        }
-
-        // Parse existing content to compare structural changes.
-        $olddata = $this->parser->parse($existing->yaml_content);
-
-        // Prepare "effective content" (exclude meta) to check for functional changes.
-        $newcontentcheck = $data;
-        unset($newcontentcheck['meta']);
-
-        $oldcontentcheck = $olddata;
-        unset($oldcontentcheck['meta']);
-
-        // Check if functional content has changed.
-        // Using strict comparison might fail on key order, but our parser is consistent.
-        // Serialize is safer for deep comparison.
-        $contentchanged = (serialize($newcontentcheck) !== serialize($oldcontentcheck));
-
-        if ($contentchanged) {
-            // Functional content changed: Version MUST change (increment).
-            if ($meta['version'] === $existing->version) {
-                throw new \moodle_exception('error_version_change_required', 'local_servicemanager');
-            }
-            if (!$isrollback && version_compare($meta['version'], $existing->version, '<=')) {
-                throw new \moodle_exception(
-                    'error_version_must_increment',
-                    'local_servicemanager',
-                    '',
-                    (object)['current' => $existing->version, 'new' => $meta['version']]
-                );
-            }
-        } else {
-            // Content did NOT change (only metadata): Version MUST NOT change.
-            if ($meta['version'] !== $existing->version && !$isrollback) {
-                throw new \moodle_exception('error_version_change_forbidden', 'local_servicemanager');
-            }
-        }
-
-        // Save history of the NEW version.
-        // This ensures the history log reflects the timeline of installed versions.
-        if ($newhash !== $existing->yaml_hash || $meta['version'] !== $existing->version) {
-            $historymanager = new history_manager();
-            if (!$historymanager->version_exists($id, $meta['version'])) {
-                $historymanager->save_version(
-                    $id,
-                    $meta['version'],
-                    $yamlcontent,
-                    get_string('schema_updated_success', 'local_servicemanager', $meta['version'])
-                );
-            }
-        }
-
-        $functions = $this->parser->extract_functions($data);
-        $extracaps = $this->parser->extract_extra_capabilities($data);
-        $additionalusers = $this->parser->extract_additional_users($data);
-        $servicesettings = $this->parser->extract_service_settings($data);
-
-        // User: update name, or recreate if deleted.
-        $userid = $existing->userid;
-        if (!$userid || !$this->usermanager->user_exists($userid)) {
-            $userid = $this->usermanager->create_service_user($meta['id'], $meta['name']);
-            $DB->set_field('local_servicemanager_schemas', 'userid', $userid, ['id' => $id]);
-        } else {
-            $this->usermanager->update_user_name($userid, $meta['name']);
-        }
-
-        // Role: update, or recreate if deleted.
-        $roleid = $existing->roleid;
-        if (!$roleid || !$this->rolemanager->role_exists($roleid)) {
-            $roleid = $this->rolemanager->create_service_role($meta['id'], $meta['name'], $meta['description']);
-            $DB->set_field('local_servicemanager_schemas', 'roleid', $roleid, ['id' => $id]);
-            $this->rolemanager->assign_role_to_user($roleid, $userid);
-        } else {
-            $this->rolemanager->update_service_role($roleid, $meta['name'], $meta['description']);
-        }
-
-        $functioncaps = $this->capcalc->get_capabilities_for_functions($functions);
-        $allcaps = array_unique(array_merge($functioncaps, $extracaps, ['webservice/rest:use', 'webservice/soap:use']));
-        $this->rolemanager->reset_capabilities($roleid);
-        $this->rolemanager->assign_capabilities($roleid, $allcaps);
-
-        // Service: update, or recreate if deleted.
-        $serviceid = $existing->serviceid;
-        if (!$serviceid || !$this->servicemanager->service_exists($serviceid)) {
-            $serviceid = $this->servicemanager->create_external_service(
-                $meta['id'],
-                $meta['name'],
-                $servicesettings['download_files'],
-                $servicesettings['upload_files']
-            );
-            $DB->set_field('local_servicemanager_schemas', 'serviceid', $serviceid, ['id' => $id]);
-            $this->servicemanager->authorize_user($serviceid, $userid);
-
-            // Reattach the existing token to the new service if it survived,
-            // otherwise clear the stale tokenid reference.
-            if ($existing->tokenid) {
-                if ($this->tokenmanager->token_exists($existing->tokenid)) {
-                    $this->tokenmanager->reattach_token($existing->tokenid, $serviceid);
-                } else {
-                    $DB->set_field('local_servicemanager_schemas', 'tokenid', 0, ['id' => $id]);
-                }
-            }
-        } else {
-            $this->servicemanager->update_external_service(
-                $serviceid,
-                $meta['name'],
-                $servicesettings['download_files'],
-                $servicesettings['upload_files']
-            );
-        }
-        $this->servicemanager->reset_functions($serviceid);
-        $this->servicemanager->add_functions_to_service($serviceid, $functions);
-
-        $warnings = $validation['warnings'];
-        $additionalwarnings = $this->servicemanager->authorize_additional_users($serviceid, $additionalusers);
-        $warnings = array_merge($warnings, $additionalwarnings);
-
-        $record = new \stdClass();
-        $record->id = $id;
-        $record->name = $meta['name'];
-        $record->description = $meta['description'];
-        $record->version = $meta['version'];
-        $record->maintainer = $meta['maintainer'];
-        $record->yaml_content = $yamlcontent;
-        $record->yaml_hash = $newhash;
-        $record->status = empty($warnings) ? 'healthy' : 'warning';
-        $record->timemodified = time();
-
-        $DB->update_record('local_servicemanager_schemas', $record);
-
-        return ['warnings' => $warnings];
+    /**
+     * Restore a schema to a previous version
+     *
+     * Same work as an update, except the version is allowed to move backwards.
+     *
+     * @param int $id Schema record ID
+     * @param string $yamlcontent YAML content of the version being restored
+     * @return array ['warnings' => array]
+     * @throws \moodle_exception If validation fails
+     */
+    public function restore_schema(int $id, string $yamlcontent): array {
+        return $this->apply_update($id, $yamlcontent, true);
     }
 
     /**
@@ -363,25 +113,10 @@ class manager {
             return false;
         }
 
-        if ($schema->tokenid) {
-            $this->tokenmanager->delete_token($schema->tokenid);
-        }
-
-        if ($schema->serviceid) {
-            $this->servicemanager->delete_service($schema->serviceid);
-        }
-
-        if ($schema->roleid) {
-            $this->rolemanager->delete_role($schema->roleid);
-        }
-
-        if ($schema->userid) {
-            $this->usermanager->delete_user($schema->userid);
-        }
+        $this->provisioner->deprovision($schema);
 
         $DB->delete_records('local_servicemanager_logs', ['schemaid' => $id]);
         $DB->delete_records('local_servicemanager_history', ['schemaid' => $id]);
-
         $DB->delete_records('local_servicemanager_schemas', ['id' => $id]);
 
         return true;
@@ -451,24 +186,13 @@ class manager {
      */
     public function set_enabled(int $id, bool $enabled): bool {
         global $DB;
+
         $schema = $this->get_schema($id);
         if (!$schema) {
             return false;
         }
 
-        // Also toggle the external service.
-        if ($schema->serviceid) {
-            $DB->set_field('external_services', 'enabled', $enabled ? 1 : 0, ['id' => $schema->serviceid]);
-        }
-
-        // Mirror enabled state on the service user.
-        if ($schema->userid) {
-            if ($enabled) {
-                $this->usermanager->unsuspend_user($schema->userid);
-            } else {
-                $this->usermanager->suspend_user($schema->userid);
-            }
-        }
+        $this->provisioner->set_enabled($schema, $enabled);
 
         return $DB->set_field('local_servicemanager_schemas', 'enabled', $enabled ? 1 : 0, ['id' => $id]);
     }
@@ -528,6 +252,190 @@ class manager {
         }
 
         return $DB->count_records_sql($sql, $params);
+    }
+
+    /**
+     * Provision a schema and store it.
+     *
+     * If storing fails the provisioned objects are removed again, so a schema
+     * that is not in the table never leaves a user, role or service behind.
+     *
+     * @param string $yamlcontent YAML content
+     * @param bool $generatetoken Whether to issue a token
+     * @return array ['id' => int, 'token' => string|null, 'warnings' => array]
+     * @throws \moodle_exception If validation fails
+     */
+    protected function store_new_schema(string $yamlcontent, bool $generatetoken): array {
+        global $DB;
+
+        $validation = $this->validate_or_fail($yamlcontent);
+        $definition = schema_definition::from_data($this->parser, $validation['data']);
+
+        $provisioned = $this->provisioner->provision($definition, $generatetoken);
+        $warnings = array_merge($validation['warnings'], $provisioned['warnings']);
+
+        $now = time();
+        $record = $this->build_record($definition, $yamlcontent, $warnings);
+        $record->enabled = 1;
+        $record->userid = $provisioned['userid'];
+        $record->roleid = $provisioned['roleid'];
+        $record->serviceid = $provisioned['serviceid'];
+        $record->tokenid = $provisioned['tokenid'];
+        $record->timecreated = $now;
+        $record->timemodified = $now;
+
+        try {
+            $id = $DB->insert_record('local_servicemanager_schemas', $record);
+            $this->record_version($id, $definition->get_version(), $yamlcontent, 'schema_created_success');
+        } catch (\Exception $e) {
+            $this->provisioner->discard($provisioned);
+            throw $e;
+        }
+
+        return [
+            'id' => $id,
+            'token' => $provisioned['token'],
+            'warnings' => $warnings,
+        ];
+    }
+
+    /**
+     * Re-validate a schema, bring its Moodle objects in line and store it.
+     *
+     * @param int $id Schema record ID
+     * @param string $yamlcontent New YAML content
+     * @param bool $isrollback Whether the version may move backwards
+     * @return array ['warnings' => array]
+     * @throws \moodle_exception If validation fails
+     */
+    protected function apply_update(int $id, string $yamlcontent, bool $isrollback): array {
+        global $DB;
+
+        $existing = $this->get_schema($id);
+        if (!$existing) {
+            throw new \moodle_exception('Schema not found');
+        }
+
+        $validation = $this->validate_or_fail($yamlcontent, $id);
+        $definition = schema_definition::from_data($this->parser, $validation['data']);
+
+        if ($definition->get_schema_id() !== $existing->schema_id) {
+            throw new \moodle_exception('error_id_change_forbidden', 'local_servicemanager');
+        }
+
+        $contentchanged = $this->content_changed($existing, $validation['data']);
+        if ($isrollback) {
+            $this->versionpolicy->check_rollback($existing, $definition->get_version(), $contentchanged);
+        } else {
+            $this->versionpolicy->check_update($existing, $definition->get_version(), $contentchanged);
+        }
+
+        // Record the version being installed, so history reflects the timeline.
+        $newhash = $this->parser->get_hash($yamlcontent);
+        if ($newhash !== $existing->yaml_hash || $definition->get_version() !== $existing->version) {
+            $this->record_version($id, $definition->get_version(), $yamlcontent, 'schema_updated_success');
+        }
+
+        $warnings = array_merge(
+            $validation['warnings'],
+            $this->provisioner->reconcile($existing, $definition)
+        );
+
+        $record = $this->build_record($definition, $yamlcontent, $warnings);
+        $record->id = $id;
+        $record->timemodified = time();
+        $DB->update_record('local_servicemanager_schemas', $record);
+
+        return ['warnings' => $warnings];
+    }
+
+    /**
+     * Validate YAML, turning any error into the exception callers expect.
+     *
+     * @param string $yamlcontent YAML content
+     * @param int|null $excludeschemaid Schema to exclude from uniqueness checks
+     * @return array Validation result, with 'data' and 'warnings'
+     * @throws \moodle_exception If validation fails
+     */
+    protected function validate_or_fail(string $yamlcontent, ?int $excludeschemaid = null): array {
+        $validation = $this->validator->validate_content($yamlcontent, $excludeschemaid);
+
+        if (!empty($validation['errors'])) {
+            throw new \moodle_exception(
+                'error_invalid_yaml',
+                'local_servicemanager',
+                '',
+                implode('; ', $validation['errors'])
+            );
+        }
+
+        return $validation;
+    }
+
+    /**
+     * Whether anything outside the meta section differs from what is stored.
+     *
+     * Serialising both sides compares the whole nested structure in one step.
+     *
+     * @param \stdClass $existing Stored schema record
+     * @param array $data Newly parsed YAML data
+     * @return bool
+     */
+    protected function content_changed(\stdClass $existing, array $data): bool {
+        $olddata = $this->parser->parse($existing->yaml_content);
+
+        $new = $data;
+        unset($new['meta']);
+
+        $old = $olddata;
+        unset($old['meta']);
+
+        return serialize($new) !== serialize($old);
+    }
+
+    /**
+     * Build the stored columns that come straight from the YAML.
+     *
+     * @param schema_definition $definition Parsed schema
+     * @param string $yamlcontent YAML content
+     * @param array $warnings Warnings raised while provisioning
+     * @return \stdClass
+     */
+    protected function build_record(schema_definition $definition, string $yamlcontent, array $warnings): \stdClass {
+        $record = new \stdClass();
+        $record->schema_id = $definition->get_schema_id();
+        $record->name = $definition->get_name();
+        $record->description = $definition->get_description();
+        $record->version = $definition->get_version();
+        $record->maintainer = $definition->get_maintainer();
+        $record->yaml_content = $yamlcontent;
+        $record->yaml_hash = $this->parser->get_hash($yamlcontent);
+        $record->status = empty($warnings) ? 'healthy' : 'warning';
+
+        return $record;
+    }
+
+    /**
+     * Add a history entry unless this version is already recorded.
+     *
+     * @param int $id Schema record ID
+     * @param string $version Version being recorded
+     * @param string $yamlcontent YAML content of that version
+     * @param string $stringkey Language string describing the change
+     */
+    protected function record_version(int $id, string $version, string $yamlcontent, string $stringkey): void {
+        $historymanager = new history_manager();
+
+        if ($historymanager->version_exists($id, $version)) {
+            return;
+        }
+
+        $historymanager->save_version(
+            $id,
+            $version,
+            $yamlcontent,
+            get_string($stringkey, 'local_servicemanager', $version)
+        );
     }
 
     /**

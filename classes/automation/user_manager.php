@@ -39,7 +39,7 @@ class user_manager {
      * @return int User ID
      */
     public function create_service_user(string $schemaid, string $metaname): int {
-        global $CFG, $DB;
+        global $CFG;
 
         require_once($CFG->dirroot . '/user/lib.php');
 

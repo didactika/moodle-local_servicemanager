@@ -50,70 +50,129 @@ class validator {
      * @return array ['errors' => [], 'warnings' => []]
      */
     public function validate(array $data, ?int $excludeschemaid = null): array {
+        // Validate structure first: nothing below can be trusted without it.
+        $structureerrors = $this->parser->validate_structure($data);
+        if (!empty($structureerrors)) {
+            return ['errors' => $structureerrors, 'warnings' => []];
+        }
+
+        $functions = $this->check_functions($this->parser->extract_functions($data));
+
+        return [
+            'errors' => array_merge(
+                $this->check_uniqueness($this->parser->extract_meta($data), $excludeschemaid),
+                $functions['errors']
+            ),
+            'warnings' => array_merge(
+                $this->check_required_plugins($this->parser->extract_required_plugins($data)),
+                $functions['warnings'],
+                $this->check_additional_users($this->parser->extract_additional_users($data))
+            ),
+        ];
+    }
+
+    /**
+     * Check that the schema's ID and name are not already taken.
+     *
+     * Role and service names are derived from meta.name, so a duplicate name
+     * would collide in Moodle even though only the ID is the key here.
+     *
+     * @param array $meta Meta section
+     * @param int|null $excludeschemaid Schema ID to exclude (for updates)
+     * @return array Error strings
+     */
+    protected function check_uniqueness(array $meta, ?int $excludeschemaid): array {
         global $DB;
 
         $errors = [];
-        $warnings = [];
 
-        // Validate structure first.
-        $structurerrors = $this->parser->validate_structure($data);
-        if (!empty($structurerrors)) {
-            return ['errors' => $structurerrors, 'warnings' => []];
-        }
-
-        $meta = $this->parser->extract_meta($data);
-        $functions = $this->parser->extract_functions($data);
-        $requiredplugins = $this->parser->extract_required_plugins($data);
-        $additionalusers = $this->parser->extract_additional_users($data);
-
-        // Check schema ID uniqueness.
         $existing = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $meta['id']]);
         if ($existing && ($excludeschemaid === null || $existing->id != $excludeschemaid)) {
             $errors[] = get_string('error_schema_id_exists', 'local_servicemanager', $meta['id']);
         }
 
-        // Check schema name uniqueness (role and service names are derived from meta.name and must be unique).
         $existingbyname = $DB->get_record('local_servicemanager_schemas', ['name' => $meta['name']]);
         if ($existingbyname && ($excludeschemaid === null || $existingbyname->id != $excludeschemaid)) {
             $errors[] = get_string('error_schema_name_exists', 'local_servicemanager', $meta['name']);
         }
 
-        // Validate required plugins.
-        foreach ($requiredplugins as $plugin) {
+        return $errors;
+    }
+
+    /**
+     * Check the plugins the schema says it needs.
+     *
+     * A missing plugin is only a warning: the service can be provisioned and
+     * will start working once the plugin is installed.
+     *
+     * @param array $plugins Plugin names
+     * @return array Warning strings
+     */
+    protected function check_required_plugins(array $plugins): array {
+        $warnings = [];
+
+        foreach ($plugins as $plugin) {
             if (!$this->plugin_exists($plugin)) {
                 $warnings[] = get_string('warning_plugin_not_installed', 'local_servicemanager', $plugin);
             }
         }
 
-        // Validate functions.
-        $seenfunctions = [];
+        return $warnings;
+    }
+
+    /**
+     * Check the declared functions for duplicates and for existence.
+     *
+     * A missing function the schema marks critical is an error; any other
+     * missing function is a warning.
+     *
+     * @param array $functions Functions with 'name' and 'critical' keys
+     * @return array ['errors' => [], 'warnings' => []]
+     */
+    protected function check_functions(array $functions): array {
+        $errors = [];
+        $warnings = [];
+        $seen = [];
+
         foreach ($functions as $func) {
             $funcname = $func['name'];
 
-            // Check for duplicates.
-            if (isset($seenfunctions[$funcname])) {
+            if (isset($seen[$funcname])) {
                 $errors[] = get_string('error_duplicate_function', 'local_servicemanager', $funcname);
                 continue;
             }
-            $seenfunctions[$funcname] = true;
+            $seen[$funcname] = true;
 
-            if (!$this->capcalc->function_exists($funcname)) {
-                if ($func['critical']) {
-                    $errors[] = get_string('error_critical_function_missing', 'local_servicemanager', $funcname);
-                } else {
-                    $warnings[] = get_string('warning_function_missing', 'local_servicemanager', $funcname);
-                }
+            if ($this->capcalc->function_exists($funcname)) {
+                continue;
+            }
+
+            if ($func['critical']) {
+                $errors[] = get_string('error_critical_function_missing', 'local_servicemanager', $funcname);
+            } else {
+                $warnings[] = get_string('warning_function_missing', 'local_servicemanager', $funcname);
             }
         }
 
-        // Validate additional user emails.
-        foreach ($additionalusers as $email) {
+        return ['errors' => $errors, 'warnings' => $warnings];
+    }
+
+    /**
+     * Check the extra accounts the schema wants authorized.
+     *
+     * @param array $emails Email addresses
+     * @return array Warning strings
+     */
+    protected function check_additional_users(array $emails): array {
+        $warnings = [];
+
+        foreach ($emails as $email) {
             if (!$this->user_exists_by_email($email)) {
                 $warnings[] = get_string('warning_user_email_not_found', 'local_servicemanager', $email);
             }
         }
 
-        return ['errors' => $errors, 'warnings' => $warnings];
+        return $warnings;
     }
 
     /**

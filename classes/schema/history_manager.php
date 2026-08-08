@@ -134,8 +134,8 @@ class history_manager {
             }
         }
 
-        // Update schema with historical content (skip version validation for rollback).
-        $manager->update_schema($schemaid, $history->yaml_content, true);
+        // Restore historical content: this is the one path allowed to move the version backwards.
+        $manager->restore_schema($schemaid, $history->yaml_content);
 
         // DO NOT log a new history entry for the rollback result itself.
         // Ideally, we just moved the state to a previous point.

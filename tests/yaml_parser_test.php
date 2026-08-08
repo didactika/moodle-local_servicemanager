@@ -55,7 +55,7 @@ YAML;
      * Test parsing invalid YAML content.
      *
      * Only meaningful when the PECL yaml extension is installed: the bundled
-     * fallback parser (simple_parse) is a lenient line-based parser for the
+     * fallback parser (simple_yaml) is a lenient line-based parser for the
      * supported subset and does not perform strict YAML validation.
      */
     public function test_parse_invalid_yaml(): void {

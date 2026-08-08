@@ -45,15 +45,13 @@ class service_manager {
      *
      * @param string $schemaid Schema ID (e.g., "crm.integration")
      * @param string $metaname Display name from meta.name
-     * @param bool $downloadfiles Whether the service may download files
-     * @param bool $uploadfiles Whether the service may upload files
+     * @param service_settings $settings File transfer permissions
      * @return int Service ID
      */
     public function create_external_service(
         string $schemaid,
         string $metaname,
-        bool $downloadfiles = false,
-        bool $uploadfiles = false
+        service_settings $settings
     ): int {
         global $CFG;
         require_once($CFG->dirroot . '/webservice/lib.php');
@@ -66,8 +64,8 @@ class service_manager {
         $service->shortname = $shortname;
         $service->enabled = 1;
         $service->restrictedusers = 1; // Only authorized users.
-        $service->downloadfiles = (int) $downloadfiles;
-        $service->uploadfiles = (int) $uploadfiles;
+        $service->downloadfiles = (int) $settings->downloads_files();
+        $service->uploadfiles = (int) $settings->uploads_files();
         // Sentinel component: locks functions from editing, survives upgrades.
         $service->component = self::MANAGED_COMPONENT;
 
@@ -80,23 +78,21 @@ class service_manager {
      *
      * @param int $serviceid Service ID
      * @param string $metaname New display name
-     * @param bool $downloadfiles Whether the service may download files
-     * @param bool $uploadfiles Whether the service may upload files
+     * @param service_settings $settings File transfer permissions
      * @return bool
      */
     public function update_external_service(
         int $serviceid,
         string $metaname,
-        bool $downloadfiles = false,
-        bool $uploadfiles = false
+        service_settings $settings
     ): bool {
         global $DB;
 
         $service = new \stdClass();
         $service->id = $serviceid;
         $service->name = 'Web Service - ' . $metaname;
-        $service->downloadfiles = (int) $downloadfiles;
-        $service->uploadfiles = (int) $uploadfiles;
+        $service->downloadfiles = (int) $settings->downloads_files();
+        $service->uploadfiles = (int) $settings->uploads_files();
         $service->timemodified = time();
 
         return $DB->update_record('external_services', $service);

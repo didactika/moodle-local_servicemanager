@@ -47,11 +47,15 @@ class create_schema extends external_api {
     /**
      * Create a new schema.
      *
+     * The parameter carries no default: the web service layer validates the
+     * arguments before calling, which fills in the VALUE_DEFAULT declared in
+     * execute_parameters(), so this method is always handed both values.
+     *
      * @param string $yamlcontent YAML content of the schema.
      * @param bool $generatetoken Whether to generate a token automatically.
      * @return array Result of the operation.
      */
-    public static function execute(string $yamlcontent, bool $generatetoken = false): array {
+    public static function execute(string $yamlcontent, bool $generatetoken): array {
         [
             'yamlcontent' => $yamlcontent,
             'generatetoken' => $generatetoken,
@@ -65,7 +69,9 @@ class create_schema extends external_api {
         require_capability('local/servicemanager:manage', $context);
 
         $manager = new manager();
-        $result = $manager->create_schema($yamlcontent, $generatetoken);
+        $result = $generatetoken
+            ? $manager->create_schema_with_token($yamlcontent)
+            : $manager->create_schema($yamlcontent);
 
         return [
             'id' => $result['id'],

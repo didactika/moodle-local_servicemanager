@@ -16,6 +16,8 @@
 
 namespace local_servicemanager;
 
+use local_servicemanager\automation\service_settings;
+
 /**
  * Unit tests for service manager class.
  *
@@ -36,7 +38,7 @@ final class service_manager_test extends \advanced_testcase {
         $this->resetAfterTest();
 
         $manager = new \local_servicemanager\automation\service_manager();
-        $serviceid = $manager->create_external_service('test.service', 'Test Service');
+        $serviceid = $manager->create_external_service('test.service', 'Test Service', service_settings::none());
 
         $this->assertIsInt($serviceid);
         $this->assertGreaterThan(0, $serviceid);
@@ -66,7 +68,7 @@ final class service_manager_test extends \advanced_testcase {
         $this->assertFalse($manager->service_exists(0));
 
         // Create service.
-        $serviceid = $manager->create_external_service('test.service', 'Test Service');
+        $serviceid = $manager->create_external_service('test.service', 'Test Service', service_settings::none());
 
         // Now it should exist.
         $this->assertTrue($manager->service_exists($serviceid));
@@ -82,7 +84,7 @@ final class service_manager_test extends \advanced_testcase {
         $manager = new \local_servicemanager\automation\service_manager();
 
         // Create service.
-        $serviceid = $manager->create_external_service('test.service', 'Test Service');
+        $serviceid = $manager->create_external_service('test.service', 'Test Service', service_settings::none());
 
         // Add functions that exist in Moodle core.
         $functions = ['core_webservice_get_site_info'];
@@ -110,7 +112,7 @@ final class service_manager_test extends \advanced_testcase {
         $manager = new \local_servicemanager\automation\service_manager();
 
         // Create service.
-        $serviceid = $manager->create_external_service('test.service', 'Test Service');
+        $serviceid = $manager->create_external_service('test.service', 'Test Service', service_settings::none());
 
         // Authorize user.
         $manager->authorize_user($serviceid, $user->id);
@@ -132,7 +134,7 @@ final class service_manager_test extends \advanced_testcase {
         $manager = new \local_servicemanager\automation\service_manager();
 
         // Create service.
-        $serviceid = $manager->create_external_service('test.service', 'Test Service');
+        $serviceid = $manager->create_external_service('test.service', 'Test Service', service_settings::none());
         $this->assertTrue($manager->service_exists($serviceid));
 
         // Delete service.

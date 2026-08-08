@@ -49,7 +49,9 @@ if ($form->is_cancelled()) {
 
     try {
         $manager = new \local_servicemanager\schema\manager();
-        $result = $manager->create_schema($content, $generatetoken);
+        $result = $generatetoken
+            ? $manager->create_schema_with_token($content)
+            : $manager->create_schema($content);
 
         // Build success message.
         $parser = new \local_servicemanager\schema\yaml_parser();
