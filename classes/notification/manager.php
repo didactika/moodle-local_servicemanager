@@ -102,6 +102,9 @@ class manager {
         global $CFG;
 
         return [
+            // Underscores to hyphens, the way core's get_html_lang() builds it:
+            // Moodle names packs es_mx, the lang attribute wants es-mx.
+            'lang' => str_replace('_', '-', current_language()),
             'site_name' => $site->fullname,
             'site_url' => $CFG->wwwroot,
             'report_date' => userdate(time()),
