@@ -4,6 +4,7 @@
     Email template for health check reports.
 
     Context variables required for this template:
+    * lang - Language tag of the report, for the html lang attribute
     * site_name - Name of the Moodle site
     * site_url - URL of the Moodle site
     * report_date - Formatted date
@@ -17,6 +18,7 @@
 
     Example context (json):
     {
+        "lang": "en",
         "site_name": "Example Moodle Site",
         "site_url": "https://example.com",
         "report_date": "1 January 2026, 12:00",
@@ -30,7 +32,7 @@
     }
 }}
 <!DOCTYPE html>
-<html lang="{{#str}}iso6391, langconfig{{/str}}">
+<html lang="{{lang}}">
 <head>
     <meta charset="UTF-8">
     <title>{{#str}}healthcheck_report_subject, local_servicemanager{{/str}}</title>
