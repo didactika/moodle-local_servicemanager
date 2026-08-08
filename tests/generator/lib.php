@@ -85,11 +85,21 @@ YAML;
      * Create a schema from YAML content.
      *
      * @param string $yaml YAML content.
-     * @param bool $generatetoken Whether to generate a token.
-     * @return array Result with id and optional token.
+     * @return array Result with id and warnings.
      */
-    public function create_schema_from_yaml($yaml, $generatetoken = false) {
+    public function create_schema_from_yaml($yaml) {
         $manager = new \local_servicemanager\schema\manager();
-        return $manager->create_schema($yaml, $generatetoken);
+        return $manager->create_schema($yaml);
+    }
+
+    /**
+     * Create a schema from YAML content and issue a token for it.
+     *
+     * @param string $yaml YAML content.
+     * @return array Result with id, token and warnings.
+     */
+    public function create_schema_from_yaml_with_token($yaml) {
+        $manager = new \local_servicemanager\schema\manager();
+        return $manager->create_schema_with_token($yaml);
     }
 }

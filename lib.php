@@ -25,15 +25,6 @@
  */
 
 /**
- * Extend navigation for the plugin.
- *
- * @param global_navigation $navigation
- */
-function local_servicemanager_extend_navigation(global_navigation $navigation) {
-    // Navigation is handled via settings.php for admin pages.
-}
-
-/**
  * Get the domain from Moodle's wwwroot.
  *
  * @return string The domain name

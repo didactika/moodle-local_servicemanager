@@ -26,6 +26,12 @@ namespace local_servicemanager\notification;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class manager {
+    /** Brand colour used when the theme declares none. Moodle teal. */
+    const FALLBACK_COLOR = '#0f6674';
+
+    /** Marker ID for a recipient that is an address rather than a Moodle user. */
+    const EXTERNAL_RECIPIENT_ID = -1;
+
     /**
      * Send daily report of health issues (and optionally healthy status)
      *
@@ -33,7 +39,7 @@ class manager {
      * @param array $healthyschemas Array of healthy schemas
      */
     public function send_daily_report(array $issues, array $healthyschemas = []): void {
-        global $CFG, $OUTPUT;
+        global $OUTPUT;
 
         $recipients = $this->get_notification_recipients();
         if (empty($recipients)) {
@@ -41,96 +47,21 @@ class manager {
         }
 
         $site = get_site();
-        $hasissues = !empty($issues);
+        $context = array_merge(
+            $this->report_context($site, $issues, $healthyschemas),
+            $this->branding_context(),
+            $this->status_context($issues),
+            [
+                'issues' => $this->describe_issues($issues),
+                'healthy_schemas' => $this->describe_healthy_schemas($healthyschemas),
+            ]
+        );
 
-        // Prepare context for template.
-        $context = [
-            'site_name' => $site->fullname,
-            'site_url' => $CFG->wwwroot,
-            'report_date' => userdate(time()),
-            'dashboard_url' => (new \moodle_url('/local/servicemanager/pages/dashboard.php'))->out(false),
-            'has_issues' => $hasissues,
-            'has_healthy' => !empty($healthyschemas),
-        ];
-
-        // Get Branding.
-        try {
-            $themename = $CFG->theme;
-
-            // Try to get logo URL manually since theme_config::get_logo_url might not exist.
-            $logourl = $this->get_theme_logo_url($themename);
-            if ($logourl) {
-                $context['logo_url'] = $logourl;
-            }
-
-            // Try to get brand color.
-            $brandcolor = get_config('theme_' . $themename, 'brandcolor');
-            if ($brandcolor) {
-                $context['primary_color'] = $brandcolor;
-            } else {
-                $context['primary_color'] = '#0f6674'; // Fallback Moodle Teal.
-            }
-        } catch (\Exception $e) {
-            // Fallback if branding fails.
-            $context['primary_color'] = '#0f6674';
-        }
-
-        // Determine overall status.
-        if ($hasissues) {
-            $context['status_class'] = 'danger';
-            $context['status_text'] = get_string('healthcheck_issues_found', 'local_servicemanager', count($issues));
-            $context['summary_text'] = get_string('healthcheck_issues_summary', 'local_servicemanager');
-        } else {
-            $context['status_class'] = 'success';
-            $context['status_text'] = get_string('healthcheck_all_healthy', 'local_servicemanager');
-            $context['summary_text'] = get_string('healthcheck_healthy_summary', 'local_servicemanager');
-        }
-
-        // Process issues data.
-        $issuesdata = [];
-        foreach ($issues as $issue) {
-            $schema = $issue['schema'];
-            $result = $issue['result'];
-            $msgs = explode('; ', $result['message']);
-
-            $issuesdata[] = [
-                'name' => $schema->name,
-                'schema_id' => $schema->schema_id,
-                'status' => $result['status'], // Either warning or critical.
-                'status_label' => strtoupper($result['status']),
-                'messages' => $msgs,
-                'view_url' => (new \moodle_url('/local/servicemanager/pages/view.php', ['id' => $schema->id]))->out(false),
-            ];
-        }
-        $context['issues'] = $issuesdata;
-
-        // Process healthy schemas.
-        $healthydata = [];
-        foreach ($healthyschemas as $schema) {
-            $healthydata[] = [
-                'name' => $schema->name,
-                'schema_id' => $schema->schema_id,
-            ];
-        }
-        $context['healthy_schemas'] = $healthydata;
-
-        // Render email content.
         $htmlbody = $OUTPUT->render_from_template('local_servicemanager/email_health_report', $context);
-        $textbody = strip_tags($htmlbody); // Fallback text.
-        $subject = 'Campus ' . $site->shortname . ': ' . get_string('healthcheck_report_subject', 'local_servicemanager');
+        $subject = 'Campus ' . $site->shortname . ': '
+            . get_string('healthcheck_report_subject', 'local_servicemanager');
 
-        $noreplyuser = \core_user::get_noreply_user();
-
-        // Send to all recipients.
-        foreach ($recipients as $recipient) {
-            if ($recipient->id == -1) {
-                // External email.
-                email_to_user($recipient, $noreplyuser, $subject, $textbody, $htmlbody);
-            } else {
-                // Moodle user.
-                email_to_user($recipient, $noreplyuser, $subject, $textbody, $htmlbody);
-            }
-        }
+        $this->deliver($recipients, $subject, strip_tags($htmlbody), $htmlbody);
     }
 
     /**
@@ -156,22 +87,147 @@ class manager {
             . '/local/servicemanager/pages/view.php?id=' . $schema->id . '">'
             . get_string('view_schema', 'local_servicemanager') . '</a>';
 
-        $noreplyuser = \core_user::get_noreply_user();
-
-        foreach ($recipients as $recipient) {
-             email_to_user($recipient, $noreplyuser, $subject, $body, $htmlbody);
-        }
+        $this->deliver($recipients, $subject, $body, $htmlbody);
     }
 
     /**
-     * Build report body from issues
+     * Site-level part of the report template context.
      *
-     * @deprecated Use template instead.
+     * @param \stdClass $site Site record from get_site()
      * @param array $issues Array of issues
-     * @return string
+     * @param array $healthyschemas Array of healthy schemas
+     * @return array
      */
-    protected function build_report_body(array $issues): string {
-        return '';
+    protected function report_context(\stdClass $site, array $issues, array $healthyschemas): array {
+        global $CFG;
+
+        return [
+            'site_name' => $site->fullname,
+            'site_url' => $CFG->wwwroot,
+            'report_date' => userdate(time()),
+            'dashboard_url' => (new \moodle_url('/local/servicemanager/pages/dashboard.php'))->out(false),
+            'has_issues' => !empty($issues),
+            'has_healthy' => !empty($healthyschemas),
+        ];
+    }
+
+    /**
+     * Logo and brand colour taken from the current theme.
+     *
+     * Branding is decoration, so a theme that cannot answer must not stop the
+     * report going out: any failure falls back to the default colour.
+     *
+     * @return array
+     */
+    protected function branding_context(): array {
+        global $CFG;
+
+        $context = ['primary_color' => self::FALLBACK_COLOR];
+
+        try {
+            $logourl = $this->get_theme_logo_url();
+            if ($logourl) {
+                $context['logo_url'] = $logourl;
+            }
+
+            $brandcolor = get_config('theme_' . $CFG->theme, 'brandcolor');
+            if ($brandcolor) {
+                $context['primary_color'] = $brandcolor;
+            }
+        } catch (\Exception $e) {
+            $context['primary_color'] = self::FALLBACK_COLOR;
+        }
+
+        return $context;
+    }
+
+    /**
+     * Headline strings, which depend only on whether anything is wrong.
+     *
+     * @param array $issues Array of issues
+     * @return array
+     */
+    protected function status_context(array $issues): array {
+        if (!empty($issues)) {
+            return [
+                'status_class' => 'danger',
+                'status_text' => get_string('healthcheck_issues_found', 'local_servicemanager', count($issues)),
+                'summary_text' => get_string('healthcheck_issues_summary', 'local_servicemanager'),
+            ];
+        }
+
+        return [
+            'status_class' => 'success',
+            'status_text' => get_string('healthcheck_all_healthy', 'local_servicemanager'),
+            'summary_text' => get_string('healthcheck_healthy_summary', 'local_servicemanager'),
+        ];
+    }
+
+    /**
+     * Flatten issues into rows the template can render.
+     *
+     * @param array $issues Array of issues with 'schema' and 'result'
+     * @return array
+     */
+    protected function describe_issues(array $issues): array {
+        $rows = [];
+
+        foreach ($issues as $issue) {
+            $schema = $issue['schema'];
+            $result = $issue['result'];
+
+            $rows[] = [
+                'name' => $schema->name,
+                'schema_id' => $schema->schema_id,
+                'status' => $result['status'], // Either warning or critical.
+                'status_label' => strtoupper($result['status']),
+                'messages' => explode('; ', $result['message']),
+                'view_url' => (new \moodle_url(
+                    '/local/servicemanager/pages/view.php',
+                    ['id' => $schema->id]
+                ))->out(false),
+            ];
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Flatten healthy schemas into rows the template can render.
+     *
+     * @param array $schemas Schema records
+     * @return array
+     */
+    protected function describe_healthy_schemas(array $schemas): array {
+        $rows = [];
+
+        foreach ($schemas as $schema) {
+            $rows[] = [
+                'name' => $schema->name,
+                'schema_id' => $schema->schema_id,
+            ];
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Mail one message to every recipient.
+     *
+     * External addresses carry a marker ID instead of a real user ID, but
+     * email_to_user() only needs the address, so both kinds are sent the same way.
+     *
+     * @param array $recipients User objects
+     * @param string $subject Subject
+     * @param string $textbody Plain text body
+     * @param string $htmlbody HTML body
+     */
+    protected function deliver(array $recipients, string $subject, string $textbody, string $htmlbody): void {
+        $noreplyuser = \core_user::get_noreply_user();
+
+        foreach ($recipients as $recipient) {
+            email_to_user($recipient, $noreplyuser, $subject, $textbody, $htmlbody);
+        }
     }
 
     /**
@@ -182,52 +238,37 @@ class manager {
      * @return array User objects
      */
     protected function get_notification_recipients(): array {
+        return $this->add_admin_recipients($this->configured_recipients());
+    }
+
+    /**
+     * Recipients named in the notification_emails setting.
+     *
+     * Keys are the user ID for real users and a prefixed address otherwise, so
+     * an address repeated in the setting cannot produce two copies of the mail.
+     *
+     * @return array User objects
+     */
+    protected function configured_recipients(): array {
         global $DB;
 
-        $recipients = [];
-        $addedemails = [];
-
-        // Get configured emails.
         $emailsconfig = get_config('local_servicemanager', 'notification_emails');
-        if (!empty($emailsconfig)) {
-            $emails = array_map('trim', explode(',', $emailsconfig));
-            foreach ($emails as $email) {
-                if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    if (in_array($email, $addedemails)) {
-                        continue;
-                    }
-
-                    $user = $DB->get_record('user', ['email' => $email, 'deleted' => 0, 'suspended' => 0]);
-                    if ($user) {
-                        $recipients[$user->id] = $user;
-                        $addedemails[] = $user->email;
-                    } else {
-                        // Create a dummy user for email-only notification.
-                        $dummyuser = new \stdClass();
-                        $dummyuser->id = -1; // Marker ID.
-                        $dummyuser->email = $email;
-                        $dummyuser->firstname = 'External';
-                        $dummyuser->lastname = 'Recipient';
-                        $dummyuser->mailformat = 1;
-                        $dummyuser->mnethostid = $CFG->mnet_localhost_id ?? 1;
-
-                        // We use the email as key to avoid duplicates if mixed with real users.
-                        $recipients['external_' . $email] = $dummyuser;
-                        $addedemails[] = $email;
-                    }
-                }
-            }
+        if (empty($emailsconfig)) {
+            return [];
         }
 
-        // Add site admins if configured.
-        $notifyadmins = get_config('local_servicemanager', 'notify_admins');
-        if ($notifyadmins === false || $notifyadmins) { // Default to true.
-            $admins = get_admins();
-            foreach ($admins as $admin) {
-                if (!in_array($admin->email, $addedemails)) {
-                    $recipients[$admin->id] = $admin;
-                    $addedemails[] = $admin->email;
-                }
+        $recipients = [];
+
+        foreach (array_map('trim', explode(',', $emailsconfig)) as $email) {
+            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                continue;
+            }
+
+            $user = $DB->get_record('user', ['email' => $email, 'deleted' => 0, 'suspended' => 0]);
+            if ($user) {
+                $recipients[$user->id] = $user;
+            } else {
+                $recipients['external_' . $email] = $this->external_recipient($email);
             }
         }
 
@@ -235,38 +276,55 @@ class manager {
     }
 
     /**
-     * Send email directly to external address
+     * Add site admins unless the setting turns them off.
      *
-     * @deprecated Recipient handling is now unified in send_daily_report
-     * @param \stdClass $recipient Recipient with email
-     * @param string $subject Subject
-     * @param string $body Body
+     * @param array $recipients Recipients gathered so far
+     * @return array User objects
      */
-    protected function send_email_directly(\stdClass $recipient, string $subject, string $body): void {
-        // Deprecated.
+    protected function add_admin_recipients(array $recipients): array {
+        $notifyadmins = get_config('local_servicemanager', 'notify_admins');
+        if ($notifyadmins !== false && !$notifyadmins) {
+            return $recipients;
+        }
+
+        $known = array_column($recipients, 'email');
+
+        foreach (get_admins() as $admin) {
+            if (!in_array($admin->email, $known)) {
+                $recipients[$admin->id] = $admin;
+                $known[] = $admin->email;
+            }
+        }
+
+        return $recipients;
     }
 
     /**
-     * Send a message to a user
+     * Build a stand-in user for an address that belongs to no Moodle account.
      *
-     * @deprecated Recipient handling is now unified in send_daily_report using email_to_user directly
-     * @param \stdClass $user User object
-     * @param string $subject Subject
-     * @param string $body Message body
+     * @param string $email Email address
+     * @return \stdClass
      */
-    protected function send_message(\stdClass $user, string $subject, string $body): void {
-        // Deprecated.
+    protected function external_recipient(string $email): \stdClass {
+        global $CFG;
+
+        $user = new \stdClass();
+        $user->id = self::EXTERNAL_RECIPIENT_ID;
+        $user->email = $email;
+        $user->firstname = 'External';
+        $user->lastname = 'Recipient';
+        $user->mailformat = 1;
+        $user->mnethostid = $CFG->mnet_localhost_id ?? 1;
+
+        return $user;
     }
 
     /**
      * Get theme logo URL safely
      *
-     * @param string $themename Theme name (unused, kept for compatibility)
      * @return string|null URL or null
      */
-    protected function get_theme_logo_url(string $themename): ?string {
-        global $CFG;
-
+    protected function get_theme_logo_url(): ?string {
         // Moodle stores logos in core_admin, not in the theme.
         $logo = get_config('core_admin', 'logo');
         if (empty($logo)) {
