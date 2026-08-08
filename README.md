@@ -419,22 +419,7 @@ vendor/bin/phpcs --standard=moodle local/servicemanager/
 
 ## Featured Contributors
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/E2RD0">
-        <img src="https://github.com/E2RD0.png" width="100" height="100" alt="E2RD0" /><br />
-        <sub><b>Eduardo Estrada</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/hector-ae21">
-        <img src="https://github.com/hector-ae21.png" width="100" height="100" alt="hector-ae21" /><br />
-        <sub><b>Hector Arrechea</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
+[![Contributors](https://contrib.rocks/image?repo=didactika/moodle-local_servicemanager)](https://github.com/didactika/moodle-local_servicemanager/graphs/contributors)
 
 ## License
 
