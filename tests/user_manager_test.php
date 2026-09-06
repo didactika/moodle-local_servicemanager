@@ -52,6 +52,29 @@ final class user_manager_test extends \advanced_testcase {
     }
 
     /**
+     * Service user creation emits one standard Moodle event for observers.
+     */
+    public function test_create_user_emits_core_event(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $manager = new \local_servicemanager\automation\user_manager();
+        $sink = $this->redirectEvents();
+        $userid = $manager->create_service_user('test.events', 'Event Service');
+        $events = $sink->get_events();
+        $sink->close();
+
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertInstanceOf(\core\event\user_created::class, $event);
+        $this->assertEquals($userid, $event->objectid);
+        $this->assertEquals($userid, $event->relateduserid);
+        $this->assertEquals(\context_user::instance($userid)->id, $event->contextid);
+        $this->assertEquals(get_admin()->id, $event->userid);
+        $this->assertEquals('ws.test.events', $event->get_record_snapshot('user', $userid)->username);
+    }
+
+    /**
      * Test checking whether a user exists.
      */
     public function test_user_exists(): void {

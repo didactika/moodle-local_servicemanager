@@ -70,6 +70,33 @@ YAML;
     }
 
     /**
+     * Schema provisioning emits each core creation and assignment event once.
+     */
+    public function test_create_schema_emits_core_events(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $manager = new \local_servicemanager\schema\manager();
+        $sink = $this->redirectEvents();
+        $result = $manager->create_schema($this->get_valid_yaml());
+        $events = $sink->get_events();
+        $sink->close();
+
+        $schema = $manager->get_schema($result['id']);
+        foreach ([
+            \core\event\user_created::class => $schema->userid,
+            \core\event\role_created::class => $schema->roleid,
+            \core\event\role_assigned::class => $schema->roleid,
+        ] as $eventclass => $objectid) {
+            $matching = array_values(array_filter($events, static function ($event) use ($eventclass) {
+                return $event instanceof $eventclass;
+            }));
+            $this->assertCount(1, $matching, $eventclass);
+            $this->assertEquals($objectid, $matching[0]->objectid);
+        }
+    }
+
+    /**
      * Test that creating without a token leaves no token behind.
      */
     public function test_create_schema_without_token(): void {
