@@ -83,11 +83,12 @@ YAML;
         $sink->close();
 
         $schema = $manager->get_schema($result['id']);
-        foreach ([
+        $expectedevents = [
             \core\event\user_created::class => $schema->userid,
             \core\event\role_created::class => $schema->roleid,
             \core\event\role_assigned::class => $schema->roleid,
-        ] as $eventclass => $objectid) {
+        ];
+        foreach ($expectedevents as $eventclass => $objectid) {
             $matching = array_values(array_filter($events, static function ($event) use ($eventclass) {
                 return $event instanceof $eventclass;
             }));
