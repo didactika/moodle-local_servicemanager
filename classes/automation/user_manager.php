@@ -62,7 +62,7 @@ class user_manager {
         $user->timecreated = time();
         $user->timemodified = time();
 
-        return user_create_user($user, false, false);
+        return user_create_user($user, false, true);
     }
 
     /**

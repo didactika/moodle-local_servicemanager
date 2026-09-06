@@ -1,3 +1,10 @@
+### 2026090600 (v1.0.2) ###
+
+* Restored the core user_created event when provisioning service users (#26).
+* Added regression coverage for user creation, role creation, role assignment, and schema provisioning events (#26).
+* Added the missing cachedef_newtoken language string (#24).
+* Made the naming-convention table labels in the schema documentation translatable (#25).
+
 ### 2026071400 (v1.0.1) ###
 
 * Fixed: provisioned services and tokens are no longer deleted on plugin upgrade.

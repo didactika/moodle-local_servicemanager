@@ -49,6 +49,53 @@ final class role_manager_test extends \advanced_testcase {
     }
 
     /**
+     * Service role creation emits one standard Moodle event.
+     */
+    public function test_create_role_emits_core_event(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $manager = new \local_servicemanager\automation\role_manager();
+        $sink = $this->redirectEvents();
+        $roleid = $manager->create_service_role('test.events', 'Event Service', 'Event description');
+        $events = $sink->get_events();
+        $sink->close();
+
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertInstanceOf(\core\event\role_created::class, $event);
+        $this->assertEquals($roleid, $event->objectid);
+        $this->assertEquals(\context_system::instance()->id, $event->contextid);
+        $this->assertEquals('ws_test_events', $event->other['shortname']);
+    }
+
+    /**
+     * A new assignment emits an event; repeating the assignment does not.
+     */
+    public function test_assign_role_emits_core_event_once(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $manager = new \local_servicemanager\automation\role_manager();
+        $roleid = $manager->create_service_role('test.events', 'Event Service', 'Event description');
+        $user = $this->getDataGenerator()->create_user();
+        $sink = $this->redirectEvents();
+        $assignmentid = $manager->assign_role_to_user($roleid, $user->id);
+        $this->assertEquals($assignmentid, $manager->assign_role_to_user($roleid, $user->id));
+        $events = $sink->get_events();
+        $sink->close();
+
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertInstanceOf(\core\event\role_assigned::class, $event);
+        $this->assertEquals($roleid, $event->objectid);
+        $this->assertEquals($user->id, $event->relateduserid);
+        $this->assertEquals(\context_system::instance()->id, $event->contextid);
+        $this->assertEquals($assignmentid, $event->other['id']);
+        $this->assertEquals('local_servicemanager', $event->other['component']);
+    }
+
+    /**
      * Test checking whether a role exists.
      */
     public function test_role_exists(): void {
