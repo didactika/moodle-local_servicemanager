@@ -47,7 +47,7 @@ if (!$history) {
 
 // Parse historical YAML for display.
 $parser = new \local_servicemanager\schema\yaml_parser();
-$yamldata = $parser->parse($history->yaml_content);
+$yamldata = $parser->parse_stored($history->yaml_content);
 $meta = $parser->extract_meta($yamldata);
 $functions = $parser->extract_functions($yamldata);
 $extracaps = $parser->extract_extra_capabilities($yamldata);

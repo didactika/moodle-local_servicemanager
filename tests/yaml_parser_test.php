@@ -26,6 +26,7 @@ namespace local_servicemanager;
  * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers     \local_servicemanager\schema\yaml_parser
+ * @covers     \local_servicemanager\schema\simple_yaml
  */
 final class yaml_parser_test extends \advanced_testcase {
     /**
@@ -69,6 +70,85 @@ YAML;
 
         $this->expectException(\moodle_exception::class);
         $parser->parse($yaml);
+    }
+
+    /**
+     * Test lines that fit no open block are rejected rather than dropped or re-parented.
+     *
+     * The PHP yaml extension rejects these too, so both parsers agree.
+     *
+     * @dataProvider inconsistent_indentation_provider
+     * @param string $yaml YAML content
+     */
+    public function test_parse_inconsistent_indentation(string $yaml): void {
+        $parser = new \local_servicemanager\schema\yaml_parser();
+
+        $this->expectException(\moodle_exception::class);
+        $parser->parse($yaml);
+    }
+
+    /**
+     * Data provider for test_parse_inconsistent_indentation.
+     *
+     * @return array
+     */
+    public static function inconsistent_indentation_provider(): array {
+        return [
+            'list items left of their key' => ["definition:\n  extra_capabilities:\n- a\n  additional_users: []\n"],
+            'key deeper than its siblings' => ["meta:\n  id: \"x\"\n    name: \"y\"\n"],
+            'key between two levels' => ["meta:\n  id: \"x\"\n name: \"y\"\n"],
+            'list item between two levels' => ["definition:\n  functions:\n    - a\n   - b\n"],
+        ];
+    }
+
+    /**
+     * Test the fallback parser names the offending line.
+     */
+    public function test_fallback_parser_reports_line(): void {
+        $parser = new \local_servicemanager\schema\simple_yaml();
+
+        try {
+            $parser->parse("definition:\n  extra_capabilities:\n\n- a\n");
+            $this->fail('Expected an indentation error.');
+        } catch (\moodle_exception $e) {
+            $this->assertSame('error_yaml_indentation', $e->errorcode);
+            $this->assertStringContainsString('Line 4', $e->getMessage());
+        }
+    }
+
+    /**
+     * Test stored YAML that the strict reader rejects is still read as it was saved.
+     */
+    public function test_parse_stored_reads_legacy_indentation(): void {
+        if (function_exists('yaml_parse')) {
+            $this->markTestSkipped('Only the fallback parser ever stored mis-indented YAML.');
+        }
+
+        $yaml = "definition:\n  functions:\n    - a\n  extra_capabilities:\n- \"aaaa\"\n\n  additional_users:\n- \"test\"\n";
+        $parser = new \local_servicemanager\schema\yaml_parser();
+
+        // Read as releases before 1.0.3 did: the stray items land at the root.
+        $data = $parser->parse_stored($yaml);
+        $this->assertSame(['a'], $data['definition']['functions']);
+        $this->assertSame([], $parser->extract_extra_capabilities($data));
+        $this->assertSame([], $parser->extract_additional_users($data));
+
+        $this->expectException(\moodle_exception::class);
+        $parser->parse($yaml);
+    }
+
+    /**
+     * Test the sample schema shipped with the plugin parses unchanged.
+     */
+    public function test_parse_sample_schema(): void {
+        global $CFG;
+
+        $parser = new \local_servicemanager\schema\yaml_parser();
+        $data = $parser->parse(file_get_contents($CFG->dirroot . '/local/servicemanager/examples/sample_schema.yaml'));
+
+        $this->assertSame('example.service', $data['meta']['id']);
+        $this->assertSame(['moodle/site:viewuseridentity'], $parser->extract_extra_capabilities($data));
+        $this->assertSame([], $parser->extract_additional_users($data));
     }
 
     /**

@@ -57,7 +57,7 @@ if (!$schema) {
 
 // Parse YAML for display.
 $parser = new \local_servicemanager\schema\yaml_parser();
-$yamldata = $parser->parse($schema->yaml_content);
+$yamldata = $parser->parse_stored($schema->yaml_content);
 $functions = $parser->extract_functions($yamldata);
 $extracaps = $parser->extract_extra_capabilities($yamldata);
 $requiredplugins = $parser->extract_required_plugins($yamldata);

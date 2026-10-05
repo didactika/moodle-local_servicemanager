@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-10-05
+
+### Changed
+
+- Declared Moodle 5.3 support.
+- File access badges on the schema requirements card now show a tooltip stating whether file download/upload is enabled or disabled, instead of relying on colour alone.
+
+### Fixed
+
+- Use `\core\user::create_user()` on Moodle 5.3+ instead of the deprecated `user_create_user()` (MDL-82650), falling back on older versions.
+- The fallback YAML parser (used when the PHP yaml extension is missing) now rejects inconsistently indented lines with an error naming the line, as the extension does, instead of silently dropping or moving them. A mis-indented list such as `extra_capabilities` or `additional_users` can no longer be saved with its items lost. Schemas already stored with such indentation are still read as before, so they can be viewed, health-checked and replaced with corrected YAML.
+- Removed an `extra_capabilities` mis-indentation warning, which wrongly flagged an empty `extra_capabilities:` key and marked the schema as `warning`. Both parsers now reject the mis-indentation it guarded against.
+
 ## [1.0.2] - 2026-09-06
 
 ### Fixed
@@ -58,7 +71,8 @@ Initial release.
 
 - Tokens shown only once; service users use non-routable emails; services restricted to authorized users; least-privilege roles.
 
-[Unreleased]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/didactika/moodle-local_servicemanager/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/didactika/moodle-local_servicemanager/releases/tag/v1.0.0
