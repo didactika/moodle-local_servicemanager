@@ -234,16 +234,16 @@
                     <div class="text-muted small text-uppercase mb-2">{{#str}}req_file_access, local_servicemanager{{/str}}</div>
                     <div class="mb-1">
                         {{#service_download_files}}
-                        <span class="badge badge-success mr-1"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_servicemanager{{/str}}</span>
+                        <span class="badge badge-success mr-1" title="{{#str}}req_download_files_enabled, local_servicemanager{{/str}}"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_servicemanager{{/str}}</span>
                         {{/service_download_files}}
                         {{^service_download_files}}
-                        <span class="badge badge-secondary mr-1"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_servicemanager{{/str}}</span>
+                        <span class="badge badge-secondary mr-1" title="{{#str}}req_download_files_disabled, local_servicemanager{{/str}}"><i class="fa fa-download mr-1"></i>{{#str}}req_download_files, local_servicemanager{{/str}}</span>
                         {{/service_download_files}}
                         {{#service_upload_files}}
-                        <span class="badge badge-success mr-1"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_servicemanager{{/str}}</span>
+                        <span class="badge badge-success mr-1" title="{{#str}}req_upload_files_enabled, local_servicemanager{{/str}}"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_servicemanager{{/str}}</span>
                         {{/service_upload_files}}
                         {{^service_upload_files}}
-                        <span class="badge badge-secondary mr-1"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_servicemanager{{/str}}</span>
+                        <span class="badge badge-secondary mr-1" title="{{#str}}req_upload_files_disabled, local_servicemanager{{/str}}"><i class="fa fa-upload mr-1"></i>{{#str}}req_upload_files, local_servicemanager{{/str}}</span>
                         {{/service_upload_files}}
                     </div>
                 </div>

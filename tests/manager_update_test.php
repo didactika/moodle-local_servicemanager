@@ -327,4 +327,43 @@ YAML;
         $this->assertNotEquals($before->serviceid, $after->serviceid);
         $this->assertEquals(0, $after->tokenid);
     }
+
+    /**
+     * Test a schema stored with indentation the strict reader rejects can still be replaced.
+     *
+     * Releases before 1.0.3 saved such YAML when the yaml extension was missing.
+     */
+    public function test_update_schema_replaces_legacy_mis_indented_yaml(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        if (function_exists('yaml_parse')) {
+            $this->markTestSkipped('Only the fallback parser ever stored mis-indented YAML.');
+        }
+
+        $manager = new \local_servicemanager\schema\manager();
+        $result = $manager->create_schema($this->get_valid_yaml());
+        $id = $result['id'];
+
+        $legacyyaml = "meta:\n  id: \"test.service\"\n  name: \"Test Service\"\n  version: \"1.0.0\"\n"
+            . "definition:\n  functions:\n    - core_webservice_get_site_info\n  extra_capabilities:\n- \"aaaa\"\n";
+        $DB->set_field('local_servicemanager_schemas', 'yaml_content', $legacyyaml, ['id' => $id]);
+
+        $updateyaml = <<<YAML
+meta:
+  id: "test.service"
+  name: "Test Service"
+  version: "1.1.0"
+definition:
+  functions:
+    - core_webservice_get_site_info
+  extra_capabilities:
+YAML;
+        $manager->update_schema($id, $updateyaml);
+
+        $after = $DB->get_record('local_servicemanager_schemas', ['id' => $id]);
+        $this->assertEquals('1.1.0', $after->version);
+        $this->assertEquals($updateyaml, $after->yaml_content);
+    }
 }

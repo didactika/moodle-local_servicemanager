@@ -74,7 +74,7 @@ class inspector {
      */
     public function inspect(\stdClass $schema): array {
         try {
-            $yamldata = $this->parser->parse($schema->yaml_content);
+            $yamldata = $this->parser->parse_stored($schema->yaml_content);
             $functions = $this->parser->extract_functions($yamldata);
         } catch (\Exception $e) {
             return [

@@ -1,3 +1,11 @@
+### 2026100500 (v1.0.3) ###
+
+* Declared Moodle 5.3 support.
+* File access badges now show an enabled/disabled tooltip instead of relying on colour alone.
+* Use \core\user::create_user() on Moodle 5.3+ instead of the deprecated user_create_user() (MDL-82650).
+* The fallback YAML parser now rejects inconsistently indented lines, naming the line, instead of silently dropping them. Already stored schemas are still read as before.
+* Removed the extra_capabilities mis-indentation warning, which wrongly flagged an empty key.
+
 ### 2026090600 (v1.0.2) ###
 
 * Restored the core user_created event when provisioning service users (#26).

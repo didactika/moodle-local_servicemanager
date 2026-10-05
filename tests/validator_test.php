@@ -194,4 +194,50 @@ YAML;
         $this->assertNotEmpty($result['errors']);
         $this->assertStringContainsString('exists', strtolower($result['errors'][0]));
     }
+
+    /**
+     * Test mis-indented list items are rejected instead of silently dropped.
+     *
+     * @dataProvider extra_capabilities_provider
+     * @param string $block The extra_capabilities block inserted into the schema
+     * @param array|null $expected Parsed capabilities, or null if the YAML must be rejected
+     */
+    public function test_extra_capabilities_indentation(string $block, ?array $expected): void {
+        $this->resetAfterTest();
+
+        $yaml = "meta:\n  id: \"test.service\"\n  name: \"Test Service\"\n  version: \"1.0.0\"\n"
+            . "definition:\n  functions:\n    - core_user_get_users\n"
+            . $block
+            . "  additional_users: []\n";
+
+        $validator = new \local_servicemanager\schema\validator();
+        $result = $validator->validate_content($yaml);
+
+        if ($expected === null) {
+            $this->assertNull($result['data']);
+            $this->assertStringContainsString('Invalid YAML format', $result['errors'][0]);
+            return;
+        }
+
+        $parser = new \local_servicemanager\schema\yaml_parser();
+        $this->assertSame($expected, $parser->extract_extra_capabilities($result['data']));
+        $this->assertSame([], $parser->extract_additional_users($result['data']));
+    }
+
+    /**
+     * Data provider for test_extra_capabilities_indentation.
+     *
+     * @return array
+     */
+    public static function extra_capabilities_provider(): array {
+        return [
+            'items indented under the key' => ["  extra_capabilities:\n    - moodle/site:config\n", ['moodle/site:config']],
+            'items aligned with the key' => ["  extra_capabilities:\n  - moodle/site:config\n", ['moodle/site:config']],
+            'items flush left' => ["  extra_capabilities:\n- moodle/site:config\n", null],
+            'items flush left after a comment' => ["  extra_capabilities:\n  # Extra.\n- moodle/site:config\n", null],
+            'empty key' => ["  extra_capabilities:\n", []],
+            'empty key with a comment' => ["  extra_capabilities:   # None yet.\n", []],
+            'empty flow list' => ["  extra_capabilities: []\n", []],
+        ];
+    }
 }

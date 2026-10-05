@@ -37,6 +37,34 @@ class yaml_parser {
      * @throws \moodle_exception If YAML is invalid
      */
     public function parse(string $content): ?array {
+        return $this->read($content, true);
+    }
+
+    /**
+     * Parse YAML that the plugin has already stored.
+     *
+     * Without the yaml extension, releases before 1.0.3 accepted inconsistent
+     * indentation, so a stored schema or history entry may hold YAML that parse()
+     * now rejects. It is read the way it was read when it was saved, so it can
+     * still be displayed, health-checked and replaced.
+     *
+     * @param string $content Stored YAML content
+     * @return array|null Parsed data or null on failure
+     * @throws \moodle_exception If YAML is invalid
+     */
+    public function parse_stored(string $content): ?array {
+        return $this->read($content, false);
+    }
+
+    /**
+     * Parse YAML with the yaml extension, or the fallback reader without it.
+     *
+     * @param string $content YAML content
+     * @param bool $strict Whether the fallback reader rejects inconsistent indentation
+     * @return array|null Parsed data or null on failure
+     * @throws \moodle_exception If YAML is invalid
+     */
+    protected function read(string $content, bool $strict): ?array {
         // Try native PHP yaml extension first.
         if (function_exists('yaml_parse')) {
             $data = @yaml_parse($content);
@@ -48,7 +76,7 @@ class yaml_parser {
 
         // Fallback to simple parser.
         try {
-            $data = (new simple_yaml())->parse($content);
+            $data = (new simple_yaml($strict))->parse($content);
             return is_array($data) ? $data : null;
         } catch (\Exception $e) {
             throw new \moodle_exception('error_invalid_yaml', 'local_servicemanager', '', $e->getMessage());

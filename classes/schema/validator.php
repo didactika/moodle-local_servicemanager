@@ -226,17 +226,6 @@ class validator {
             }
 
             $result = $this->validate($data, $excludeschemaid);
-
-            // Safety net against silent parse loss: if the raw text declares
-            // "extra_capabilities:" as a block (nothing after the colon) but parsing
-            // yielded none, the items were likely mis-indented and dropped.
-            if (
-                preg_match('/^\s*extra_capabilities\s*:\s*(#.*)?$/m', $content)
-                    && empty($this->parser->extract_extra_capabilities($data))
-            ) {
-                $result['warnings'][] = get_string('warning_extra_capabilities_empty', 'local_servicemanager');
-            }
-
             $result['data'] = $data;
             return $result;
         } catch (\moodle_exception $e) {

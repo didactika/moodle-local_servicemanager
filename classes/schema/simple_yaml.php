@@ -28,6 +28,11 @@ namespace local_servicemanager\schema;
  * its children sit at, so the reader can tell when a line has left the
  * container it was in.
  *
+ * Indentation is checked as strictly as the PHP yaml extension does it: a line
+ * that does not fit any open container is rejected rather than dropped, so a
+ * schema means the same thing whichever parser reads it. Lenient mode keeps the
+ * pre-1.0.3 behaviour, for reading schemas saved before the check existed.
+ *
  * @package    local_servicemanager
  * @author     Eduardo Estrada <me@e2rd0.com>
  * @author     Hector Arrechea
@@ -46,11 +51,24 @@ class simple_yaml {
         '' => null,
     ];
 
+    /** @var bool Whether to reject lines that fit no open container. */
+    protected $strict;
+
+    /**
+     * Constructor.
+     *
+     * @param bool $strict Reject inconsistent indentation; false reads it as releases before 1.0.3 did
+     */
+    public function __construct(bool $strict = true) {
+        $this->strict = $strict;
+    }
+
     /**
      * Read a YAML document.
      *
      * @param string $content YAML content
      * @return array Parsed data
+     * @throws \moodle_exception If a line is indented inconsistently (strict mode only)
      */
     public function parse(string $content): array {
         $result = [];
@@ -61,13 +79,13 @@ class simple_yaml {
         // keyindent:   indent of the key that opened this container (-1 for the root).
         $frames = [['type' => 'map', 'childindent' => 0, 'keyindent' => -1]];
 
-        foreach (explode("\n", $content) as $line) {
+        foreach (explode("\n", $content) as $index => $line) {
             $token = $this->classify($line);
             if ($token === null) {
                 continue;
             }
 
-            $this->close_finished_containers($stack, $frames, $token);
+            $this->close_finished_containers($stack, $frames, $token, $index + 1);
 
             $topidx = count($stack) - 1;
             $current = &$stack[$topidx];
@@ -130,14 +148,26 @@ class simple_yaml {
     /**
      * Pop every container this line has left.
      *
+     * In strict mode the line must then fit the container it lands in. If it does
+     * not even fit the root, it is indented inconsistently with every block around it.
+     * Lenient mode adds it to the root regardless.
+     *
      * @param array $stack Open containers, by reference
      * @param array $frames Frames describing them, by reference
      * @param array $token Classified line
+     * @param int $linenumber 1-based line number, for the error message
+     * @throws \moodle_exception If the line fits no open container (strict mode only)
      */
-    protected function close_finished_containers(array &$stack, array &$frames, array $token): void {
+    protected function close_finished_containers(array &$stack, array &$frames, array $token, int $linenumber): void {
         $depth = count($frames);
 
-        while ($depth > 1 && !$this->belongs_to($frames[$depth - 1], $token)) {
+        while (!$this->belongs_to($frames[$depth - 1], $token)) {
+            if ($depth === 1) {
+                if (!$this->strict) {
+                    return;
+                }
+                throw new \moodle_exception('error_yaml_indentation', 'local_servicemanager', '', $linenumber);
+            }
             array_pop($stack);
             array_pop($frames);
             $depth--;
@@ -150,6 +180,8 @@ class simple_yaml {
      * The rule mirrors block YAML: a sequence may share its key's indent, a
      * mapping key must be deeper than its key, and once a container has
      * children the line must match both their indent and the container's type.
+     * A line deeper than the children has nothing to nest under, because only
+     * a key with an empty value opens a new container; lenient mode accepts it.
      *
      * @param array $frame Frame of the innermost open container
      * @param array $token Classified line
@@ -164,7 +196,7 @@ class simple_yaml {
             return $token['iskey'] && $token['indent'] > $frame['keyindent'];
         }
 
-        if ($token['indent'] > $frame['childindent']) {
+        if (!$this->strict && $token['indent'] > $frame['childindent']) {
             return true;
         }
 

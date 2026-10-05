@@ -382,7 +382,7 @@ class manager {
      * @return bool
      */
     protected function content_changed(\stdClass $existing, array $data): bool {
-        $olddata = $this->parser->parse($existing->yaml_content);
+        $olddata = $this->parser->parse_stored($existing->yaml_content);
 
         $new = $data;
         unset($new['meta']);
