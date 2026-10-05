@@ -62,6 +62,10 @@ class user_manager {
         $user->timecreated = time();
         $user->timemodified = time();
 
+        // Moodle 5.3+ (MDL-82650) deprecates user_create_user() in favour of \core\user::create_user().
+        if (method_exists(\core\user::class, 'create_user')) {
+            return \core\user::create_user($user, false, true);
+        }
         return user_create_user($user, false, true);
     }
 

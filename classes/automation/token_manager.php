@@ -84,7 +84,7 @@ class token_manager {
 
         // Get meta name from YAML.
         $parser = new \local_servicemanager\schema\yaml_parser();
-        $yamldata = $parser->parse($schema->yaml_content);
+        $yamldata = $parser->parse_stored($schema->yaml_content);
         $metaname = $yamldata['meta']['name'] ?? $schema->name;
 
         // Generate new token.

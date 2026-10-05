@@ -21,7 +21,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:${{ matrix.postgres-version }}
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
@@ -30,7 +30,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
 
       mariadb:
-        image: mariadb:10
+        image: mariadb:${{ matrix.mariadb-version }}
         env:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
@@ -38,24 +38,43 @@ jobs:
           MYSQL_COLLATION_SERVER: "utf8mb4_unicode_ci"
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
+        options: --health-cmd="mariadb-admin ping" --health-interval 10s --health-timeout 5s --health-retries 3
 
     strategy:
       fail-fast: false
       matrix:
-        # This plugin targets Moodle 4.5–5.2 (see version.php $plugin->supported).
-        # We test the floor (4.5) and the current highest stable (5.2). Moodle 5.3
-        # is not branched yet (still on `main`), so MOODLE_503_STABLE cannot be
-        # tested until it is released — add it here on release day. Moodle 5.2
-        # requires PHP 8.3+, so only PHP 8.3 is used for it; Moodle 4.5 runs on 8.1–8.3.
-        php: ['8.1', '8.2', '8.3']
-        moodle-branch: ['MOODLE_405_STABLE', 'MOODLE_502_STABLE']
+        # This plugin targets Moodle 4.5–5.3 (see version.php $plugin->supported).
+        # We test the floor (4.5), the previous stable (5.2) and the current highest
+        # stable (5.3). Moodle 5.2+ requires PHP 8.3+, so PHP 8.1/8.2 are excluded
+        # for those branches; Moodle 4.5 runs on 8.1–8.3. PHP 8.4 is tested on 5.3 only.
+        # Database images are picked per branch (see `include`): Moodle 5.3 requires
+        # MariaDB 11.4+ and PostgreSQL 17+, older branches keep their current versions.
+        php: ['8.1', '8.2', '8.3', '8.4']
+        moodle-branch: ['MOODLE_405_STABLE', 'MOODLE_502_STABLE', 'MOODLE_503_STABLE']
         database: [pgsql, mariadb]
         exclude:
           - php: '8.1'
             moodle-branch: 'MOODLE_502_STABLE'
           - php: '8.2'
             moodle-branch: 'MOODLE_502_STABLE'
+          - php: '8.1'
+            moodle-branch: 'MOODLE_503_STABLE'
+          - php: '8.2'
+            moodle-branch: 'MOODLE_503_STABLE'
+          - php: '8.4'
+            moodle-branch: 'MOODLE_405_STABLE'
+          - php: '8.4'
+            moodle-branch: 'MOODLE_502_STABLE'
+        include:
+          - moodle-branch: 'MOODLE_405_STABLE'
+            postgres-version: '16'
+            mariadb-version: '10'
+          - moodle-branch: 'MOODLE_502_STABLE'
+            postgres-version: '16'
+            mariadb-version: '10'
+          - moodle-branch: 'MOODLE_503_STABLE'
+            postgres-version: '17'
+            mariadb-version: '11.4'
 
     steps:
       - name: Check out repository code
