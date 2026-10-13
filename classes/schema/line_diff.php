@@ -120,18 +120,9 @@ class line_diff {
      * @return array Steps of kind, line number, text and, for a line both have, its number in the second text.
      */
     private function steps(array $left, array $right): array {
+        $length = $this->common_lengths($left, $right);
         $n = count($left);
         $m = count($right);
-
-        // The length of the longest common run of the lines from each position on.
-        $length = array_fill(0, $n + 1, array_fill(0, $m + 1, 0));
-        for ($i = $n - 1; $i >= 0; $i--) {
-            for ($j = $m - 1; $j >= 0; $j--) {
-                $length[$i][$j] = $left[$i] === $right[$j]
-                    ? $length[$i + 1][$j + 1] + 1
-                    : max($length[$i + 1][$j], $length[$i][$j + 1]);
-            }
-        }
 
         $steps = [];
         $i = 0;
@@ -149,11 +140,42 @@ class line_diff {
                 $j++;
             }
         }
-        for (; $i < $n; $i++) {
-            $steps[] = ['removed', $i + 1, $left[$i], 0];
+        return array_merge($steps, $this->leftovers('removed', $left, $i), $this->leftovers('added', $right, $j));
+    }
+
+    /**
+     * The length of the longest common run of the lines from each position on.
+     *
+     * @param string[] $left Lines of the first text.
+     * @param string[] $right Lines of the second text.
+     * @return int[][] The length from each pair of positions.
+     */
+    private function common_lengths(array $left, array $right): array {
+        $n = count($left);
+        $m = count($right);
+        $length = array_fill(0, $n + 1, array_fill(0, $m + 1, 0));
+        for ($i = $n - 1; $i >= 0; $i--) {
+            for ($j = $m - 1; $j >= 0; $j--) {
+                $length[$i][$j] = $left[$i] === $right[$j]
+                    ? $length[$i + 1][$j + 1] + 1
+                    : max($length[$i + 1][$j], $length[$i][$j + 1]);
+            }
         }
-        for (; $j < $m; $j++) {
-            $steps[] = ['added', $j + 1, $right[$j], 0];
+        return $length;
+    }
+
+    /**
+     * The steps of the lines that are left when the other text has no more.
+     *
+     * @param string $kind removed or added.
+     * @param string[] $lines The lines of the text that still has some.
+     * @param int $from The position of the first line that is left.
+     * @return array The steps.
+     */
+    private function leftovers(string $kind, array $lines, int $from): array {
+        $steps = [];
+        for ($k = $from; $k < count($lines); $k++) {
+            $steps[] = [$kind, $k + 1, $lines[$k], 0];
         }
         return $steps;
     }

@@ -43,8 +43,8 @@ class version_summary {
         $new = $parser->parse_stored($after) ?? [];
 
         $changes = [];
-        $oldmeta = $parser->extract_meta($old);
-        $newmeta = $parser->extract_meta($new);
+        $oldmeta = schema_extractor::meta($old);
+        $newmeta = schema_extractor::meta($new);
         foreach (self::FIELDS as $field) {
             $from = (string) ($oldmeta[$field] ?? '');
             $to = (string) ($newmeta[$field] ?? '');
@@ -55,12 +55,12 @@ class version_summary {
 
         $changes = array_merge(
             $changes,
-            $this->functions($parser->extract_functions($old), $parser->extract_functions($new)),
-            $this->lists('capability', $parser->extract_extra_capabilities($old), $parser->extract_extra_capabilities($new)),
-            $this->lists('user', $parser->extract_additional_users($old), $parser->extract_additional_users($new)),
-            $this->lists('plugin', $parser->extract_required_plugins($old), $parser->extract_required_plugins($new)),
-            $this->files($parser->extract_service_settings($old), $parser->extract_service_settings($new)),
-            $this->role($parser->extract_role_settings($old), $parser->extract_role_settings($new))
+            $this->functions(schema_extractor::functions($old), schema_extractor::functions($new)),
+            $this->lists('capability', schema_extractor::extra_capabilities($old), schema_extractor::extra_capabilities($new)),
+            $this->lists('user', schema_extractor::additional_users($old), schema_extractor::additional_users($new)),
+            $this->lists('plugin', schema_extractor::required_plugins($old), schema_extractor::required_plugins($new)),
+            $this->files(schema_extractor::service_settings($old), schema_extractor::service_settings($new)),
+            $this->role(schema_extractor::role_settings($old), schema_extractor::role_settings($new))
         );
         return $changes;
     }

@@ -18,6 +18,7 @@ namespace local_servicemanager\output;
 
 use core\output\react_component_renderable;
 use local_servicemanager\schema\yaml_parser;
+use local_servicemanager\schema\schema_extractor;
 
 /**
  * One schema: what it declares, what it provisioned and how healthy it is, or one past version of it.
@@ -92,6 +93,7 @@ class schema_page implements react_component_renderable, \renderable {
      */
     #[\Override]
     public function get_react_component_props(\renderer_base $renderer): \stdClass {
+        unset($renderer);
         return $this->history ? $this->history_props() : $this->schema_props();
     }
 
@@ -138,7 +140,7 @@ class schema_page implements react_component_renderable, \renderable {
             ],
             'wsStatus' => ws_status::describe($canmanage) + ['healthy' => 0, 'warning' => 0, 'critical' => 0],
             'newToken' => $this->newtoken,
-            'functions' => $this->functions($parser->extract_functions($data)),
+            'functions' => $this->functions(schema_extractor::functions($data)),
             'resources' => [
                 'user' => $this->user($schema),
                 'role' => $this->role($schema),
@@ -147,10 +149,10 @@ class schema_page implements react_component_renderable, \renderable {
             'requirements' => [
                 'downloadFiles' => $service['downloadfiles'],
                 'uploadFiles' => $service['uploadfiles'],
-                'plugins' => $this->plugins($parser->extract_required_plugins($data)),
+                'plugins' => $this->plugins(schema_extractor::required_plugins($data)),
             ],
-            'extraCapabilities' => array_values($parser->extract_extra_capabilities($data)),
-            'role' => $parser->extract_role_settings($data)->to_array(),
+            'extraCapabilities' => array_values(schema_extractor::extra_capabilities($data)),
+            'role' => schema_extractor::role_settings($data)->to_array(),
             'healthLogs' => $logs,
             'urls' => [
                 'dashboard' => $this->url('dashboard.php'),
@@ -174,7 +176,7 @@ class schema_page implements react_component_renderable, \renderable {
         $history = $this->history;
         $parser = new yaml_parser();
         $data = $parser->parse_stored($history->yaml_content);
-        $meta = $parser->extract_meta($data);
+        $meta = schema_extractor::meta($data);
 
         return (object) [
             'strings' => page_text::strings(),
@@ -197,11 +199,11 @@ class schema_page implements react_component_renderable, \renderable {
             ],
             'wsStatus' => null,
             'newToken' => null,
-            'functions' => $this->functions($parser->extract_functions($data)),
+            'functions' => $this->functions(schema_extractor::functions($data)),
             'resources' => ['user' => null, 'role' => null, 'service' => null],
             'requirements' => ['downloadFiles' => false, 'uploadFiles' => false, 'plugins' => []],
-            'extraCapabilities' => array_values($parser->extract_extra_capabilities($data)),
-            'role' => $parser->extract_role_settings($data)->to_array(),
+            'extraCapabilities' => array_values(schema_extractor::extra_capabilities($data)),
+            'role' => schema_extractor::role_settings($data)->to_array(),
             'healthLogs' => [],
             'urls' => [
                 'dashboard' => $this->url('dashboard.php'),

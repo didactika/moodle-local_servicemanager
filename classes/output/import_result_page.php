@@ -59,6 +59,7 @@ class import_result_page implements react_component_renderable, \renderable {
      */
     #[\Override]
     public function get_react_component_props(\renderer_base $renderer): \stdClass {
+        unset($renderer);
         $items = $this->result['items'] ?? [];
         $failed = count(array_filter($items, fn(array $item) => $item['status'] === 'failed'));
         $urls = $this->view_urls(array_column($items, 'id'));

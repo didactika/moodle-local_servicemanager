@@ -116,6 +116,7 @@ YAML;
      */
     #[\Override]
     public function get_react_component_props(\renderer_base $renderer): \stdClass {
+        unset($renderer);
         return (object) [
             'strings' => page_text::strings(),
             'backUrl' => $this->backurl,

@@ -149,63 +149,6 @@ YAML;
     }
 
     /**
-     * Type in an autocomplete field that asks the server for its suggestions and wait for them.
-     *
-     * Releases of Moodle before 5.0 do not wait for the answer of the server when the generic step types in such a field.
-     *
-     * @param string $field Label of the field.
-     * @param string $value What to type.
-     * @return \Behat\Mink\Element\NodeElement The text input of the field.
-     */
-    protected function type_in_suggesting_field(string $field, string $value) {
-        $input = $this->find_field($field);
-        $input->click();
-        behat_base::type_keys($this->getSession(), str_split($value));
-        $holder = $input->getParent()->getParent();
-        for ($waited = 0; $waited < 100; $waited++) {
-            if ($holder->find('css', '.form-autocomplete-suggestions > [role=option]') !== null) {
-                break;
-            }
-            usleep(100000);
-        }
-        return $input;
-    }
-
-    /**
-     * Type in a field that suggests and choose the first suggestion.
-     *
-     * @When I search for :value in the field :field and choose the first suggestion
-     * @param string $value What to type.
-     * @param string $field Label of the field.
-     */
-    public function i_search_for_in_the_field_and_choose_the_first_suggestion($value, $field) {
-        $input = $this->type_in_suggesting_field($field, $value);
-        $suggestion = $input->getParent()->getParent()->find('css', '.form-autocomplete-suggestions > [role=option]');
-        if ($suggestion === null) {
-            throw new Exception("The field '{$field}' did not suggest anything for '{$value}'");
-        }
-        $suggestion->click();
-        behat_base::type_keys($this->getSession(), [behat_keys::ESCAPE]);
-    }
-
-    /**
-     * Check how many suggestions a field gives for what is typed.
-     *
-     * @Then the field :field suggests at least :count options for :value
-     * @param string $field Label of the field.
-     * @param string $count Least number of suggestions.
-     * @param string $value What to type.
-     */
-    public function the_field_suggests_at_least_options_for($field, $count, $value) {
-        $input = $this->type_in_suggesting_field($field, $value);
-        $found = count($input->getParent()->getParent()->findAll('css', '.form-autocomplete-suggestions > [role=option]'));
-        behat_base::type_keys($this->getSession(), [behat_keys::ESCAPE]);
-        if ($found < (int) $count) {
-            throw new Exception("The field '{$field}' suggested {$found} options for '{$value}', not {$count}");
-        }
-    }
-
-    /**
      * Open a page of the plugin.
      *
      * @Given I open the page :page of the plugin
@@ -275,19 +218,5 @@ YAML;
         $yaml = "meta:\n  id: \"{$schemaid}\"\n  name: \"{$record->name}\"\n  version: \"{$version}\"\n" .
             "definition:\n  functions:\n    - core_webservice_get_site_info\n  extra_capabilities:\n{$list}\n";
         (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
-    }
-
-    /**
-     * Check that the text field has a text that matches a regular expression.
-     *
-     * @Then the text of the field :field matches :pattern
-     * @param string $field Label of the field.
-     * @param string $pattern Regular expression.
-     */
-    public function the_text_of_the_field_matches($field, $pattern) {
-        $value = (string) $this->find_field($field)->getValue();
-        if (!preg_match($pattern, $value)) {
-            throw new Exception("The field '{$field}' does not match {$pattern}: {$value}");
-        }
     }
 }
