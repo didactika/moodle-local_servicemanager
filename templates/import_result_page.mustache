@@ -81,7 +81,7 @@
                             <div class="sm-grow">
                                 <div>
                                     {{#viewurl}}<a href="{{viewurl}}" class="sm-strong">{{label}}</a>{{/viewurl}}{{^viewurl}}<strong>{{label}}</strong>{{/viewurl}}
-                                    {{#showid}}<code class="sm-gap-left small">{{id}}</code>{{/showid}}
+                                    {{#showid}}<span class="sm-id-chip compact sm-gap-left"><i class="fa-solid fa-fingerprint sm-icon-gap" aria-hidden="true"></i>{{id}}</span>{{/showid}}
                                     <span class="sm-badge tone-{{tone}} sm-gap-left">{{statuslabel}}</span>
                                 </div>
                                 {{#hasmessages}}

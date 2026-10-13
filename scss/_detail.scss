@@ -60,3 +60,287 @@
         width: 6.25rem;
     }
 }
+
+.servicemanager-detail {
+    // The token that was just made, small, next to the button that made it.
+    .sm-fresh-token {
+        margin-top: 0.6rem;
+        padding: 0.5rem 0.65rem;
+        border: 1px dashed var(--sm-success);
+        border-radius: var(--sm-border-radius);
+        background-color: color-mix(in srgb, var(--sm-success) 8%, var(--sm-body-bg));
+
+        .sm-token-value {
+            display: inline-block;
+            max-width: calc(100% - 2.6rem);
+            overflow-wrap: anywhere;
+            color: var(--sm-body-color);
+            font-size: 0.8125rem;
+            vertical-align: middle;
+        }
+    }
+
+    // A fact that needs the whole row, such as a list of capabilities.
+    .sm-fact-wide {
+        grid-column: 1 / -1;
+    }
+
+    dt.sm-fact-wide {
+        margin-bottom: -0.2rem;
+    }
+
+    // One chip under the other, all starting at the same edge.
+    .sm-code-chips {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .sm-code-chip {
+        display: inline-flex;
+        margin: 0;
+        padding: 0.2rem 0.55rem;
+        border: 1px solid var(--sm-border-color);
+        border-radius: 2rem;
+        background-color: var(--sm-tertiary-bg);
+        color: var(--sm-body-color);
+        font-size: 0.78rem;
+        white-space: nowrap;
+
+        .sm-code-chip-plugin {
+            color: var(--sm-secondary-color);
+        }
+    }
+}
+
+.servicemanager-detail {
+    // The role: one block for each thing it may do, with its name over its list.
+    .sm-role-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+        gap: 1.25rem 1.5rem;
+    }
+
+    .sm-role-label {
+        display: flex;
+        align-items: center;
+        margin: 0 0 0.5rem;
+        color: var(--sm-secondary-color);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        gap: 0.5rem;
+    }
+
+    .sm-role-count {
+        padding: 0 0.4rem;
+        border-radius: 2rem;
+        background-color: var(--sm-tertiary-bg);
+        font-size: 0.72rem;
+        letter-spacing: 0;
+    }
+
+    .sm-role-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .sm-role-chip {
+        --sm-chip-tone: var(--sm-secondary-color);
+        padding: 0.15rem 0.6rem;
+        border: 1px solid color-mix(in srgb, var(--sm-chip-tone) 30%, var(--sm-body-bg));
+        border-radius: 2rem;
+        background-color: color-mix(in srgb, var(--sm-chip-tone) 10%, var(--sm-body-bg));
+        color: var(--sm-body-color);
+        font-size: 0.8rem;
+
+        &.tone-primary {
+            --sm-chip-tone: var(--sm-primary);
+        }
+
+        &.tone-warning {
+            --sm-chip-tone: var(--sm-warning-text-emphasis);
+        }
+
+        &.tone-danger {
+            --sm-chip-tone: var(--sm-danger);
+        }
+    }
+
+    .sm-role-more {
+        padding: 0.15rem 0.5rem;
+        border: 0;
+        background: transparent;
+        color: var(--sm-primary);
+        font-size: 0.8rem;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.servicemanager-detail {
+    // The facts of the schema side by side, each with its name over its value.
+    .sm-facts-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 2.5rem;
+
+        .sm-fact {
+            min-width: 0;
+        }
+
+        dt {
+            margin-bottom: 0.15rem;
+            color: var(--sm-secondary-color);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        dd {
+            margin: 0;
+        }
+    }
+
+    .sm-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .sm-code-chip {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+// The dialogue that lists every chip is outside the page, so its chips are styled where it is.
+.sm-dialog .sm-chip-all,
+.modal .sm-chip-all {
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.servicemanager-detail {
+    // Names that are shown, such as the functions and their capabilities, in the font of the page and not in the one of code.
+    .sm-fn {
+        color: var(--sm-body-color);
+        font-size: 0.95rem;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .sm-id-chip,
+    .sm-code-chip {
+        font-family: inherit;
+        font-size: 0.8rem;
+    }
+
+    // The button of the chips that are not shown: the same chip, with how many there are, which opens all of them.
+    .sm-role-more {
+        padding: 0.15rem 0.7rem;
+        border: 1px solid color-mix(in srgb, var(--sm-primary) 35%, var(--sm-body-bg));
+        border-radius: 2rem;
+        background-color: color-mix(in srgb, var(--sm-primary) 12%, var(--sm-body-bg));
+        color: var(--sm-primary);
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: background-color 0.12s ease, border-color 0.12s ease;
+
+        &:hover {
+            border-color: var(--sm-primary);
+            background-color: color-mix(in srgb, var(--sm-primary) 22%, var(--sm-body-bg));
+            text-decoration: none;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--sm-primary);
+            outline-offset: 2px;
+        }
+    }
+}
+
+.servicemanager-detail {
+    .sm-role-count {
+        background-color: color-mix(in srgb, var(--sm-primary) 14%, var(--sm-body-bg));
+        color: var(--sm-primary);
+        font-weight: 700;
+    }
+}
+
+// The lists of the dialogues: rows with a thin line between them, in a rounded frame.
+.servicemanager-detail .sm-caps-list,
+.sm-dialog .sm-caps-list,
+.modal .sm-caps-list {
+    margin: 0;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    .list-group-item {
+        padding: 0.7rem 1rem;
+        border-width: 0 0 1px;
+        border-color: var(--sm-border-color);
+        background-color: transparent;
+        color: var(--sm-body-color);
+        transition: background-color 0.1s ease;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        &:hover {
+            background-color: var(--sm-tertiary-bg);
+        }
+    }
+
+    .sm-fn {
+        font-weight: 600;
+    }
+}
+
+.sm-modal {
+    .modal-content {
+        border: 1px solid var(--sm-border-color);
+        border-radius: 1rem;
+        box-shadow: var(--sm-box-shadow-lg);
+        overflow: hidden;
+    }
+
+    .modal-header {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--sm-border-color);
+
+        .modal-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+    }
+
+    .modal-body {
+        padding: 1.25rem;
+    }
+
+    .modal-footer {
+        padding: 0.9rem 1.25rem;
+        border-top: 1px solid var(--sm-border-color);
+        background-color: var(--sm-tertiary-bg);
+    }
+
+    .sm-dialog-search {
+        position: sticky;
+        top: -1.25rem;
+        z-index: 1;
+        margin: -1.25rem -1.25rem 1rem;
+        padding: 0.9rem 1.25rem;
+        border-bottom: 1px solid var(--sm-border-color);
+        background-color: var(--sm-body-bg);
+    }
+}

@@ -54,6 +54,11 @@
                     <span class="sr-only visually-hidden"> {{label}}</span>
                 </span>
             {{/ws.protocols}}
+            {{#ws.fixurl}}
+                <a href="{{ws.fixurl}}" class="btn sm-pill compact tone-{{ws.tone}}" data-region="ws-fix">
+                    <i class="fa-solid fa-power-off sm-icon-gap" aria-hidden="true"></i>{{ws.fixlabel}}
+                </a>
+            {{/ws.fixurl}}
             {{#canmanage}}{{#ws.protocolsurl}}
                 <a href="{{ws.protocolsurl}}" class="btn sm-pill compact" title="{{#str}}ws_manage_protocols_link, local_servicemanager{{/str}}">
                     <i class="fa-solid fa-gear sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_manage, local_servicemanager{{/str}}
@@ -64,10 +69,10 @@
 
     {{^hasschemas}}
         <div class="card sm-empty" data-region="empty-state">
-            <div class="card-body">
-                <div class="sm-empty-icon"><i class="fa-solid fa-plug" aria-hidden="true"></i></div>
-                <h3>{{#str}}empty_title, local_servicemanager{{/str}}</h3>
-                <p class="sm-empty-text">{{#str}}no_schemas, local_servicemanager{{/str}}</p>
+            <div class="card-body text-center py-5">
+                <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-plug" aria-hidden="true"></i></div>
+                <h4 class="mb-2">{{#str}}empty_title, local_servicemanager{{/str}}</h4>
+                <p class="sm-muted mx-auto sm-empty-text">{{#str}}no_schemas, local_servicemanager{{/str}}</p>
                 <div class="sm-actions-row">
                     {{#canmanage}}
                         <a href="{{urls.create}}" class="btn btn-primary"><i class="fa-solid fa-plus sm-icon-gap" aria-hidden="true"></i>{{#str}}new_schema, local_servicemanager{{/str}}</a>
@@ -115,10 +120,17 @@
             </div>
             <div class="dropdown sm-filter" data-region="filters">
                 <button class="btn btn-outline-secondary" type="button" data-sm-menu aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-sliders sm-icon-gap" aria-hidden="true"></i>{{#str}}filters, local_servicemanager{{/str}}
+                    <span class="sm-icon-gap"><svg class="sm-filter-icon" viewBox="0 0 24 24" width="1.05em" height="1.05em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>{{#str}}filters, local_servicemanager{{/str}}
                     <span class="sm-count-badge" data-region="filters-count" hidden>0</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-filter-menu">
+                    <div class="sm-filter-head">
+                        <h2 class="sm-filter-heading">{{#str}}filters, local_servicemanager{{/str}}</h2>
+                        <button type="button" class="sm-iconbtn" data-action="reset-filters" disabled
+                                title="{{#str}}filter_clear, local_servicemanager{{/str}}" aria-label="{{#str}}filter_clear, local_servicemanager{{/str}}">
+                            <svg class="sm-filter-clear-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 14.5V20l-3 1.5v-7L3 4h14"/><line x1="16" y1="8" x2="22" y2="14"/><line x1="22" y1="8" x2="16" y2="14"/></svg>
+                        </button>
+                    </div>
                     <div class="sm-field">
                         <label for="sm-from" class="sm-label">{{#str}}filter_date_from, local_servicemanager{{/str}}</label>
                         <input type="date" id="sm-from" class="form-control">
@@ -133,9 +145,6 @@
                             <button type="button" class="sm-chip{{#first}} active{{/first}}" data-perpage="{{size}}" aria-pressed="{{#first}}true{{/first}}{{^first}}false{{/first}}">{{size}}</button>
                         {{/perpage}}
                     </div>
-                    <button type="button" class="btn btn-link sm-reset" data-action="reset-filters" disabled>
-                        <i class="fa-solid fa-rotate-left sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
-                    </button>
                 </div>
             </div>
             <div class="sm-toolbar-actions">
@@ -197,7 +206,7 @@
                                 <td>
                                     <a href="{{viewurl}}" class="sm-name">{{name}}</a>
                                     {{^enabled}}<span class="sm-badge tone-secondary sm-gap-left">{{#str}}disabled, local_servicemanager{{/str}}</span>{{/enabled}}
-                                    <div><code class="small">{{schemaid}}</code></div>
+                                    <div><span class="sm-id-chip compact"><i class="fa-solid fa-fingerprint sm-icon-gap" aria-hidden="true"></i>{{schemaid}}</span></div>
                                 </td>
                                 <td>{{version}}</td>
                                 <td><span class="sm-badge tone-{{tone}}">{{statuslabel}}</span></td>
@@ -240,10 +249,10 @@
         </div>
 
         <div class="card sm-empty" data-region="empty-state" hidden>
-            <div class="card-body">
-                <div class="sm-empty-icon"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
-                <h3>{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h3>
-                <p class="sm-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
+            <div class="card-body text-center py-5">
+                <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
+                <h4 class="mb-2">{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h4>
+                <p class="sm-muted mx-auto sm-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
                 <button type="button" class="btn btn-secondary" data-action="reset-all">
                     <i class="fa-solid fa-xmark sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
                 </button>

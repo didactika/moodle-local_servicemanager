@@ -144,6 +144,48 @@
         width: 19rem;
         padding: 1rem;
 
+        // The title of the panel and, at its right, the button that clears every filter: a funnel with a cross.
+        .sm-filter-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .sm-filter-heading {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .sm-iconbtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            border: 0;
+            border-radius: 0.5rem;
+            background: transparent;
+            color: inherit;
+            transition: background-color 0.12s ease, color 0.12s ease;
+
+            &:hover:not(:disabled) {
+                background-color: color-mix(in srgb, var(--sm-primary) 14%, var(--sm-body-bg));
+                color: var(--sm-primary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--sm-primary);
+                outline-offset: 1px;
+            }
+
+            &:disabled {
+                opacity: 0.35;
+            }
+        }
+
         .sm-filter-title {
             margin-bottom: 0.4rem;
             color: var(--sm-secondary-color);
@@ -370,7 +412,7 @@
 
         &.off {
             color: var(--sm-secondary-color);
-            text-decoration: line-through;
+            opacity: 0.8;
         }
     }
 

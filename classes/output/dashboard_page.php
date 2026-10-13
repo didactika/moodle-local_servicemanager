@@ -174,6 +174,20 @@ class dashboard_page implements \renderable, \templatable {
         $tones = ['disabled' => 'danger', 'warning' => 'warning', 'operational' => 'success'];
         $icons = ['disabled' => 'plug-circle-xmark', 'warning' => 'plug-circle-exclamation', 'operational' => 'plug-circle-check'];
 
+        $fix = ['url' => '', 'label' => ''];
+        if ($canmanage && $level === 'disabled') {
+            $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
+            $fix = [
+                'url' => $subsystems->out(false),
+                'label' => get_string('ws_enable_services', 'local_servicemanager'),
+            ];
+        } else if ($canmanage && $level === 'warning') {
+            $fix = [
+                'url' => $this->settings_url('webserviceprotocols'),
+                'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
+            ];
+        }
+
         $rows = $DB->get_records_sql('SELECT status, COUNT(*) AS cnt FROM {local_servicemanager_schemas} GROUP BY status');
         return [
             'enabled' => $enabled,
@@ -185,6 +199,8 @@ class dashboard_page implements \renderable, \templatable {
             'healthy' => (int) (isset($rows['healthy']) ? $rows['healthy']->cnt : 0),
             'warning' => (int) (isset($rows['warning']) ? $rows['warning']->cnt : 0),
             'critical' => (int) (isset($rows['critical']) ? $rows['critical']->cnt : 0),
+            'fixurl' => $fix['url'],
+            'fixlabel' => $fix['label'],
             'protocolsurl' => $canmanage ? $this->settings_url('webserviceprotocols') : '',
         ];
     }

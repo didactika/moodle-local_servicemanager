@@ -26,8 +26,7 @@
  */
 
 import {get_strings as getStrings} from 'core/str';
-import ModalSaveCancel from 'core/modal_save_cancel';
-import ModalEvents from 'core/modal_events';
+import {confirm} from 'local_servicemanager/dialogue';
 import {init as initMenus, close as closeMenus} from 'local_servicemanager/menu';
 import {
     addressKeeper, drawPager, hasWords, inDates, loadPagerStrings, postForm, readState
@@ -168,16 +167,8 @@ export const init = () => {
     };
 
     const confirmDelete = (ids) => {
-        ModalSaveCancel.create({
-            title: strings.deleteTitle,
-            body: strings.deleteBody,
-            buttons: {save: strings.deleteTitle},
-            show: true,
-            removeOnClose: true,
-        }).then((modal) => {
-            modal.getRoot().on(ModalEvents.save, () => send('delete', ids));
-            return modal;
-        }).catch(() => send('delete', ids));
+        confirm(strings.deleteTitle, strings.deleteBody, strings.deleteTitle, () => send('delete', ids))
+            .catch(() => null);
     };
 
     search.value = state.query;

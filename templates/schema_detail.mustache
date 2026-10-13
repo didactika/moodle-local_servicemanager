@@ -48,7 +48,7 @@
         "schemarowid": 1
     }
 }}
-<div class="servicemanager-detail{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-detail" data-bulk-url="{{urls.bulk}}" data-sesskey="{{sesskey}}" data-id="{{schemarowid}}" data-enabled="{{#schema.enabled}}1{{/schema.enabled}}{{^schema.enabled}}0{{/schema.enabled}}">
+<div class="servicemanager-detail{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-detail" data-has-token="{{#hastoken}}1{{/hastoken}}{{^hastoken}}0{{/hastoken}}" data-bulk-url="{{urls.bulk}}" data-sesskey="{{sesskey}}" data-id="{{schemarowid}}" data-name="{{schema.name}}" data-enabled="{{#schema.enabled}}1{{/schema.enabled}}{{^schema.enabled}}0{{/schema.enabled}}">
     <div class="sm-block">
         <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{backlabel}}</a>
     </div>
@@ -72,14 +72,14 @@
             <div class="sm-badges-row">
                 <h2 class="sm-flush">{{schema.name}}</h2>
                 <span class="sm-badge tone-{{schema.tone}}"><i class="fa-solid fa-{{schema.icon}} sm-icon-gap" aria-hidden="true"></i>{{schema.statuslabel}}</span>
-                {{^ishistory}}{{^schema.enabled}}<span class="sm-badge tone-secondary">{{#str}}disabled, local_servicemanager{{/str}}</span>{{/schema.enabled}}{{/ishistory}}
+                {{^ishistory}}<span class="sm-badge tone-secondary" data-region="disabled-badge"{{#schema.enabled}} hidden{{/schema.enabled}}>{{#str}}disabled, local_servicemanager{{/str}}</span>{{/ishistory}}
             </div>
-            <p class="sm-muted sm-flush"><code>{{schema.schemaid}}</code></p>
+            <p class="sm-flush"><span class="sm-id-chip" title="{{#str}}schema_id, local_servicemanager{{/str}}"><i class="fa-solid fa-fingerprint sm-icon-gap" aria-hidden="true"></i>{{schema.schemaid}}</span></p>
         </div>
     </header>
 
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-8">
             <section class="card sm-panel" data-region="details">
                 <header class="card-header sm-panel-head">
                     <h3 class="sm-panel-title"><span class="sm-panel-icon sm-muted"><i class="fa-solid fa-circle-info sm-icon-gap" aria-hidden="true"></i></span>{{#str}}schema_information, local_servicemanager{{/str}}</h3>
@@ -97,7 +97,7 @@
                                 <i class="fa-solid fa-download" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_export, local_servicemanager{{/str}}</span>
                             </a>
                             {{#canmanage}}
-                                <button type="button" class="btn sm-pill icon-only compact{{#schema.enabled}} tone-success{{/schema.enabled}}" data-action="toggle-schema"
+                                <button type="button" class="btn sm-pill icon-only compact{{#schema.enabled}} tone-success{{/schema.enabled}}" data-action="toggle-schema" data-region="toggle-schema"
                                         title="{{#schema.enabled}}{{#str}}bulk_disable, local_servicemanager{{/str}}{{/schema.enabled}}{{^schema.enabled}}{{#str}}bulk_enable, local_servicemanager{{/str}}{{/schema.enabled}}">
                                     <i class="fa-solid fa-{{#schema.enabled}}toggle-on{{/schema.enabled}}{{^schema.enabled}}toggle-off{{/schema.enabled}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#schema.enabled}}{{#str}}bulk_disable, local_servicemanager{{/str}}{{/schema.enabled}}{{^schema.enabled}}{{#str}}bulk_enable, local_servicemanager{{/str}}{{/schema.enabled}}</span>
                                 </button>
@@ -110,83 +110,19 @@
                 </header>
                 <div class="card-body">
                     {{#schema.description}}<p>{{schema.description}}</p>{{/schema.description}}
-                    <dl class="sm-facts sm-flush">
-                        <dt>{{#str}}schema_version, local_servicemanager{{/str}}</dt>
-                        <dd>{{schema.version}}</dd>
-                        {{#schema.maintainer}}<dt>{{#str}}schema_maintainer, local_servicemanager{{/str}}</dt><dd>{{schema.maintainer}}</dd>{{/schema.maintainer}}
-                        <dt>{{#str}}schema_created, local_servicemanager{{/str}}</dt>
-                        <dd>{{schema.created}}</dd>
-                        <dt>{{#str}}schema_modified, local_servicemanager{{/str}}</dt>
-                        <dd>{{schema.modified}}</dd>
+                    <dl class="sm-facts-row sm-flush">
+                        <div class="sm-fact"><dt>{{#str}}schema_version, local_servicemanager{{/str}}</dt><dd>{{schema.version}}</dd></div>
+                        {{#schema.maintainer}}<div class="sm-fact"><dt>{{#str}}schema_maintainer, local_servicemanager{{/str}}</dt><dd>{{schema.maintainer}}</dd></div>{{/schema.maintainer}}
+                        <div class="sm-fact"><dt>{{#str}}schema_created, local_servicemanager{{/str}}</dt><dd>{{schema.created}}</dd></div>
+                        <div class="sm-fact"><dt>{{#str}}schema_modified, local_servicemanager{{/str}}</dt><dd>{{schema.modified}}</dd></div>
                         {{^ishistory}}
-                            <dt>{{#str}}schema_enabled, local_servicemanager{{/str}}</dt>
-                            <dd><span class="sm-badge tone-{{#schema.enabled}}success{{/schema.enabled}}{{^schema.enabled}}secondary{{/schema.enabled}}">{{#schema.enabled}}{{#str}}yes{{/str}}{{/schema.enabled}}{{^schema.enabled}}{{#str}}no{{/str}}{{/schema.enabled}}</span></dd>
+                            <div class="sm-fact"><dt>{{#str}}schema_enabled, local_servicemanager{{/str}}</dt>
+                            <dd><span class="sm-badge tone-{{#schema.enabled}}success{{/schema.enabled}}{{^schema.enabled}}secondary{{/schema.enabled}}" data-region="enabled-badge">{{#schema.enabled}}{{#str}}yes{{/str}}{{/schema.enabled}}{{^schema.enabled}}{{#str}}no{{/str}}{{/schema.enabled}}</span></dd></div>
                         {{/ishistory}}
                     </dl>
                 </div>
             </section>
 
-            <section class="card sm-panel" data-region="access">
-                <header class="card-header sm-panel-head">
-                    <h3 class="sm-panel-title"><span class="sm-panel-icon sm-muted"><i class="fa-solid fa-shield-halved sm-icon-gap" aria-hidden="true"></i></span>{{#str}}guided_access, local_servicemanager{{/str}}</h3>
-                </header>
-                <div class="card-body">
-                    <dl class="sm-facts sm-flush">
-                        {{#access.showfiles}}
-                            <dt>{{#str}}tile_token, local_servicemanager{{/str}}</dt>
-                            <dd>
-                                <span class="sm-badge tone-{{#hastoken}}success{{/hastoken}}{{^hastoken}}secondary{{/hastoken}}">{{#hastoken}}{{#str}}token_active, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}token_none, local_servicemanager{{/str}}{{/hastoken}}</span>
-                                {{#canmanage}}
-                                    <a href="{{urls.regenerate}}" class="btn sm-pill icon-only compact sm-gap-left" title="{{#hastoken}}{{#str}}action_regenerate_token, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}action_generate_token, local_servicemanager{{/str}}{{/hastoken}}">
-                                        <i class="fa-solid fa-{{#hastoken}}rotate{{/hastoken}}{{^hastoken}}key{{/hastoken}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#hastoken}}{{#str}}action_regenerate_token, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}action_generate_token, local_servicemanager{{/str}}{{/hastoken}}</span>
-                                    </a>
-                                {{/canmanage}}
-                            </dd>
-                            <dt>{{#str}}req_file_access, local_servicemanager{{/str}}</dt>
-                            <dd class="sm-badges-row">
-                                {{#access.files}}<span class="sm-badge tone-{{#on}}success{{/on}}{{^on}}secondary{{/on}}" title="{{title}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{label}}</span>{{/access.files}}
-                            </dd>
-                        {{/access.showfiles}}
-                        {{#access.hasplugins}}
-                            <dt>{{#str}}req_plugins, local_servicemanager{{/str}}</dt>
-                            <dd>
-                                {{#access.plugins}}
-                                    <div>
-                                        <span class="{{#installed}}sm-text-success{{/installed}}{{^installed}}sm-text-warning{{/installed}}"><i class="fa-solid fa-{{#installed}}circle-check{{/installed}}{{^installed}}triangle-exclamation{{/installed}} sm-icon-gap" aria-hidden="true"></i></span>
-                                        <code>{{name}}</code>
-                                        {{^installed}}<small class="sm-muted">{{#str}}function_missing, local_servicemanager{{/str}}</small>{{/installed}}
-                                    </div>
-                                {{/access.plugins}}
-                            </dd>
-                        {{/access.hasplugins}}
-                        {{#access.hascapabilities}}
-                            <dt>{{#str}}extra_capabilities, local_servicemanager{{/str}}</dt>
-                            <dd class="sm-badges-row">{{#access.capabilities}}<code class="small">{{name}}</code>{{/access.capabilities}}</dd>
-                        {{/access.hascapabilities}}
-                    </dl>
-                </div>
-            </section>
-
-            {{#role.visible}}
-                <section class="card sm-panel" data-region="role">
-                    <header class="card-header sm-panel-head">
-                        <h3 class="sm-panel-title"><span class="sm-panel-icon sm-muted"><i class="fa-solid fa-user-shield sm-icon-gap" aria-hidden="true"></i></span>{{#str}}role_panel_title, local_servicemanager{{/str}}</h3>
-                    </header>
-                    <div class="card-body">
-                        <dl class="sm-facts sm-flush">
-                            {{#role.rows}}
-                                <div class="sm-fact-pair">
-                                    <dt>{{label}}</dt>
-                                    <dd class="sm-badges-row">{{#names}}<span class="sm-badge tone-{{tone}}">{{name}}</span>{{/names}}</dd>
-                                </div>
-                            {{/role.rows}}
-                        </dl>
-                    </div>
-                </section>
-            {{/role.visible}}
-        </div>
-
-        <div class="col-lg-8">
             {{#hasfunctions}}
                 <section class="card sm-panel" data-region="functions">
                     <header class="card-header sm-panel-head">
@@ -205,12 +141,12 @@
                     <ul class="list-group list-group-flush sm-functions">
                         {{#functions}}
                             <li class="list-group-item sm-function{{^exists}} missing{{/exists}}" data-region="function" data-search="{{search}}">
-                                <span class="sm-function-icon sm-text-{{tone}}"><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i></span>
+                                <span class="sm-function-icon{{^exists}} sm-text-danger{{/exists}}{{#exists}} sm-muted{{/exists}}"><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i></span>
                                 <div class="sm-grow sm-function-body">
                                     <div class="sm-badges-row">
-                                        <code>{{name}}</code>
+                                        <span class="sm-fn">{{name}}</span>
                                         {{#typelabel}}<span class="sm-badge">{{typelabel}}</span>{{/typelabel}}
-                                        {{#critical}}<span class="sm-badge tone-secondary">{{#str}}function_critical, local_servicemanager{{/str}}</span>{{/critical}}
+                                        {{#critical}}<span class="sm-badge">{{#str}}function_critical, local_servicemanager{{/str}}</span>{{/critical}}
                                         {{^exists}}<span class="sm-badge tone-danger">{{#str}}function_missing, local_servicemanager{{/str}}</span>{{/exists}}
                                     </div>
                                     {{#description}}<div class="sm-muted small">{{description}}</div>{{/description}}
@@ -242,7 +178,7 @@
                                     <div class="sm-muted small sm-upper">{{label}}</div>
                                     <a href="{{url}}" target="_blank" rel="noreferrer">{{name}}</a>
                                 </div>
-                                <code class="small">{{detail}}</code>
+                                <span class="sm-id-chip compact"><i class="fa-solid fa-fingerprint sm-icon-gap" aria-hidden="true"></i>{{detail}}</span>
                             </li>
                         {{/resources}}
                     </ul>
@@ -272,6 +208,82 @@
                     </div>
                 </section>
             {{/haslogs}}
+        </div>
+
+        <div class="col-lg-4">
+            <section class="card sm-panel" data-region="access">
+                <header class="card-header sm-panel-head">
+                    <h3 class="sm-panel-title"><span class="sm-panel-icon sm-muted"><i class="fa-solid fa-shield-halved sm-icon-gap" aria-hidden="true"></i></span>{{#str}}guided_access, local_servicemanager{{/str}}</h3>
+                </header>
+                <div class="card-body">
+                    <dl class="sm-facts sm-flush">
+                        {{#access.showfiles}}
+                            <dt>{{#str}}tile_token, local_servicemanager{{/str}}</dt>
+                            <dd>
+                                <span class="sm-badge tone-{{#hastoken}}success{{/hastoken}}{{^hastoken}}secondary{{/hastoken}}" data-region="token-badge">{{#hastoken}}{{#str}}token_active, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}token_none, local_servicemanager{{/str}}{{/hastoken}}</span>
+                                {{#canmanage}}
+                                    <button type="button" class="btn sm-pill icon-only compact sm-gap-left" data-action="make-token" data-region="make-token" title="{{#hastoken}}{{#str}}action_regenerate_token, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}action_generate_token, local_servicemanager{{/str}}{{/hastoken}}">
+                                        <i class="fa-solid fa-{{#hastoken}}rotate{{/hastoken}}{{^hastoken}}key{{/hastoken}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#hastoken}}{{#str}}action_regenerate_token, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}action_generate_token, local_servicemanager{{/str}}{{/hastoken}}</span>
+                                    </button>
+                                {{/canmanage}}
+                                <div class="sm-fresh-token" data-region="fresh-token" hidden>
+                                    <code class="sm-token-value" id="sm-fresh-token-value"></code>
+                                    <button type="button" class="btn sm-pill icon-only compact" data-copy-target="#sm-fresh-token-value" title="{{#str}}copy, local_servicemanager{{/str}}">
+                                        <i class="fa-solid fa-copy" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}copy, local_servicemanager{{/str}}</span>
+                                    </button>
+                                    <div class="small sm-muted">{{#str}}token_shown_once, local_servicemanager{{/str}}</div>
+                                </div>
+                            </dd>
+                            <dt>{{#str}}req_file_access, local_servicemanager{{/str}}</dt>
+                            <dd class="sm-badges-row">
+                                {{#access.files}}<span class="sm-badge tone-{{#on}}success{{/on}}{{^on}}secondary{{/on}}" title="{{title}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{label}}</span>{{/access.files}}
+                            </dd>
+                        {{/access.showfiles}}
+                        {{#access.hasplugins}}
+                            <dt>{{#str}}req_plugins, local_servicemanager{{/str}}</dt>
+                            <dd>
+                                {{#access.plugins}}
+                                    <div>
+                                        <span class="{{#installed}}sm-text-success{{/installed}}{{^installed}}sm-text-warning{{/installed}}"><i class="fa-solid fa-{{#installed}}circle-check{{/installed}}{{^installed}}triangle-exclamation{{/installed}} sm-icon-gap" aria-hidden="true"></i></span>
+                                        <span class="sm-fn">{{name}}</span>
+                                        {{^installed}}<small class="sm-muted">{{#str}}function_missing, local_servicemanager{{/str}}</small>{{/installed}}
+                                    </div>
+                                {{/access.plugins}}
+                            </dd>
+                        {{/access.hasplugins}}
+                        {{#access.hascapabilities}}
+                            <dt class="sm-fact-wide">{{#str}}extra_capabilities, local_servicemanager{{/str}}</dt>
+                            <dd class="sm-fact-wide">
+                                <div class="sm-chip-row" data-region="chip-block" data-title="{{#str}}extra_capabilities, local_servicemanager{{/str}}">
+                                    {{#access.capabilities}}<code class="sm-code-chip" data-chip title="{{name}}"{{#folded}} hidden{{/folded}}><span class="sm-code-chip-plugin">{{plugin}}</span>{{#capability}}<span>:{{capability}}</span>{{/capability}}</code>{{/access.capabilities}}
+                                    {{#access.hasmorecapabilities}}<button type="button" class="sm-role-more" data-action="chips-all" title="{{access.morecapabilities}}">+{{access.morecapabilitiescount}}<span class="sr-only visually-hidden"> {{access.morecapabilities}}</span></button>{{/access.hasmorecapabilities}}
+                                </div>
+                            </dd>
+                        {{/access.hascapabilities}}
+                    </dl>
+                </div>
+            </section>
+
+            {{#role.visible}}
+                <section class="card sm-panel" data-region="role">
+                    <header class="card-header sm-panel-head">
+                        <h3 class="sm-panel-title"><span class="sm-panel-icon sm-muted"><i class="fa-solid fa-user-shield sm-icon-gap" aria-hidden="true"></i></span>{{#str}}role_panel_title, local_servicemanager{{/str}}</h3>
+                    </header>
+                    <div class="card-body">
+                        <div class="sm-role-grid">
+                            {{#role.rows}}
+                                <section class="sm-role-block" data-region="role-block">
+                                    <h4 class="sm-role-label">{{label}}<span class="sm-role-count">{{count}}</span></h4>
+                                    <div class="sm-chip-row" data-region="chip-block" data-title="{{label}}">
+                                        {{#names}}<span class="sm-role-chip tone-{{tone}}" data-chip{{#folded}} hidden{{/folded}}>{{name}}</span>{{/names}}
+                                        {{#hasmore}}<button type="button" class="sm-role-more" data-action="chips-all" title="{{morelabel}}">+{{morecount}}<span class="sr-only visually-hidden"> {{morelabel}}</span></button>{{/hasmore}}
+                                    </div>
+                                </section>
+                            {{/role.rows}}
+                        </div>
+                    </div>
+                </section>
+            {{/role.visible}}
         </div>
     </div>
 </div>

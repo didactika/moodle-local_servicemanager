@@ -55,3 +55,37 @@ Feature: The screenshots of the wiki
     And I follow "YAML editor"
     And I wait "1" seconds
     And I take a screenshot of the page as "create-yaml"
+
+  Scenario: The menus of the dashboard
+    When I navigate to "Server > Web Service Manager > Dashboard" in site administration
+    And I click on "Filters" "button"
+    And I wait "1" seconds
+    And I take a screenshot of the page as "dashboard-filters"
+    And I click on "Filters" "button"
+    And I click on "Documentation" "button"
+    And I wait "1" seconds
+    And I take a screenshot of the page as "dashboard-documentation-menu"
+
+  Scenario: A schema with a role and the capabilities of a function
+    Given the schema "crm.integration" has a role section
+    When I navigate to "Server > Web Service Manager > Dashboard" in site administration
+    And I click on "CRM integration" "link"
+    And I wait "2" seconds
+    And I take a screenshot of the page as "schema-role"
+    And I click on "capabilities" "button"
+    And I wait "1" seconds
+    And I take a screenshot of the page as "schema-capabilities"
+
+  Scenario: Editing a schema in the form that creates it
+    When I navigate to "Server > Web Service Manager > Dashboard" in site administration
+    And I click on "Edit" "link" in the "crm.integration" "table_row"
+    And I wait "2" seconds
+    And I take a screenshot of the page as "edit-guided"
+
+  Scenario: The documentation and the import page
+    When I open the page "documentation.php" of the plugin
+    And I wait "2" seconds
+    And I take a screenshot of the page as "documentation"
+    And I open the page "import.php" of the plugin
+    And I wait "2" seconds
+    And I take a screenshot of the page as "import"

@@ -14,8 +14,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The page of a schema: searches its functions, shows the capabilities of one in a dialogue, filters its health checks and enables
- * or disables it.
+ * The page of a schema: searches its functions, shows the capabilities of one in a dialogue, filters its health checks, enables or
+ * disables it and makes its token, all without leaving the page.
  *
  * @module     local_servicemanager/schema
  * @copyright  2026 Didactika.org
@@ -23,10 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+import Ajax from 'core/ajax';
 import {get_strings as getStrings} from 'core/str';
-import ModalCancel from 'core/modal_cancel';
+import {add as addToast} from 'core/toast';
+import {confirm, inform} from 'local_servicemanager/dialogue';
 import {init as initCopy} from 'local_servicemanager/copy';
-import {postForm} from 'local_servicemanager/listing';
 
 /**
  * Escape a text to put it in HTML.
@@ -52,14 +53,14 @@ const showCapabilities = (button) => {
     ]).then((strings) => {
         const capabilities = JSON.parse(button.dataset.capabilities);
         const description = button.dataset.description ? `<p class="sm-muted">${escapeHtml(button.dataset.description)}</p>` : '';
-        const items = capabilities.map((name) => `<li class="list-group-item"><code>${escapeHtml(name)}</code></li>`).join('');
-        return ModalCancel.create({
-            title: strings[0],
-            body: `<p><code>${escapeHtml(button.dataset.name)}</code></p>${description}` +
-                `<p class="small sm-muted">${escapeHtml(strings[1])}</p><ul class="list-group sm-caps-list">${items}</ul>`,
-            show: true,
-            removeOnClose: true,
-        });
+        const item = (name) => `<li class="list-group-item"><span class="sm-fn">${escapeHtml(name)}</span></li>`;
+        const items = capabilities.map(item).join('');
+        return inform(
+            strings[0],
+            `<div class="servicemanager-detail"><p><span class="sm-fn">${escapeHtml(button.dataset.name)}</span></p>` +
+                `${description}` +
+                `<p class="small sm-muted">${escapeHtml(strings[1])}</p><ul class="list-group sm-caps-list">${items}</ul></div>`
+        );
     }).catch(() => null);
 };
 
@@ -98,18 +99,149 @@ export const init = () => {
         });
     }
 
-    root.addEventListener('click', (event) => {
-        const capabilities = event.target.closest('[data-action="show-capabilities"]');
-        if (capabilities) {
-            showCapabilities(capabilities);
+    /**
+     * Call one web service function of the plugin.
+     *
+     * @param {String} methodname Name of the function.
+     * @param {Object} args Arguments.
+     * @returns {Promise} Resolves with what it returns.
+     */
+    const call = (methodname, args) => Ajax.call([{methodname, args}])[0];
+    const text = (key, component = 'local_servicemanager', param = undefined) => getStrings([{key, component, param}])
+        .then((loaded) => loaded[0]);
+    let busy = false;
+
+    /**
+     * Run a change, with the buttons waiting, and say how it went.
+     *
+     * @param {Function} change Makes the call and returns a promise of the text of the toast.
+     */
+    const run = (change) => {
+        if (busy) {
             return;
         }
-        if (event.target.closest('[data-action="toggle-schema"]')) {
-            postForm(root.dataset.bulkUrl, {
-                sesskey: root.dataset.sesskey,
-                action: root.dataset.enabled === '1' ? 'disable' : 'enable',
-                ids: [root.dataset.id],
+        busy = true;
+        change().then((message) => addToast(message, {type: 'success'}))
+            .catch(() => text('error_action_failed').then((message) => addToast(message, {type: 'danger'})))
+            .catch(() => null)
+            .then(() => {
+                busy = false;
+                return null;
             });
+    };
+
+    const drawEnabled = (enabled) => {
+        root.dataset.enabled = enabled ? '1' : '0';
+        const toggle = root.querySelector('[data-region="toggle-schema"]');
+        toggle.classList.toggle('tone-success', enabled);
+        const icon = toggle.querySelector('i');
+        icon.className = 'fa-solid fa-' + (enabled ? 'toggle-on' : 'toggle-off');
+        root.querySelector('[data-region="disabled-badge"]').hidden = enabled;
+        const badge = root.querySelector('[data-region="enabled-badge"]');
+        badge.classList.toggle('tone-success', enabled);
+        badge.classList.toggle('tone-secondary', !enabled);
+        return getStrings([
+            {key: enabled ? 'bulk_disable' : 'bulk_enable', component: 'local_servicemanager'},
+            {key: enabled ? 'yes' : 'no', component: 'moodle'},
+        ]).then((loaded) => {
+            toggle.title = loaded[0];
+            toggle.querySelector('.sr-only, .visually-hidden').textContent = loaded[0];
+            badge.textContent = loaded[1];
+            return loaded;
+        });
+    };
+
+    const toggleSchema = () => run(() => call('local_servicemanager_set_enabled', {
+        id: Number(root.dataset.id),
+        enabled: root.dataset.enabled !== '1',
+    }).then((result) => drawEnabled(result.enabled).then(() => text(
+        result.enabled ? 'schema_enabled_toast' : 'schema_disabled_toast',
+        'local_servicemanager',
+        root.dataset.name
+    ))));
+
+    const showToken = (token) => {
+        const holder = root.querySelector('[data-region="fresh-token"]');
+        root.querySelector('#sm-fresh-token-value').textContent = token;
+        holder.hidden = false;
+        root.dataset.hasToken = '1';
+        const make = root.querySelector('[data-region="make-token"]');
+        make.querySelector('i').className = 'fa-solid fa-rotate';
+        const badge = root.querySelector('[data-region="token-badge"]');
+        if (badge) {
+            badge.classList.remove('tone-secondary');
+            badge.classList.add('tone-success');
+            text('token_active').then((label) => {
+                badge.textContent = label;
+                return label;
+            }).catch(() => null);
+        }
+    };
+
+    const makeToken = () => run(() => call('local_servicemanager_regenerate_token', {id: Number(root.dataset.id)})
+        .then((result) => {
+            showToken(result.token);
+            return text('token_regenerated');
+        }));
+
+    const askForToken = () => {
+        const has = root.dataset.hasToken === '1';
+        getStrings([
+            {key: has ? 'action_regenerate_token' : 'action_generate_token', component: 'local_servicemanager'},
+            {key: has ? 'confirm_regenerate_token' : 'confirm_generate_token', component: 'local_servicemanager'},
+        ]).then((loaded) => confirm(loaded[0], loaded[1], loaded[0], makeToken)).catch(() => null);
+    };
+
+    /** More names than this get a search in the dialogue. */
+    const SEARCHABLE_FROM = 10;
+
+    const showAllChips = (button) => {
+        const block = button.closest('[data-region="chip-block"]');
+        const names = [...block.querySelectorAll('[data-chip]')].map((chip) => chip.textContent.trim());
+        getStrings([
+            {key: 'filter_name', component: 'local_servicemanager'},
+            {key: 'no_schemas_filtered', component: 'local_servicemanager'},
+        ]).then((strings) => {
+            const search = names.length > SEARCHABLE_FROM
+                ? `<div class="sm-dialog-search"><input type="search" class="form-control" data-region="chips-search" ` +
+                    `placeholder="${escapeHtml(strings[0])}"></div>`
+                : '';
+            const body = `<div class="servicemanager-detail">${search}` +
+                `<ul class="list-group sm-caps-list" data-region="chip-all"></ul>` +
+                `<p class="sm-muted sm-center sm-block-small" data-region="chip-none" hidden>${escapeHtml(strings[1])}</p></div>`;
+            return inform(block.dataset.title, body).then((modal) => {
+                const root = modal.getBody()[0];
+                const list = root.querySelector('[data-region="chip-all"]');
+                const none = root.querySelector('[data-region="chip-none"]');
+                const draw = (query) => {
+                    const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+                    const found = names.filter((name) => words.every((word) => name.toLowerCase().includes(word)));
+                    const row = (name) => `<li class="list-group-item"><span class="sm-fn">${escapeHtml(name)}</span></li>`;
+                    list.innerHTML = found.map(row).join('');
+                    none.hidden = found.length !== 0;
+                };
+                root.addEventListener('input', (event) => {
+                    if (event.target.matches('[data-region="chips-search"]')) {
+                        draw(event.target.value);
+                    }
+                });
+                draw('');
+                return modal;
+            });
+        }).catch(() => null);
+    };
+
+    root.addEventListener('click', (event) => {
+        const capabilities = event.target.closest('[data-action="show-capabilities"]');
+        const more = event.target.closest('[data-action="chips-all"]');
+        if (more) {
+            showAllChips(more);
+        } else if (capabilities) {
+            showCapabilities(capabilities);
+        } else if (event.target.closest('[data-action="toggle-schema"]')) {
+            toggleSchema();
+        } else if (event.target.closest('[data-action="make-token"]')) {
+            askForToken();
         }
     });
 };

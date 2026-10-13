@@ -48,17 +48,14 @@
             <h2 class="sm-flush">{{#str}}version_history, local_servicemanager{{/str}}</h2>
             <p class="sm-muted sm-flush">{{schemaname}} · {{currentlabel}}</p>
         </div>
-        <div class="sm-actions-row">
-            <a href="{{editurl}}" class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square sm-icon-gap" aria-hidden="true"></i>{{#str}}action_edit, local_servicemanager{{/str}}</a>
-        </div>
     </header>
 
     {{^hasrows}}
         <div class="card sm-empty" data-region="empty-state">
-            <div class="card-body">
-                <div class="sm-empty-icon"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i></div>
-                <h3>{{#str}}history_empty_title, local_servicemanager{{/str}}</h3>
-                <p class="sm-empty-text">{{#str}}no_history, local_servicemanager{{/str}}</p>
+            <div class="card-body text-center py-5">
+                <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i></div>
+                <h4 class="mb-2">{{#str}}history_empty_title, local_servicemanager{{/str}}</h4>
+                <p class="sm-muted mx-auto sm-empty-text">{{#str}}no_history, local_servicemanager{{/str}}</p>
             </div>
         </div>
     {{/hasrows}}
@@ -75,10 +72,17 @@
             </div>
             <div class="dropdown sm-filter" data-region="filters">
                 <button class="btn btn-outline-secondary" type="button" data-sm-menu aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-sliders sm-icon-gap" aria-hidden="true"></i>{{#str}}filters, local_servicemanager{{/str}}
+                    <span class="sm-icon-gap"><svg class="sm-filter-icon" viewBox="0 0 24 24" width="1.05em" height="1.05em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>{{#str}}filters, local_servicemanager{{/str}}
                     <span class="sm-count-badge" data-region="filters-count" hidden>0</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-filter-menu">
+                    <div class="sm-filter-head">
+                        <h2 class="sm-filter-heading">{{#str}}filters, local_servicemanager{{/str}}</h2>
+                        <button type="button" class="sm-iconbtn" data-action="reset-filters" disabled
+                                title="{{#str}}filter_clear, local_servicemanager{{/str}}" aria-label="{{#str}}filter_clear, local_servicemanager{{/str}}">
+                            <svg class="sm-filter-clear-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 14.5V20l-3 1.5v-7L3 4h14"/><line x1="16" y1="8" x2="22" y2="14"/><line x1="22" y1="8" x2="16" y2="14"/></svg>
+                        </button>
+                    </div>
                     <div class="sm-field">
                         <label for="sm-from" class="sm-label">{{#str}}filter_date_from, local_servicemanager{{/str}}</label>
                         <input type="date" id="sm-from" class="form-control">
@@ -93,73 +97,74 @@
                             <button type="button" class="sm-chip{{#first}} active{{/first}}" data-perpage="{{size}}" aria-pressed="{{#first}}true{{/first}}{{^first}}false{{/first}}">{{size}}</button>
                         {{/perpage}}
                     </div>
-                    <button type="button" class="btn btn-link sm-reset" data-action="reset-filters" disabled>
-                        <i class="fa-solid fa-rotate-left sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
-                    </button>
                 </div>
+            </div>
+            <div class="sm-toolbar-actions">
+                <a href="{{editurl}}" class="btn sm-pill icon-only tone-primary" title="{{#str}}action_edit, local_servicemanager{{/str}}">
+                    <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_edit, local_servicemanager{{/str}}</span>
+                </a>
             </div>
         </div>
 
         <form action="{{compareurl}}" method="get" class="servicemanager-history" data-region="versions-form">
             <input type="hidden" name="id" value="{{schemaid}}">
             <p class="sm-muted small" data-region="history-count"><span data-region="history-count-text">{{#str}}history_count, local_servicemanager, {{count}}{{/str}}</span> {{#str}}compare_hint, local_servicemanager{{/str}}</p>
-            <ul class="list-group sm-versions" data-region="versions">
+            <ul class="card sm-versions" data-region="versions">
                 {{#rows}}
-                    <li class="list-group-item" data-region="version" data-id="{{id}}" data-at="{{at}}" data-text="{{text}}"{{#hidden}} hidden{{/hidden}}>
-                        <div class="sm-version-row">
+                    <li class="sm-version" data-region="version" data-id="{{id}}" data-at="{{at}}" data-text="{{text}}"{{#hidden}} hidden{{/hidden}}>
+                        <div class="sm-version-main">
                             <input type="checkbox" id="compare-{{id}}" name="compare[]" value="{{id}}" class="form-check-input" data-region="version-check">
                             <label for="compare-{{id}}" class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}} {{version}}</label>
-                            <img src="{{userpicture}}" alt="" width="36" height="36" class="rounded-circle" loading="lazy">
-                            <div class="sm-grow sm-version-body">
-                                <div class="sm-badges-row">
-                                    <strong>{{#str}}version, local_servicemanager{{/str}} {{version}}</strong>
-                                    {{#iscurrent}}<span class="sm-badge tone-success">{{#str}}current, local_servicemanager{{/str}}</span>{{/iscurrent}}
-                                </div>
-                                <div class="small sm-muted">{{username}} · {{date}}</div>
-                                {{#reason}}<div class="sm-italic">{{reason}}</div>{{/reason}}
-                                <div class="sm-yaml-holder" data-region="yaml" hidden></div>
-                            </div>
+                            <span class="sm-version-number"><i class="fa-solid fa-code-branch sm-icon-gap" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}version, local_servicemanager{{/str}} </span>{{version}}</span>
+                            {{#iscurrent}}<span class="sm-badge tone-success">{{#str}}current, local_servicemanager{{/str}}</span>{{/iscurrent}}{{^iscurrent}}<span></span>{{/iscurrent}}
+                            <span class="sm-version-who">
+                                <img src="{{userpicture}}" alt="" width="24" height="24" class="rounded-circle" loading="lazy">
+                                <span class="sm-version-name">{{username}}</span>
+                                <span class="sm-version-date">{{date}}</span>
+                            </span>
+                            <span class="sm-version-reason" title="{{reason}}">{{reason}}</span>
                             <div class="sm-group" role="group">
-                                <button type="button" class="btn sm-pill" data-action="toggle-yaml" aria-expanded="false">
-                                    <i class="fa-solid fa-code sm-icon-gap" aria-hidden="true"></i>{{#str}}view_yaml, local_servicemanager{{/str}}
+                                <button type="button" class="btn sm-pill icon-only compact" data-action="toggle-yaml" aria-expanded="false" title="{{#str}}view_yaml, local_servicemanager{{/str}}">
+                                    <i class="fa-solid fa-code" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}view_yaml, local_servicemanager{{/str}}</span>
                                 </button>
                                 <a href="{{viewurl}}" class="btn sm-pill icon-only compact tone-primary" title="{{#str}}action_view, local_servicemanager{{/str}}">
                                     <i class="fa-solid fa-eye" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_view, local_servicemanager{{/str}}</span>
                                 </a>
                                 {{#rollbackurl}}
-                                    <a href="{{rollbackurl}}" class="btn sm-pill tone-warning" title="{{#str}}rollback, local_servicemanager{{/str}}">
-                                        <i class="fa-solid fa-rotate-left sm-icon-gap" aria-hidden="true"></i>{{#str}}rollback, local_servicemanager{{/str}}
+                                    <a href="{{rollbackurl}}" class="btn sm-pill icon-only compact tone-warning" title="{{#str}}rollback, local_servicemanager{{/str}}">
+                                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}rollback, local_servicemanager{{/str}}</span>
                                     </a>
                                 {{/rollbackurl}}
                             </div>
                         </div>
+                        <div class="sm-version-yaml" data-region="yaml" hidden></div>
                     </li>
                 {{/rows}}
             </ul>
 
             <div class="card sm-empty" data-region="empty-state" hidden>
-                <div class="card-body">
-                    <div class="sm-empty-icon"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
-                    <h3>{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h3>
-                    <p class="sm-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
+                <div class="card-body text-center py-5">
+                    <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
+                    <h4 class="mb-2">{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h4>
+                    <p class="sm-muted mx-auto sm-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
                     <button type="button" class="btn btn-secondary" data-action="reset-all">
                         <i class="fa-solid fa-xmark sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
                     </button>
                 </div>
             </div>
 
-            <div class="sm-compare-bar" role="status" data-region="compare-bar">
-                <div class="sm-actions-row">
-                    <span class="sm-strong" data-region="compare-chosen"></span>
-                    <span class="sm-danger" role="alert" data-region="compare-too-many" hidden>{{#str}}compare_select_two, local_servicemanager{{/str}}</span>
-                    <div class="sm-group sm-push">
-                        <button type="button" class="btn sm-pill" data-action="clear-selection" hidden>
-                            <i class="fa-solid fa-xmark sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_clear, local_servicemanager{{/str}}
-                        </button>
-                        <button type="submit" id="compare-btn" class="btn sm-pill solid tone-primary" disabled>
-                            <i class="fa-solid fa-code-compare sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_versions, local_servicemanager{{/str}}
-                        </button>
-                    </div>
+            <div class="sm-floating sm-compare" role="status" data-region="compare-bar">
+                <span class="sm-floating-count">
+                    <span data-region="compare-chosen"></span>
+                    <button type="button" class="sm-floating-clear" data-action="clear-selection" hidden title="{{#str}}compare_clear, local_servicemanager{{/str}}">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_clear, local_servicemanager{{/str}}</span>
+                    </button>
+                </span>
+                <span class="sm-compare-warning" role="alert" data-region="compare-too-many" hidden>{{#str}}compare_select_two, local_servicemanager{{/str}}</span>
+                <div class="sm-floating-actions">
+                    <button type="submit" id="compare-btn" class="btn sm-pill solid tone-primary" disabled>
+                        <i class="fa-solid fa-code-compare sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_versions, local_servicemanager{{/str}}
+                    </button>
                 </div>
             </div>
         </form>

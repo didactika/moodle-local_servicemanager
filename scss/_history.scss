@@ -1,22 +1,73 @@
 // The history of a schema.
 
 .servicemanager-history-page {
+    // The versions: one row each, in one card.
     .sm-versions {
-        .list-group-item {
-            padding: 1rem;
+        margin: 0 0 5rem;
+        padding: 0;
+        list-style: none;
+        overflow: hidden;
+
+        .sm-version {
+            border-bottom: 1px solid var(--sm-border-color);
+
+            &:last-child {
+                border-bottom: 0;
+            }
 
             // A version that is chosen to compare, tinted with the colour of the page so it reads in any colour mode.
             &.active-version {
-                background-color: color-mix(in srgb, var(--sm-primary) 10%, var(--sm-body-bg));
+                background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
             }
         }
 
-        .sm-version-row {
-            gap: 1rem;
+        .sm-version-main {
+            display: grid;
+            grid-template-columns: 1.5rem 7.5rem 5rem minmax(11rem, 15rem) minmax(0, 1fr) auto;
+            align-items: center;
+            padding: 0.55rem 1rem;
+            gap: 0.75rem;
         }
 
-        .sm-version-body {
+        .sm-version-number {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .sm-version-who {
+            display: flex;
+            align-items: center;
             min-width: 0;
+            gap: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .sm-version-name {
+            overflow: hidden;
+            font-size: 0.875rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sm-version-date {
+            color: var(--sm-secondary-color);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .sm-version-reason {
+            overflow: hidden;
+            color: var(--sm-secondary-color);
+            font-size: 0.875rem;
+            font-style: italic;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sm-version-yaml {
+            padding: 0 1rem 0.75rem 3.5rem;
         }
     }
 
@@ -28,20 +79,23 @@
         color: var(--sm-body-color);
     }
 
-    // The bar that stays at the bottom while the person goes down the list choosing two versions.
-    .sm-compare-bar {
-        position: sticky;
-        bottom: 0;
-        z-index: 2;
-        margin-top: 1rem;
-        padding: 0.75rem 0;
-        border-top: 1px solid var(--sm-border-color);
-        background-color: var(--sm-body-bg);
+    // The choice to compare floats at the bottom, as the one of the dashboard does.
+    .sm-compare {
+        .sm-compare-warning {
+            color: var(--sm-danger);
+            font-size: 0.8125rem;
+            white-space: nowrap;
+        }
     }
 
-    @media (max-width: 768px) {
-        .sm-versions .sm-version-row {
-            flex-wrap: wrap;
+    @media (max-width: 992px) {
+        .sm-versions .sm-version-main {
+            grid-template-columns: 1.5rem auto auto minmax(0, 1fr) auto;
+        }
+
+        .sm-versions .sm-version-reason {
+            grid-column: 2 / -1;
+            white-space: normal;
         }
     }
 }

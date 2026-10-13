@@ -37,6 +37,9 @@ class schema_page implements \renderable, \templatable {
         'history' => ['tone' => 'secondary', 'icon' => 'clock'],
     ];
 
+    /** @var int How many chips of a list are shown before the button that opens all of them. */
+    private const CHIPS_SHOWN = 8;
+
     /** @var string[] The relations between roles, in the order the page lists them. */
     private const RELATIONS = ['allow_assign', 'allow_override', 'allow_switch', 'allow_view'];
 
@@ -317,7 +320,18 @@ class schema_page implements \renderable, \templatable {
             'hasplugins' => !empty($plugins),
             'plugins' => $plugins,
             'hascapabilities' => !empty($capabilities),
-            'capabilities' => array_map(static fn(string $capability) => ['name' => $capability], $capabilities),
+            'capabilities' => array_map(static function (string $capability, int $index): array {
+                $parts = explode(':', $capability, 2);
+                return [
+                    'name' => $capability,
+                    'plugin' => $parts[0],
+                    'capability' => isset($parts[1]) ? $parts[1] : '',
+                    'folded' => $index >= self::CHIPS_SHOWN,
+                ];
+            }, $capabilities, array_keys($capabilities)),
+            'hasmorecapabilities' => count($capabilities) > self::CHIPS_SHOWN,
+            'morecapabilities' => get_string('chips_all', 'local_servicemanager', count($capabilities)),
+            'morecapabilitiescount' => max(0, count($capabilities) - self::CHIPS_SHOWN),
         ];
     }
 
@@ -338,28 +352,50 @@ class schema_page implements \renderable, \templatable {
                 $names[] = ['name' => get_string_manager()->string_exists($key, 'local_servicemanager')
                     ? get_string($key, 'local_servicemanager') : $level, 'tone' => 'secondary'];
             }
-            $rows[] = ['label' => get_string('role_context_levels', 'local_servicemanager'), 'names' => $names];
+            $rows[] = $this->role_row(get_string('role_context_levels', 'local_servicemanager'), $names);
         }
         foreach (self::RELATIONS as $relation) {
             if (!empty($role[$relation])) {
-                $rows[] = [
-                    'label' => get_string('role_' . $relation, 'local_servicemanager'),
-                    'names' => array_map(static fn(string $name) => ['name' => $name, 'tone' => 'primary'], $role[$relation]),
-                ];
+                $rows[] = $this->role_row(
+                    get_string('role_' . $relation, 'local_servicemanager'),
+                    array_map(static fn(string $name) => ['name' => $name, 'tone' => 'primary'], $role[$relation])
+                );
             }
         }
         foreach (['prevent' => 'warning', 'prohibit' => 'danger'] as $permission => $tone) {
             if (!empty($role['permissions'][$permission])) {
-                $rows[] = [
-                    'label' => get_string('role_permission_' . $permission, 'local_servicemanager'),
-                    'names' => array_map(
+                $rows[] = $this->role_row(
+                    get_string('role_permission_' . $permission, 'local_servicemanager'),
+                    array_map(
                         static fn(string $name) => ['name' => $name, 'tone' => $tone],
                         $role['permissions'][$permission]
-                    ),
-                ];
+                    )
+                );
             }
         }
         return ['visible' => !empty($rows), 'rows' => $rows];
+    }
+
+    /**
+     * One block of the role: its name over its list, with the names past the first few folded behind a button.
+     *
+     * @param string $label What the list is.
+     * @param array $names The names, each with its tone.
+     * @return array The block.
+     */
+    private function role_row(string $label, array $names): array {
+        foreach ($names as $index => $name) {
+            $names[$index]['folded'] = $index >= self::CHIPS_SHOWN;
+        }
+        $more = count($names) - self::CHIPS_SHOWN;
+        return [
+            'label' => $label,
+            'count' => count($names),
+            'names' => array_values($names),
+            'hasmore' => $more > 0,
+            'morecount' => max(0, $more),
+            'morelabel' => $more > 0 ? get_string('chips_all', 'local_servicemanager', count($names)) : '',
+        ];
     }
 
     /**
