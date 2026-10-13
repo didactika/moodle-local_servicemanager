@@ -274,9 +274,17 @@ class manager {
         );
         // The users that have those addresses are read once; when several have the same address the first is the one.
         $users = [];
-        if ($emails) {
-            [$insql, $params] = $DB->get_in_or_equal(array_values($emails), SQL_PARAMS_NAMED);
-            $found = $DB->get_records_select('user', "email $insql AND deleted = 0 AND suspended = 0", $params, 'id');
+        foreach (array_chunk(array_values($emails), 100) as $chunk) {
+            [$insql, $params] = $DB->get_in_or_equal($chunk, SQL_PARAMS_NAMED);
+            $found = $DB->get_records_select(
+                'user',
+                "email $insql AND deleted = 0 AND suspended = 0",
+                $params,
+                'id',
+                '*',
+                0,
+                count($chunk) * 10
+            );
             foreach ($found as $candidate) {
                 $users[$candidate->email] = $users[$candidate->email] ?? $candidate;
             }
