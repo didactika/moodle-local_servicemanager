@@ -401,6 +401,23 @@
     }
 }
 
+.servicemanager-dashboard .sm-filter .icon,
+.servicemanager-dashboard .sm-filter-head .icon,
+.servicemanager-detail .sm-filter .icon,
+.servicemanager-detail .sm-filter-head .icon,
+.servicemanager-history-page .sm-filter .icon,
+.servicemanager-history-page .sm-filter-head .icon,
+.servicemanager-compare-page .sm-filter .icon,
+.servicemanager-compare-page .sm-filter-head .icon,
+.servicemanager-documentation .sm-filter .icon,
+.servicemanager-documentation .sm-filter-head .icon,
+.servicemanager-import-page .sm-filter .icon,
+.servicemanager-import-page .sm-filter-head .icon,
+.servicemanager-import-result .sm-filter .icon,
+.servicemanager-import-result .sm-filter-head .icon {
+    margin: 0;
+}
+
 .servicemanager-dashboard .sm-filter-menu,
 .servicemanager-detail .sm-filter-menu,
 .servicemanager-history-page .sm-filter-menu,
