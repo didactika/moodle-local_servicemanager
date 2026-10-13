@@ -142,11 +142,21 @@ jobs:
               exit 1
             fi
 
+            # Moodle 5.3 asks for PostgreSQL 17 and MariaDB 11.4 at least; the earlier releases keep the
+            # versions that they were tested with.
+            if [ "$v" -ge 503 ]; then
+              pg="17"
+              maria="11.4"
+            else
+              pg="16"
+              maria="10"
+            fi
+
             while IFS= read -r php; do
               for db in pgsql mariadb; do
                 entries=$(echo "$entries" | jq -c \
-                  --arg php "$php" --arg branch "MOODLE_${v}_STABLE" --arg db "$db" \
-                  '. + [{"php": $php, "moodle-branch": $branch, "database": $db}]')
+                  --arg php "$php" --arg branch "MOODLE_${v}_STABLE" --arg db "$db" --arg pg "$pg" --arg maria "$maria" \
+                  '. + [{"php": $php, "moodle-branch": $branch, "database": $db, "postgres-version": $pg, "mariadb-version": $maria}]')
               done
             done <<< "$phps"
           done
@@ -162,7 +172,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:${{ matrix.postgres-version }}
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
@@ -171,7 +181,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 3
 
       mariadb:
-        image: mariadb:10
+        image: mariadb:${{ matrix.mariadb-version }}
         env:
           MYSQL_USER: 'root'
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
@@ -179,7 +189,7 @@ jobs:
           MYSQL_COLLATION_SERVER: "utf8mb4_unicode_ci"
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 3
+        options: --health-cmd="mariadb-admin ping" --health-interval 10s --health-timeout 5s --health-retries 3
 
     strategy:
       fail-fast: false
