@@ -140,6 +140,12 @@
         }
     }
 
+    // The icons of the filters are the ones of Moodle, which carry a margin of their own that is not wanted here.
+    .sm-filter .icon,
+    .sm-filter-head .icon {
+        margin: 0;
+    }
+
     .sm-filter-menu {
         width: 19rem;
         padding: 1rem;
