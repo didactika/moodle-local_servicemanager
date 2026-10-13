@@ -17,7 +17,7 @@
 {{!
     @template local_servicemanager/history_rows
 
-    The versions of a schema, one row each. The history draws them once and draws them again when a rollback changes them.
+    The versions of a schema, one row each in a list. The history draws them once and draws them again when a rollback changes them.
 
     Context variables required for this template:
     * rows - The versions
@@ -27,6 +27,7 @@
         "rows": [{"id": 1, "version": "1.0.0", "username": "Admin", "userpicture": "#", "date": "today", "reason": "", "iscurrent": true, "canrollback": false, "hidden": false, "text": "1.0.0 Admin", "at": 0, "viewurl": "#"}]
     }
 }}
+<ul class="card sm-versions" data-region="versions">
 {{#rows}}
     <li class="sm-version" data-region="version" data-id="{{id}}" data-at="{{at}}" data-text="{{text}}"{{#hidden}} hidden{{/hidden}}>
         <div class="sm-version-main">
@@ -58,3 +59,4 @@
         <div class="sm-version-yaml" data-region="yaml" hidden></div>
     </li>
 {{/rows}}
+</ul>

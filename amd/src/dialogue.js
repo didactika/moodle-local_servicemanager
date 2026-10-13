@@ -73,19 +73,24 @@ export const confirm = (title, body, label, onConfirm) => open(ModalSaveCancel, 
 });
 
 /**
+ * Make the button of a dialogue that only closes say Close.
+ *
+ * @param {Object} modal The dialogue.
+ * @returns {Promise} Resolves with the dialogue.
+ */
+const nameCloseButton = (modal) => getString('closebuttontitle', 'core').then((label) => {
+    const button = modal.getFooter()[0].querySelector('[data-action="cancel"]');
+    if (button) {
+        button.textContent = label;
+    }
+    return modal;
+}).catch(() => modal);
+
+/**
  * Show something in a dialogue that only closes.
  *
  * @param {String} title Title of the dialogue.
  * @param {String} body What is shown, as HTML.
  * @returns {Promise} Resolves when the dialogue is open.
  */
-export const inform = (title, body) => open(ModalCancel, 'CANCEL', {title, body}).then((modal) => {
-    const close = getString('closebuttontitle', 'core');
-    return close.then((label) => {
-        const button = modal.getFooter()[0].querySelector('[data-action="cancel"]');
-        if (button) {
-            button.textContent = label;
-        }
-        return modal;
-    }).catch(() => modal);
-});
+export const inform = (title, body) => open(ModalCancel, 'CANCEL', {title, body}).then(nameCloseButton);

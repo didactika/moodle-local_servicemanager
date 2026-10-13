@@ -98,6 +98,8 @@ export const init = () => {
         .then((loaded) => loaded[0]);
     let busy = false;
 
+    const sayActionFailed = () => text('error_action_failed').then((message) => addToast(message, {type: 'danger'}));
+
     /**
      * Run a change, with the buttons waiting, and say how it went.
      *
@@ -109,12 +111,13 @@ export const init = () => {
         }
         busy = true;
         change().then((message) => addToast(message, {type: 'success'}))
-            .catch(() => text('error_action_failed').then((message) => addToast(message, {type: 'danger'})))
+            .catch(sayActionFailed)
             .catch(() => null)
             .then(() => {
                 busy = false;
                 return null;
-            });
+            })
+            .catch(() => null);
     };
 
     const drawEnabled = (enabled) => {
@@ -138,14 +141,16 @@ export const init = () => {
         });
     };
 
-    const toggleSchema = () => run(() => call('local_servicemanager_set_enabled', {
-        id: Number(root.dataset.id),
-        enabled: root.dataset.enabled !== '1',
-    }).then((result) => drawEnabled(result.enabled).then(() => text(
+    const toggled = (result) => drawEnabled(result.enabled).then(() => text(
         result.enabled ? 'schema_enabled_toast' : 'schema_disabled_toast',
         'local_servicemanager',
         root.dataset.name
-    ))));
+    ));
+
+    const toggleSchema = () => run(() => call('local_servicemanager_set_enabled', {
+        id: Number(root.dataset.id),
+        enabled: root.dataset.enabled !== '1',
+    }).then(toggled));
 
     const showToken = (token) => {
         const holder = root.querySelector('[data-region="fresh-token"]');
@@ -182,39 +187,40 @@ export const init = () => {
     /** More names than this get a search in the dialogue. */
     const SEARCHABLE_FROM = 10;
 
+    const drawChips = (dialogue, none, names, query) => {
+        const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+        const found = names.filter((name) => words.every((word) => name.toLowerCase().includes(word)));
+        none.hidden = found.length !== 0;
+        return Templates.renderForPromise('local_servicemanager/chips_rows', {items: found.map((name) => ({name}))})
+            .then(({html, js}) => Templates.replaceNode(dialogue.querySelector('[data-region="chip-all"]'), html, js))
+            .catch(() => null);
+    };
+
+    const bindChips = (modal, names) => modal.getBodyPromise().then(() => {
+        const dialogue = modal.getBody()[0];
+        const none = dialogue.querySelector('[data-region="chip-none"]');
+        dialogue.addEventListener('input', (event) => {
+            if (event.target.matches('[data-region="chips-search"]')) {
+                drawChips(dialogue, none, names, event.target.value);
+            }
+        });
+        drawChips(dialogue, none, names, '');
+        return modal;
+    });
+
+    const openChips = (title, names, strings) => inform(title, Templates.render('local_servicemanager/chips_dialogue', {
+        hassearch: names.length > SEARCHABLE_FROM,
+        placeholder: strings[0],
+        nonetext: strings[1],
+    })).then((modal) => bindChips(modal, names));
+
     const showAllChips = (button) => {
         const block = button.closest('[data-region="chip-block"]');
         const names = [...block.querySelectorAll('[data-chip]')].map((chip) => chip.textContent.trim());
         getStrings([
             {key: 'filter_name', component: 'local_servicemanager'},
             {key: 'no_schemas_filtered', component: 'local_servicemanager'},
-        ]).then((strings) => {
-            const body = Templates.render('local_servicemanager/chips_dialogue', {
-                hassearch: names.length > SEARCHABLE_FROM,
-                placeholder: strings[0],
-                nonetext: strings[1],
-            });
-            return inform(block.dataset.title, body).then((modal) => modal.getBodyPromise().then(() => {
-                const dialogue = modal.getBody()[0];
-                const list = dialogue.querySelector('[data-region="chip-all"]');
-                const none = dialogue.querySelector('[data-region="chip-none"]');
-                const draw = (query) => {
-                    const words = query.toLowerCase().split(/\s+/).filter(Boolean);
-                    const found = names.filter((name) => words.every((word) => name.toLowerCase().includes(word)));
-                    none.hidden = found.length !== 0;
-                    return Templates.renderForPromise('local_servicemanager/chips_rows', {items: found.map((name) => ({name}))})
-                        .then(({html, js}) => Templates.replaceNodeContents(list, html, js))
-                        .catch(() => null);
-                };
-                dialogue.addEventListener('input', (event) => {
-                    if (event.target.matches('[data-region="chips-search"]')) {
-                        draw(event.target.value);
-                    }
-                });
-                draw('');
-                return modal;
-            }));
-        }).catch(() => null);
+        ]).then((strings) => openChips(block.dataset.title, names, strings)).catch(() => null);
     };
 
     root.addEventListener('click', (event) => {

@@ -103,9 +103,7 @@
         <form action="{{compareurl}}" method="get" class="servicemanager-history" data-region="versions-form">
             <input type="hidden" name="id" value="{{schemaid}}">
             <p class="sm-muted small" data-region="history-count"><span data-region="history-count-text">{{#str}}history_count, local_servicemanager, {{count}}{{/str}}</span> {{#str}}compare_hint, local_servicemanager{{/str}}</p>
-            <ul class="card sm-versions" data-region="versions">
-                {{> local_servicemanager/history_rows}}
-            </ul>
+            {{> local_servicemanager/history_rows}}
 
             <div class="card sm-empty" data-region="empty-state" hidden>
                 <div class="card-body text-center py-5">

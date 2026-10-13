@@ -53,6 +53,18 @@ const copyText = (value, source) => {
 };
 
 /**
+ * Copy a text and say how it went.
+ *
+ * @param {String} value What to copy.
+ * @param {HTMLElement} source The element it came from.
+ * @param {String[]} strings What is said when it worked and when it did not.
+ * @returns {Promise} Resolves when the toast is shown.
+ */
+const copyAndSay = (value, source, strings) => copyText(value, source)
+    .then(() => addToast(strings[0], {type: 'success'}))
+    .catch(() => addToast(strings[1], {type: 'danger'}));
+
+/**
  * Make the copy buttons of the page work.
  */
 export const init = () => {
@@ -69,9 +81,6 @@ export const init = () => {
         getStrings([
             {key: 'copied', component: 'local_servicemanager'},
             {key: 'copy_token_failed', component: 'local_servicemanager'},
-        ]).then((strings) => copyText(value, source)
-            .then(() => addToast(strings[0], {type: 'success'}))
-            .catch(() => addToast(strings[1], {type: 'danger'}))
-        ).catch(() => null);
+        ]).then((strings) => copyAndSay(value, source, strings)).catch(() => null);
     });
 };

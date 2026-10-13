@@ -69,7 +69,7 @@ export const init = () => {
     const firstSize = Number(sizes[0].dataset.perpage);
     const filtersCount = root.querySelector('[data-region="filters-count"]');
     const empty = root.querySelector('[data-region="empty-state"]');
-    const list = root.querySelector('[data-region="versions"]');
+    let list = root.querySelector('[data-region="versions"]');
     const pagination = root.querySelector('[data-region="pagination"]');
     const compare = root.querySelector('#compare-btn');
     const bar = root.querySelector('[data-region="compare-bar"]');
@@ -189,22 +189,27 @@ export const init = () => {
         drawChoice();
     });
 
-    const rollback = (id) => Ajax.call([{
-        methodname: 'local_servicemanager_rollback_schema',
-        args: {id: Number(root.dataset.schemaid), historyid: id},
-    }])[0].then((result) => Templates.renderForPromise('local_servicemanager/history_rows', {rows: result.rows})
+    const drawRolledBack = (result) => Templates.renderForPromise('local_servicemanager/history_rows', {rows: result.rows})
         .then(({html, js}) => {
-            Templates.replaceNodeContents(list, html, js);
+            Templates.replaceNode(list, html, js);
+            list = root.querySelector('[data-region="versions"]');
             rows = [...root.querySelectorAll('[data-region="version"]')];
             chosen.clear();
             tooMany.hidden = true;
             root.querySelector('[data-region="history-current"]').textContent = strings.current.replace('{n}', result.version);
             render();
             return getStrings([{key: 'rollback_success', component: 'local_servicemanager'}]);
-        }))
+        });
+
+    const sayRollbackFailed = () => getStrings([{key: 'rollback_error', component: 'local_servicemanager'}])
+        .then(([message]) => addToast(message, {type: 'danger'}));
+
+    const rollback = (id) => Ajax.call([{
+        methodname: 'local_servicemanager_rollback_schema',
+        args: {id: Number(root.dataset.schemaid), historyid: id},
+    }])[0].then(drawRolledBack)
         .then(([message]) => addToast(message, {type: 'success'}))
-        .catch(() => getStrings([{key: 'rollback_error', component: 'local_servicemanager'}])
-            .then(([message]) => addToast(message, {type: 'danger'})));
+        .catch(sayRollbackFailed);
 
     const askRollback = (button) => getStrings([
         {key: 'rollback_title', component: 'local_servicemanager', param: button.dataset.version},
