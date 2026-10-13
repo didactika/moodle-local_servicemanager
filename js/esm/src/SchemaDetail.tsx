@@ -17,7 +17,6 @@
 import {useMemo} from 'react';
 import BackLink from './components/common/BackLink';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
 import StatusBadge from './components/common/StatusBadge';
 import AccessPanel from './components/schema/AccessPanel';
@@ -37,11 +36,6 @@ const SchemaDetail = (props: SchemaDetailProps) => {
     const hasResources = Boolean(resources.user || resources.role || resources.service);
     const toggle = () => postForm(urls.bulkAction, {sesskey: props.sesskey, action: schema.enabled ? 'disable' : 'enable', ids: [schema.id]});
 
-    // The page has one action of its own; what belongs to a section is in the section.
-    const actions = !isHistory && canManage
-        ? <a href={urls.edit} className="btn btn-primary"><Icon name="pen-to-square" gap />{text('action_edit')}</a>
-        : undefined;
-
     return <ErrorBoundary strings={props.strings}>
         <div className="servicemanager-detail">
             <div className="mb-3">
@@ -57,19 +51,18 @@ const SchemaDetail = (props: SchemaDetailProps) => {
                     {!isHistory && !schema.enabled && <span className="badge text-bg-secondary">{text('disabled')}</span>}
                 </>}
                 subtitle={<code>{schema.schemaId}</code>}
-                actions={actions}
             />
 
             <div className="row">
-                <div className="col-lg-8">
-                    {props.functions.length > 0 && <FunctionsPanel functions={props.functions} text={text} />}
-                    {hasResources && <ResourcesPanel resources={resources} text={text} />}
-                    {props.healthLogs.length > 0 && <HealthPanel logs={props.healthLogs} text={text} />}
-                </div>
                 <div className="col-lg-4">
                     <DetailsPanel schema={schema} urls={urls} canManage={canManage} isHistory={isHistory} onToggle={toggle} text={text} />
                     <AccessPanel props={props} text={text} />
                     <RolePanel role={props.role} text={text} />
+                </div>
+                <div className="col-lg-8">
+                    {props.functions.length > 0 && <FunctionsPanel functions={props.functions} text={text} />}
+                    {hasResources && <ResourcesPanel resources={resources} text={text} />}
+                    {props.healthLogs.length > 0 && <HealthPanel logs={props.healthLogs} text={text} />}
                 </div>
             </div>
         </div>

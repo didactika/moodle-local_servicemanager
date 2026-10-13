@@ -17,7 +17,6 @@ import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
 import { useMemo } from "react";
 import BackLink from "./components/common/BackLink";
 import ErrorBoundary from "./components/common/ErrorBoundary";
-import Icon from "./components/common/Icon";
 import PageHeader from "./components/common/PageHeader";
 import StatusBadge from "./components/common/StatusBadge";
 import AccessPanel from "./components/schema/AccessPanel";
@@ -34,31 +33,19 @@ const SchemaDetail = /* @__PURE__ */ __name((props) => {
   const text = useMemo(() => createText(props.strings), [props.strings]);
   const hasResources = Boolean(resources.user || resources.role || resources.service);
   const toggle = /* @__PURE__ */ __name(() => postForm(urls.bulkAction, { sesskey: props.sesskey, action: schema.enabled ? "disable" : "enable", ids: [schema.id] }), "toggle");
-  const actions = !isHistory && canManage ? /* @__PURE__ */ jsxDEV("a", { href: urls.edit, className: "btn btn-primary", children: [
-    /* @__PURE__ */ jsxDEV(Icon, { name: "pen-to-square", gap: true }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-      lineNumber: 42,
-      columnNumber: 59
-    }),
-    text("action_edit")
-  ] }, void 0, true, {
-    fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-    lineNumber: 42,
-    columnNumber: 11
-  }) : void 0;
   return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-detail", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: isHistory ? urls.back : urls.dashboard, label: text(isHistory ? "back" : "dashboard") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-      lineNumber: 48,
+      lineNumber: 42,
       columnNumber: 17
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-      lineNumber: 47,
+      lineNumber: 41,
       columnNumber: 13
     }),
     props.newToken && /* @__PURE__ */ jsxDEV(TokenAlert, { token: props.newToken, text }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-      lineNumber: 51,
+      lineNumber: 45,
       columnNumber: 32
     }),
     /* @__PURE__ */ jsxDEV(
@@ -68,89 +55,88 @@ const SchemaDetail = /* @__PURE__ */ __name((props) => {
         badges: /* @__PURE__ */ jsxDEV(Fragment, { children: [
           /* @__PURE__ */ jsxDEV(StatusBadge, { status: schema.status, label: schema.statusLabel }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-            lineNumber: 56,
+            lineNumber: 50,
             columnNumber: 21
           }),
           !isHistory && !schema.enabled && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-secondary", children: text("disabled") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-            lineNumber: 57,
+            lineNumber: 51,
             columnNumber: 55
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 55,
+          lineNumber: 49,
           columnNumber: 25
         }),
         subtitle: /* @__PURE__ */ jsxDEV("code", { children: schema.schemaId }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 59,
+          lineNumber: 53,
           columnNumber: 27
-        }),
-        actions
+        })
       },
       void 0,
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-        lineNumber: 53,
+        lineNumber: 47,
         columnNumber: 13
       }
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "row", children: [
-      /* @__PURE__ */ jsxDEV("div", { className: "col-lg-8", children: [
-        props.functions.length > 0 && /* @__PURE__ */ jsxDEV(FunctionsPanel, { functions: props.functions, text }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 65,
-          columnNumber: 52
-        }),
-        hasResources && /* @__PURE__ */ jsxDEV(ResourcesPanel, { resources, text }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 66,
-          columnNumber: 38
-        }),
-        props.healthLogs.length > 0 && /* @__PURE__ */ jsxDEV(HealthPanel, { logs: props.healthLogs, text }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 67,
-          columnNumber: 53
-        })
-      ] }, void 0, true, {
-        fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-        lineNumber: 64,
-        columnNumber: 17
-      }),
       /* @__PURE__ */ jsxDEV("div", { className: "col-lg-4", children: [
         /* @__PURE__ */ jsxDEV(DetailsPanel, { schema, urls, canManage, isHistory, onToggle: toggle, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 70,
+          lineNumber: 58,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV(AccessPanel, { props, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 71,
+          lineNumber: 59,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV(RolePanel, { role: props.role, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-          lineNumber: 72,
+          lineNumber: 60,
           columnNumber: 21
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-        lineNumber: 69,
+        lineNumber: 57,
+        columnNumber: 17
+      }),
+      /* @__PURE__ */ jsxDEV("div", { className: "col-lg-8", children: [
+        props.functions.length > 0 && /* @__PURE__ */ jsxDEV(FunctionsPanel, { functions: props.functions, text }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
+          lineNumber: 63,
+          columnNumber: 52
+        }),
+        hasResources && /* @__PURE__ */ jsxDEV(ResourcesPanel, { resources, text }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
+          lineNumber: 64,
+          columnNumber: 38
+        }),
+        props.healthLogs.length > 0 && /* @__PURE__ */ jsxDEV(HealthPanel, { logs: props.healthLogs, text }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
+          lineNumber: 65,
+          columnNumber: 53
+        })
+      ] }, void 0, true, {
+        fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
+        lineNumber: 62,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-      lineNumber: 63,
+      lineNumber: 56,
       columnNumber: 13
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-    lineNumber: 46,
+    lineNumber: 40,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
-    lineNumber: 45,
+    lineNumber: 39,
     columnNumber: 12
   });
 }, "SchemaDetail");

@@ -27,6 +27,7 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, onToggle, text}: Deta
     icon="circle-info"
     region="details"
     actions={!isHistory ? <div className="sm-group" role="group" aria-label={text('core_actions')}>
+        {canManage && <IconButton icon="pen-to-square" label={text('action_edit')} href={urls.edit} />}
         {canManage && <IconButton icon="clock-rotate-left" label={text('version_history')} href={urls.history} tone="primary" />}
         <IconButton icon="download" label={text('action_export')} href={urls.export} tone="info" />
         {canManage && <IconButton
