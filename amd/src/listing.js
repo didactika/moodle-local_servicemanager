@@ -186,7 +186,10 @@ const pageItem = (target, content, title, active) => {
 const dots = () => {
     const item = document.createElement('li');
     item.className = 'page-item disabled';
-    item.innerHTML = '<span class="page-link">...</span>';
+    const dotsText = document.createElement('span');
+    dotsText.className = 'page-link';
+    dotsText.textContent = '...';
+    item.appendChild(dotsText);
     return item;
 };
 

@@ -150,8 +150,10 @@ export const init = () => {
             copy.type = 'button';
             copy.className = 'btn sm-pill compact';
             copy.dataset.copyTarget = '#' + id;
-            copy.innerHTML = '<i class="fa-solid fa-copy sm-icon-gap" aria-hidden="true"></i>';
-            copy.appendChild(document.createTextNode(strings.copy));
+            const icon = document.createElement('i');
+            icon.className = 'fa-solid fa-copy sm-icon-gap';
+            icon.setAttribute('aria-hidden', 'true');
+            copy.append(icon, document.createTextNode(strings.copy));
             holder.append(pre, copy);
             return yaml;
         }).catch(() => {

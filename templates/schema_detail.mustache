@@ -80,8 +80,8 @@
         <span class="sm-badges-row" data-region="ws-status">
             <span class="sm-badge tone-{{ws.tone}}"><i class="fa-solid fa-{{ws.icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
             {{#ws.protocols}}
-                <span class="sm-protocol {{#enabled}}on{{/enabled}}{{^enabled}}off{{/enabled}}" title="{{label}}">
-                    <i class="fa-solid fa-{{#enabled}}circle-check{{/enabled}}{{^enabled}}circle-minus{{/enabled}} sm-icon-gap" aria-hidden="true"></i>{{name}}
+                <span class="sm-protocol {{state}}" title="{{label}}">
+                    <i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{name}}
                     <span class="sr-only visually-hidden"> {{label}}</span>
                 </span>
             {{/ws.protocols}}
@@ -118,9 +118,9 @@
                                 <i class="fa-solid fa-download" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_export, local_servicemanager{{/str}}</span>
                             </a>
                             {{#canmanage}}
-                                <button type="button" class="btn sm-pill icon-only compact{{#schema.enabled}} tone-success{{/schema.enabled}}" data-action="toggle-schema" data-region="toggle-schema"
-                                        title="{{#schema.enabled}}{{#str}}bulk_disable, local_servicemanager{{/str}}{{/schema.enabled}}{{^schema.enabled}}{{#str}}bulk_enable, local_servicemanager{{/str}}{{/schema.enabled}}">
-                                    <i class="fa-solid fa-{{#schema.enabled}}toggle-on{{/schema.enabled}}{{^schema.enabled}}toggle-off{{/schema.enabled}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#schema.enabled}}{{#str}}bulk_disable, local_servicemanager{{/str}}{{/schema.enabled}}{{^schema.enabled}}{{#str}}bulk_enable, local_servicemanager{{/str}}{{/schema.enabled}}</span>
+                                <button type="button" class="btn sm-pill icon-only compact {{toggle.tone}}" data-action="toggle-schema" data-region="toggle-schema"
+                                        title="{{toggle.label}}">
+                                    <i class="fa-solid fa-{{toggle.icon}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{toggle.label}}</span>
                                 </button>
                                 <a href="{{urls.delete}}" class="btn sm-pill icon-only compact tone-danger" title="{{#str}}action_delete, local_servicemanager{{/str}}">
                                     <i class="fa-solid fa-trash" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_delete, local_servicemanager{{/str}}</span>
@@ -241,10 +241,10 @@
                         {{#access.showfiles}}
                             <dt>{{#str}}tile_token, local_servicemanager{{/str}}</dt>
                             <dd>
-                                <span class="sm-badge tone-{{#hastoken}}success{{/hastoken}}{{^hastoken}}secondary{{/hastoken}}" data-region="token-badge">{{#hastoken}}{{#str}}token_active, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}token_none, local_servicemanager{{/str}}{{/hastoken}}</span>
+                                <span class="sm-badge tone-{{tokenbadge.tone}}" data-region="token-badge">{{tokenbadge.label}}</span>
                                 {{#canmanage}}
-                                    <button type="button" class="btn sm-pill icon-only compact sm-gap-left" data-action="make-token" data-region="make-token" title="{{#hastoken}}{{#str}}action_regenerate_token, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}action_generate_token, local_servicemanager{{/str}}{{/hastoken}}">
-                                        <i class="fa-solid fa-{{#hastoken}}rotate{{/hastoken}}{{^hastoken}}key{{/hastoken}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#hastoken}}{{#str}}action_regenerate_token, local_servicemanager{{/str}}{{/hastoken}}{{^hastoken}}{{#str}}action_generate_token, local_servicemanager{{/str}}{{/hastoken}}</span>
+                                    <button type="button" class="btn sm-pill icon-only compact sm-gap-left" data-action="make-token" data-region="make-token" title="{{tokenbutton.label}}">
+                                        <i class="fa-solid fa-{{tokenbutton.icon}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{tokenbutton.label}}</span>
                                     </button>
                                 {{/canmanage}}
                                 <div class="sm-fresh-token" data-region="fresh-token" hidden>
@@ -257,7 +257,7 @@
                             </dd>
                             <dt>{{#str}}req_file_access, local_servicemanager{{/str}}</dt>
                             <dd class="sm-badges-row">
-                                {{#access.files}}<span class="sm-badge tone-{{#on}}success{{/on}}{{^on}}secondary{{/on}}" title="{{title}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{label}}</span>{{/access.files}}
+                                {{#access.files}}<span class="sm-badge tone-{{tone}}" title="{{title}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{label}}</span>{{/access.files}}
                             </dd>
                         {{/access.showfiles}}
                         {{#access.hasplugins}}
@@ -276,7 +276,7 @@
                             <dt class="sm-fact-wide">{{#str}}extra_capabilities, local_servicemanager{{/str}}</dt>
                             <dd class="sm-fact-wide">
                                 <div class="sm-chip-row" data-region="chip-block" data-title="{{#str}}extra_capabilities, local_servicemanager{{/str}}">
-                                    {{#access.capabilities}}<code class="sm-code-chip" data-chip title="{{name}}"{{#folded}} hidden{{/folded}}><span class="sm-code-chip-plugin">{{plugin}}</span>{{#capability}}<span>:{{capability}}</span>{{/capability}}</code>{{/access.capabilities}}
+                                    {{#access.capabilities}}<code class="sm-code-chip" data-chip title="{{name}}" {{hiddenattr}}><span class="sm-code-chip-plugin">{{plugin}}</span>{{#capability}}<span>:{{capability}}</span>{{/capability}}</code>{{/access.capabilities}}
                                     {{#access.hasmorecapabilities}}<button type="button" class="sm-role-more" data-action="chips-all" title="{{access.morecapabilities}}">+{{access.morecapabilitiescount}}<span class="sr-only visually-hidden"> {{access.morecapabilities}}</span></button>{{/access.hasmorecapabilities}}
                                 </div>
                             </dd>
@@ -296,7 +296,7 @@
                                 <section class="sm-role-block" data-region="role-block">
                                     <h4 class="sm-role-label">{{label}}<span class="sm-role-count">{{count}}</span></h4>
                                     <div class="sm-chip-row" data-region="chip-block" data-title="{{label}}">
-                                        {{#names}}<span class="sm-role-chip tone-{{tone}}" data-chip{{#folded}} hidden{{/folded}}>{{name}}</span>{{/names}}
+                                        {{#names}}<span class="sm-role-chip tone-{{tone}}" data-chip {{hiddenattr}}>{{name}}</span>{{/names}}
                                         {{#hasmore}}<button type="button" class="sm-role-more" data-action="chips-all" title="{{morelabel}}">+{{morecount}}<span class="sr-only visually-hidden"> {{morelabel}}</span></button>{{/hasmore}}
                                     </div>
                                 </section>

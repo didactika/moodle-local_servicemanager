@@ -55,6 +55,8 @@ class ws_status {
             $protocols[] = [
                 'name' => strtoupper($key),
                 'enabled' => $on,
+                'state' => $on ? 'on' : 'off',
+                'icon' => $on ? 'circle-check' : 'circle-minus',
                 'label' => get_string($on ? 'ws_enabled_label' : 'ws_disabled_label', 'local_servicemanager'),
             ];
         }

@@ -26,20 +26,9 @@
 import Ajax from 'core/ajax';
 import {get_strings as getStrings} from 'core/str';
 import {add as addToast} from 'core/toast';
+import Templates from 'core/templates';
 import {confirm, inform} from 'local_servicemanager/dialogue';
 import {init as initCopy} from 'local_servicemanager/copy';
-
-/**
- * Escape a text to put it in HTML.
- *
- * @param {String} text The text.
- * @returns {String} The text, safe to write inside an element.
- */
-const escapeHtml = (text) => {
-    const holder = document.createElement('div');
-    holder.textContent = text;
-    return holder.innerHTML;
-};
 
 /**
  * Show the capabilities of a function.
@@ -52,15 +41,13 @@ const showCapabilities = (button) => {
         {key: 'function_capabilities_help', component: 'local_servicemanager'},
     ]).then((strings) => {
         const capabilities = JSON.parse(button.dataset.capabilities);
-        const description = button.dataset.description ? `<p class="sm-muted">${escapeHtml(button.dataset.description)}</p>` : '';
-        const item = (name) => `<li class="list-group-item"><span class="sm-fn">${escapeHtml(name)}</span></li>`;
-        const items = capabilities.map(item).join('');
-        return inform(
-            strings[0],
-            `<div class="servicemanager-detail"><p><span class="sm-fn">${escapeHtml(button.dataset.name)}</span></p>` +
-                `${description}` +
-                `<p class="small sm-muted">${escapeHtml(strings[1])}</p><ul class="list-group sm-caps-list">${items}</ul></div>`
-        );
+        const body = Templates.render('local_servicemanager/function_capabilities_dialogue', {
+            name: button.dataset.name,
+            description: button.dataset.description || '',
+            hint: strings[1],
+            items: capabilities.map((name) => ({name})),
+        });
+        return inform(strings[0], body);
     }).catch(() => null);
 };
 
@@ -202,32 +189,31 @@ export const init = () => {
             {key: 'filter_name', component: 'local_servicemanager'},
             {key: 'no_schemas_filtered', component: 'local_servicemanager'},
         ]).then((strings) => {
-            const search = names.length > SEARCHABLE_FROM
-                ? `<div class="sm-dialog-search"><input type="search" class="form-control" data-region="chips-search" ` +
-                    `placeholder="${escapeHtml(strings[0])}"></div>`
-                : '';
-            const body = `<div class="servicemanager-detail">${search}` +
-                `<ul class="list-group sm-caps-list" data-region="chip-all"></ul>` +
-                `<p class="sm-muted sm-center sm-block-small" data-region="chip-none" hidden>${escapeHtml(strings[1])}</p></div>`;
-            return inform(block.dataset.title, body).then((modal) => {
-                const root = modal.getBody()[0];
-                const list = root.querySelector('[data-region="chip-all"]');
-                const none = root.querySelector('[data-region="chip-none"]');
+            const body = Templates.render('local_servicemanager/chips_dialogue', {
+                hassearch: names.length > SEARCHABLE_FROM,
+                placeholder: strings[0],
+                nonetext: strings[1],
+            });
+            return inform(block.dataset.title, body).then((modal) => modal.getBodyPromise().then(() => {
+                const dialogue = modal.getBody()[0];
+                const list = dialogue.querySelector('[data-region="chip-all"]');
+                const none = dialogue.querySelector('[data-region="chip-none"]');
                 const draw = (query) => {
                     const words = query.toLowerCase().split(/\s+/).filter(Boolean);
                     const found = names.filter((name) => words.every((word) => name.toLowerCase().includes(word)));
-                    const row = (name) => `<li class="list-group-item"><span class="sm-fn">${escapeHtml(name)}</span></li>`;
-                    list.innerHTML = found.map(row).join('');
                     none.hidden = found.length !== 0;
+                    return Templates.renderForPromise('local_servicemanager/chips_rows', {items: found.map((name) => ({name}))})
+                        .then(({html, js}) => Templates.replaceNodeContents(list, html, js))
+                        .catch(() => null);
                 };
-                root.addEventListener('input', (event) => {
+                dialogue.addEventListener('input', (event) => {
                     if (event.target.matches('[data-region="chips-search"]')) {
                         draw(event.target.value);
                     }
                 });
                 draw('');
                 return modal;
-            });
+            }));
         }).catch(() => null);
     };
 

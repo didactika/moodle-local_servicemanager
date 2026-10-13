@@ -155,6 +155,12 @@ class schema_page implements \renderable, \templatable {
             'newtoken' => $this->newtoken,
             'hasnewtoken' => $this->newtoken !== null,
             'hastoken' => !empty($schema->tokenid),
+            'tokenbutton' => $this->token_button(!empty($schema->tokenid)),
+            'tokenbadge' => [
+                'tone' => !empty($schema->tokenid) ? 'success' : 'secondary',
+                'label' => get_string(!empty($schema->tokenid) ? 'token_active' : 'token_none', 'local_servicemanager'),
+            ],
+            'toggle' => $this->toggle_button((bool) $schema->enabled),
             'hasfunctions' => !empty($functions),
             'functions' => $functions,
             'functionstitle' => get_string(count($functions) === 1 ? 'tile_function' : 'functions', 'local_servicemanager'),
@@ -221,6 +227,9 @@ class schema_page implements \renderable, \templatable {
             'newtoken' => null,
             'hasnewtoken' => false,
             'hastoken' => false,
+            'tokenbutton' => $this->token_button(false),
+            'tokenbadge' => ['tone' => 'secondary', 'label' => get_string('token_none', 'local_servicemanager')],
+            'toggle' => $this->toggle_button(false),
             'hasfunctions' => !empty($functions),
             'functions' => $functions,
             'functionstitle' => get_string(count($functions) === 1 ? 'tile_function' : 'functions', 'local_servicemanager'),
@@ -298,6 +307,33 @@ class schema_page implements \renderable, \templatable {
     }
 
     /**
+     * The button that enables or disables the schema: what it looks like and what it says is what pressing it will do.
+     *
+     * @param bool $enabled Whether the schema is enabled.
+     * @return array The icon, the colour and the label.
+     */
+    private function toggle_button(bool $enabled): array {
+        return [
+            'icon' => $enabled ? 'toggle-on' : 'toggle-off',
+            'tone' => $enabled ? 'tone-success' : '',
+            'label' => get_string($enabled ? 'bulk_disable' : 'bulk_enable', 'local_servicemanager'),
+        ];
+    }
+
+    /**
+     * The button that makes the token, or a new one when there is one.
+     *
+     * @param bool $hastoken Whether the schema has a token.
+     * @return array The icon and the label.
+     */
+    private function token_button(bool $hastoken): array {
+        return [
+            'icon' => $hastoken ? 'rotate' : 'key',
+            'label' => get_string($hastoken ? 'action_regenerate_token' : 'action_generate_token', 'local_servicemanager'),
+        ];
+    }
+
+    /**
      * The panel of access and requirements.
      *
      * @param bool $download Whether the service downloads files.
@@ -309,12 +345,14 @@ class schema_page implements \renderable, \templatable {
     private function access(bool $download, bool $upload, array $plugins, array $capabilities): array {
         $ishistory = $this->history !== null;
         $files = [
-            ['icon' => 'download', 'on' => $download, 'label' => get_string('req_download_files', 'local_servicemanager'),
+            ['icon' => 'download', 'on' => $download, 'tone' => $download ? 'success' : 'secondary',
+                'label' => get_string('req_download_files', 'local_servicemanager'),
                 'title' => get_string(
                     $download ? 'req_download_files_enabled' : 'req_download_files_disabled',
                     'local_servicemanager'
                 )],
-            ['icon' => 'upload', 'on' => $upload, 'label' => get_string('req_upload_files', 'local_servicemanager'),
+            ['icon' => 'upload', 'on' => $upload, 'tone' => $upload ? 'success' : 'secondary',
+                'label' => get_string('req_upload_files', 'local_servicemanager'),
                 'title' => get_string($upload ? 'req_upload_files_enabled' : 'req_upload_files_disabled', 'local_servicemanager')],
         ];
         return [
@@ -330,6 +368,7 @@ class schema_page implements \renderable, \templatable {
                     'plugin' => $parts[0],
                     'capability' => isset($parts[1]) ? $parts[1] : '',
                     'folded' => $index >= self::CHIPS_SHOWN,
+                    'hiddenattr' => $index >= self::CHIPS_SHOWN ? 'hidden' : '',
                 ];
             }, $capabilities, array_keys($capabilities)),
             'hasmorecapabilities' => count($capabilities) > self::CHIPS_SHOWN,
@@ -389,6 +428,7 @@ class schema_page implements \renderable, \templatable {
     private function role_row(string $label, array $names): array {
         foreach ($names as $index => $name) {
             $names[$index]['folded'] = $index >= self::CHIPS_SHOWN;
+            $names[$index]['hiddenattr'] = $index >= self::CHIPS_SHOWN ? 'hidden' : '';
         }
         $more = count($names) - self::CHIPS_SHOWN;
         return [

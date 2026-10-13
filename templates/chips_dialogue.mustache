@@ -1,0 +1,42 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_servicemanager/chips_dialogue
+
+    The body of the dialogue that shows every name of a list of chips, with a search when there are many. The rows are drawn by the script.
+
+    Context variables required for this template:
+    * hassearch - Whether the dialogue has a search
+    * placeholder - What the search asks for
+    * nonetext - What is said when the search finds nothing
+
+    Example context (json):
+    {
+        "hassearch": true,
+        "placeholder": "Filter by name",
+        "nonetext": "Nothing matches"
+    }
+}}
+<div class="servicemanager-detail">
+    {{#hassearch}}
+        <div class="sm-dialog-search">
+            <input type="search" class="form-control" data-region="chips-search" placeholder="{{placeholder}}" aria-label="{{placeholder}}">
+        </div>
+    {{/hassearch}}
+    <ul class="list-group sm-caps-list" data-region="chip-all"></ul>
+    <p class="sm-muted sm-center sm-block-small" data-region="chip-none" hidden>{{nonetext}}</p>
+</div>

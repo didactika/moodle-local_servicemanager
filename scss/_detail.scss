@@ -7,7 +7,7 @@
         background-color: color-mix(in srgb, var(--sm-success) 18%, var(--sm-body-bg));
         color: var(--sm-body-color);
 
-        input {
+        & input {
             font-size: 0.95rem;
         }
     }
@@ -17,7 +17,7 @@
         max-height: 21.875rem;
         overflow-y: auto;
 
-        thead {
+        & thead {
             position: sticky;
             top: 0;
             z-index: 1;
@@ -94,7 +94,7 @@
         grid-column: 1 / -1;
     }
 
-    dt.sm-fact-wide {
+    & dt.sm-fact-wide {
         margin-bottom: -0.2rem;
     }
 
@@ -203,7 +203,7 @@
             min-width: 0;
         }
 
-        dt {
+        & dt {
             margin-bottom: 0.15rem;
             color: var(--sm-secondary-color);
             font-size: 0.75rem;
@@ -212,7 +212,7 @@
             text-transform: uppercase;
         }
 
-        dd {
+        & dd {
             margin: 0;
         }
     }
@@ -293,7 +293,7 @@
     border-radius: 0.75rem;
     overflow: hidden;
 
-    .list-group-item {
+    & .list-group-item {
         padding: 0.7rem 1rem;
         border-width: 0 0 1px;
         border-color: var(--sm-border-color);
@@ -324,7 +324,7 @@
 }
 
 .sm-modal {
-    .modal-content {
+    & .modal-content {
         border: 1px solid var(--sm-border-color);
         border-radius: 1rem;
         box-shadow: var(--sm-box-shadow-lg);
@@ -332,19 +332,19 @@
         overflow: hidden;
     }
 
-    .modal-header {
+    & .modal-header {
         padding: 1rem 1.25rem;
         border-bottom: 1px solid var(--sm-border-color);
         background-color: var(--sm-tertiary-bg);
 
-        .modal-title {
+        & .modal-title {
             font-size: 1.05rem;
             font-weight: 600;
         }
     }
 
     // The cross that closes the window, as round and quiet as the one of the 5.3 line.
-    .modal-header .close {
+    & .modal-header .close {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -364,11 +364,11 @@
         }
     }
 
-    .modal-body {
+    & .modal-body {
         padding: 1.25rem;
     }
 
-    .modal-footer {
+    & .modal-footer {
         padding: 0.9rem 1.25rem;
         border-top: 1px solid var(--sm-border-color);
         background-color: var(--sm-tertiary-bg);

@@ -36,14 +36,14 @@
         }
     }
 
-    .table th {
+    & .table th {
         font-size: 0.75rem;
         font-weight: 600;
         letter-spacing: 0.05em;
         text-transform: uppercase;
     }
 
-    .table code {
+    & .table code {
         padding: 0.2em 0.4em;
         border-radius: var(--sm-border-radius-sm);
         background-color: var(--sm-tertiary-bg);
@@ -123,8 +123,8 @@
 
     }
 
-    .dropdown,
-    .btn-group {
+    & .dropdown,
+    & .btn-group {
         position: relative;
     }
 
@@ -201,7 +201,7 @@
             text-transform: uppercase;
         }
 
-        .form-control {
+        & .form-control {
             width: 100%;
         }
     }
@@ -244,14 +244,14 @@
     }
 
     // A menu that is the last button of a group keeps the rounded end of the group.
-    .btn-group > .sm-action-menu {
+    & .btn-group > .sm-action-menu {
         > .btn {
             border-top-right-radius: var(--sm-btn-border-radius, var(--sm-border-radius-sm));
             border-bottom-right-radius: var(--sm-btn-border-radius, var(--sm-border-radius-sm));
         }
     }
 
-    .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn {
+    & .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
     }
@@ -268,12 +268,12 @@
         box-shadow: var(--sm-box-shadow-sm);
 
         // Lists and tables inside a card take the colour of the card, so all the cards of a page look the same.
-        .list-group-item,
-        .table {
+        & .list-group-item,
+        & .table {
             background-color: transparent;
         }
 
-        .card-header {
+        & .card-header {
             padding: 0.75rem 1rem;
             background-color: var(--sm-tertiary-bg);
         }
@@ -290,12 +290,12 @@
         grid-template-columns: max-content 1fr;
         gap: 0.6rem 1rem;
 
-        dt {
+        & dt {
             color: var(--sm-secondary-color);
             font-weight: 500;
         }
 
-        dd {
+        & dd {
             margin: 0;
             min-width: 0;
             overflow-wrap: anywhere;
@@ -316,7 +316,7 @@
     .sm-list {
         box-shadow: var(--sm-box-shadow-sm);
 
-        thead {
+        & thead {
             background-color: var(--sm-tertiary-bg);
         }
     }
@@ -351,7 +351,7 @@
         margin-bottom: 1rem;
         box-shadow: var(--sm-box-shadow-sm);
 
-        .card-body {
+        & .card-body {
             gap: 1rem 1.5rem;
         }
 

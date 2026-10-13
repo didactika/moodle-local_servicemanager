@@ -56,10 +56,11 @@ class import_result_page implements \renderable, \templatable {
         $failed = count(array_filter($items, static fn(array $item) => $item['status'] === 'failed'));
         $warnings = count($this->result['warnings']);
 
+        $urls = $this->view_urls(array_column($items, 'id'));
         $rows = [];
         foreach ($items as $item) {
             $look = self::LOOKS[$item['status']];
-            $url = $this->view_url($item['id']);
+            $url = $urls[$item['id']] ?? '';
             $rows[] = [
                 'label' => $item['name'] !== '' ? $item['name']
                     : ($item['id'] !== '' ? $item['id'] : get_string('import_unknown', 'local_servicemanager')),
@@ -91,15 +92,23 @@ class import_result_page implements \renderable, \templatable {
     }
 
     /**
-     * The address of the page of a schema that exists.
+     * The addresses of the pages of the schemas that exist, by the id of each schema.
      *
-     * @param string $schemaid Id of the schema.
-     * @return string The address, or an empty text when there is no such schema.
+     * @param string[] $schemaids Ids of the schemas.
+     * @return string[] The address of each one that exists.
      */
-    private function view_url(string $schemaid): string {
+    private function view_urls(array $schemaids): array {
         global $DB;
 
-        $record = $schemaid === '' ? false : $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid], 'id');
-        return $record ? (new \moodle_url('/local/servicemanager/pages/view.php', ['id' => $record->id]))->out(false) : '';
+        $schemaids = array_values(array_filter(array_unique($schemaids), static fn(string $id): bool => $id !== ''));
+        if (!$schemaids) {
+            return [];
+        }
+        $urls = [];
+        foreach ($DB->get_records_list('local_servicemanager_schemas', 'schema_id', $schemaids, '', 'id, schema_id') as $record) {
+            $view = new \moodle_url('/local/servicemanager/pages/view.php', ['id' => $record->id]);
+            $urls[$record->schema_id] = $view->out(false);
+        }
+        return $urls;
     }
 }

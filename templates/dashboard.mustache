@@ -49,8 +49,8 @@
         <span class="sm-badges-row" data-region="ws-status">
             <span class="sm-badge tone-{{ws.tone}}"><i class="fa-solid fa-{{ws.icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
             {{#ws.protocols}}
-                <span class="sm-protocol {{#enabled}}on{{/enabled}}{{^enabled}}off{{/enabled}}" title="{{label}}">
-                    <i class="fa-solid fa-{{#enabled}}circle-check{{/enabled}}{{^enabled}}circle-minus{{/enabled}} sm-icon-gap" aria-hidden="true"></i>{{name}}
+                <span class="sm-protocol {{state}}" title="{{label}}">
+                    <i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{name}}
                     <span class="sr-only visually-hidden"> {{label}}</span>
                 </span>
             {{/ws.protocols}}
@@ -195,7 +195,7 @@
                     </thead>
                     <tbody>
                         {{#schemas}}
-                            <tr data-region="schema-row" data-id="{{id}}" data-status="{{status}}" data-enabled="{{#enabled}}1{{/enabled}}{{^enabled}}0{{/enabled}}"
+                            <tr data-region="schema-row" data-id="{{id}}" data-status="{{status}}" data-enabled="{{enabledvalue}}"
                                 data-modified="{{modifiedat}}" data-text="{{name}} {{schemaid}} {{version}}"{{#hidden}} hidden{{/hidden}}>
                                 {{#canmanage}}
                                     <td class="sm-check-cell">
@@ -232,7 +232,7 @@
                                                 <li><a class="dropdown-item" href="{{exporturl}}"><i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>{{#str}}action_export, local_servicemanager{{/str}}</a></li>
                                                 {{#canmanage}}
                                                     <li><button type="button" class="dropdown-item" data-action="toggle-one">
-                                                        <i class="fa-solid fa-{{#enabled}}toggle-off{{/enabled}}{{^enabled}}toggle-on{{/enabled}} sm-icon-gap" aria-hidden="true"></i>{{#enabled}}{{#str}}bulk_disable, local_servicemanager{{/str}}{{/enabled}}{{^enabled}}{{#str}}bulk_enable, local_servicemanager{{/str}}{{/enabled}}
+                                                        <i class="fa-solid fa-{{toggleicon}} sm-icon-gap" aria-hidden="true"></i>{{togglelabel}}
                                                     </button></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     <li><a class="dropdown-item sm-danger" href="{{deleteurl}}"><i class="fa-solid fa-trash sm-icon-gap" aria-hidden="true"></i>{{#str}}action_delete, local_servicemanager{{/str}}</a></li>

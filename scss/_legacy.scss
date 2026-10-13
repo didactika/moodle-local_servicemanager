@@ -163,7 +163,7 @@
     .sm-table {
         margin-bottom: 0;
 
-        th {
+        & th {
             color: var(--sm-secondary-color);
             font-size: 0.75rem;
             letter-spacing: 0.05em;
@@ -402,7 +402,7 @@
             box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--sm-primary) 25%, transparent);
         }
 
-        .input-group-text {
+        & .input-group-text {
             display: flex;
             align-items: center;
             margin: 0;
@@ -413,7 +413,7 @@
             color: var(--sm-secondary-color);
         }
 
-        .form-control,
+        & .form-control,
         > .form-control:not(:last-child) {
             flex: 1 1 auto;
             width: 1%;
@@ -435,13 +435,13 @@
         }
 
         // The browser draws a cross of its own in a search field; the button of the box is the one cross.
-        input[type='search']::-webkit-search-cancel-button,
-        input[type='search']::-webkit-search-decoration {
+        & input[type='search']::-webkit-search-cancel-button,
+        & input[type='search']::-webkit-search-decoration {
             appearance: none;
             -webkit-appearance: none;
         }
 
-        .btn {
+        & .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
