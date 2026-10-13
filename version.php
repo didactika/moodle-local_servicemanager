@@ -30,5 +30,5 @@ $plugin->component = 'local_servicemanager';
 $plugin->version = 2026101400;
 $plugin->requires = 2026100500; // Moodle 5.3.
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '2.0.0-m503';
+$plugin->release = '1.1.0-m503';
 $plugin->supported = [503, 503]; // Moodle 5.3.

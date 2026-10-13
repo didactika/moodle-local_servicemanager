@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0-m503] - 2026-10-14
+## [1.1.0-m503] - 2026-10-14
 
 The release is named after the delivery and the line (`-m` and the lowest Moodle version), and the version of the line is the date it was created and a counter.
 
-First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is on `MOODLE_400_STABLE` (2.0.0-m400).
+First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is on `MOODLE_400_STABLE` (1.1.0-m400).
 
 ### Added
 
