@@ -1,0 +1,9 @@
+// The dashboard.
+
+.servicemanager-dashboard {
+    @media (max-width: 768px) {
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.4rem;
+        }
+    }
+}

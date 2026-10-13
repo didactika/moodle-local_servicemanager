@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "js/esm/src/**/*.ts",
+    "js/esm/src/**/*.tsx",
+    "../../../node_modules/@types/**/*.d.ts"
+  ],
+  "exclude": [
+    "js/esm/tests/**/*"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../../src/components/common/StatusBadge.tsx"],
+  "sourceRoot": "../../../../../../sources/public/local/servicemanager/js/esm/build",
+  "sourcesContent": ["// This file is part of Moodle - https://moodle.org/\n// Moodle is free software under the GNU General Public License, version 3 or later.\n\n/**\n * The badge of a status, with its icon and its text.\n *\n * @module     local_servicemanager/components/common/StatusBadge\n * @copyright  2026 Didactika.org\n * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>\n * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\n */\nimport {statusLook} from '../../lib/status';\nimport Icon from './Icon';\n\ninterface StatusBadgeProps {\n    status: string;\n    label: string;\n}\n\nconst StatusBadge = ({status, label}: StatusBadgeProps) => {\n    const look = statusLook(status);\n    return <span className={`badge text-bg-${look.tone}`}>\n        <Icon name={look.icon} gap />{label}\n    </span>;\n};\n\nexport default StatusBadge;\n"],
+  "mappings": ";;AAsBQ;AAnBR;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAQA,SAAQ,kBAAiB;AACzB,OAAO,UAAU;AAOjB,MAAM,cAAc,wBAAC,EAAC,QAAQ,MAAK,MAAwB;AACvD,QAAM,OAAO,WAAW,MAAM;AAC9B,SAAO,uBAAC,UAAK,WAAW,iBAAiB,KAAK,IAAI,IAC9C;AAAA,2BAAC,QAAK,MAAM,KAAK,MAAM,KAAG,QAA1B;AAAA;AAAA;AAAA;AAAA,KAA2B;AAAA,IAAG;AAAA,OAD3B;AAAA;AAAA;AAAA;AAAA,GAEP;AACJ,GALoB;AAOpB,IAAO,sBAAQ;",
+  "names": []
+}

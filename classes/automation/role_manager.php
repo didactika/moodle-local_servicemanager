@@ -114,6 +114,74 @@ class role_manager {
     }
 
     /**
+     * Apply what a schema says about its role: where it can be assigned, the permissions it is given explicitly and the roles it
+     * may assign, override, switch to and see.
+     *
+     * Whatever the role had of these before is replaced, so a schema that no longer says something stops giving it.
+     *
+     * @param int $roleid Role ID
+     * @param role_settings $settings What the schema says
+     */
+    public function apply_settings(int $roleid, role_settings $settings): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/accesslib.php');
+
+        $this->reset_settings($roleid);
+
+        set_role_contextlevels($roleid, $settings->context_level_numbers());
+
+        $context = \context_system::instance();
+        $permissions = ['allow' => CAP_ALLOW, 'prevent' => CAP_PREVENT, 'prohibit' => CAP_PROHIBIT];
+        foreach ($permissions as $name => $value) {
+            foreach ($settings->capabilities($name) as $capability) {
+                assign_capability($capability, $value, $roleid, $context->id, true);
+            }
+        }
+
+        $setters = [
+            'allow_assign' => 'core_role_set_assign_allowed',
+            'allow_override' => 'core_role_set_override_allowed',
+            'allow_switch' => 'core_role_set_switch_allowed',
+            'allow_view' => 'core_role_set_view_allowed',
+        ];
+        foreach ($setters as $relation => $setter) {
+            foreach ($settings->roles($relation) as $shortname) {
+                $target = $this->role_id_by_shortname($shortname);
+                if ($target !== null) {
+                    $setter($roleid, $target);
+                }
+            }
+        }
+    }
+
+    /**
+     * Take away the roles that a role may assign, override, switch to and see, which are the part of its settings that is not a
+     * capability.
+     *
+     * @param int $roleid Role ID
+     */
+    public function reset_settings(int $roleid): void {
+        global $DB;
+
+        foreach (['role_allow_assign', 'role_allow_override', 'role_allow_switch', 'role_allow_view'] as $table) {
+            $DB->delete_records($table, ['roleid' => $roleid]);
+        }
+    }
+
+    /**
+     * The id of the role that has a short name.
+     *
+     * @param string $shortname Short name, such as student.
+     * @return int|null The id, or null when there is no such role.
+     */
+    private function role_id_by_shortname(string $shortname): ?int {
+        global $DB;
+
+        $id = $DB->get_field('role', 'id', ['shortname' => $shortname]);
+        return $id === false ? null : (int) $id;
+    }
+
+    /**
      * Remove all capabilities from role (for updates)
      *
      * @param int $roleid Role ID

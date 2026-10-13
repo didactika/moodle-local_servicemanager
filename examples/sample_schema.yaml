@@ -50,3 +50,21 @@ definition:
   # These users will also be authorized to use the service
   # If an email doesn't exist, a warning is shown but creation continues
   additional_users: []
+
+# What the role of the service may do (optional). Roles are named by their short name.
+# role:
+#   context_levels:         # Where the role can be assigned, besides the whole site: user, category, course, module, block
+#     - course
+#   permissions:
+#     prevent:              # Capabilities it does not get
+#       - moodle/user:delete
+#     prohibit:             # Capabilities it can never have
+#       - moodle/site:config
+#   allow_assign:           # Roles it may assign
+#     - student
+#   allow_override:         # Roles whose permissions it may override
+#     - student
+#   allow_switch:           # Roles it may switch to
+#     - student
+#   allow_view:             # Roles whose members it may see
+#     - student

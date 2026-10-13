@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../src/lib/status.ts"],
+  "sourceRoot": "../../../../../../sources/public/local/servicemanager/js/esm/build",
+  "sourcesContent": ["// This file is part of Moodle - https://moodle.org/\n// Moodle is free software under the GNU General Public License, version 3 or later.\n\n/**\n * How a status is shown: the colour of its badge and its icon.\n *\n * @module     local_servicemanager/lib/status\n * @copyright  2026 Didactika.org\n * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>\n * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\n */\n\n/** What a status looks like. */\nexport interface StatusLook {\n    /** Bootstrap colour of the badge. */\n    tone: 'success' | 'warning' | 'danger' | 'secondary';\n    /** Name of the Font Awesome icon. */\n    icon: string;\n}\n\nconst LOOKS: Record<string, StatusLook> = {\n    healthy: {tone: 'success', icon: 'circle-check'},\n    warning: {tone: 'warning', icon: 'triangle-exclamation'},\n    critical: {tone: 'danger', icon: 'circle-xmark'},\n    history: {tone: 'secondary', icon: 'clock'},\n};\n\n/**\n * The look of a status.\n *\n * @param status Status of a schema or of a health check; anything else looks like a healthy one.\n * @returns The colour and the icon.\n */\nexport const statusLook = (status: string): StatusLook => LOOKS[status] ?? LOOKS.healthy;\n"],
+  "mappings": ";;AAGA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAiBA,MAAM,QAAoC;AAAA,EACtC,SAAS,EAAC,MAAM,WAAW,MAAM,eAAc;AAAA,EAC/C,SAAS,EAAC,MAAM,WAAW,MAAM,uBAAsB;AAAA,EACvD,UAAU,EAAC,MAAM,UAAU,MAAM,eAAc;AAAA,EAC/C,SAAS,EAAC,MAAM,aAAa,MAAM,QAAO;AAC9C;AAQO,MAAM,aAAa,wBAAC,WAA+B,MAAM,MAAM,KAAK,MAAM,SAAvD;",
+  "names": []
+}

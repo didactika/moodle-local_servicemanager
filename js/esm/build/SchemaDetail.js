@@ -1,0 +1,13 @@
+import{useMemo as g}from"react";import f from"./components/common/BackLink";import u from"./components/common/ErrorBoundary";import b from"./components/common/Icon";import h from"./components/common/PageHeader";import v from"./components/common/StatusBadge";import k from"./components/schema/AccessPanel";import x from"./components/schema/DetailsPanel";import y from"./components/schema/FunctionsPanel";import P from"./components/schema/HealthPanel";import N from"./components/schema/ResourcesPanel";import p from"./components/schema/RolePanel";import B from"./components/schema/TokenAlert";import{createText as T}from"./engine/text";import{postForm as D}from"./engine/post";import{Fragment as L,jsx as e,jsxs as s}from"react/jsx-runtime";/**
+ * One schema, or one past version of it: what it declares, what the plugin created for it and how healthy it is.
+ *
+ * The actions of the schema are one group of buttons in the head of the page, and the rest of the page is made of sections that
+ * all look the same: the main ones at the left and the ones about what the schema is and who gets what at the right.
+ *
+ * Mounted by core/react_autoinit from the data-react-component that the page writes.
+ *
+ * @module     local_servicemanager/SchemaDetail
+ * @copyright  2026 Didactika.org
+ * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */const H=t=>{const{schema:o,urls:r,resources:i,isHistory:n,canManage:l}=t,a=g(()=>T(t.strings),[t.strings]),m=!!(i.user||i.role||i.service),c=()=>D(r.bulkAction,{sesskey:t.sesskey,action:o.enabled?"disable":"enable",ids:[o.id]}),d=!n&&l?s("a",{href:r.edit,className:"btn btn-primary",children:[e(b,{name:"pen-to-square",gap:!0}),a("action_edit")]}):void 0;return e(u,{strings:t.strings,children:s("div",{className:"servicemanager-detail",children:[e("div",{className:"mb-3",children:e(f,{href:n?r.back:r.dashboard,label:a(n?"back":"dashboard")})}),t.newToken&&e(B,{token:t.newToken,text:a}),e(h,{title:o.name,badges:s(L,{children:[e(v,{status:o.status,label:o.statusLabel}),!n&&!o.enabled&&e("span",{className:"badge text-bg-secondary",children:a("disabled")})]}),subtitle:e("code",{children:o.schemaId}),actions:d}),s("div",{className:"row",children:[s("div",{className:"col-lg-8",children:[t.functions.length>0&&e(y,{functions:t.functions,text:a}),m&&e(N,{resources:i,text:a}),t.healthLogs.length>0&&e(P,{logs:t.healthLogs,text:a})]}),s("div",{className:"col-lg-4",children:[e(x,{schema:o,urls:r,canManage:l,isHistory:n,onToggle:c,text:a}),e(k,{props:t,text:a}),e(p,{role:t.role,text:a})]})]})]})})};var O=H;export{O as default};

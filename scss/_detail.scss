@@ -1,0 +1,62 @@
+// The page of one schema.
+
+.servicemanager-detail {
+    // The token that was just generated: a tint of green over the colour of the page, so it reads in both colour modes.
+    [data-region='new-token'] {
+        border: 2px solid var(--bs-success);
+        background-color: color-mix(in srgb, var(--bs-success) 18%, var(--bs-body-bg));
+        color: var(--bs-body-color);
+
+        input {
+            font-size: 0.95rem;
+        }
+    }
+
+    // The health log scrolls inside its card and keeps its head in view.
+    .sm-scroll {
+        max-height: 21.875rem;
+        overflow-y: auto;
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: var(--bs-body-bg);
+        }
+    }
+
+    // The functions of a schema: an icon for what each does, its name and description, and what it asks for.
+    .sm-function {
+        display: flex;
+        align-items: flex-start;
+        padding: 0.85rem 1rem;
+        gap: 0.9rem;
+
+        &.missing {
+            background-color: color-mix(in srgb, var(--bs-danger) 8%, var(--bs-body-bg));
+        }
+
+        .sm-function-icon {
+            width: 1.5rem;
+            padding-top: 0.15rem;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+
+        .sm-function-body {
+            min-width: 0;
+        }
+
+        .sm-function-caps {
+            white-space: nowrap;
+        }
+    }
+
+    .sm-time-column {
+        width: 12.5rem;
+    }
+
+    .sm-status-column {
+        width: 6.25rem;
+    }
+}

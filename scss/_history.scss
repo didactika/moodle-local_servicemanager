@@ -1,0 +1,47 @@
+// The history of a schema.
+
+.servicemanager-history-page {
+    .sm-versions {
+        .list-group-item {
+            padding: 1rem;
+
+            // A version that is chosen to compare, tinted with the colour of the page so it reads in any colour mode.
+            &.active-version {
+                background-color: color-mix(in srgb, var(--bs-primary) 10%, var(--bs-body-bg));
+            }
+        }
+
+        .sm-version-row {
+            gap: 1rem;
+        }
+
+        .sm-version-body {
+            min-width: 0;
+        }
+    }
+
+    // The YAML of a version, which opens under it.
+    .sm-yaml {
+        max-height: 14rem;
+        overflow: auto;
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-body-color);
+    }
+
+    // The bar that stays at the bottom while the person goes down the list choosing two versions.
+    .sm-compare-bar {
+        position: sticky;
+        bottom: 0;
+        z-index: 2;
+        margin-top: 1rem;
+        padding: 0.75rem 0;
+        border-top: 1px solid var(--bs-border-color);
+        background-color: var(--bs-body-bg);
+    }
+
+    @media (max-width: 768px) {
+        .sm-versions .sm-version-row {
+            flex-wrap: wrap;
+        }
+    }
+}

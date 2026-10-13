@@ -41,6 +41,23 @@ $functions = [
         'ajax' => true,
         'capabilities' => 'local/servicemanager:view',
     ],
+    // Used by the interface of the plugin only, so it is not part of the service that is installed for the API.
+    'local_servicemanager_get_version' => [
+        'classname' => 'local_servicemanager\external\get_version',
+        'methodname' => 'execute',
+        'description' => 'Get the YAML of one past version of a service schema.',
+        'type' => 'read',
+        'ajax' => true,
+        'capabilities' => 'local/servicemanager:view',
+    ],
+    'local_servicemanager_get_suggestions' => [
+        'classname' => 'local_servicemanager\external\get_suggestions',
+        'methodname' => 'execute',
+        'description' => 'Suggest functions, capabilities, plugins or users for what has been typed in the guided form.',
+        'type' => 'read',
+        'ajax' => true,
+        'capabilities' => 'local/servicemanager:manage',
+    ],
     'local_servicemanager_create_schema' => [
         'classname' => 'local_servicemanager\external\create_schema',
         'methodname' => 'execute',

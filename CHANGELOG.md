@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.3.0] - 2026-10-13
+
+First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is on `MOODLE_400_STABLE` (4.0.0).
+
+### Added
+
+- Guided form to create a schema, next to the YAML editor, with suggestions as you type (at least ten) for functions, plugins, users and capabilities.
+- `role` section in the schema: where the role can be assigned, capabilities that are prevented or prohibited, and the roles it may assign, override, switch to and see. The role-allow matrices that `moodle/role:assign`, `review`, `override` and `switch` need are filled from it.
+- Health summary on the dashboard (healthy, warning, critical) and the state of each web service protocol.
+- Floating bar for bulk actions, a Documentation menu (reference of the format, this plugin's wiki and Moodle's documentation) and history one click away from each schema.
+- Comparator with side by side and unified views, a summary of the changes and the YAML of each version loaded on demand.
+- Moodle web service functions `local_servicemanager_get_version` and `local_servicemanager_get_suggestions`.
+
+### Changed
+
+- The interface is written in React and TypeScript (ESM) and follows the colour modes of Moodle; colours come from Bootstrap variables, so themes can override them.
+- Search filters as you type and the filters are asked for once.
+- Errors and notifications are shown as dismissible messages next to what failed.
+- Requires Moodle 5.3; version `2026101301.503`.
+
+### Removed
+
+- The classic AMD and Mustache interface on `main`; it continues on `MOODLE_400_STABLE`.
+
 ## [1.0.3] - 2026-10-05
 
 ### Changed

@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../src/services/api.ts"],
+  "sourceRoot": "../../../../../../sources/public/local/servicemanager/js/esm/build",
+  "sourcesContent": ["// This file is part of Moodle - https://moodle.org/\n// Moodle is free software under the GNU General Public License, version 3 or later.\n\n/**\n * Every web service call of the plugin's pages, in one place.\n *\n * @module     local_servicemanager/services/api\n * @copyright  2026 Didactika.org\n * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>\n * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\n */\nimport {fetchOne} from '@moodle/lms/core/ajax';\n\n/**\n * Call one web service of the plugin.\n *\n * @param methodname Name of the web service function.\n * @param args Arguments.\n * @returns What the function returns.\n */\nconst call = <T>(methodname: string, args: Record<string, unknown>): Promise<T> => fetchOne<T>({methodname, args});\n\n/**\n * The YAML of one past version of a schema, which the history does not carry until a version is opened.\n *\n * @param historyid Id of the version in the history.\n * @returns The YAML.\n */\nexport const getVersionYaml = async(historyid: number): Promise<string> => {\n    const version = await call<{id: number; yaml: string}>('local_servicemanager_get_version', {historyid});\n    return version.yaml;\n};\n"],
+  "mappings": ";;AAGA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAQA,SAAQ,gBAAe;AASvB,MAAM,OAAO,wBAAI,YAAoB,SAA8C,SAAY,EAAC,YAAY,KAAI,CAAC,GAApG;AAQN,MAAM,iBAAiB,8BAAM,cAAuC;AACvE,QAAM,UAAU,MAAM,KAAiC,oCAAoC,EAAC,UAAS,CAAC;AACtG,SAAO,QAAQ;AACnB,GAH8B;",
+  "names": []
+}

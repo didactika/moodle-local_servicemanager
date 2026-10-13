@@ -1,0 +1,78 @@
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
+import { jsxDEV } from "react/jsx-dev-runtime";
+/**
+ * The button that opens the less used filters of a list, such as the dates and the size of the page.
+ *
+ * What is chosen in it applies at once, so there is nothing to confirm; it only has a way to put everything back.
+ *
+ * @module     local_servicemanager/components/common/FilterMenu
+ * @copyright  2026 Didactika.org
+ * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+import { useDropdown } from "../../hooks/useDropdown";
+import Icon from "./Icon";
+const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) => {
+  const menu = useDropdown();
+  return /* @__PURE__ */ jsxDEV("div", { className: "dropdown sm-filter", ref: menu.ref, children: [
+    /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        className: `btn btn-outline-secondary${count > 0 ? " active" : ""}`,
+        type: "button",
+        "aria-haspopup": "true",
+        "aria-expanded": menu.open,
+        onClick: menu.toggle,
+        children: [
+          /* @__PURE__ */ jsxDEV(Icon, { name: "sliders", gap: true }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+            lineNumber: 38,
+            columnNumber: 13
+          }),
+          text("filters"),
+          count > 0 && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-primary ms-2", children: count }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+            lineNumber: 39,
+            columnNumber: 27
+          })
+        ]
+      },
+      void 0,
+      true,
+      {
+        fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+        lineNumber: 31,
+        columnNumber: 9
+      }
+    ),
+    /* @__PURE__ */ jsxDEV("div", { className: `dropdown-menu dropdown-menu-end sm-filter-menu${menu.open ? " show" : ""}`, children: [
+      children,
+      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-link px-0", onClick: onReset, disabled: count === 0, children: [
+        /* @__PURE__ */ jsxDEV(Icon, { name: "rotate-left", gap: true }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+          lineNumber: 44,
+          columnNumber: 17
+        }),
+        text("filter_clear")
+      ] }, void 0, true, {
+        fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+        lineNumber: 43,
+        columnNumber: 13
+      })
+    ] }, void 0, true, {
+      fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+      lineNumber: 41,
+      columnNumber: 9
+    })
+  ] }, void 0, true, {
+    fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+    lineNumber: 30,
+    columnNumber: 12
+  });
+}, "FilterMenu");
+var FilterMenu_default = FilterMenu;
+export {
+  FilterMenu_default as default
+};
+//# sourceMappingURL=FilterMenu.dev.js.map
