@@ -25,7 +25,7 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
         "aria-expanded": menu.open,
         onClick: menu.toggle,
         children: [
-          /* @__PURE__ */ jsxDEV("span", { className: "sm-icon-gap", children: /* @__PURE__ */ jsxDEV(Icon, { name: "filter", className: "icon" }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("span", { className: "sm-icon-gap", children: /* @__PURE__ */ jsxDEV(Icon, { name: "filter" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
             lineNumber: 38,
             columnNumber: 43
@@ -66,7 +66,7 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
             disabled: count === 0,
             title: text("filter_clear"),
             "aria-label": text("filter_clear"),
-            children: /* @__PURE__ */ jsxDEV(Icon, { name: "rotate-right", className: "icon" }, void 0, false, {
+            children: /* @__PURE__ */ jsxDEV(Icon, { name: "rotate-right" }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
               lineNumber: 52,
               columnNumber: 21
