@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [5.3.0] - 2026-10-13
+## [2.0.0-m503] - 2026-10-14
 
-First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is on `MOODLE_400_STABLE` (4.0.0).
+The release is named after the delivery and the line (`-m` and the lowest Moodle version), and the version of the line is the date it was created and a counter.
+
+First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is on `MOODLE_400_STABLE` (2.0.0-m400).
 
 ### Added
 
@@ -24,6 +26,7 @@ First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is o
 
 ### Changed
 
+- The mess detector of the pipeline reports nothing: the long methods of the form, of the YAML builder, of the parser and of the pages are split into methods that do one thing, what each section of a schema says is read by `schema_extractor`, the checks of the role by `role_section_validator`, the values of a YAML entry by `yaml_scalar`, and the listing with pagination that no page used any more is gone.
 - Moodle Marketplace review: the nested element selectors and the classes of Moodle inside the styles are written with an explicit parent (`& .btn`), the email of the health report carries its styles on its elements and not in a `<style>` block, and the places that read the database inside a loop (the cleanup of old versions, the recipients of the notification, the users that a schema authorises, the capabilities of the functions and the schemas of an import) read it once.
 - The source of every component carries the Moodle banner in the first comment, so the built files have it.
 - Rolling back to a version asks in a window and changes the history where it is, without leaving the page, through the new function `local_servicemanager_rollback_schema`. A row that cannot be rolled back keeps the place of its button, so the buttons of the same kind are always in the same place.
@@ -34,7 +37,7 @@ First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is o
 - The interface is written in React and TypeScript (ESM) and follows the colour modes of Moodle; colours come from Bootstrap variables, so themes can override them.
 - Search filters as you type and the filters are asked for once.
 - Errors and notifications are shown as dismissible messages next to what failed.
-- Requires Moodle 5.3; version `2026101404.503`.
+- Requires Moodle 5.3.
 
 ### Removed
 
