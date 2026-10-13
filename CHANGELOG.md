@@ -20,12 +20,15 @@ First release of the Moodle 4.0 to 5.2 line, on `MOODLE_400_STABLE`. The Moodle 
 - Floating bar for bulk actions, a Documentation menu (reference of the format, this plugin's wiki and Moodle's documentation) and history one click away from each schema.
 - Comparator with side by side and unified views, a summary of the changes and the YAML of each version loaded on demand.
 - Moodle web service functions `local_servicemanager_get_version` and `local_servicemanager_get_suggestions`.
+- The version of a schema is optional. A schema without one starts at 1.0.0; when the version that comes with a change was used already, or is lower than the ones the schema has had, the plugin saves the next one (the last number plus one) and says so, so a change is never refused for not raising the version.
+- The page of a schema shows the state of the web services and the protocols, with the buttons to turn them on, as the dashboard does.
 
 ### Changed
 
+- The history of a schema has compact rows, icon actions and a floating bar that appears only when a version is chosen to compare; the filters button and the search box take the same colour when they are on.
 - The dashboard, the schema, the history and the comparator are redrawn with the same design as the 5.3 line: search that filters as you type, filters asked for once, actions as coloured icons, errors and notifications as dismissible messages.
 - The pages are drawn by Mustache templates and AMD modules; the colours come from Bootstrap, so the theme can override them.
-- Version `2026101302.400`.
+- Version `2026101402.400`.
 
 ## [1.0.3] - 2026-10-05
 

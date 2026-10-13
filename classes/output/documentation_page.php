@@ -30,7 +30,7 @@ class documentation_page implements \renderable, \templatable {
 meta:
   id: "example.service"           # Required: Unique identifier
   name: "Example Service"         # Required: Display name
-  version: "1.0.0"               # Required: Version number
+  version: "1.0.0"               # Optional: starts at 1.0.0 and goes up by itself
   maintainer: "Your Name"         # Optional: Maintainer
   description: "Description"      # Optional: Description
 
@@ -86,7 +86,7 @@ YAML;
         'meta' => [
             ['id', true],
             ['name', true],
-            ['version', true],
+            ['version', false],
             ['maintainer', false],
             ['description', false],
         ],

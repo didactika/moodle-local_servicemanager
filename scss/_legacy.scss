@@ -320,6 +320,19 @@
         position: relative;
     }
 
+    // The button of the filters wears the colour of the search box when it is on, open or has the focus: one colour for both.
+    .sm-filter > .btn.btn-outline-secondary {
+        &:focus,
+        &:focus-visible,
+        &.active,
+        &[aria-expanded='true'] {
+            border-color: var(--sm-primary);
+            background-color: var(--sm-body-bg);
+            color: var(--sm-primary);
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--sm-primary) 25%, transparent);
+        }
+    }
+
     // The count of filters that are on sits on the corner of the button, so the button does not grow and the panel under it stays put.
     .sm-filter .sm-count-badge {
         position: absolute;

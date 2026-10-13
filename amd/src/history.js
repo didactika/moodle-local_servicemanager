@@ -69,7 +69,8 @@ export const init = () => {
     const list = root.querySelector('[data-region="versions"]');
     const pagination = root.querySelector('[data-region="pagination"]');
     const compare = root.querySelector('#compare-btn');
-    const clear = root.querySelector('[data-region="compare-bar"] [data-action="clear-selection"]');
+    const bar = root.querySelector('[data-region="compare-bar"]');
+    const clear = bar.querySelector('[data-action="clear-selection"]');
     const chosenText = root.querySelector('[data-region="compare-chosen"]');
     const tooMany = root.querySelector('[data-region="compare-too-many"]');
     const state = readState(sizes.map((size) => Number(size.dataset.perpage)));
@@ -82,6 +83,7 @@ export const init = () => {
         chosenText.textContent = strings.chosen.replace('{n}', chosen.size).replace('{total}', TO_COMPARE);
         compare.disabled = chosen.size !== TO_COMPARE;
         clear.hidden = chosen.size === 0;
+        bar.hidden = chosen.size === 0;
         rows.forEach((row) => {
             row.classList.toggle('active-version', chosen.has(Number(row.dataset.id)));
         });

@@ -131,77 +131,19 @@ class dashboard_page implements \renderable, \templatable {
     }
 
     /**
-     * The address of a page of the settings of Moodle.
-     *
-     * @param string $section Section of the settings.
-     * @return string The address.
-     */
-    private function settings_url(string $section): string {
-        return (new \moodle_url('/admin/settings.php', ['section' => $section]))->out(false);
-    }
-
-    /**
      * The state of the web services of the site and how healthy the schemas are.
      *
      * @param bool $canmanage Whether the person can open the settings of the web services.
      * @return array The state.
      */
     private function web_service_status(bool $canmanage): array {
-        global $CFG, $DB;
-
-        $enabled = !empty($CFG->enablewebservices);
-        $active = ($enabled && !empty($CFG->webserviceprotocols))
-            ? array_map('trim', explode(',', $CFG->webserviceprotocols))
-            : [];
-
-        $protocols = [];
-        foreach (\core_plugin_manager::instance()->get_plugins_of_type('webservice') as $key => $plugin) {
-            $on = in_array($key, $active);
-            $protocols[] = [
-                'name' => strtoupper($key),
-                'enabled' => $on,
-                'label' => get_string($on ? 'ws_enabled_label' : 'ws_disabled_label', 'local_servicemanager'),
-            ];
-        }
-
-        if (!$enabled) {
-            $level = 'disabled';
-        } else if (count($active) === 0) {
-            $level = 'warning';
-        } else {
-            $level = 'operational';
-        }
-        $tones = ['disabled' => 'danger', 'warning' => 'warning', 'operational' => 'success'];
-        $icons = ['disabled' => 'plug-circle-xmark', 'warning' => 'plug-circle-exclamation', 'operational' => 'plug-circle-check'];
-
-        $fix = ['url' => '', 'label' => ''];
-        if ($canmanage && $level === 'disabled') {
-            $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
-            $fix = [
-                'url' => $subsystems->out(false),
-                'label' => get_string('ws_enable_services', 'local_servicemanager'),
-            ];
-        } else if ($canmanage && $level === 'warning') {
-            $fix = [
-                'url' => $this->settings_url('webserviceprotocols'),
-                'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
-            ];
-        }
+        global $DB;
 
         $rows = $DB->get_records_sql('SELECT status, COUNT(*) AS cnt FROM {local_servicemanager_schemas} GROUP BY status');
-        return [
-            'enabled' => $enabled,
-            'level' => $level,
-            'tone' => $tones[$level],
-            'icon' => $icons[$level],
-            'label' => get_string('ws_status_' . $level, 'local_servicemanager'),
-            'protocols' => $protocols,
+        return ws_status::describe($canmanage) + [
             'healthy' => (int) (isset($rows['healthy']) ? $rows['healthy']->cnt : 0),
             'warning' => (int) (isset($rows['warning']) ? $rows['warning']->cnt : 0),
             'critical' => (int) (isset($rows['critical']) ? $rows['critical']->cnt : 0),
-            'fixurl' => $fix['url'],
-            'fixlabel' => $fix['label'],
-            'protocolsurl' => $canmanage ? $this->settings_url('webserviceprotocols') : '',
         ];
     }
 }

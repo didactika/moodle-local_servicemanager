@@ -23,7 +23,7 @@
     * schemaid, schemaname, currentlabel - What schema it is
     * hasrows, rows, count - The versions
     * perpage - Sizes of page
-    * backurl, editurl, compareurl - Where the actions lead
+    * backurl, compareurl - Where the actions lead
 
     Example context (json):
     {
@@ -35,7 +35,6 @@
         "count": 1,
         "perpage": [{"size": 10, "first": true}],
         "backurl": "#",
-        "editurl": "#",
         "compareurl": "#"
     }
 }}
@@ -99,11 +98,6 @@
                     </div>
                 </div>
             </div>
-            <div class="sm-toolbar-actions">
-                <a href="{{editurl}}" class="btn sm-pill icon-only tone-primary" title="{{#str}}action_edit, local_servicemanager{{/str}}">
-                    <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_edit, local_servicemanager{{/str}}</span>
-                </a>
-            </div>
         </div>
 
         <form action="{{compareurl}}" method="get" class="servicemanager-history" data-region="versions-form">
@@ -153,7 +147,7 @@
                 </div>
             </div>
 
-            <div class="sm-floating sm-compare" role="status" data-region="compare-bar">
+            <div class="sm-floating sm-compare" role="status" data-region="compare-bar" hidden>
                 <span class="sm-floating-count">
                     <span data-region="compare-chosen"></span>
                     <button type="button" class="sm-floating-clear" data-action="clear-selection" hidden title="{{#str}}compare_clear, local_servicemanager{{/str}}">

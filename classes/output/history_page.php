@@ -71,7 +71,6 @@ class history_page implements \renderable, \templatable {
                 self::PERPAGE_OPTIONS
             ),
             'backurl' => $this->url('view.php', ['id' => $id]),
-            'editurl' => $this->url('create.php', ['id' => $id]),
             'compareurl' => $this->url('compare.php'),
         ];
     }

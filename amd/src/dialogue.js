@@ -27,6 +27,7 @@ import ModalFactory from 'core/modal_factory';
 import ModalEvents from 'core/modal_events';
 import ModalSaveCancel from 'core/modal_save_cancel';
 import ModalCancel from 'core/modal_cancel';
+import {get_string as getString} from 'core/str';
 
 /**
  * Open a modal.
@@ -49,6 +50,7 @@ const open = (ModalClass, type, config) => {
         if (dialogue) {
             dialogue.classList.add('modal-dialog-scrollable', 'sm-modal');
         }
+        modal.getRoot()[0].classList.add('sm-modal-root');
         return modal;
     });
 };
@@ -77,4 +79,13 @@ export const confirm = (title, body, label, onConfirm) => open(ModalSaveCancel, 
  * @param {String} body What is shown, as HTML.
  * @returns {Promise} Resolves when the dialogue is open.
  */
-export const inform = (title, body) => open(ModalCancel, 'CANCEL', {title, body});
+export const inform = (title, body) => open(ModalCancel, 'CANCEL', {title, body}).then((modal) => {
+    const close = getString('closebuttontitle', 'core');
+    return close.then((label) => {
+        const button = modal.getFooter()[0].querySelector('[data-action="cancel"]');
+        if (button) {
+            button.textContent = label;
+        }
+        return modal;
+    }).catch(() => modal);
+});

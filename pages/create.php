@@ -109,6 +109,9 @@ if ($content !== null) {
             }
             $updated = $manager->get_schema($id);
             \core\notification::success(get_string('schema_updated_success', 'local_servicemanager', $updated->name));
+            if (!empty($result['adjusted'])) {
+                \core\notification::info(get_string('version_adjusted', 'local_servicemanager', $result['version']));
+            }
             redirect($cancelurl);
         }
 

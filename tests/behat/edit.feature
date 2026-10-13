@@ -48,6 +48,26 @@ Feature: Schema editing
     And I should see "Updated By Yaml"
 
   @javascript
+  Scenario: A change that keeps the version is saved with the next one
+    Given I navigate to "Server > Web Service Manager > Dashboard" in site administration
+    When I click on "Edit" "link" in the "test.service" "table_row"
+    And I click on "YAML editor" "link"
+    And I set the field "YAML Content" to multiline:
+      """
+      meta:
+        id: "test.service"
+        name: "Test Service"
+        version: "1.0.0"
+      definition:
+        functions:
+          - core_webservice_get_site_info
+          - core_user_get_users
+      """
+    And I press "Save changes"
+    Then I should see "was updated successfully"
+    And I should see "The version was set to 1.0.1"
+
+  @javascript
   Scenario: The id of a schema cannot be changed
     Given I navigate to "Server > Web Service Manager > Dashboard" in site administration
     When I click on "Edit" "link" in the "test.service" "table_row"

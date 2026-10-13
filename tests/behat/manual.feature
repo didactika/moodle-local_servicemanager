@@ -18,6 +18,16 @@ Feature: The screenshots of the wiki
     When I navigate to "Server > Web Service Manager > Dashboard" in site administration
     And I wait "2" seconds
     And I take a screenshot of the page as "dashboard"
+    And I draw the numbered marks:
+      | selector                    | number | where     |
+      | [data-region='ws-status']   | 1      | top-left  |
+      | .sm-health                  | 2      | top-left  |
+      | .sm-search                  | 3      | top-left  |
+      | .sm-filter > .btn           | 4      | top-left  |
+      | .sm-toolbar-actions         | 5      | top-right |
+      | table tbody tr .sm-group    | 6      | top-right |
+    And I take a screenshot of the page as "dashboard-marked"
+    And I remove the numbered marks
     And I click on "Select all" "checkbox"
     And I wait "1" seconds
     And I take a screenshot of the page as "dashboard-selection"
@@ -34,11 +44,28 @@ Feature: The screenshots of the wiki
     And I click on "CRM integration" "link"
     And I wait "2" seconds
     And I take a screenshot of the page as "schema"
+    And I draw the numbered marks:
+      | selector                    | number | where     |
+      | [data-region='ws-status']   | 1      | top-left  |
+      | [data-region='details']     | 2      | top-left  |
+      | [data-region='details'] .sm-group | 3 | top-right |
+      | .col-lg-4 .sm-panel, .sm-side .sm-panel | 4 | top-left |
+      | .sm-functions, [data-region='functions'] | 5 | top-left |
+    And I take a screenshot of the page as "schema-marked"
+    And I remove the numbered marks
 
   Scenario: The versions and their comparison
     Given I am on the history page of the schema "crm.integration"
     And I wait "2" seconds
     And I take a screenshot of the page as "history"
+    And I draw the numbered marks:
+      | selector                | number | where    |
+      | .sm-search              | 1      | top-left |
+      | .sm-filter > .btn       | 2      | top-left |
+      | [data-region='version'] | 3      | top-left |
+      | [data-region='version'] .sm-group | 4 | top-right |
+    And I take a screenshot of the page as "history-marked"
+    And I remove the numbered marks
     And I click on "Choose version 2.1.0" "checkbox"
     And I click on "Choose version 2.2.0" "checkbox"
     And I wait "1" seconds

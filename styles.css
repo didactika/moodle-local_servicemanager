@@ -8,7 +8,8 @@
 .servicemanager-compare-page,
 .servicemanager-documentation,
 .servicemanager-import-page,
-.servicemanager-import-result {
+.servicemanager-import-result,
+.sm-modal {
     --sm-body-bg: var(--bs-body-bg, #fff);
     --sm-body-color: var(--bs-body-color, #1d2125);
     --sm-tertiary-bg: var(--bs-tertiary-bg, #f8f9fa);
@@ -1520,16 +1521,25 @@
     font-weight: 600;
 }
 
+.sm-modal-root,
+.sm-modal-root:focus,
+.sm-modal,
+.sm-modal:focus {
+    outline: 0;
+}
+
 .sm-modal .modal-content {
     border: 1px solid var(--sm-border-color);
     border-radius: 1rem;
     box-shadow: var(--sm-box-shadow-lg);
+    outline: 0;
     overflow: hidden;
 }
 
 .sm-modal .modal-header {
     padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--sm-border-color);
+    background-color: var(--sm-tertiary-bg);
 }
 
 .sm-modal .modal-header .modal-title {
@@ -1582,6 +1592,11 @@
     align-items: center;
     padding: 0.55rem 1rem;
     gap: 0.75rem;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-main > .form-check-input {
+    position: static;
+    margin: 0;
 }
 
 .servicemanager-history-page .sm-versions .sm-version-number {
@@ -2361,6 +2376,20 @@
 .servicemanager-dashboard .sm-filter > .btn,
 .servicemanager-history-page .sm-filter > .btn {
     position: relative;
+}
+
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary[aria-expanded=true],
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary[aria-expanded=true] {
+    border-color: var(--sm-primary);
+    background-color: var(--sm-body-bg);
+    color: var(--sm-primary);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--sm-primary) 25%, transparent);
 }
 
 .servicemanager-dashboard .sm-filter .sm-count-badge,

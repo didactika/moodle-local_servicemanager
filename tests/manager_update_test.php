@@ -110,9 +110,10 @@ YAML;
     }
 
     /**
-     * Test updating schema: Content changed but Version NOT incremented (Invalid).
+     * Test updating schema: Content changed but Version NOT incremented, so the plugin increments it.
      */
-    public function test_update_schema_invalid_content_same_version(): void {
+    public function test_update_schema_content_change_with_same_version_is_bumped(): void {
+        global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -131,15 +132,18 @@ definition:
     - core_user_get_users
 YAML;
 
-        $this->expectException(\moodle_exception::class);
-        $this->expectExceptionMessage(get_string('error_version_change_required', 'local_servicemanager'));
-        $manager->update_schema($result['id'], $updateyaml);
+        $outcome = $manager->update_schema($result['id'], $updateyaml);
+
+        $this->assertEquals('1.0.1', $outcome['version']);
+        $this->assertTrue($outcome['adjusted']);
+        $this->assertEquals('1.0.1', $DB->get_field('local_servicemanager_schemas', 'version', ['id' => $result['id']]));
     }
 
     /**
-     * Test updating schema: Content same but Version incremented (Invalid).
+     * Test updating schema: Content same but another Version, so the version is kept.
      */
-    public function test_update_schema_invalid_metadata_new_version(): void {
+    public function test_update_schema_metadata_only_keeps_the_version(): void {
+        global $DB;
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -157,9 +161,9 @@ definition:
     - core_webservice_get_site_info
 YAML;
 
-        $this->expectException(\moodle_exception::class);
-        $this->expectExceptionMessage(get_string('error_version_change_forbidden', 'local_servicemanager'));
         $manager->update_schema($result['id'], $updateyaml);
+
+        $this->assertEquals('1.0.0', $DB->get_field('local_servicemanager_schemas', 'version', ['id' => $result['id']]));
     }
 
     /**

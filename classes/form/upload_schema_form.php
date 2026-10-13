@@ -52,12 +52,13 @@ class upload_schema_form extends \moodleform {
         $mform->addElement('html', $dochtml);
 
         // File picker for YAML.
+        // Some releases do not know the extensions of YAML, so the file is judged by its content: plain text.
         $mform->addElement(
             'filepicker',
             'yamlfile',
             get_string('yamlfile', 'local_servicemanager'),
             null,
-            ['accepted_types' => ['.yaml', '.yml']]
+            ['accepted_types' => ['.yaml', '.yml', '.txt']]
         );
         $mform->addRule('yamlfile', null, 'required');
         $mform->addHelpButton('yamlfile', 'yamlfile', 'local_servicemanager');

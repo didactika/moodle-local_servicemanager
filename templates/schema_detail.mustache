@@ -76,6 +76,27 @@
             </div>
             <p class="sm-flush"><span class="sm-id-chip" title="{{#str}}schema_id, local_servicemanager{{/str}}"><i class="fa-solid fa-fingerprint sm-icon-gap" aria-hidden="true"></i>{{schema.schemaid}}</span></p>
         </div>
+        {{#hasws}}
+        <span class="sm-badges-row" data-region="ws-status">
+            <span class="sm-badge tone-{{ws.tone}}"><i class="fa-solid fa-{{ws.icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
+            {{#ws.protocols}}
+                <span class="sm-protocol {{#enabled}}on{{/enabled}}{{^enabled}}off{{/enabled}}" title="{{label}}">
+                    <i class="fa-solid fa-{{#enabled}}circle-check{{/enabled}}{{^enabled}}circle-minus{{/enabled}} sm-icon-gap" aria-hidden="true"></i>{{name}}
+                    <span class="sr-only visually-hidden"> {{label}}</span>
+                </span>
+            {{/ws.protocols}}
+            {{#ws.fixurl}}
+                <a href="{{ws.fixurl}}" class="btn sm-pill compact tone-{{ws.tone}}" data-region="ws-fix">
+                    <i class="fa-solid fa-power-off sm-icon-gap" aria-hidden="true"></i>{{ws.fixlabel}}
+                </a>
+            {{/ws.fixurl}}
+            {{#canmanage}}{{#ws.protocolsurl}}
+                <a href="{{ws.protocolsurl}}" class="btn sm-pill compact" title="{{#str}}ws_manage_protocols_link, local_servicemanager{{/str}}">
+                    <i class="fa-solid fa-gear sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_manage, local_servicemanager{{/str}}
+                </a>
+            {{/ws.protocolsurl}}{{/canmanage}}
+        </span>
+        {{/hasws}}
     </header>
 
     <div class="row">

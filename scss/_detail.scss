@@ -306,17 +306,27 @@
     }
 }
 
+// The window takes the focus when it opens, which is not something to draw a ring around.
+.sm-modal-root,
+.sm-modal-root:focus,
+.sm-modal,
+.sm-modal:focus {
+    outline: 0;
+}
+
 .sm-modal {
     .modal-content {
         border: 1px solid var(--sm-border-color);
         border-radius: 1rem;
         box-shadow: var(--sm-box-shadow-lg);
+        outline: 0;
         overflow: hidden;
     }
 
     .modal-header {
         padding: 1rem 1.25rem;
         border-bottom: 1px solid var(--sm-border-color);
+        background-color: var(--sm-tertiary-bg);
 
         .modal-title {
             font-size: 1.05rem;

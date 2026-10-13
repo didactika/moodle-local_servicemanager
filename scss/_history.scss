@@ -29,6 +29,12 @@
             gap: 0.75rem;
         }
 
+        // Bootstrap 4 takes the checkbox out of the flow, which would shift every column of the row by one.
+        .sm-version-main > .form-check-input {
+            position: static;
+            margin: 0;
+        }
+
         .sm-version-number {
             display: inline-flex;
             align-items: center;
