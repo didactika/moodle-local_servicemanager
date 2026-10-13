@@ -14,6 +14,7 @@
 import type {ReactNode} from 'react';
 import {useDropdown} from '../../hooks/useDropdown';
 import type {Text} from '../../types';
+import FilterClearIcon from './FilterClearIcon';
 import Icon from './Icon';
 
 interface FilterMenuProps {
@@ -39,10 +40,20 @@ const FilterMenu = ({text, count, onReset, children}: FilterMenuProps) => {
             {count > 0 && <span className="badge text-bg-primary ms-2">{count}</span>}
         </button>
         <div className={`dropdown-menu dropdown-menu-end sm-filter-menu${menu.open ? ' show' : ''}`}>
+            <div className="sm-filter-head">
+                <h2 className="sm-filter-heading">{text('filters')}</h2>
+                <button
+                    type="button"
+                    className="sm-iconbtn"
+                    onClick={onReset}
+                    disabled={count === 0}
+                    title={text('filter_clear')}
+                    aria-label={text('filter_clear')}
+                >
+                    <FilterClearIcon />
+                </button>
+            </div>
             {children}
-            <button type="button" className="btn btn-link px-0" onClick={onReset} disabled={count === 0}>
-                <Icon name="rotate-left" gap />{text('filter_clear')}
-            </button>
         </div>
     </div>;
 };

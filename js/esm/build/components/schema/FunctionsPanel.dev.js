@@ -48,7 +48,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
           columnNumber: 49
         }),
         /* @__PURE__ */ jsxDEV("ul", { className: "list-group list-group-flush sm-functions", children: shown.map((fn) => /* @__PURE__ */ jsxDEV("li", { className: `list-group-item sm-function${fn.exists ? "" : " missing"}`, children: [
-          /* @__PURE__ */ jsxDEV("span", { className: `sm-function-icon text-${fn.exists ? fn.type === "write" ? "warning" : "success" : "danger"}`, children: /* @__PURE__ */ jsxDEV(Icon, { name: fn.exists ? fn.type === "write" ? "pen" : "eye" : "circle-xmark" }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("span", { className: `sm-function-icon ${fn.exists ? "text-body-secondary" : "text-danger"}`, children: /* @__PURE__ */ jsxDEV(Icon, { name: fn.exists ? fn.type === "write" ? "pen" : "eye" : "circle-xmark" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
             lineNumber: 51,
             columnNumber: 21
@@ -69,7 +69,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
                 lineNumber: 56,
                 columnNumber: 37
               }),
-              fn.critical && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-secondary", children: text("function_critical") }, void 0, false, {
+              fn.critical && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-light border", children: text("function_critical") }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 57,
                 columnNumber: 41

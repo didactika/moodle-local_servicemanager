@@ -206,6 +206,56 @@ YAML;
     }
 
     /**
+     * Open a page of the plugin.
+     *
+     * @Given I open the page :page of the plugin
+     * @param string $page File of the page, such as documentation.php.
+     */
+    public function i_open_the_page_of_the_plugin($page) {
+        $this->getSession()->visit($this->locate_path('/local/servicemanager/pages/' . $page));
+    }
+
+    /**
+     * Give a schema a role section, so that the page of the schema has something to show about it.
+     *
+     * @Given the schema :schemaid has a role section
+     * @param string $schemaid Id of the schema.
+     */
+    public function the_schema_has_a_role_section($schemaid) {
+        global $DB;
+
+        $record = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid], '*', MUST_EXIST);
+        [$major, $minor] = array_map('intval', explode('.', $record->version) + [0, 0]);
+        $version = $major . '.' . ($minor + 1) . '.0';
+        $yaml = <<<YAML
+meta:
+  id: "{$schemaid}"
+  name: "{$record->name}"
+  version: "{$version}"
+definition:
+  functions:
+    - core_webservice_get_site_info
+    - core_user_get_users
+  extra_capabilities:
+    - moodle/user:viewdetails
+role:
+  context_levels:
+    - course
+  permissions:
+    prevent:
+      - moodle/user:delete
+    prohibit:
+      - moodle/site:config
+  allow_assign:
+    - student
+  allow_view:
+    - student
+    - editingteacher
+YAML;
+        (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
+    }
+
+    /**
      * Check that the text field has a text that matches a regular expression.
      *
      * @Then the text of the field :field matches :pattern

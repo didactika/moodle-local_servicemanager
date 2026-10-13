@@ -37,5 +37,8 @@ $PAGE->set_heading(get_string('pluginname', 'local_servicemanager'));
 $PAGE->set_pagelayout('admin');
 
 echo $OUTPUT->header();
-echo $OUTPUT->render(new \local_servicemanager\output\dashboard_page());
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\dashboard_page(),
+    'list'
+);
 echo $OUTPUT->footer();

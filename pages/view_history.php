@@ -46,5 +46,8 @@ if (!$history) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->render(\local_servicemanager\output\schema_page::for_history($history));
+echo \local_servicemanager\output\react_page::render(
+    \local_servicemanager\output\schema_page::for_history($history),
+    'detail'
+);
 echo $OUTPUT->footer();

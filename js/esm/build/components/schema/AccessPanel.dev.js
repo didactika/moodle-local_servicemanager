@@ -9,34 +9,35 @@ import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+import CopyButton from "../common/CopyButton";
 import Icon from "../common/Icon";
 import IconButton from "../common/IconButton";
 import Panel from "../common/Panel";
-const AccessPanel = /* @__PURE__ */ __name(({ props, text }) => {
-  const { requirements, extraCapabilities, schema, isHistory, canManage, urls } = props;
+const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeToken, text }) => {
+  const { requirements, extraCapabilities, schema, isHistory, canManage } = props;
   const file = /* @__PURE__ */ __name((on, icon, label, title) => /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${on ? "success" : "secondary"}`, title, children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: icon, gap: true }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-      lineNumber: 25,
+      lineNumber: 30,
       columnNumber: 9
     }),
     label
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-    lineNumber: 24,
+    lineNumber: 29,
     columnNumber: 79
   }), "file");
   return /* @__PURE__ */ jsxDEV(Panel, { title: text("guided_access"), icon: "shield-halved", region: "access", children: /* @__PURE__ */ jsxDEV("dl", { className: "sm-facts mb-0", children: [
     !isHistory && /* @__PURE__ */ jsxDEV(Fragment, { children: [
       /* @__PURE__ */ jsxDEV("dt", { children: text("tile_token") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 31,
+        lineNumber: 36,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("dd", { children: [
         /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${schema.hasToken ? "success" : "secondary"}`, children: text(schema.hasToken ? "token_active" : "token_none") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-          lineNumber: 33,
+          lineNumber: 38,
           columnNumber: 21
         }),
         canManage && /* @__PURE__ */ jsxDEV("span", { className: "ms-2", children: /* @__PURE__ */ jsxDEV(
@@ -44,28 +45,50 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, text }) => {
           {
             icon: schema.hasToken ? "rotate" : "key",
             label: text(schema.hasToken ? "action_regenerate_token" : "action_generate_token"),
-            href: urls.regenerate
+            onClick: onMakeToken,
+            disabled: busy
           },
           void 0,
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-            lineNumber: 35,
+            lineNumber: 40,
             columnNumber: 25
           }
         ) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-          lineNumber: 34,
+          lineNumber: 39,
           columnNumber: 35
+        }),
+        freshToken && /* @__PURE__ */ jsxDEV("div", { className: "sm-fresh-token", "data-region": "fresh-token", children: [
+          /* @__PURE__ */ jsxDEV("code", { className: "sm-token-value", children: freshToken }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
+            lineNumber: 48,
+            columnNumber: 25
+          }),
+          /* @__PURE__ */ jsxDEV(CopyButton, { value: freshToken, text, compact: true }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
+            lineNumber: 49,
+            columnNumber: 25
+          }),
+          /* @__PURE__ */ jsxDEV("div", { className: "small text-body-secondary", children: text("token_shown_once") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
+            lineNumber: 50,
+            columnNumber: 25
+          })
+        ] }, void 0, true, {
+          fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
+          lineNumber: 47,
+          columnNumber: 36
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 32,
+        lineNumber: 37,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("dt", { children: text("req_file_access") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 42,
+        lineNumber: 53,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("dd", { className: "d-flex flex-wrap sm-badges-row", children: [
@@ -73,81 +96,98 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, text }) => {
         file(requirements.uploadFiles, "upload", text("req_upload_files"), text(requirements.uploadFiles ? "req_upload_files_enabled" : "req_upload_files_disabled"))
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 43,
+        lineNumber: 54,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-      lineNumber: 30,
+      lineNumber: 35,
       columnNumber: 28
     }),
     requirements.plugins.length > 0 && /* @__PURE__ */ jsxDEV(Fragment, { children: [
       /* @__PURE__ */ jsxDEV("dt", { children: text("req_plugins") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 49,
+        lineNumber: 60,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("dd", { children: requirements.plugins.map((plugin) => /* @__PURE__ */ jsxDEV("div", { children: [
         /* @__PURE__ */ jsxDEV("span", { className: plugin.installed ? "text-success" : "text-warning", children: /* @__PURE__ */ jsxDEV(Icon, { name: plugin.installed ? "circle-check" : "triangle-exclamation", gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-          lineNumber: 53,
+          lineNumber: 64,
           columnNumber: 29
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-          lineNumber: 52,
+          lineNumber: 63,
           columnNumber: 25
         }),
         /* @__PURE__ */ jsxDEV("code", { children: plugin.name }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-          lineNumber: 55,
+          lineNumber: 66,
           columnNumber: 25
         }),
         !plugin.installed && /* @__PURE__ */ jsxDEV("small", { className: "text-body-secondary ms-1", children: text("function_missing") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-          lineNumber: 56,
+          lineNumber: 67,
           columnNumber: 47
         })
       ] }, plugin.name, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 51,
+        lineNumber: 62,
         columnNumber: 59
       })) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 50,
+        lineNumber: 61,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-      lineNumber: 48,
+      lineNumber: 59,
       columnNumber: 49
     }),
     extraCapabilities.length > 0 && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      /* @__PURE__ */ jsxDEV("dt", { children: text("extra_capabilities") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dt", { className: "sm-fact-wide", children: text("extra_capabilities") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 61,
+        lineNumber: 72,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dd", { className: "d-flex flex-wrap sm-badges-row", children: extraCapabilities.map((capability) => /* @__PURE__ */ jsxDEV("code", { className: "small", children: capability }, capability, false, {
+      /* @__PURE__ */ jsxDEV("dd", { className: "sm-fact-wide sm-code-chips", children: extraCapabilities.map((capability) => {
+        const [plugin, name] = capability.split(":");
+        return /* @__PURE__ */ jsxDEV("code", { className: "sm-code-chip", title: capability, children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "sm-code-chip-plugin", children: plugin }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
+            lineNumber: 77,
+            columnNumber: 29
+          }),
+          name !== void 0 && /* @__PURE__ */ jsxDEV("span", { children: [
+            ":",
+            name
+          ] }, void 0, true, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
+            lineNumber: 77,
+            columnNumber: 105
+          })
+        ] }, capability, true, {
+          fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
+          lineNumber: 76,
+          columnNumber: 32
+        });
+      }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 63,
-        columnNumber: 60
-      })) }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-        lineNumber: 62,
+        lineNumber: 73,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-      lineNumber: 60,
+      lineNumber: 71,
       columnNumber: 46
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-    lineNumber: 29,
+    lineNumber: 34,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
-    lineNumber: 28,
+    lineNumber: 33,
     columnNumber: 12
   });
 }, "AccessPanel");

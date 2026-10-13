@@ -111,14 +111,20 @@ if ($form->is_cancelled()) {
 
     // The page says what became of each schema; nothing is lost in a message that goes away.
     echo $OUTPUT->header();
-    echo $OUTPUT->render(new \local_servicemanager\output\import_result_page($results));
+    echo \local_servicemanager\output\react_page::render(
+        new \local_servicemanager\output\import_result_page($results),
+        'text'
+    );
     echo $OUTPUT->footer();
     exit;
 }
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render(new \local_servicemanager\output\import_intro());
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\import_intro(),
+    'text'
+);
 $form->display();
 
 echo $OUTPUT->footer();

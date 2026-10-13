@@ -12,6 +12,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import { useDropdown } from "../../hooks/useDropdown";
+import FilterClearIcon from "./FilterClearIcon";
 import Icon from "./Icon";
 const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) => {
   const menu = useDropdown();
@@ -27,13 +28,13 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
         children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "sliders", gap: true }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-            lineNumber: 38,
+            lineNumber: 39,
             columnNumber: 13
           }),
           text("filters"),
           count > 0 && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-primary ms-2", children: count }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-            lineNumber: 39,
+            lineNumber: 40,
             columnNumber: 27
           })
         ]
@@ -42,32 +43,54 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
       true,
       {
         fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-        lineNumber: 31,
+        lineNumber: 32,
         columnNumber: 9
       }
     ),
     /* @__PURE__ */ jsxDEV("div", { className: `dropdown-menu dropdown-menu-end sm-filter-menu${menu.open ? " show" : ""}`, children: [
-      children,
-      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-link px-0", onClick: onReset, disabled: count === 0, children: [
-        /* @__PURE__ */ jsxDEV(Icon, { name: "rotate-left", gap: true }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("div", { className: "sm-filter-head", children: [
+        /* @__PURE__ */ jsxDEV("h2", { className: "sm-filter-heading", children: text("filters") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
           lineNumber: 44,
           columnNumber: 17
         }),
-        text("filter_clear")
+        /* @__PURE__ */ jsxDEV(
+          "button",
+          {
+            type: "button",
+            className: "sm-iconbtn",
+            onClick: onReset,
+            disabled: count === 0,
+            title: text("filter_clear"),
+            "aria-label": text("filter_clear"),
+            children: /* @__PURE__ */ jsxDEV(FilterClearIcon, {}, void 0, false, {
+              fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+              lineNumber: 53,
+              columnNumber: 21
+            })
+          },
+          void 0,
+          false,
+          {
+            fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
+            lineNumber: 45,
+            columnNumber: 17
+          }
+        )
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
         lineNumber: 43,
         columnNumber: 13
-      })
+      }),
+      children
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-      lineNumber: 41,
+      lineNumber: 42,
       columnNumber: 9
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-    lineNumber: 30,
+    lineNumber: 31,
     columnNumber: 12
   });
 }, "FilterMenu");

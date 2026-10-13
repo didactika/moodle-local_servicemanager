@@ -14,7 +14,17 @@ const getVersionYaml = /* @__PURE__ */ __name(async (historyid) => {
   const version = await call("local_servicemanager_get_version", { historyid });
   return version.yaml;
 }, "getVersionYaml");
+const setSchemaEnabled = /* @__PURE__ */ __name(async (id, enabled) => {
+  const result = await call("local_servicemanager_set_enabled", { id, enabled });
+  return result.enabled;
+}, "setSchemaEnabled");
+const regenerateToken = /* @__PURE__ */ __name(async (id) => {
+  const result = await call("local_servicemanager_regenerate_token", { id });
+  return result.token;
+}, "regenerateToken");
 export {
-  getVersionYaml
+  getVersionYaml,
+  regenerateToken,
+  setSchemaEnabled
 };
 //# sourceMappingURL=api.dev.js.map

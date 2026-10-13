@@ -60,3 +60,53 @@
         width: 6.25rem;
     }
 }
+
+.servicemanager-detail {
+    // The token that was just made, small, next to the button that made it.
+    .sm-fresh-token {
+        margin-top: 0.6rem;
+        padding: 0.5rem 0.65rem;
+        border: 1px dashed var(--bs-success);
+        border-radius: var(--bs-border-radius);
+        background-color: color-mix(in srgb, var(--bs-success) 8%, var(--bs-body-bg));
+
+        .sm-token-value {
+            display: inline-block;
+            max-width: calc(100% - 2.6rem);
+            overflow-wrap: anywhere;
+            color: var(--bs-body-color);
+            font-size: 0.8125rem;
+            vertical-align: middle;
+        }
+    }
+
+    // A fact that needs the whole row, such as a list of capabilities.
+    .sm-fact-wide {
+        grid-column: 1 / -1;
+    }
+
+    dt.sm-fact-wide {
+        margin-bottom: -0.2rem;
+    }
+
+    .sm-code-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    .sm-code-chip {
+        display: inline-flex;
+        padding: 0.2rem 0.55rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 2rem;
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-body-color);
+        font-size: 0.78rem;
+        white-space: nowrap;
+
+        .sm-code-chip-plugin {
+            color: var(--bs-secondary-color);
+        }
+    }
+}

@@ -104,6 +104,9 @@ if ($action === 'rollback' && $historyid && confirm_sesskey()) {
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render(new \local_servicemanager\output\history_page($schema));
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\history_page($schema),
+    'list'
+);
 
 echo $OUTPUT->footer();

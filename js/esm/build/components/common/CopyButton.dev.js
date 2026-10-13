@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { addToast } from "../../engine/toast";
 import { useCopy } from "../../hooks/useCopy";
 import Icon from "./Icon";
-const CopyButton = /* @__PURE__ */ __name(({ value, text, label, tone = "outline-success" }) => {
+const CopyButton = /* @__PURE__ */ __name(({ value, text, label, tone = "outline-success", compact = false }) => {
   const { copied, failed, copy } = useCopy();
   useEffect(() => {
     if (copied) {
@@ -22,16 +22,46 @@ const CopyButton = /* @__PURE__ */ __name(({ value, text, label, tone = "outline
       addToast(text("copy_token_failed"), { type: "danger" }).catch(() => void 0);
     }
   }, [copied, failed, text]);
+  if (compact) {
+    return /* @__PURE__ */ jsxDEV(
+      "button",
+      {
+        type: "button",
+        className: `btn sm-pill icon-only compact${copied ? " tone-success" : ""}`,
+        onClick: () => copy(value),
+        title: text("copy"),
+        children: [
+          /* @__PURE__ */ jsxDEV(Icon, { name: copied ? "check" : "copy" }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/common/CopyButton.tsx",
+            lineNumber: 48,
+            columnNumber: 13
+          }),
+          /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("copy") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/common/CopyButton.tsx",
+            lineNumber: 48,
+            columnNumber: 54
+          })
+        ]
+      },
+      void 0,
+      true,
+      {
+        fileName: "public/local/servicemanager/js/esm/src/components/common/CopyButton.tsx",
+        lineNumber: 42,
+        columnNumber: 16
+      }
+    );
+  }
   return /* @__PURE__ */ jsxDEV("button", { type: "button", className: `btn btn-${copied ? "success" : tone}`, onClick: () => copy(value), children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: copied ? "check" : "copy", gap: true }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/CopyButton.tsx",
-      lineNumber: 40,
+      lineNumber: 52,
       columnNumber: 9
     }),
     copied ? text("copied") : label ?? text("copy")
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/CopyButton.tsx",
-    lineNumber: 39,
+    lineNumber: 51,
     columnNumber: 12
   });
 }, "CopyButton");

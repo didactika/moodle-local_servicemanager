@@ -14,31 +14,31 @@ const toneClass = /* @__PURE__ */ __name((tone) => {
   const name = tone.replace(/^outline-/, "");
   return name === "secondary" ? "" : ` tone-${name}`;
 }, "toneClass");
-const IconButton = /* @__PURE__ */ __name(({ icon, label, href, onClick, tone = "secondary", large = false, solid = false }) => {
+const IconButton = /* @__PURE__ */ __name(({ icon, label, href, onClick, tone = "secondary", large = false, solid = false, disabled = false }) => {
   const content = /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: icon }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/IconButton.tsx",
-      lineNumber: 39,
+      lineNumber: 41,
       columnNumber: 23
     }),
     /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: label }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/IconButton.tsx",
-      lineNumber: 39,
+      lineNumber: 41,
       columnNumber: 43
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/IconButton.tsx",
-    lineNumber: 39,
+    lineNumber: 41,
     columnNumber: 21
   });
   const className = `btn sm-pill icon-only${large ? "" : " compact"}${toneClass(tone)}${solid ? " solid" : ""}`;
   return href ? /* @__PURE__ */ jsxDEV("a", { href, className, title: label, children: content }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/IconButton.tsx",
-    lineNumber: 42,
+    lineNumber: 44,
     columnNumber: 11
-  }) : /* @__PURE__ */ jsxDEV("button", { type: "button", className, title: label, onClick, children: content }, void 0, false, {
+  }) : /* @__PURE__ */ jsxDEV("button", { type: "button", className, title: label, onClick, disabled, children: content }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/IconButton.tsx",
-    lineNumber: 43,
+    lineNumber: 45,
     columnNumber: 11
   });
 }, "IconButton");

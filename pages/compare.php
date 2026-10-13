@@ -71,6 +71,9 @@ $PAGE->navbar->add(get_string('compare_versions', 'local_servicemanager'));
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render(new \local_servicemanager\output\compare_page($id, $v1, $v2));
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\compare_page($id, $v1, $v2),
+    'list'
+);
 
 echo $OUTPUT->footer();

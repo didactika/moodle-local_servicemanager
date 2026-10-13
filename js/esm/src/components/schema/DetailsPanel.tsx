@@ -18,11 +18,13 @@ interface DetailsPanelProps {
     urls: SchemaDetailProps['urls'];
     canManage: boolean;
     isHistory: boolean;
+    /** A change is being saved, so the buttons wait. */
+    busy: boolean;
     onToggle: () => void;
     text: Text;
 }
 
-const DetailsPanel = ({schema, urls, canManage, isHistory, onToggle, text}: DetailsPanelProps) => <Panel
+const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}: DetailsPanelProps) => <Panel
     title={text('schema_information')}
     icon="circle-info"
     region="details"
@@ -34,6 +36,7 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, onToggle, text}: Deta
             icon={schema.enabled ? 'toggle-on' : 'toggle-off'}
             label={text(schema.enabled ? 'bulk_disable' : 'bulk_enable')}
             onClick={onToggle}
+            disabled={busy}
             tone={schema.enabled ? 'success' : 'secondary'}
         />}
         {canManage && <IconButton icon="trash" label={text('action_delete')} href={urls.delete} tone="danger" />}

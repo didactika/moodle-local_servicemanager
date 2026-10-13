@@ -47,14 +47,14 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
         </div>}
         <ul className="list-group list-group-flush sm-functions">
             {shown.map((fn) => <li key={fn.name} className={`list-group-item sm-function${fn.exists ? '' : ' missing'}`}>
-                <span className={`sm-function-icon text-${fn.exists ? (fn.type === 'write' ? 'warning' : 'success') : 'danger'}`}>
+                <span className={`sm-function-icon ${fn.exists ? 'text-body-secondary' : 'text-danger'}`}>
                     <Icon name={fn.exists ? (fn.type === 'write' ? 'pen' : 'eye') : 'circle-xmark'} />
                 </span>
                 <div className="flex-grow-1 sm-function-body">
                     <div className="d-flex flex-wrap align-items-center sm-badges-row">
                         <code>{fn.name}</code>
                         {fn.type && <span className="badge text-bg-light border">{text('function_' + fn.type)}</span>}
-                        {fn.critical && <span className="badge text-bg-secondary">{text('function_critical')}</span>}
+                        {fn.critical && <span className="badge text-bg-light border">{text('function_critical')}</span>}
                         {!fn.exists && <span className="badge text-bg-danger">{text('function_missing')}</span>}
                     </div>
                     {fn.description && <div className="text-body-secondary small">{fn.description}</div>}

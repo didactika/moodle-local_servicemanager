@@ -10,17 +10,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import type {SchemaDetailProps, Text} from '../../types';
+import CopyButton from '../common/CopyButton';
 import Icon from '../common/Icon';
 import IconButton from '../common/IconButton';
 import Panel from '../common/Panel';
 
 interface AccessPanelProps {
     props: SchemaDetailProps;
+    /** The token that was just made, shown once next to the button that made it. */
+    freshToken: string | null;
+    busy: boolean;
+    onMakeToken: () => void;
     text: Text;
 }
 
-const AccessPanel = ({props, text}: AccessPanelProps) => {
-    const {requirements, extraCapabilities, schema, isHistory, canManage, urls} = props;
+const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelProps) => {
+    const {requirements, extraCapabilities, schema, isHistory, canManage} = props;
     const file = (on: boolean, icon: string, label: string, title: string) => <span className={`badge text-bg-${on ? 'success' : 'secondary'}`} title={title}>
         <Icon name={icon} gap />{label}
     </span>;
@@ -35,9 +40,15 @@ const AccessPanel = ({props, text}: AccessPanelProps) => {
                         <IconButton
                             icon={schema.hasToken ? 'rotate' : 'key'}
                             label={text(schema.hasToken ? 'action_regenerate_token' : 'action_generate_token')}
-                            href={urls.regenerate}
+                            onClick={onMakeToken}
+                            disabled={busy}
                         />
                     </span>}
+                    {freshToken && <div className="sm-fresh-token" data-region="fresh-token">
+                        <code className="sm-token-value">{freshToken}</code>
+                        <CopyButton value={freshToken} text={text} compact />
+                        <div className="small text-body-secondary">{text('token_shown_once')}</div>
+                    </div>}
                 </dd>
                 <dt>{text('req_file_access')}</dt>
                 <dd className="d-flex flex-wrap sm-badges-row">
@@ -58,9 +69,14 @@ const AccessPanel = ({props, text}: AccessPanelProps) => {
                 </dd>
             </>}
             {extraCapabilities.length > 0 && <>
-                <dt>{text('extra_capabilities')}</dt>
-                <dd className="d-flex flex-wrap sm-badges-row">
-                    {extraCapabilities.map((capability) => <code key={capability} className="small">{capability}</code>)}
+                <dt className="sm-fact-wide">{text('extra_capabilities')}</dt>
+                <dd className="sm-fact-wide sm-code-chips">
+                    {extraCapabilities.map((capability) => {
+                        const [plugin, name] = capability.split(':');
+                        return <code key={capability} className="sm-code-chip" title={capability}>
+                            <span className="sm-code-chip-plugin">{plugin}</span>{name !== undefined && <span>:{name}</span>}
+                        </code>;
+                    })}
                 </dd>
             </>}
         </dl>

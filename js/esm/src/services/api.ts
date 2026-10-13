@@ -30,3 +30,26 @@ export const getVersionYaml = async(historyid: number): Promise<string> => {
     const version = await call<{id: number; yaml: string}>('local_servicemanager_get_version', {historyid});
     return version.yaml;
 };
+
+/**
+ * Enable or disable a schema.
+ *
+ * @param id Id of the schema.
+ * @param enabled Whether it is to be enabled.
+ * @returns Whether the schema is enabled now.
+ */
+export const setSchemaEnabled = async(id: number, enabled: boolean): Promise<boolean> => {
+    const result = await call<{id: number; enabled: boolean}>('local_servicemanager_set_enabled', {id, enabled});
+    return result.enabled;
+};
+
+/**
+ * Make the token of a schema, or a new one when it has one.
+ *
+ * @param id Id of the schema.
+ * @returns The token, which is not shown again.
+ */
+export const regenerateToken = async(id: number): Promise<string> => {
+    const result = await call<{id: number; token: string}>('local_servicemanager_regenerate_token', {id});
+    return result.token;
+};

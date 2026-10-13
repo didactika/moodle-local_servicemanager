@@ -43,6 +43,9 @@ $PAGE->navbar->add(get_string('documentation', 'local_servicemanager'));
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render(new \local_servicemanager\output\documentation_page($returnurl));
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\documentation_page($returnurl),
+    'text'
+);
 
 echo $OUTPUT->footer();

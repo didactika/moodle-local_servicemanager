@@ -50,6 +50,22 @@ $functions = [
         'ajax' => true,
         'capabilities' => 'local/servicemanager:view',
     ],
+    'local_servicemanager_set_enabled' => [
+        'classname' => 'local_servicemanager\external\set_enabled',
+        'methodname' => 'execute',
+        'description' => 'Enable or disable a service schema.',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'local/servicemanager:manage',
+    ],
+    'local_servicemanager_regenerate_token' => [
+        'classname' => 'local_servicemanager\external\regenerate_token',
+        'methodname' => 'execute',
+        'description' => 'Make the token of a service schema, or a new one, and return it once.',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'local/servicemanager:manage',
+    ],
     'local_servicemanager_get_suggestions' => [
         'classname' => 'local_servicemanager\external\get_suggestions',
         'methodname' => 'execute',

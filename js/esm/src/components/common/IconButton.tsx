@@ -22,6 +22,8 @@ interface IconButtonProps {
     large?: boolean;
     /** Fill it with the colour, for the action of the page that matters most. */
     solid?: boolean;
+    /** Wait: the button does nothing while something it started is being saved. */
+    disabled?: boolean;
 }
 
 /**
@@ -35,12 +37,12 @@ export const toneClass = (tone: string): string => {
     return name === 'secondary' ? '' : ` tone-${name}`;
 };
 
-const IconButton = ({icon, label, href, onClick, tone = 'secondary', large = false, solid = false}: IconButtonProps) => {
+const IconButton = ({icon, label, href, onClick, tone = 'secondary', large = false, solid = false, disabled = false}: IconButtonProps) => {
     const content = <><Icon name={icon} /><span className="visually-hidden">{label}</span></>;
     const className = `btn sm-pill icon-only${large ? '' : ' compact'}${toneClass(tone)}${solid ? ' solid' : ''}`;
     return href
         ? <a href={href} className={className} title={label}>{content}</a>
-        : <button type="button" className={className} title={label} onClick={onClick}>{content}</button>;
+        : <button type="button" className={className} title={label} onClick={onClick} disabled={disabled}>{content}</button>;
 };
 
 export default IconButton;

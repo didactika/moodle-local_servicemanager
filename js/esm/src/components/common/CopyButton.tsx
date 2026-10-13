@@ -22,9 +22,11 @@ interface CopyButtonProps {
     label?: string;
     /** Bootstrap button class that goes with btn-. */
     tone?: string;
+    /** A small round button with only the icon. */
+    compact?: boolean;
 }
 
-const CopyButton = ({value, text, label, tone = 'outline-success'}: CopyButtonProps) => {
+const CopyButton = ({value, text, label, tone = 'outline-success', compact = false}: CopyButtonProps) => {
     const {copied, failed, copy} = useCopy();
 
     // The result is told where Moodle tells everything else, so it is seen wherever the person is looking.
@@ -36,6 +38,16 @@ const CopyButton = ({value, text, label, tone = 'outline-success'}: CopyButtonPr
         }
     }, [copied, failed, text]);
 
+    if (compact) {
+        return <button
+            type="button"
+            className={`btn sm-pill icon-only compact${copied ? ' tone-success' : ''}`}
+            onClick={() => copy(value)}
+            title={text('copy')}
+        >
+            <Icon name={copied ? 'check' : 'copy'} /><span className="visually-hidden">{text('copy')}</span>
+        </button>;
+    }
     return <button type="button" className={`btn btn-${copied ? 'success' : tone}`} onClick={() => copy(value)}>
         <Icon name={copied ? 'check' : 'copy'} gap />{copied ? text('copied') : (label ?? text('copy'))}
     </button>;

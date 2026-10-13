@@ -317,6 +317,83 @@
     padding: 1rem;
 }
 
+.servicemanager-dashboard .sm-filter-menu .sm-filter-head,
+.servicemanager-detail .sm-filter-menu .sm-filter-head,
+.servicemanager-history-page .sm-filter-menu .sm-filter-head,
+.servicemanager-compare-page .sm-filter-menu .sm-filter-head,
+.servicemanager-documentation .sm-filter-menu .sm-filter-head,
+.servicemanager-import-page .sm-filter-menu .sm-filter-head,
+.servicemanager-import-result .sm-filter-menu .sm-filter-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.servicemanager-dashboard .sm-filter-menu .sm-filter-heading,
+.servicemanager-detail .sm-filter-menu .sm-filter-heading,
+.servicemanager-history-page .sm-filter-menu .sm-filter-heading,
+.servicemanager-compare-page .sm-filter-menu .sm-filter-heading,
+.servicemanager-documentation .sm-filter-menu .sm-filter-heading,
+.servicemanager-import-page .sm-filter-menu .sm-filter-heading,
+.servicemanager-import-result .sm-filter-menu .sm-filter-heading {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn,
+.servicemanager-detail .sm-filter-menu .sm-iconbtn,
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn,
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn,
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn,
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn,
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: inherit;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-detail .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--bs-primary) 14%, var(--bs-body-bg));
+    color: var(--bs-primary);
+}
+
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-detail .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn:focus-visible {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 1px;
+}
+
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-detail .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn:disabled {
+    opacity: 0.35;
+}
+
 .servicemanager-dashboard .sm-filter-menu .sm-filter-title,
 .servicemanager-detail .sm-filter-menu .sm-filter-title,
 .servicemanager-history-page .sm-filter-menu .sm-filter-title,
@@ -760,7 +837,7 @@
 .servicemanager-import-page .sm-protocol.off,
 .servicemanager-import-result .sm-protocol.off {
     color: var(--bs-secondary-color);
-    text-decoration: line-through;
+    opacity: 0.8;
 }
 
 .servicemanager-dashboard .sm-floating,
@@ -1116,6 +1193,93 @@
     }
 }
 
+.sm-skeleton {
+    padding: 0.5rem 0;
+}
+
+.sm-skeleton .sm-skeleton-line {
+    display: block;
+    height: 0.9rem;
+    max-width: 100%;
+    margin-bottom: 0.7rem;
+    border-radius: 0.4rem;
+    background-color: color-mix(in srgb, var(--bs-body-color) 10%, var(--bs-body-bg));
+    animation: sm-skeleton-breathe 1.4s ease-in-out infinite;
+}
+
+.sm-skeleton .sm-skeleton-line.title {
+    height: 1.8rem;
+}
+
+.sm-skeleton .sm-skeleton-line.tall {
+    height: 2.4rem;
+}
+
+.sm-skeleton .sm-skeleton-head {
+    margin-bottom: 1.25rem;
+}
+
+.sm-skeleton .sm-skeleton-card {
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    background-color: var(--bs-body-bg);
+}
+
+.sm-skeleton .sm-skeleton-tools {
+    display: flex;
+    margin-bottom: 1.25rem;
+    gap: 0.75rem;
+}
+
+.sm-skeleton .sm-skeleton-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.3rem;
+    gap: 1rem;
+}
+
+.sm-skeleton .sm-skeleton-columns {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+
+    .sm-skeleton .sm-skeleton-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sm-skeleton-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+@keyframes sm-skeleton-breathe {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sm-skeleton .sm-skeleton-line {
+        animation: none;
+    }
+}
+
 @media (max-width: 768px) {
 
     .servicemanager-dashboard .btn-group-sm .btn {
@@ -1177,6 +1341,52 @@
 
 .servicemanager-detail .sm-status-column {
     width: 6.25rem;
+}
+
+.servicemanager-detail .sm-fresh-token {
+    margin-top: 0.6rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px dashed var(--bs-success);
+    border-radius: var(--bs-border-radius);
+    background-color: color-mix(in srgb, var(--bs-success) 8%, var(--bs-body-bg));
+}
+
+.servicemanager-detail .sm-fresh-token .sm-token-value {
+    display: inline-block;
+    max-width: calc(100% - 2.6rem);
+    overflow-wrap: anywhere;
+    color: var(--bs-body-color);
+    font-size: 0.8125rem;
+    vertical-align: middle;
+}
+
+.servicemanager-detail .sm-fact-wide {
+    grid-column: 1 / -1;
+}
+
+.servicemanager-detail dt.sm-fact-wide {
+    margin-bottom: -0.2rem;
+}
+
+.servicemanager-detail .sm-code-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.servicemanager-detail .sm-code-chip {
+    display: inline-flex;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 2rem;
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.servicemanager-detail .sm-code-chip .sm-code-chip-plugin {
+    color: var(--bs-secondary-color);
 }
 
 .servicemanager-history-page .sm-versions .list-group-item {

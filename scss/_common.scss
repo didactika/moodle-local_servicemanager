@@ -144,6 +144,48 @@
         width: 19rem;
         padding: 1rem;
 
+        // The title of the panel and, at its right, the button that clears every filter: a funnel with a cross.
+        .sm-filter-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .sm-filter-heading {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .sm-iconbtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            border: 0;
+            border-radius: 0.5rem;
+            background: transparent;
+            color: inherit;
+            transition: background-color 0.12s ease, color 0.12s ease;
+
+            &:hover:not(:disabled) {
+                background-color: color-mix(in srgb, var(--bs-primary) 14%, var(--bs-body-bg));
+                color: var(--bs-primary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--bs-primary);
+                outline-offset: 1px;
+            }
+
+            &:disabled {
+                opacity: 0.35;
+            }
+        }
+
         .sm-filter-title {
             margin-bottom: 0.4rem;
             color: var(--bs-secondary-color);
@@ -370,7 +412,7 @@
 
         &.off {
             color: var(--bs-secondary-color);
-            text-decoration: line-through;
+            opacity: 0.8;
         }
     }
 
@@ -556,5 +598,91 @@
         .sm-tile .sm-tile-value {
             font-size: 1.4rem;
         }
+    }
+}
+
+// What holds the place of a page while the script that draws it loads: grey blocks that breathe a little. It is inside the element that
+// the component fills in, so it disappears when the component is there.
+.sm-skeleton {
+    padding: 0.5rem 0;
+
+    .sm-skeleton-line {
+        display: block;
+        height: 0.9rem;
+        max-width: 100%;
+        margin-bottom: 0.7rem;
+        border-radius: 0.4rem;
+        background-color: color-mix(in srgb, var(--bs-body-color) 10%, var(--bs-body-bg));
+        animation: sm-skeleton-breathe 1.4s ease-in-out infinite;
+
+        &.title {
+            height: 1.8rem;
+        }
+
+        &.tall {
+            height: 2.4rem;
+        }
+    }
+
+    .sm-skeleton-head {
+        margin-bottom: 1.25rem;
+    }
+
+    .sm-skeleton-card {
+        margin-bottom: 1.25rem;
+        padding: 1rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        background-color: var(--bs-body-bg);
+    }
+
+    .sm-skeleton-tools {
+        display: flex;
+        margin-bottom: 1.25rem;
+        gap: 0.75rem;
+    }
+
+    .sm-skeleton-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.3rem;
+        gap: 1rem;
+    }
+
+    .sm-skeleton-columns {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .sm-skeleton-columns {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.sm-skeleton-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+@keyframes sm-skeleton-breathe {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sm-skeleton .sm-skeleton-line {
+        animation: none;
     }
 }

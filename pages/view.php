@@ -63,5 +63,8 @@ if ($newtoken) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->render(\local_servicemanager\output\schema_page::for_schema($schema, $tokenvalue));
+echo \local_servicemanager\output\react_page::render(
+    \local_servicemanager\output\schema_page::for_schema($schema, $tokenvalue),
+    'detail'
+);
 echo $OUTPUT->footer();

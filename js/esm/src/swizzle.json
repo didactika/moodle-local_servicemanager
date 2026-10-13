@@ -31,6 +31,10 @@
     "eject": "risky",
     "wrap": "risky"
   },
+  "components/common/FilterClearIcon": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
   "components/common/FilterMenu": {
     "eject": "risky",
     "wrap": "risky"
