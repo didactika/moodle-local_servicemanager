@@ -166,6 +166,20 @@ class dashboard_page implements react_component_renderable, \renderable {
             $level = 'operational';
         }
 
+        $fix = ['url' => '', 'label' => ''];
+        if ($canmanage && $level === 'disabled') {
+            $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
+            $fix = [
+                'url' => $subsystems->out(false),
+                'label' => get_string('ws_enable_services', 'local_servicemanager'),
+            ];
+        } else if ($canmanage && $level === 'warning') {
+            $fix = [
+                'url' => $this->settings_url('webserviceprotocols'),
+                'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
+            ];
+        }
+
         $rows = $DB->get_records_sql('SELECT status, COUNT(*) AS cnt FROM {local_servicemanager_schemas} GROUP BY status');
         return [
             'enabled' => $enabled,
@@ -176,6 +190,8 @@ class dashboard_page implements react_component_renderable, \renderable {
             'warning' => (int) ($rows['warning']->cnt ?? 0),
             'critical' => (int) ($rows['critical']->cnt ?? 0),
             'overviewUrl' => $canmanage ? $this->settings_url('webservicesoverview') : '',
+            'fixUrl' => $fix['url'],
+            'fixLabel' => $fix['label'],
             'protocolsUrl' => $canmanage ? $this->settings_url('webserviceprotocols') : '',
         ];
     }

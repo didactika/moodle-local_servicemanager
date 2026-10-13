@@ -59,7 +59,7 @@ const ImportResult = (props: ImportResultProps) => {
                                 <div className="flex-grow-1">
                                     <div>
                                         {item.viewUrl ? <a href={item.viewUrl} className="fw-bold">{item.name || item.id}</a> : <strong>{item.name || item.id || text('import_unknown')}</strong>}
-                                        {item.id && item.name && <code className="ms-2 small">{item.id}</code>}
+                                        {item.id && item.name && <span className="sm-id-chip compact ms-2"><Icon name="fingerprint" gap />{item.id}</span>}
                                         <span className={`badge text-bg-${look.tone} ms-2`}>{text('import_status_' + item.status)}</span>
                                     </div>
                                     {item.messages.length > 0 && <ul className={`small mb-0 mt-1 ${item.status === 'failed' ? 'text-danger' : 'text-body-secondary'}`}>

@@ -15,6 +15,7 @@ import type {ReactNode} from 'react';
 import {useDropdown} from '../../hooks/useDropdown';
 import type {Text} from '../../types';
 import FilterClearIcon from './FilterClearIcon';
+import FilterIcon from './FilterIcon';
 import Icon from './Icon';
 
 interface FilterMenuProps {
@@ -36,8 +37,8 @@ const FilterMenu = ({text, count, onReset, children}: FilterMenuProps) => {
             aria-expanded={menu.open}
             onClick={menu.toggle}
         >
-            <Icon name="sliders" gap />{text('filters')}
-            {count > 0 && <span className="badge text-bg-primary ms-2">{count}</span>}
+            <span className="sm-icon-gap"><FilterIcon /></span>{text('filters')}
+            {count > 0 && <span className="sm-count-badge">{count}</span>}
         </button>
         <div className={`dropdown-menu dropdown-menu-end sm-filter-menu${menu.open ? ' show' : ''}`}>
             <div className="sm-filter-head">

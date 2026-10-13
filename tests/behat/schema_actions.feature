@@ -23,6 +23,15 @@ Feature: Changing a schema without leaving its page
     When I click on "Test Service" "link"
     And I click on "Generate Token" "button"
     Then I should see "Make a token for this service?"
-    When I click on "Generate Token" "button" in the "dialog[open]" "css_element"
+    When I click on "Generate Token" "button" in the "dialog[open], .modal.show" "css_element"
     Then I should see "Copy it now" in the "[data-region='fresh-token']" "css_element"
     And I should see "Regenerated" in the "body" "css_element"
+
+  @javascript
+  Scenario: A long list of capabilities has a button that shows all of them
+    Given the schema "test.service" has many extra capabilities
+    When I navigate to "Server > Web Service Manager > Dashboard" in site administration
+    And I click on "Test Service" "link"
+    Then I should not see "moodle/category:manage" in the "[data-region='access']" "css_element"
+    When I click on "Show all 10" "button"
+    Then I should see "moodle/category:manage" in the "dialog[open], .modal.show" "css_element"

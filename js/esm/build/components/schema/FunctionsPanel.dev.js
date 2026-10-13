@@ -59,7 +59,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
           }),
           /* @__PURE__ */ jsxDEV("div", { className: "flex-grow-1 sm-function-body", children: [
             /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center sm-badges-row", children: [
-              /* @__PURE__ */ jsxDEV("code", { children: fn.name }, void 0, false, {
+              /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: fn.name }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 55,
                 columnNumber: 25
@@ -136,56 +136,57 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
           Modal,
           {
             open: viewing !== null,
+            wide: true,
             title: /* @__PURE__ */ jsxDEV(Fragment, { children: [
               /* @__PURE__ */ jsxDEV(Icon, { name: "shield-halved", gap: true }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 76,
+                lineNumber: 77,
                 columnNumber: 22
               }),
               text("function_capabilities_title")
             ] }, void 0, true, {
               fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-              lineNumber: 76,
+              lineNumber: 77,
               columnNumber: 20
             }),
             onClose: () => setViewing(null),
             closeLabel: text("core_cancel"),
             children: viewing && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-              /* @__PURE__ */ jsxDEV("p", { className: "mb-2", children: /* @__PURE__ */ jsxDEV("code", { children: viewing.name }, void 0, false, {
+              /* @__PURE__ */ jsxDEV("p", { className: "mb-2", children: /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: viewing.name }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 81,
+                lineNumber: 82,
                 columnNumber: 37
               }) }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 81,
+                lineNumber: 82,
                 columnNumber: 17
               }),
               viewing.description && /* @__PURE__ */ jsxDEV("p", { className: "text-body-secondary", children: viewing.description }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 82,
+                lineNumber: 83,
                 columnNumber: 41
               }),
               /* @__PURE__ */ jsxDEV("p", { className: "small text-body-secondary", children: text("function_capabilities_help") }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 83,
+                lineNumber: 84,
                 columnNumber: 17
               }),
-              /* @__PURE__ */ jsxDEV("ul", { className: "list-group sm-caps-list", children: viewing.capabilities.map((capability) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item", children: /* @__PURE__ */ jsxDEV("code", { children: capability }, void 0, false, {
+              /* @__PURE__ */ jsxDEV("ul", { className: "list-group sm-caps-list", children: viewing.capabilities.map((capability) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item", children: /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: capability }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 85,
+                lineNumber: 86,
                 columnNumber: 112
               }) }, capability, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 85,
+                lineNumber: 86,
                 columnNumber: 63
               })) }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-                lineNumber: 84,
+                lineNumber: 85,
                 columnNumber: 17
               })
             ] }, void 0, true, {
               fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
-              lineNumber: 80,
+              lineNumber: 81,
               columnNumber: 25
             })
           },

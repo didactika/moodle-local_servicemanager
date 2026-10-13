@@ -40,7 +40,7 @@ const ResourcesPanel = ({resources, text}: ResourcesPanelProps) => {
                     <div className="text-body-secondary small text-uppercase">{entry.label}</div>
                     <a href={entry.resource?.url} target="_blank" rel="noreferrer">{entry.resource?.name}</a>
                 </div>
-                <code className="small">{entry.detail}</code>
+                <span className="sm-id-chip compact"><Icon name="fingerprint" gap />{entry.detail}</span>
             </li>)}
         </ul>
     </Panel>;

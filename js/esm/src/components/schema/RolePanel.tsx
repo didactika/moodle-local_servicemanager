@@ -2,8 +2,11 @@
 // Moodle is free software under the GNU General Public License, version 3 or later.
 
 /**
- * What the schema says about the role that was created for it: where it can be assigned, which capabilities it has explicitly and
- * which other roles it may assign, override, switch to and see.
+ * What the role of the schema may do: where it can be assigned, which roles it may assign, override, switch to and see, and which
+ * capabilities it is kept from or forbidden.
+ *
+ * Each of them is a block with its name over its list, because a list of roles can be long; the ones past the first few are
+ * behind a button that opens all of them in a dialogue, so the card stays the size of what matters.
  *
  * @module     local_servicemanager/components/schema/RolePanel
  * @copyright  2026 Didactika.org
@@ -11,6 +14,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import type {RoleSection, Text} from '../../types';
+import ChipList from '../common/ChipList';
 import Panel from '../common/Panel';
 
 interface RolePanelProps {
@@ -24,9 +28,22 @@ const PERMISSIONS = [
     {key: 'prohibit', tone: 'danger'},
 ] as const;
 
-const Names = ({names, tone = 'secondary'}: {names: string[]; tone?: string}) => <span className="d-flex flex-wrap sm-badges-row">
-    {names.map((name) => <span key={name} className={`badge text-bg-${tone}`}>{name}</span>)}
-</span>;
+interface BlockProps {
+    label: string;
+    names: string[];
+    tone: string;
+    text: Text;
+}
+
+const Block = ({label, names, tone, text}: BlockProps) => <section className="sm-role-block" data-region="role-block">
+    <h4 className="sm-role-label">{label}<span className="sm-role-count">{names.length}</span></h4>
+    <ChipList
+        title={label}
+        names={names}
+        text={text}
+        chip={(name) => <span key={name} className={`sm-role-chip tone-${tone}`}>{name}</span>}
+    />
+</section>;
 
 const RolePanel = ({role, text}: RolePanelProps) => {
     const levels = (role.context_levels ?? []).filter((level) => level !== 'system');
@@ -37,20 +54,28 @@ const RolePanel = ({role, text}: RolePanelProps) => {
     }
 
     return <Panel title={text('role_panel_title')} icon="user-shield" region="role">
-        <dl className="sm-facts mb-0">
-            {levels.length > 0 && <>
-                <dt>{text('role_context_levels')}</dt>
-                <dd><Names names={['system', ...levels].map((level) => text('role_level_' + level) || level)} /></dd>
-            </>}
-            {relations.map((relation) => <div className="sm-fact-pair" key={relation}>
-                <dt>{text('role_' + relation)}</dt>
-                <dd><Names names={role[relation] ?? []} tone="primary" /></dd>
-            </div>)}
-            {permissions.map((permission) => <div className="sm-fact-pair" key={permission.key}>
-                <dt>{text('role_permission_' + permission.key)}</dt>
-                <dd><Names names={role.permissions?.[permission.key] ?? []} tone={permission.tone} /></dd>
-            </div>)}
-        </dl>
+        <div className="sm-role-grid">
+            {levels.length > 0 && <Block
+                label={text('role_context_levels')}
+                names={['system', ...levels].map((level) => text('role_level_' + level) || level)}
+                tone="secondary"
+                text={text}
+            />}
+            {relations.map((relation) => <Block
+                key={relation}
+                label={text('role_' + relation)}
+                names={role[relation] ?? []}
+                tone="primary"
+                text={text}
+            />)}
+            {permissions.map((permission) => <Block
+                key={permission.key}
+                label={text('role_permission_' + permission.key)}
+                names={role.permissions?.[permission.key] ?? []}
+                tone={permission.tone}
+                text={text}
+            />)}
+        </div>
     </Panel>;
 };
 

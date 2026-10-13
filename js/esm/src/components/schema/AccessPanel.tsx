@@ -10,6 +10,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import type {SchemaDetailProps, Text} from '../../types';
+import ChipList from '../common/ChipList';
 import CopyButton from '../common/CopyButton';
 import Icon from '../common/Icon';
 import IconButton from '../common/IconButton';
@@ -63,20 +64,25 @@ const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelPr
                         <span className={plugin.installed ? 'text-success' : 'text-warning'}>
                             <Icon name={plugin.installed ? 'circle-check' : 'triangle-exclamation'} gap />
                         </span>
-                        <code>{plugin.name}</code>
+                        <span className="sm-fn">{plugin.name}</span>
                         {!plugin.installed && <small className="text-body-secondary ms-1">{text('function_missing')}</small>}
                     </div>)}
                 </dd>
             </>}
             {extraCapabilities.length > 0 && <>
                 <dt className="sm-fact-wide">{text('extra_capabilities')}</dt>
-                <dd className="sm-fact-wide sm-code-chips">
-                    {extraCapabilities.map((capability) => {
-                        const [plugin, name] = capability.split(':');
-                        return <code key={capability} className="sm-code-chip" title={capability}>
-                            <span className="sm-code-chip-plugin">{plugin}</span>{name !== undefined && <span>:{name}</span>}
-                        </code>;
-                    })}
+                <dd className="sm-fact-wide">
+                    <ChipList
+                        title={text('extra_capabilities')}
+                        names={extraCapabilities}
+                        text={text}
+                        chip={(capability) => {
+                            const [plugin, name] = capability.split(':');
+                            return <code key={capability} className="sm-code-chip" title={capability}>
+                                <span className="sm-code-chip-plugin">{plugin}</span>{name !== undefined && <span>:{name}</span>}
+                            </code>;
+                        }}
+                    />
                 </dd>
             </>}
         </dl>

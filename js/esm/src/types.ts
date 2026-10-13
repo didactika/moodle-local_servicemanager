@@ -46,6 +46,9 @@ export interface WsStatus {
     critical: number;
     overviewUrl: string;
     protocolsUrl: string;
+    /** Where to turn the web services, or a protocol, on, with what to call it; empty when there is nothing to turn on. */
+    fixUrl: string;
+    fixLabel: string;
 }
 
 /** Properties of the dashboard. */

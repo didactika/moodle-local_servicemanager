@@ -37,6 +37,9 @@ const WsPill = ({status, canManage, text}: WsPillProps) => {
             <Icon name={protocol.enabled ? 'circle-check' : 'circle-minus'} gap />{protocol.name}
             <span className="visually-hidden"> {text(protocol.enabled ? 'ws_enabled_label' : 'ws_disabled_label')}</span>
         </span>)}
+        {canManage && status.fixUrl && <a href={status.fixUrl} className={`btn sm-pill compact tone-${level.tone}`} data-region="ws-fix">
+            <Icon name="power-off" gap />{status.fixLabel}
+        </a>}
         {canManage && status.protocolsUrl && <a href={status.protocolsUrl} className="btn btn-sm btn-outline-secondary" title={text('ws_manage_protocols_link')}>
             <Icon name="gear" gap />{text('tile_manage')}
         </a>}

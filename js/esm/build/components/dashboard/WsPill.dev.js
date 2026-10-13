@@ -62,16 +62,28 @@ const WsPill = /* @__PURE__ */ __name(({ status, canManage, text }) => {
         columnNumber: 45
       }
     )),
+    canManage && status.fixUrl && /* @__PURE__ */ jsxDEV("a", { href: status.fixUrl, className: `btn sm-pill compact tone-${level.tone}`, "data-region": "ws-fix", children: [
+      /* @__PURE__ */ jsxDEV(Icon, { name: "power-off", gap: true }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/components/dashboard/WsPill.tsx",
+        lineNumber: 41,
+        columnNumber: 13
+      }),
+      status.fixLabel
+    ] }, void 0, true, {
+      fileName: "public/local/servicemanager/js/esm/src/components/dashboard/WsPill.tsx",
+      lineNumber: 40,
+      columnNumber: 40
+    }),
     canManage && status.protocolsUrl && /* @__PURE__ */ jsxDEV("a", { href: status.protocolsUrl, className: "btn btn-sm btn-outline-secondary", title: text("ws_manage_protocols_link"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "gear", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/WsPill.tsx",
-        lineNumber: 41,
+        lineNumber: 44,
         columnNumber: 13
       }),
       text("tile_manage")
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/WsPill.tsx",
-      lineNumber: 40,
+      lineNumber: 43,
       columnNumber: 46
     })
   ] }, void 0, true, {

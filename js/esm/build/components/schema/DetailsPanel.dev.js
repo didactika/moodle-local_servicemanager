@@ -1,6 +1,6 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
+import { jsxDEV } from "react/jsx-dev-runtime";
 /**
  * What a schema says about itself: its description, who maintains it, when it was made and changed and whether it is on.
  *
@@ -66,71 +66,89 @@ const DetailsPanel = /* @__PURE__ */ __name(({ schema, urls, canManage, isHistor
         lineNumber: 45,
         columnNumber: 28
       }),
-      /* @__PURE__ */ jsxDEV("dl", { className: "sm-facts mb-0", children: [
-        /* @__PURE__ */ jsxDEV("dt", { children: text("schema_version") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dl", { className: "sm-facts-row mb-0", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
+          /* @__PURE__ */ jsxDEV("dt", { children: text("schema_version") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+            lineNumber: 47,
+            columnNumber: 34
+          }),
+          /* @__PURE__ */ jsxDEV("dd", { children: schema.version }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+            lineNumber: 47,
+            columnNumber: 67
+          })
+        ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
           lineNumber: 47,
           columnNumber: 9
         }),
-        /* @__PURE__ */ jsxDEV("dd", { children: schema.version }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-          lineNumber: 48,
-          columnNumber: 9
-        }),
-        schema.maintainer && /* @__PURE__ */ jsxDEV(Fragment, { children: [
+        schema.maintainer && /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
           /* @__PURE__ */ jsxDEV("dt", { children: text("schema_maintainer") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 50,
-            columnNumber: 13
+            lineNumber: 48,
+            columnNumber: 56
           }),
           /* @__PURE__ */ jsxDEV("dd", { children: schema.maintainer }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 51,
-            columnNumber: 13
+            lineNumber: 48,
+            columnNumber: 92
+          })
+        ] }, void 0, true, {
+          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+          lineNumber: 48,
+          columnNumber: 31
+        }),
+        /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
+          /* @__PURE__ */ jsxDEV("dt", { children: text("schema_created") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+            lineNumber: 49,
+            columnNumber: 34
+          }),
+          /* @__PURE__ */ jsxDEV("dd", { children: schema.created }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+            lineNumber: 49,
+            columnNumber: 67
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
           lineNumber: 49,
-          columnNumber: 31
-        }),
-        /* @__PURE__ */ jsxDEV("dt", { children: text("schema_created") }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-          lineNumber: 53,
           columnNumber: 9
         }),
-        /* @__PURE__ */ jsxDEV("dd", { children: schema.created }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
+          /* @__PURE__ */ jsxDEV("dt", { children: text("schema_modified") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+            lineNumber: 50,
+            columnNumber: 34
+          }),
+          /* @__PURE__ */ jsxDEV("dd", { children: schema.modified }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+            lineNumber: 50,
+            columnNumber: 68
+          })
+        ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-          lineNumber: 54,
+          lineNumber: 50,
           columnNumber: 9
         }),
-        /* @__PURE__ */ jsxDEV("dt", { children: text("schema_modified") }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-          lineNumber: 55,
-          columnNumber: 9
-        }),
-        /* @__PURE__ */ jsxDEV("dd", { children: schema.modified }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-          lineNumber: 56,
-          columnNumber: 9
-        }),
-        !isHistory && /* @__PURE__ */ jsxDEV(Fragment, { children: [
+        !isHistory && /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
           /* @__PURE__ */ jsxDEV("dt", { children: text("schema_enabled") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 58,
+            lineNumber: 52,
             columnNumber: 13
           }),
           /* @__PURE__ */ jsxDEV("dd", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${schema.enabled ? "success" : "secondary"}`, children: text(schema.enabled ? "core_yes" : "core_no") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 60,
+            lineNumber: 54,
             columnNumber: 17
           }) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 59,
+            lineNumber: 53,
             columnNumber: 13
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-          lineNumber: 57,
+          lineNumber: 51,
           columnNumber: 24
         })
       ] }, void 0, true, {

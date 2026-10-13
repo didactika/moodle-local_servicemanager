@@ -12,7 +12,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  */
 import { useEffect, useRef } from "react";
 import Icon from "./Icon";
-const Modal = /* @__PURE__ */ __name(({ open, title, onClose, closeLabel, children, footer }) => {
+const Modal = /* @__PURE__ */ __name(({ open, title, onClose, closeLabel, children, footer, wide = false }) => {
   const dialog = useRef(null);
   useEffect(() => {
     const element = dialog.current;
@@ -25,7 +25,7 @@ const Modal = /* @__PURE__ */ __name(({ open, title, onClose, closeLabel, childr
       element.close();
     }
   }, [open]);
-  return /* @__PURE__ */ jsxDEV("dialog", { ref: dialog, className: "sm-dialog", onCancel: (event) => {
+  return /* @__PURE__ */ jsxDEV("dialog", { ref: dialog, className: `sm-dialog${wide ? " wide" : ""}`, onCancel: (event) => {
     event.preventDefault();
     onClose();
   }, onClick: (event) => {
@@ -33,46 +33,50 @@ const Modal = /* @__PURE__ */ __name(({ open, title, onClose, closeLabel, childr
       onClose();
     }
   }, children: /* @__PURE__ */ jsxDEV("div", { className: "sm-dialog-body", children: [
-    /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-start justify-content-between mb-3", children: [
-      /* @__PURE__ */ jsxDEV("h5", { className: "mb-0", children: title }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("header", { className: "sm-dialog-head", children: [
+      /* @__PURE__ */ jsxDEV("h5", { className: "sm-dialog-title", children: title }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-        lineNumber: 51,
+        lineNumber: 53,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-sm btn-link text-body-secondary", onClick: onClose, title: closeLabel, children: [
+      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-iconbtn", onClick: onClose, title: closeLabel, children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "xmark" }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-          lineNumber: 53,
+          lineNumber: 55,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: closeLabel }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-          lineNumber: 53,
+          lineNumber: 55,
           columnNumber: 42
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-        lineNumber: 52,
+        lineNumber: 54,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-      lineNumber: 50,
+      lineNumber: 52,
       columnNumber: 13
     }),
-    children,
-    footer && /* @__PURE__ */ jsxDEV("div", { className: "d-flex justify-content-end sm-actions-row mt-3", children: footer }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("div", { className: "sm-dialog-scroll", children }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-      lineNumber: 57,
+      lineNumber: 58,
+      columnNumber: 13
+    }),
+    footer && /* @__PURE__ */ jsxDEV("footer", { className: "sm-dialog-foot", children: footer }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
+      lineNumber: 59,
       columnNumber: 24
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-    lineNumber: 49,
+    lineNumber: 51,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/Modal.tsx",
-    lineNumber: 40,
+    lineNumber: 42,
     columnNumber: 12
   });
 }, "Modal");

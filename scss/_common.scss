@@ -315,28 +315,78 @@
         }
     }
 
-    // The question before something that cannot be undone.
+    // The dialogues: a card over the page, with a head that stays, a body that scrolls and a foot that stays.
     .sm-dialog {
         width: 28rem;
         max-width: calc(100vw - 2rem);
+        max-height: calc(100vh - 3rem);
         padding: 0;
         border: 1px solid var(--bs-border-color);
-        border-radius: var(--bs-border-radius-lg);
+        border-radius: 1rem;
         background-color: var(--bs-body-bg);
         color: var(--bs-body-color);
         box-shadow: var(--bs-box-shadow-lg);
 
+        &.wide {
+            width: 36rem;
+        }
+
+        &[open] {
+            display: flex;
+            flex-direction: column;
+        }
+
         &::backdrop {
             background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
         }
 
         .sm-dialog-body {
-            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            max-height: calc(100vh - 3rem);
         }
 
-        .sm-caps-list {
-            max-height: 18rem;
+        .sm-dialog-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--bs-border-color);
+            gap: 1rem;
+        }
+
+        .sm-dialog-title {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .sm-dialog-scroll {
+            flex: 1 1 auto;
+            min-height: 0;
+            padding: 1.25rem;
             overflow-y: auto;
+        }
+
+        .sm-dialog-foot {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.9rem 1.25rem;
+            border-top: 1px solid var(--bs-border-color);
+            background-color: var(--bs-tertiary-bg);
+            gap: 0.5rem;
+        }
+
+        .sm-dialog-search {
+            position: sticky;
+            top: -1.25rem;
+            z-index: 1;
+            margin: -1.25rem -1.25rem 1rem;
+            padding: 0.9rem 1.25rem;
+            border-bottom: 1px solid var(--bs-border-color);
+            background-color: var(--bs-body-bg);
         }
     }
 
@@ -684,5 +734,53 @@
 @media (prefers-reduced-motion: reduce) {
     .sm-skeleton .sm-skeleton-line {
         animation: none;
+    }
+}
+
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    .sm-filter > .btn {
+        position: relative;
+    }
+
+    // The count of filters that are on sits on the corner of the button, so the button does not grow and the panel under it stays put.
+    .sm-filter .sm-count-badge {
+        position: absolute;
+        top: -0.45rem;
+        right: -0.45rem;
+        min-width: 1.15rem;
+        height: 1.15rem;
+        margin: 0;
+        padding: 0 0.3rem;
+        border-radius: 1rem;
+        background-color: var(--bs-primary);
+        color: var(--bs-white);
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.15rem;
+        text-align: center;
+    }
+}
+
+.servicemanager-dashboard,
+.servicemanager-detail {
+    // The identifier of a schema or of what it created: a small neutral label in monospace, not code in the colour of code.
+    .sm-id-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.15rem 0.65rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 2rem;
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-secondary-color);
+        font-family: inherit;
+        font-size: 0.82rem;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+
+        &.compact {
+            padding: 0.05rem 0.5rem;
+            font-size: 0.75rem;
+        }
     }
 }

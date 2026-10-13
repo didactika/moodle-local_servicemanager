@@ -43,7 +43,14 @@ const ResourcesPanel = /* @__PURE__ */ __name(({ resources, text }) => {
       lineNumber: 39,
       columnNumber: 17
     }),
-    /* @__PURE__ */ jsxDEV("code", { className: "small", children: entry.detail }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("span", { className: "sm-id-chip compact", children: [
+      /* @__PURE__ */ jsxDEV(Icon, { name: "fingerprint", gap: true }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
+        lineNumber: 43,
+        columnNumber: 54
+      }),
+      entry.detail
+    ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
       lineNumber: 43,
       columnNumber: 17

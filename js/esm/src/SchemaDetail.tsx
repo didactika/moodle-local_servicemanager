@@ -18,6 +18,7 @@ import {useMemo, useState} from 'react';
 import BackLink from './components/common/BackLink';
 import ConfirmModal from './components/common/ConfirmModal';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
 import StatusBadge from './components/common/StatusBadge';
 import AccessPanel from './components/schema/AccessPanel';
@@ -79,12 +80,17 @@ const SchemaDetail = (props: SchemaDetailProps) => {
                     <StatusBadge status={schema.status} label={schema.statusLabel} />
                     {!isHistory && !enabled && <span className="badge text-bg-secondary">{text('disabled')}</span>}
                 </>}
-                subtitle={<code>{schema.schemaId}</code>}
+                subtitle={<span className="sm-id-chip" title={text('schema_id')}><Icon name="fingerprint" gap />{schema.schemaId}</span>}
             />
 
             <div className="row">
-                <div className="col-lg-4">
+                <div className="col-lg-8">
                     <DetailsPanel schema={current} urls={urls} canManage={canManage} isHistory={isHistory} busy={busy} onToggle={toggle} text={text} />
+                    {props.functions.length > 0 && <FunctionsPanel functions={props.functions} text={text} />}
+                    {hasResources && <ResourcesPanel resources={resources} text={text} />}
+                    {props.healthLogs.length > 0 && <HealthPanel logs={props.healthLogs} text={text} />}
+                </div>
+                <div className="col-lg-4">
                     <AccessPanel
                         props={{...props, schema: current}}
                         freshToken={freshToken}
@@ -93,11 +99,6 @@ const SchemaDetail = (props: SchemaDetailProps) => {
                         text={text}
                     />
                     <RolePanel role={props.role} text={text} />
-                </div>
-                <div className="col-lg-8">
-                    {props.functions.length > 0 && <FunctionsPanel functions={props.functions} text={text} />}
-                    {hasResources && <ResourcesPanel resources={resources} text={text} />}
-                    {props.healthLogs.length > 0 && <HealthPanel logs={props.healthLogs} text={text} />}
                 </div>
             </div>
 

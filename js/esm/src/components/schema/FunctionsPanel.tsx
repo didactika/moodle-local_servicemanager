@@ -52,7 +52,7 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
                 </span>
                 <div className="flex-grow-1 sm-function-body">
                     <div className="d-flex flex-wrap align-items-center sm-badges-row">
-                        <code>{fn.name}</code>
+                        <span className="sm-fn">{fn.name}</span>
                         {fn.type && <span className="badge text-bg-light border">{text('function_' + fn.type)}</span>}
                         {fn.critical && <span className="badge text-bg-light border">{text('function_critical')}</span>}
                         {!fn.exists && <span className="badge text-bg-danger">{text('function_missing')}</span>}
@@ -73,16 +73,17 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
 
         <Modal
             open={viewing !== null}
+            wide
             title={<><Icon name="shield-halved" gap />{text('function_capabilities_title')}</>}
             onClose={() => setViewing(null)}
             closeLabel={text('core_cancel')}
         >
             {viewing && <>
-                <p className="mb-2"><code>{viewing.name}</code></p>
+                <p className="mb-2"><span className="sm-fn">{viewing.name}</span></p>
                 {viewing.description && <p className="text-body-secondary">{viewing.description}</p>}
                 <p className="small text-body-secondary">{text('function_capabilities_help')}</p>
                 <ul className="list-group sm-caps-list">
-                    {viewing.capabilities.map((capability) => <li key={capability} className="list-group-item"><code>{capability}</code></li>)}
+                    {viewing.capabilities.map((capability) => <li key={capability} className="list-group-item"><span className="sm-fn">{capability}</span></li>)}
                 </ul>
             </>}
         </Modal>

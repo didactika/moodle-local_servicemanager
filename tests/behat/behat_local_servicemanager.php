@@ -256,6 +256,28 @@ YAML;
     }
 
     /**
+     * Give a schema more extra capabilities than the page shows before its button.
+     *
+     * @Given the schema :schemaid has many extra capabilities
+     * @param string $schemaid Id of the schema.
+     */
+    public function the_schema_has_many_extra_capabilities($schemaid) {
+        global $DB;
+
+        $record = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid], '*', MUST_EXIST);
+        [$major, $minor] = array_map('intval', explode('.', $record->version) + [0, 0]);
+        $version = $major . '.' . ($minor + 1) . '.0';
+        $capabilities = [
+            'moodle/user:viewdetails', 'moodle/user:update', 'moodle/user:create', 'moodle/user:delete', 'moodle/course:view',
+            'moodle/course:update', 'moodle/course:create', 'moodle/course:delete', 'moodle/category:manage', 'moodle/role:assign',
+        ];
+        $list = implode("\n", array_map(static fn(string $capability) => '    - ' . $capability, $capabilities));
+        $yaml = "meta:\n  id: \"{$schemaid}\"\n  name: \"{$record->name}\"\n  version: \"{$version}\"\n" .
+            "definition:\n  functions:\n    - core_webservice_get_site_info\n  extra_capabilities:\n{$list}\n";
+        (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
+    }
+
+    /**
      * Check that the text field has a text that matches a regular expression.
      *
      * @Then the text of the field :field matches :pattern

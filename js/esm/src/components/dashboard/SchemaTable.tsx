@@ -58,7 +58,7 @@ const SchemaTable = ({rows, canManage, selection, onToggle, text}: SchemaTablePr
                     <td>
                         <a href={row.viewUrl} className="fw-bold">{row.name}</a>
                         {!row.enabled && <span className="badge text-bg-secondary ms-2">{text('disabled')}</span>}
-                        <div><code className="small">{row.schemaId}</code></div>
+                        <div><span className="sm-id-chip compact"><Icon name="fingerprint" gap />{row.schemaId}</span></div>
                     </td>
                     <td>{row.version}</td>
                     <td><StatusBadge status={row.status} label={row.statusLabel} /></td>

@@ -655,12 +655,34 @@
 .servicemanager-import-result .sm-dialog {
     width: 28rem;
     max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 3rem);
     padding: 0;
     border: 1px solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius-lg);
+    border-radius: 1rem;
     background-color: var(--bs-body-bg);
     color: var(--bs-body-color);
     box-shadow: var(--bs-box-shadow-lg);
+}
+
+.servicemanager-dashboard .sm-dialog.wide,
+.servicemanager-detail .sm-dialog.wide,
+.servicemanager-history-page .sm-dialog.wide,
+.servicemanager-compare-page .sm-dialog.wide,
+.servicemanager-documentation .sm-dialog.wide,
+.servicemanager-import-page .sm-dialog.wide,
+.servicemanager-import-result .sm-dialog.wide {
+    width: 36rem;
+}
+
+.servicemanager-dashboard .sm-dialog[open],
+.servicemanager-detail .sm-dialog[open],
+.servicemanager-history-page .sm-dialog[open],
+.servicemanager-compare-page .sm-dialog[open],
+.servicemanager-documentation .sm-dialog[open],
+.servicemanager-import-page .sm-dialog[open],
+.servicemanager-import-result .sm-dialog[open] {
+    display: flex;
+    flex-direction: column;
 }
 
 .servicemanager-dashboard .sm-dialog::backdrop,
@@ -671,6 +693,7 @@
 .servicemanager-import-page .sm-dialog::backdrop,
 .servicemanager-import-result .sm-dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
 }
 
 .servicemanager-dashboard .sm-dialog .sm-dialog-body,
@@ -680,18 +703,81 @@
 .servicemanager-documentation .sm-dialog .sm-dialog-body,
 .servicemanager-import-page .sm-dialog .sm-dialog-body,
 .servicemanager-import-result .sm-dialog .sm-dialog-body {
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: calc(100vh - 3rem);
 }
 
-.servicemanager-dashboard .sm-dialog .sm-caps-list,
-.servicemanager-detail .sm-dialog .sm-caps-list,
-.servicemanager-history-page .sm-dialog .sm-caps-list,
-.servicemanager-compare-page .sm-dialog .sm-caps-list,
-.servicemanager-documentation .sm-dialog .sm-caps-list,
-.servicemanager-import-page .sm-dialog .sm-caps-list,
-.servicemanager-import-result .sm-dialog .sm-caps-list {
-    max-height: 18rem;
+.servicemanager-dashboard .sm-dialog .sm-dialog-head,
+.servicemanager-detail .sm-dialog .sm-dialog-head,
+.servicemanager-history-page .sm-dialog .sm-dialog-head,
+.servicemanager-compare-page .sm-dialog .sm-dialog-head,
+.servicemanager-documentation .sm-dialog .sm-dialog-head,
+.servicemanager-import-page .sm-dialog .sm-dialog-head,
+.servicemanager-import-result .sm-dialog .sm-dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--bs-border-color);
+    gap: 1rem;
+}
+
+.servicemanager-dashboard .sm-dialog .sm-dialog-title,
+.servicemanager-detail .sm-dialog .sm-dialog-title,
+.servicemanager-history-page .sm-dialog .sm-dialog-title,
+.servicemanager-compare-page .sm-dialog .sm-dialog-title,
+.servicemanager-documentation .sm-dialog .sm-dialog-title,
+.servicemanager-import-page .sm-dialog .sm-dialog-title,
+.servicemanager-import-result .sm-dialog .sm-dialog-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.servicemanager-dashboard .sm-dialog .sm-dialog-scroll,
+.servicemanager-detail .sm-dialog .sm-dialog-scroll,
+.servicemanager-history-page .sm-dialog .sm-dialog-scroll,
+.servicemanager-compare-page .sm-dialog .sm-dialog-scroll,
+.servicemanager-documentation .sm-dialog .sm-dialog-scroll,
+.servicemanager-import-page .sm-dialog .sm-dialog-scroll,
+.servicemanager-import-result .sm-dialog .sm-dialog-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 1.25rem;
     overflow-y: auto;
+}
+
+.servicemanager-dashboard .sm-dialog .sm-dialog-foot,
+.servicemanager-detail .sm-dialog .sm-dialog-foot,
+.servicemanager-history-page .sm-dialog .sm-dialog-foot,
+.servicemanager-compare-page .sm-dialog .sm-dialog-foot,
+.servicemanager-documentation .sm-dialog .sm-dialog-foot,
+.servicemanager-import-page .sm-dialog .sm-dialog-foot,
+.servicemanager-import-result .sm-dialog .sm-dialog-foot {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.9rem 1.25rem;
+    border-top: 1px solid var(--bs-border-color);
+    background-color: var(--bs-tertiary-bg);
+    gap: 0.5rem;
+}
+
+.servicemanager-dashboard .sm-dialog .sm-dialog-search,
+.servicemanager-detail .sm-dialog .sm-dialog-search,
+.servicemanager-history-page .sm-dialog .sm-dialog-search,
+.servicemanager-compare-page .sm-dialog .sm-dialog-search,
+.servicemanager-documentation .sm-dialog .sm-dialog-search,
+.servicemanager-import-page .sm-dialog .sm-dialog-search,
+.servicemanager-import-result .sm-dialog .sm-dialog-search {
+    position: sticky;
+    top: -1.25rem;
+    z-index: 1;
+    margin: -1.25rem -1.25rem 1rem;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--bs-border-color);
+    background-color: var(--bs-body-bg);
 }
 
 .servicemanager-dashboard .sm-health,
@@ -1280,6 +1366,50 @@
     }
 }
 
+.servicemanager-dashboard .sm-filter > .btn,
+.servicemanager-history-page .sm-filter > .btn {
+    position: relative;
+}
+
+.servicemanager-dashboard .sm-filter .sm-count-badge,
+.servicemanager-history-page .sm-filter .sm-count-badge {
+    position: absolute;
+    top: -0.45rem;
+    right: -0.45rem;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    margin: 0;
+    padding: 0 0.3rem;
+    border-radius: 1rem;
+    background-color: var(--bs-primary);
+    color: var(--bs-white);
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.15rem;
+    text-align: center;
+}
+
+.servicemanager-dashboard .sm-id-chip,
+.servicemanager-detail .sm-id-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.65rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 2rem;
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-secondary-color);
+    font-family: inherit;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.servicemanager-dashboard .sm-id-chip.compact,
+.servicemanager-detail .sm-id-chip.compact {
+    padding: 0.05rem 0.5rem;
+    font-size: 0.75rem;
+}
+
 @media (max-width: 768px) {
 
     .servicemanager-dashboard .btn-group-sm .btn {
@@ -1370,12 +1500,14 @@
 
 .servicemanager-detail .sm-code-chips {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 0.4rem;
 }
 
 .servicemanager-detail .sm-code-chip {
     display: inline-flex;
+    margin: 0;
     padding: 0.2rem 0.55rem;
     border: 1px solid var(--bs-border-color);
     border-radius: 2rem;
@@ -1389,20 +1521,258 @@
     color: var(--bs-secondary-color);
 }
 
-.servicemanager-history-page .sm-versions .list-group-item {
-    padding: 1rem;
+.servicemanager-detail .sm-role-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.25rem 1.5rem;
 }
 
-.servicemanager-history-page .sm-versions .list-group-item.active-version {
-    background-color: color-mix(in srgb, var(--bs-primary) 10%, var(--bs-body-bg));
+.servicemanager-detail .sm-role-label {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0.5rem;
+    color: var(--bs-secondary-color);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    gap: 0.5rem;
 }
 
-.servicemanager-history-page .sm-versions .sm-version-row {
-    gap: 1rem;
+.servicemanager-detail .sm-role-count {
+    padding: 0 0.4rem;
+    border-radius: 2rem;
+    background-color: var(--bs-tertiary-bg);
+    font-size: 0.72rem;
+    letter-spacing: 0;
 }
 
-.servicemanager-history-page .sm-versions .sm-version-body {
+.servicemanager-detail .sm-role-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.servicemanager-detail .sm-role-chip {
+    --sm-chip-tone: var(--bs-secondary-color);
+    padding: 0.15rem 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--sm-chip-tone) 30%, var(--bs-body-bg));
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--sm-chip-tone) 10%, var(--bs-body-bg));
+    color: var(--bs-body-color);
+    font-size: 0.8rem;
+}
+
+.servicemanager-detail .sm-role-chip.tone-primary {
+    --sm-chip-tone: var(--bs-primary);
+}
+
+.servicemanager-detail .sm-role-chip.tone-warning {
+    --sm-chip-tone: var(--bs-warning-text-emphasis);
+}
+
+.servicemanager-detail .sm-role-chip.tone-danger {
+    --sm-chip-tone: var(--bs-danger);
+}
+
+.servicemanager-detail .sm-role-more {
+    padding: 0.15rem 0.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--bs-primary);
+    font-size: 0.8rem;
+}
+
+.servicemanager-detail .sm-role-more:hover {
+    text-decoration: underline;
+}
+
+.servicemanager-detail .sm-facts-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+}
+
+.servicemanager-detail .sm-facts-row .sm-fact {
     min-width: 0;
+}
+
+.servicemanager-detail .sm-facts-row dt {
+    margin-bottom: 0.15rem;
+    color: var(--bs-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.servicemanager-detail .sm-facts-row dd {
+    margin: 0;
+}
+
+.servicemanager-detail .sm-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.servicemanager-detail .sm-code-chip {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.sm-dialog .sm-chip-all,
+.modal .sm-chip-all {
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.servicemanager-detail .sm-fn {
+    color: var(--bs-body-color);
+    font-size: 0.95rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.servicemanager-detail .sm-id-chip,
+.servicemanager-detail .sm-code-chip {
+    font-family: inherit;
+    font-size: 0.8rem;
+}
+
+.servicemanager-detail .sm-role-more {
+    padding: 0.15rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--bs-primary) 35%, var(--bs-body-bg));
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--bs-primary) 12%, var(--bs-body-bg));
+    color: var(--bs-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.servicemanager-detail .sm-role-more:hover {
+    border-color: var(--bs-primary);
+    background-color: color-mix(in srgb, var(--bs-primary) 22%, var(--bs-body-bg));
+    text-decoration: none;
+}
+
+.servicemanager-detail .sm-role-more:focus-visible {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+}
+
+.servicemanager-detail .sm-role-count {
+    background-color: color-mix(in srgb, var(--bs-primary) 14%, var(--bs-body-bg));
+    color: var(--bs-primary);
+    font-weight: 700;
+}
+
+.servicemanager-detail .sm-caps-list,
+.sm-dialog .sm-caps-list,
+.modal .sm-caps-list {
+    margin: 0;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.servicemanager-detail .sm-caps-list .list-group-item,
+.sm-dialog .sm-caps-list .list-group-item,
+.modal .sm-caps-list .list-group-item {
+    padding: 0.7rem 1rem;
+    border-width: 0 0 1px;
+    border-color: var(--bs-border-color);
+    background-color: transparent;
+    color: var(--bs-body-color);
+    transition: background-color 0.1s ease;
+}
+
+.servicemanager-detail .sm-caps-list .list-group-item:last-child,
+.sm-dialog .sm-caps-list .list-group-item:last-child,
+.modal .sm-caps-list .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.servicemanager-detail .sm-caps-list .list-group-item:hover,
+.sm-dialog .sm-caps-list .list-group-item:hover,
+.modal .sm-caps-list .list-group-item:hover {
+    background-color: var(--bs-tertiary-bg);
+}
+
+.servicemanager-detail .sm-caps-list .sm-fn,
+.sm-dialog .sm-caps-list .sm-fn,
+.modal .sm-caps-list .sm-fn {
+    font-weight: 600;
+}
+
+.servicemanager-history-page .sm-versions {
+    margin: 0 0 5rem;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+.servicemanager-history-page .sm-versions .sm-version {
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.servicemanager-history-page .sm-versions .sm-version:last-child {
+    border-bottom: 0;
+}
+
+.servicemanager-history-page .sm-versions .sm-version.active-version {
+    background-color: color-mix(in srgb, var(--bs-primary) 9%, var(--bs-body-bg));
+}
+
+.servicemanager-history-page .sm-versions .sm-version-main {
+    display: grid;
+    grid-template-columns: 1.5rem 7.5rem 5rem minmax(11rem, 15rem) minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    gap: 0.75rem;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-number {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-who {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 0.5rem;
+    line-height: 1.2;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-name {
+    overflow: hidden;
+    font-size: 0.875rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-date {
+    color: var(--bs-secondary-color);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-reason {
+    overflow: hidden;
+    color: var(--bs-secondary-color);
+    font-size: 0.875rem;
+    font-style: italic;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-yaml {
+    padding: 0 1rem 0.75rem 3.5rem;
 }
 
 .servicemanager-history-page .sm-yaml {
@@ -1412,20 +1782,21 @@
     color: var(--bs-body-color);
 }
 
-.servicemanager-history-page .sm-compare-bar {
-    position: sticky;
-    bottom: 0;
-    z-index: 2;
-    margin-top: 1rem;
-    padding: 0.75rem 0;
-    border-top: 1px solid var(--bs-border-color);
-    background-color: var(--bs-body-bg);
+.servicemanager-history-page .sm-compare .sm-compare-warning {
+    color: var(--bs-danger);
+    font-size: 0.8125rem;
+    white-space: nowrap;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
 
-    .servicemanager-history-page .sm-versions .sm-version-row {
-        flex-wrap: wrap;
+    .servicemanager-history-page .sm-versions .sm-version-main {
+        grid-template-columns: 1.5rem auto auto minmax(0, 1fr) auto;
+    }
+
+    .servicemanager-history-page .sm-versions .sm-version-reason {
+        grid-column: 2 / -1;
+        white-space: normal;
     }
 }
 

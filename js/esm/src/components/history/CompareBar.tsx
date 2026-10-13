@@ -2,7 +2,8 @@
 // Moodle is free software under the GNU General Public License, version 3 or later.
 
 /**
- * The bar that follows the person down the history while they pick the two versions to compare.
+ * What the person has chosen to compare and the button that compares it. It floats at the bottom of the screen, as the bar of the
+ * schemas of the dashboard does, so it is at hand however long the list is.
  *
  * @module     local_servicemanager/components/history/CompareBar
  * @copyright  2026 Didactika.org
@@ -21,19 +22,19 @@ interface CompareBarProps {
     text: Text;
 }
 
-const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) => <div className="sm-compare-bar" role="status" data-region="compare-bar">
+const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) => <div className="sm-floating sm-compare" role="status" data-region="compare-bar">
     {[...chosen].map((id) => <input key={id} type="hidden" name="compare[]" value={id} />)}
-    <div className="d-flex align-items-center flex-wrap sm-actions-row">
-        <span className="fw-bold">{text('compare_chosen', {n: chosen.size, total: needed})}</span>
-        {tooMany && <span className="text-danger" role="alert">{text('compare_select_two')}</span>}
-        <div className="ms-auto sm-group">
-            {chosen.size > 0 && <button type="button" className="btn sm-pill" onClick={onClear}>
-                <Icon name="xmark" gap />{text('compare_clear')}
-            </button>}
-            <button type="submit" id="compare-btn" className="btn sm-pill solid tone-primary" disabled={chosen.size !== needed}>
-                <Icon name="code-compare" gap />{text('compare_versions')}
-            </button>
-        </div>
+    <span className="sm-floating-count" data-region="compare-chosen">
+        <span>{text('compare_chosen', {n: chosen.size, total: needed})}</span>
+        {chosen.size > 0 && <button type="button" className="sm-floating-clear" onClick={onClear} title={text('compare_clear')}>
+            <Icon name="xmark" /><span className="visually-hidden">{text('compare_clear')}</span>
+        </button>}
+    </span>
+    {tooMany && <span className="sm-compare-warning" role="alert">{text('compare_select_two')}</span>}
+    <div className="sm-floating-actions">
+        <button type="submit" id="compare-btn" className="btn sm-pill solid tone-primary" disabled={chosen.size !== needed}>
+            <Icon name="code-compare" gap />{text('compare_versions')}
+        </button>
     </div>
 </div>;
 

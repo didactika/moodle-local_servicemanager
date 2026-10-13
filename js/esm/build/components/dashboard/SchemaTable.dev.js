@@ -13,6 +13,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  */
 import ActionMenu from "../common/ActionMenu";
 import IconButton from "../common/IconButton";
+import Icon from "../common/Icon";
 import StatusBadge from "../common/StatusBadge";
 const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onToggle, text }) => /* @__PURE__ */ jsxDEV("div", { className: "card sm-list", children: /* @__PURE__ */ jsxDEV("div", { children: /* @__PURE__ */ jsxDEV("table", { className: "table table-hover align-middle mb-0", children: [
   /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
@@ -110,7 +111,14 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
         lineNumber: 60,
         columnNumber: 42
       }),
-      /* @__PURE__ */ jsxDEV("div", { children: /* @__PURE__ */ jsxDEV("code", { className: "small", children: row.schemaId }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("div", { children: /* @__PURE__ */ jsxDEV("span", { className: "sm-id-chip compact", children: [
+        /* @__PURE__ */ jsxDEV(Icon, { name: "fingerprint", gap: true }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SchemaTable.tsx",
+          lineNumber: 61,
+          columnNumber: 67
+        }),
+        row.schemaId
+      ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SchemaTable.tsx",
         lineNumber: 61,
         columnNumber: 30

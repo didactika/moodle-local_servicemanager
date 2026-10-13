@@ -20,9 +20,11 @@ interface ModalProps {
     closeLabel: string;
     children: ReactNode;
     footer?: ReactNode;
+    /** A wider dialogue, for lists. */
+    wide?: boolean;
 }
 
-const Modal = ({open, title, onClose, closeLabel, children, footer}: ModalProps) => {
+const Modal = ({open, title, onClose, closeLabel, children, footer, wide = false}: ModalProps) => {
     const dialog = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
@@ -37,7 +39,7 @@ const Modal = ({open, title, onClose, closeLabel, children, footer}: ModalProps)
         }
     }, [open]);
 
-    return <dialog ref={dialog} className="sm-dialog" onCancel={(event) => {
+    return <dialog ref={dialog} className={`sm-dialog${wide ? ' wide' : ''}`} onCancel={(event) => {
         event.preventDefault();
         onClose();
     }} onClick={(event) => {
@@ -47,14 +49,14 @@ const Modal = ({open, title, onClose, closeLabel, children, footer}: ModalProps)
         }
     }}>
         <div className="sm-dialog-body">
-            <div className="d-flex align-items-start justify-content-between mb-3">
-                <h5 className="mb-0">{title}</h5>
-                <button type="button" className="btn btn-sm btn-link text-body-secondary" onClick={onClose} title={closeLabel}>
+            <header className="sm-dialog-head">
+                <h5 className="sm-dialog-title">{title}</h5>
+                <button type="button" className="sm-iconbtn" onClick={onClose} title={closeLabel}>
                     <Icon name="xmark" /><span className="visually-hidden">{closeLabel}</span>
                 </button>
-            </div>
-            {children}
-            {footer && <div className="d-flex justify-content-end sm-actions-row mt-3">{footer}</div>}
+            </header>
+            <div className="sm-dialog-scroll">{children}</div>
+            {footer && <footer className="sm-dialog-foot">{footer}</footer>}
         </div>
     </dialog>;
 };

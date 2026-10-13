@@ -43,23 +43,17 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}
     </div> : undefined}
 >
     {schema.description && <p className="mb-3">{schema.description}</p>}
-    <dl className="sm-facts mb-0">
-        <dt>{text('schema_version')}</dt>
-        <dd>{schema.version}</dd>
-        {schema.maintainer && <>
-            <dt>{text('schema_maintainer')}</dt>
-            <dd>{schema.maintainer}</dd>
-        </>}
-        <dt>{text('schema_created')}</dt>
-        <dd>{schema.created}</dd>
-        <dt>{text('schema_modified')}</dt>
-        <dd>{schema.modified}</dd>
-        {!isHistory && <>
+    <dl className="sm-facts-row mb-0">
+        <div className="sm-fact"><dt>{text('schema_version')}</dt><dd>{schema.version}</dd></div>
+        {schema.maintainer && <div className="sm-fact"><dt>{text('schema_maintainer')}</dt><dd>{schema.maintainer}</dd></div>}
+        <div className="sm-fact"><dt>{text('schema_created')}</dt><dd>{schema.created}</dd></div>
+        <div className="sm-fact"><dt>{text('schema_modified')}</dt><dd>{schema.modified}</dd></div>
+        {!isHistory && <div className="sm-fact">
             <dt>{text('schema_enabled')}</dt>
             <dd>
                 <span className={`badge text-bg-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
             </dd>
-        </>}
+        </div>}
     </dl>
 </Panel>;
 

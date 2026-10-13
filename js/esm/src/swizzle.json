@@ -11,6 +11,10 @@
     "eject": "risky",
     "wrap": "risky"
   },
+  "components/common/ChipList": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
   "components/common/Chips": {
     "eject": "risky",
     "wrap": "risky"
@@ -32,6 +36,10 @@
     "wrap": "risky"
   },
   "components/common/FilterClearIcon": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/FilterIcon": {
     "eject": "risky",
     "wrap": "risky"
   },

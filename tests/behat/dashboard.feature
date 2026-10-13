@@ -75,3 +75,19 @@ Feature: Schema dashboard
     Then I should see "YAML Schema Reference"
     And I should see "Schema Structure"
     And I should see "Back"
+
+  @javascript
+  Scenario: Deleting the chosen schemas asks first and only then deletes
+    Given I have uploaded a schema with id "test.service"
+    And I reload the page
+    When I click on "Select all" "checkbox"
+    And I click on "Delete" "button" in the "[data-region='bulk-actions']" "css_element"
+    Then I should see "Are you sure" in the "dialog[open], .modal.show" "css_element"
+    When I click on "Cancel" "button" in the "dialog[open], .modal.show" "css_element"
+    Then a schema with id "test.service" should exist
+
+  @javascript
+  Scenario: When the web services are off the dashboard says where to turn them on
+    Given I have uploaded a schema with id "test.service"
+    And I reload the page
+    Then I should see "Enable web services" in the "[data-region='ws-status']" "css_element"

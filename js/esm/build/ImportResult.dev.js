@@ -121,7 +121,14 @@ const ImportResult = /* @__PURE__ */ __name((props) => {
               lineNumber: 61,
               columnNumber: 129
             }),
-            item.id && item.name && /* @__PURE__ */ jsxDEV("code", { className: "ms-2 small", children: item.id }, void 0, false, {
+            item.id && item.name && /* @__PURE__ */ jsxDEV("span", { className: "sm-id-chip compact ms-2", children: [
+              /* @__PURE__ */ jsxDEV(Icon, { name: "fingerprint", gap: true }, void 0, false, {
+                fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
+                lineNumber: 62,
+                columnNumber: 108
+              }),
+              item.id
+            ] }, void 0, true, {
               fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
               lineNumber: 62,
               columnNumber: 66
