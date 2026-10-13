@@ -21,7 +21,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 
 /**
- * The form to create a schema by writing or pasting its YAML.
+ * The form to create a schema by writing or pasting its YAML, or to change the YAML of one that exists.
  *
  * @package    local_servicemanager
  * @copyright  2026 Didactika.org
@@ -34,6 +34,7 @@ class create_schema_form extends \moodleform {
      */
     protected function definition() {
         $mform = $this->_form;
+        $editing = !empty($this->_customdata['schema']);
 
         $mform->addElement(
             'textarea',
@@ -45,17 +46,19 @@ class create_schema_form extends \moodleform {
         $mform->addRule('yamlcontent', null, 'required', null, 'client');
         $mform->addHelpButton('yamlcontent', 'yamlcontent', 'local_servicemanager');
 
-        $mform->addElement('advcheckbox', 'generatetoken', get_string('generatetoken', 'local_servicemanager'), get_string(
-            'generatetoken_desc',
-            'local_servicemanager'
-        ));
-        $mform->setDefault('generatetoken', 1);
+        if (!$editing) {
+            $mform->addElement('advcheckbox', 'generatetoken', get_string('generatetoken', 'local_servicemanager'), get_string(
+                'generatetoken_desc',
+                'local_servicemanager'
+            ));
+            $mform->setDefault('generatetoken', 1);
+        }
 
-        $this->add_action_buttons(true, get_string('create_schema', 'local_servicemanager'));
+        $this->add_action_buttons(true, $editing ? get_string('savechanges') : get_string('create_schema', 'local_servicemanager'));
     }
 
     /**
-     * Validation: the YAML must be a schema that can be created.
+     * Validation: the YAML must be a schema that can be created, or one that the schema can be changed into.
      *
      * @param array $data Values of the form.
      * @param array $files Files of the form.
@@ -65,7 +68,11 @@ class create_schema_form extends \moodleform {
         $errors = parent::validation($data, $files);
 
         if (trim($data['yamlcontent'] ?? '') !== '') {
-            $result = (new \local_servicemanager\schema\validator())->validate_content($data['yamlcontent']);
+            $schema = $this->_customdata['schema'] ?? null;
+            $result = (new \local_servicemanager\schema\validator())->validate_content(
+                $data['yamlcontent'],
+                $schema ? (int) $schema->id : null
+            );
             if (!empty($result['errors'])) {
                 $errors['yamlcontent'] = implode('<br>', array_map('s', $result['errors']));
             }

@@ -15,7 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Create a schema, with a guided form or by writing its YAML.
+ * Create a schema, or change one that exists, with a guided form or by writing its YAML.
+ *
+ * With an id the forms come filled in with the schema, and what is sent updates it instead of creating another.
  *
  * @package    local_servicemanager
  * @copyright  2026 Didactika.org
@@ -32,31 +34,60 @@ require_login();
 $context = context_system::instance();
 require_capability('local/servicemanager:manage', $context);
 
+$id = optional_param('id', 0, PARAM_INT);
 $mode = optional_param('mode', 'guided', PARAM_ALPHA) === 'yaml' ? 'yaml' : 'guided';
 
 $dashboardurl = new moodle_url('/local/servicemanager/pages/dashboard.php');
+$manager = new \local_servicemanager\schema\manager();
+$schema = null;
+if ($id) {
+    $schema = $manager->get_schema($id);
+    if (!$schema) {
+        redirect(
+            $dashboardurl,
+            get_string('schema_not_found', 'local_servicemanager'),
+            null,
+            \core\output\notification::NOTIFY_WARNING
+        );
+    }
+}
+$editing = $schema !== null;
+$cancelurl = $editing ? new moodle_url('/local/servicemanager/pages/view.php', ['id' => $id]) : $dashboardurl;
+$idparams = $editing ? ['id' => $id] : [];
+$title = get_string($editing ? 'edit_schema' : 'new_schema', 'local_servicemanager');
+
 $PAGE->set_context($context);
-$PAGE->set_url(new moodle_url('/local/servicemanager/pages/create.php', ['mode' => $mode]));
-$PAGE->set_title(get_string('new_schema', 'local_servicemanager'));
-$PAGE->set_heading(get_string('new_schema', 'local_servicemanager'));
+$PAGE->set_url(new moodle_url('/local/servicemanager/pages/create.php', $idparams + ['mode' => $mode]));
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 $PAGE->set_pagelayout('admin');
 $PAGE->navbar->add(get_string('pluginname', 'local_servicemanager'), $dashboardurl);
-$PAGE->navbar->add(get_string('new_schema', 'local_servicemanager'));
+if ($editing) {
+    $PAGE->navbar->add($schema->name, $cancelurl);
+}
+$PAGE->navbar->add($title);
 
-$guided = new guided_schema_form(new moodle_url('/local/servicemanager/pages/create.php', ['mode' => 'guided']));
-$yaml = new create_schema_form(new moodle_url('/local/servicemanager/pages/create.php', ['mode' => 'yaml']));
+$values = $editing ? guided_schema_form::values_from_yaml($schema->yaml_content) : [];
+$customdata = ['schema' => $schema, 'values' => $values];
+$formurl = fn(string $name) => new moodle_url('/local/servicemanager/pages/create.php', $idparams + ['mode' => $name]);
+$guided = new guided_schema_form($formurl('guided'), $customdata);
+$yaml = new create_schema_form($formurl('yaml'), $customdata);
+if ($editing) {
+    $guided->set_data($values);
+    $yaml->set_data(['yamlcontent' => $schema->yaml_content]);
+}
 
 // What the person filled in at the guided form goes to the editor as YAML, so they can keep working on it there.
 if ($mode === 'guided' && ($data = $guided->get_data()) && !empty($data->reviewbutton)) {
     $mode = 'yaml';
     $yaml->set_data(['yamlcontent' => guided_schema_form::yaml($data), 'generatetoken' => (int) !empty($data->generatetoken)]);
-    $PAGE->set_url(new moodle_url('/local/servicemanager/pages/create.php', ['mode' => 'yaml']));
+    $PAGE->set_url(new moodle_url('/local/servicemanager/pages/create.php', $idparams + ['mode' => 'yaml']));
     $guided = null;
 }
 
 $form = $mode === 'yaml' ? $yaml : $guided;
 if ($form !== null && $form->is_cancelled()) {
-    redirect($dashboardurl);
+    redirect($cancelurl);
 }
 
 $content = null;
@@ -71,7 +102,16 @@ if ($mode === 'yaml' && ($data = $yaml->get_data())) {
 
 if ($content !== null) {
     try {
-        $manager = new \local_servicemanager\schema\manager();
+        if ($editing) {
+            $result = $manager->update_schema($id, $content);
+            foreach ($result['warnings'] ?? [] as $warning) {
+                \core\notification::warning($warning);
+            }
+            $updated = $manager->get_schema($id);
+            \core\notification::success(get_string('schema_updated_success', 'local_servicemanager', $updated->name));
+            redirect($cancelurl);
+        }
+
         $result = $generatetoken ? $manager->create_schema_with_token($content) : $manager->create_schema($content);
 
         // A token that was just generated is kept for the next page, which shows it once.
@@ -93,7 +133,7 @@ $tabs = [];
 foreach (['guided', 'yaml'] as $name) {
     $tabs[] = new tabobject(
         $name,
-        new moodle_url('/local/servicemanager/pages/create.php', ['mode' => $name]),
+        new moodle_url('/local/servicemanager/pages/create.php', $idparams + ['mode' => $name]),
         get_string('create_mode_' . $name, 'local_servicemanager')
     );
 }
@@ -101,7 +141,7 @@ foreach (['guided', 'yaml'] as $name) {
 echo $OUTPUT->header();
 echo $OUTPUT->tabtree($tabs, $mode);
 echo $OUTPUT->notification(
-    get_string('create_intro_' . $mode, 'local_servicemanager'),
+    get_string(($editing ? 'edit_intro_' : 'create_intro_') . $mode, 'local_servicemanager'),
     \core\output\notification::NOTIFY_INFO,
     false
 );

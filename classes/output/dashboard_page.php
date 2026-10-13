@@ -122,7 +122,7 @@ class dashboard_page implements react_component_renderable, \renderable {
             'modified' => userdate($schema->timemodified),
             'modifiedAt' => (int) $schema->timemodified,
             'viewUrl' => $this->url('view.php', $params),
-            'editUrl' => $this->url('edit.php', $params),
+            'editUrl' => $this->url('create.php', $params),
             'deleteUrl' => $this->url('delete.php', $params),
             'exportUrl' => $this->url('export.php', $params),
             'historyUrl' => $this->url('history.php', $params),

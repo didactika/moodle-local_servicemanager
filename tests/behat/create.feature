@@ -14,7 +14,7 @@ Feature: Schema creation
     Then I should see "Guided form"
     When I set the field "Schema ID" to "crm.sync"
     And I set the field "Name" to "CRM sync"
-    And I set the field "Required functions" to "core_webservice_get_site_info"
+    And I search for "core_webservice_get_site_info" in the field "Required functions" and choose the first suggestion
     And I press "Create schema"
     Then I should see "was created successfully"
     And I should see "CRM sync"
@@ -33,7 +33,7 @@ Feature: Schema creation
     Given I have uploaded a schema with id "test.service"
     When I set the field "Schema ID" to "test.service"
     And I set the field "Name" to "Another name"
-    And I set the field "Required functions" to "core_webservice_get_site_info"
+    And I search for "core_webservice_get_site_info" in the field "Required functions" and choose the first suggestion
     And I press "Create schema"
     Then I should see "A schema with ID \"test.service\" already exists."
 
@@ -41,11 +41,11 @@ Feature: Schema creation
   Scenario: The guided form can pass what was filled in to the YAML editor
     When I set the field "Schema ID" to "crm.sync"
     And I set the field "Name" to "CRM sync"
-    And I set the field "Required functions" to "core_webservice_get_site_info"
+    And I search for "core_webservice_get_site_info" in the field "Required functions" and choose the first suggestion
     And I press "Review as YAML"
     Then I should see "YAML editor"
-    And the field "YAML Content" matches expression "/id: .crm.sync./"
-    And the field "YAML Content" matches expression "/core_webservice_get_site_info/"
+    And the text of the field "YAML Content" matches "/id: .crm.sync./"
+    And the text of the field "YAML Content" matches "/core_webservice_get_site_info/"
 
   @javascript
   Scenario: Create a schema by writing its YAML
@@ -70,3 +70,12 @@ Feature: Schema creation
     And I set the field "YAML Content" to "this is not a schema"
     And I press "Create schema"
     Then I should not see "was created successfully"
+
+  @javascript
+  Scenario: The functions field suggests at least ten options as you type
+    Then the field "Required functions" suggests at least "10" options for "core_"
+
+  @javascript
+  Scenario: The capabilities field suggests at least ten options as you type
+    When I expand all fieldsets
+    Then the field "Extra Capabilities" suggests at least "10" options for "moodle/"

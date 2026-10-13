@@ -153,7 +153,7 @@ class schema_page implements react_component_renderable, \renderable {
             'urls' => [
                 'dashboard' => $this->url('dashboard.php'),
                 'back' => $this->url('dashboard.php'),
-                'edit' => $this->url('edit.php', $params),
+                'edit' => $this->url('create.php', $params),
                 'delete' => $this->url('delete.php', $params),
                 'history' => $this->url('history.php', $params),
                 'regenerate' => $this->url('regenerate_token.php', $params),
