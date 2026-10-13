@@ -120,7 +120,7 @@
             </div>
             <div class="dropdown sm-filter" data-region="filters">
                 <button class="btn btn-outline-secondary" type="button" data-sm-menu aria-haspopup="true" aria-expanded="false">
-                    <span class="sm-icon-gap"><svg class="sm-filter-icon" viewBox="0 0 24 24" width="1.05em" height="1.05em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>{{#str}}filters, local_servicemanager{{/str}}
+                    <span class="sm-icon-gap">{{#pix}}i/filter, core{{/pix}}</span>{{#str}}filters, local_servicemanager{{/str}}
                     <span class="sm-count-badge" data-region="filters-count" hidden>0</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-filter-menu">
@@ -128,7 +128,7 @@
                         <h2 class="sm-filter-heading">{{#str}}filters, local_servicemanager{{/str}}</h2>
                         <button type="button" class="sm-iconbtn" data-action="reset-filters" disabled
                                 title="{{#str}}filter_clear, local_servicemanager{{/str}}" aria-label="{{#str}}filter_clear, local_servicemanager{{/str}}">
-                            <svg class="sm-filter-clear-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 14.5V20l-3 1.5v-7L3 4h14"/><line x1="16" y1="8" x2="22" y2="14"/><line x1="22" y1="8" x2="16" y2="14"/></svg>
+                            {{#pix}}i/reload, core{{/pix}}
                         </button>
                     </div>
                     <div class="sm-field">
@@ -268,10 +268,7 @@
         {{#canmanage}}
             <div class="sm-floating" data-region="bulk-actions" role="status" hidden>
                 <span class="sm-floating-count">
-                    <span><strong data-region="selected-count">0</strong> {{#str}}selected, local_servicemanager{{/str}}</span>
-                    <button type="button" class="sm-floating-clear" data-action="clear-selection" title="{{#str}}compare_clear, local_servicemanager{{/str}}">
-                        <i class="fa-solid fa-xmark" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_clear, local_servicemanager{{/str}}</span>
-                    </button>
+                    <span><span data-region="selected-count">0</span> {{#str}}selected, local_servicemanager{{/str}}</span>
                 </span>
                 <div class="sm-floating-actions" role="group" aria-label="{{#str}}actions, moodle{{/str}}">
                     <button type="button" class="btn sm-pill tone-success" data-bulk="enable"><i class="fa-solid fa-toggle-on sm-icon-gap" aria-hidden="true"></i>{{#str}}bulk_enable, local_servicemanager{{/str}}</button>
@@ -279,6 +276,9 @@
                     <button type="button" class="btn sm-pill tone-info" data-bulk="export"><i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>{{#str}}bulk_export, local_servicemanager{{/str}}</button>
                     <button type="button" class="btn sm-pill tone-danger" data-bulk="delete"><i class="fa-solid fa-trash sm-icon-gap" aria-hidden="true"></i>{{#str}}bulk_delete, local_servicemanager{{/str}}</button>
                 </div>
+                <button type="button" class="sm-floating-clear" data-action="clear-selection" title="{{#str}}compare_clear, local_servicemanager{{/str}}">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_clear, local_servicemanager{{/str}}</span>
+                </button>
             </div>
         {{/canmanage}}
     {{/hasschemas}}

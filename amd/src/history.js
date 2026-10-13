@@ -27,6 +27,9 @@ import Ajax from 'core/ajax';
 import {get_strings as getStrings} from 'core/str';
 import {init as initMenus} from 'local_servicemanager/menu';
 import {init as initCopy} from 'local_servicemanager/copy';
+import {add as addToast} from 'core/toast';
+import Templates from 'core/templates';
+import {confirm} from 'local_servicemanager/dialogue';
 import {
     addressKeeper, drawPager, hasWords, inDates, loadPagerStrings, readState
 } from 'local_servicemanager/listing';
@@ -55,7 +58,7 @@ export const init = () => {
     }
     initMenus(root);
     initCopy();
-    const rows = [...root.querySelectorAll('[data-region="version"]')];
+    let rows = [...root.querySelectorAll('[data-region="version"]')];
     if (rows.length === 0) {
         return;
     }
@@ -76,7 +79,7 @@ export const init = () => {
     const state = readState(sizes.map((size) => Number(size.dataset.perpage)));
     const keepAddress = addressKeeper(firstSize);
     const chosen = new Set();
-    let strings = {chosen: '{n}/{total}', count: '{n}', loading: '', copy: '', failed: root.dataset.yamlFailed};
+    let strings = {current: '{n}', chosen: '{n}/{total}', count: '{n}', loading: '', copy: '', failed: root.dataset.yamlFailed};
     let pager = {};
 
     const drawChoice = () => {
@@ -184,6 +187,29 @@ export const init = () => {
         drawChoice();
     });
 
+    const rollback = (id) => Ajax.call([{
+        methodname: 'local_servicemanager_rollback_schema',
+        args: {id: Number(root.dataset.schemaid), historyid: id},
+    }])[0].then((result) => Templates.renderForPromise('local_servicemanager/history_rows', {rows: result.rows})
+        .then(({html, js}) => {
+            Templates.replaceNodeContents(list, html, js);
+            rows = [...root.querySelectorAll('[data-region="version"]')];
+            chosen.clear();
+            tooMany.hidden = true;
+            root.querySelector('[data-region="history-current"]').textContent = strings.current.replace('{n}', result.version);
+            render();
+            return getStrings([{key: 'rollback_success', component: 'local_servicemanager'}]);
+        }))
+        .then(([message]) => addToast(message, {type: 'success'}))
+        .catch(() => getStrings([{key: 'rollback_error', component: 'local_servicemanager'}])
+            .then(([message]) => addToast(message, {type: 'danger'})));
+
+    const askRollback = (button) => getStrings([
+        {key: 'rollback_title', component: 'local_servicemanager', param: button.dataset.version},
+        {key: 'rollback_confirm', component: 'local_servicemanager'},
+        {key: 'rollback', component: 'local_servicemanager'},
+    ]).then(([title, body, label]) => confirm(title, body, label, () => rollback(Number(button.dataset.id))));
+
     const actions = {
         'clear-search': () => {
             search.value = '';
@@ -209,6 +235,7 @@ export const init = () => {
             drawChoice();
         },
         'toggle-yaml': toggleYaml,
+        'rollback': (button) => askRollback(button),
     };
 
     root.addEventListener('click', (event) => {
@@ -232,11 +259,14 @@ export const init = () => {
             {key: 'history_count', component: 'local_servicemanager', param: '{n}'},
             {key: 'loading', component: 'local_servicemanager'},
             {key: 'copy', component: 'local_servicemanager'},
+            {key: 'history_current', component: 'local_servicemanager', param: '{n}'},
         ]).catch(() => null),
     ]).then(([loadedPager, loaded]) => {
         pager = loadedPager;
         if (loaded) {
-            strings = Object.assign(strings, {chosen: loaded[0], count: loaded[1], loading: loaded[2], copy: loaded[3]});
+            strings = Object.assign(strings, {
+                chosen: loaded[0], count: loaded[1], loading: loaded[2], copy: loaded[3], current: loaded[4],
+            });
         }
         return render();
     }).catch(() => render());

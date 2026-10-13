@@ -375,17 +375,27 @@
     }
 }
 
-// The search box is one field with a single border and one rounded outline, whatever the release of Bootstrap draws its group with.
+// The search box and the button of the filters are pills: one rounded outline, the icon inside the field and the cross at its end. The
+// search takes the tint of the accent colour while it has text, and the button does the same while it has filters on or is open.
 .servicemanager-dashboard,
 .servicemanager-history-page {
+    --sm-border-strong: color-mix(in srgb, var(--sm-body-color) 42%, var(--sm-body-bg));
+
     .sm-search {
         display: flex;
         flex-wrap: nowrap;
-        align-items: stretch;
+        align-items: center;
+        height: 2.25rem;
         overflow: hidden;
-        border: 1px solid var(--sm-secondary-color);
-        border-radius: var(--sm-btn-border-radius);
+        border: 1px solid var(--sm-border-strong);
+        border-radius: 999px;
         background-color: var(--sm-body-bg);
+        transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+
+        &:has(input:not(:placeholder-shown)) {
+            border-color: var(--sm-primary);
+            background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+        }
 
         &:focus-within {
             border-color: var(--sm-primary);
@@ -396,11 +406,10 @@
             display: flex;
             align-items: center;
             margin: 0;
-            padding: 0 0.75rem;
+            padding: 0 0.25rem 0 0.9rem;
             border: 0;
-            border-right: 1px solid var(--sm-border-color);
             border-radius: 0;
-            background-color: var(--sm-tertiary-bg);
+            background-color: transparent;
             color: var(--sm-secondary-color);
         }
 
@@ -409,19 +418,66 @@
             flex: 1 1 auto;
             width: 1%;
             min-width: 0;
+            height: 100%;
             margin: 0;
+            padding: 0 0.75rem 0 0.5rem;
             border: 0;
             border-radius: 0;
+            background-color: transparent;
             box-shadow: none;
+            font-size: 0.875rem;
+            font-weight: inherit;
+
+            &:not(:placeholder-shown) {
+                color: var(--sm-primary);
+                font-weight: 600;
+            }
+        }
+
+        // The browser draws a cross of its own in a search field; the button of the box is the one cross.
+        input[type='search']::-webkit-search-cancel-button,
+        input[type='search']::-webkit-search-decoration {
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         .btn {
-            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            margin: 0 0.3rem 0 0;
+            padding: 0;
             border: 0;
-            border-left: 1px solid var(--sm-border-color);
-            border-radius: 0;
-            background-color: var(--sm-body-bg);
+            border-radius: 50%;
+            background-color: transparent;
             color: var(--sm-secondary-color);
+
+            &:hover {
+                background-color: var(--sm-tertiary-bg);
+                color: var(--sm-primary);
+            }
+        }
+    }
+
+    .sm-filter > .btn.btn-outline-secondary {
+        height: 2.25rem;
+        padding: 0 1rem;
+        border-color: var(--sm-border-strong);
+        border-radius: 999px;
+        background-color: var(--sm-body-bg);
+        color: inherit;
+        font-size: 0.875rem;
+
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &.active,
+        &[aria-expanded='true'] {
+            border-color: var(--sm-primary);
+            background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+            color: var(--sm-primary);
         }
     }
 }

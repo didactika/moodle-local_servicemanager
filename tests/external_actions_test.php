@@ -17,6 +17,7 @@
 namespace local_servicemanager;
 
 use local_servicemanager\external\regenerate_token;
+use local_servicemanager\external\rollback_schema;
 use local_servicemanager\external\set_enabled;
 use local_servicemanager\schema\manager;
 
@@ -26,6 +27,8 @@ use local_servicemanager\schema\manager;
  * @package    local_servicemanager
  * @covers     \local_servicemanager\external\set_enabled
  * @covers     \local_servicemanager\external\regenerate_token
+ * @covers     \local_servicemanager\external\rollback_schema
+ * @covers     \local_servicemanager\output\version_rows
  * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -53,6 +56,42 @@ final class external_actions_test extends \advanced_testcase {
         $this->assertFalse(set_enabled::execute($id, false)['enabled']);
         $this->assertEquals(0, $DB->get_field('local_servicemanager_schemas', 'enabled', ['id' => $id]));
         $this->assertTrue(set_enabled::execute($id, true)['enabled']);
+    }
+
+    /**
+     * A schema goes back to an earlier version and the history that comes back says which one is current.
+     */
+    public function test_a_schema_is_rolled_back_and_the_history_is_returned(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $id = $this->schema();
+        $manager = new manager();
+        $yaml = "meta:\n  id: \"act.test\"\n  name: \"Act test\"\n  version: \"1.0.1\"\n" .
+            "definition:\n  functions:\n    - core_webservice_get_site_info\n    - core_user_get_users\n";
+        $manager->update_schema($id, $yaml);
+        $first = $DB->get_record('local_servicemanager_history', ['schemaid' => $id, 'version' => '1.0.0'], '*', MUST_EXIST);
+
+        $outcome = rollback_schema::execute($id, (int) $first->id);
+
+        $this->assertEquals('1.0.0', $outcome['version']);
+        $this->assertEquals('1.0.0', $DB->get_field('local_servicemanager_schemas', 'version', ['id' => $id]));
+        $current = array_values(array_filter($outcome['rows'], static fn(array $row) => $row['iscurrent']));
+        $this->assertCount(1, $current);
+        $this->assertEquals('1.0.0', $current[0]['version']);
+        $this->assertFalse($current[0]['canrollback']);
+    }
+
+    /**
+     * A version of another schema cannot be rolled back to.
+     */
+    public function test_a_version_of_another_schema_is_refused(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $id = $this->schema();
+
+        $this->expectException(\moodle_exception::class);
+        rollback_schema::execute($id, 987654);
     }
 
     /**

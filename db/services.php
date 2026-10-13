@@ -58,6 +58,14 @@ $functions = [
         'ajax' => true,
         'capabilities' => 'local/servicemanager:manage',
     ],
+    'local_servicemanager_rollback_schema' => [
+        'classname' => 'local_servicemanager\external\rollback_schema',
+        'methodname' => 'execute',
+        'description' => 'Bring a service schema back to one of its versions and return the versions of its history.',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'local/servicemanager:manage',
+    ],
     'local_servicemanager_regenerate_token' => [
         'classname' => 'local_servicemanager\external\regenerate_token',
         'methodname' => 'execute',

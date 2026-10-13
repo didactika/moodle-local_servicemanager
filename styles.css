@@ -885,11 +885,12 @@
     display: flex;
     align-items: center;
     max-width: calc(100vw - 2rem);
-    padding: 0.4rem;
-    border-radius: 3rem;
+    padding: 0.5rem 0.6rem 0.5rem 1.25rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 1rem;
     background-color: var(--sm-body-bg);
-    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.22);
-    gap: 0.5rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+    gap: 1rem;
     transform: translateX(-50%);
 }
 
@@ -902,11 +903,8 @@
 .servicemanager-import-result .sm-floating .sm-floating-count {
     display: inline-flex;
     align-items: center;
-    padding: 0.25rem 0.25rem 0.25rem 0.9rem;
-    border-radius: 2rem;
-    background-color: var(--sm-primary);
-    color: var(--sm-white);
-    gap: 0.5rem;
+    color: var(--sm-body-color);
+    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -920,13 +918,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
     border: 0;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.18);
-    color: inherit;
-    transition: background-color 0.12s ease, transform 0.12s ease;
+    background-color: transparent;
+    color: var(--sm-secondary-color);
+    transition: background-color 0.12s ease, color 0.12s ease;
 }
 
 .servicemanager-dashboard .sm-floating .sm-floating-clear:hover,
@@ -936,18 +935,8 @@
 .servicemanager-documentation .sm-floating .sm-floating-clear:hover,
 .servicemanager-import-page .sm-floating .sm-floating-clear:hover,
 .servicemanager-import-result .sm-floating .sm-floating-clear:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-    transform: scale(1.1);
-}
-
-.servicemanager-dashboard .sm-floating .sm-floating-clear:active,
-.servicemanager-detail .sm-floating .sm-floating-clear:active,
-.servicemanager-history-page .sm-floating .sm-floating-clear:active,
-.servicemanager-compare-page .sm-floating .sm-floating-clear:active,
-.servicemanager-documentation .sm-floating .sm-floating-clear:active,
-.servicemanager-import-page .sm-floating .sm-floating-clear:active,
-.servicemanager-import-result .sm-floating .sm-floating-clear:active {
-    transform: scale(0.95);
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-body-color);
 }
 
 .servicemanager-dashboard .sm-floating .sm-floating-clear:focus-visible,
@@ -957,7 +946,7 @@
 .servicemanager-documentation .sm-floating .sm-floating-clear:focus-visible,
 .servicemanager-import-page .sm-floating .sm-floating-clear:focus-visible,
 .servicemanager-import-result .sm-floating .sm-floating-clear:focus-visible {
-    outline: 2px solid var(--sm-white);
+    outline: 2px solid var(--sm-primary);
     outline-offset: 1px;
 }
 
@@ -1100,6 +1089,17 @@
     pointer-events: none;
 }
 
+.servicemanager-dashboard .sm-pill.compact:not(.icon-only),
+.servicemanager-detail .sm-pill.compact:not(.icon-only),
+.servicemanager-history-page .sm-pill.compact:not(.icon-only),
+.servicemanager-compare-page .sm-pill.compact:not(.icon-only),
+.servicemanager-documentation .sm-pill.compact:not(.icon-only),
+.servicemanager-import-page .sm-pill.compact:not(.icon-only),
+.servicemanager-import-result .sm-pill.compact:not(.icon-only) {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8125rem;
+}
+
 .servicemanager-dashboard .sm-pill.icon-only,
 .servicemanager-detail .sm-pill.icon-only,
 .servicemanager-history-page .sm-pill.icon-only,
@@ -1179,6 +1179,19 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+}
+
+.servicemanager-dashboard .sm-slot,
+.servicemanager-detail .sm-slot,
+.servicemanager-history-page .sm-slot,
+.servicemanager-compare-page .sm-slot,
+.servicemanager-documentation .sm-slot,
+.servicemanager-import-page .sm-slot,
+.servicemanager-import-result .sm-slot {
+    display: inline-block;
+    flex: none;
+    width: 2rem;
+    height: 2rem;
 }
 
 .servicemanager-dashboard .sm-empty,
@@ -1297,10 +1310,18 @@
 
 .servicemanager-detail .sm-fresh-token .sm-token-value {
     display: inline-block;
-    max-width: calc(100% - 2.6rem);
+    max-width: calc(100% - 3.4rem);
     overflow-wrap: anywhere;
     color: var(--sm-body-color);
     font-size: 0.8125rem;
+    vertical-align: middle;
+}
+
+.servicemanager-detail .sm-fresh-token .sm-pill.icon-only.compact {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-inline-start: 0.75rem;
+    font-size: 0.8rem;
     vertical-align: middle;
 }
 
@@ -1547,6 +1568,26 @@
     font-weight: 600;
 }
 
+.sm-modal .modal-header .close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--sm-secondary-color);
+    opacity: 1;
+    text-shadow: none;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.sm-modal .modal-header .close:hover {
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-body-color);
+}
+
 .sm-modal .modal-body {
     padding: 1.25rem;
 }
@@ -1665,22 +1706,157 @@
     }
 }
 
-.servicemanager-compare-page .sm-change {
-    margin-bottom: 0.35rem;
+.servicemanager-compare-page .sm-changes {
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: var(--sm-border-radius-lg);
+    background-color: var(--sm-body-bg);
+    box-shadow: var(--sm-box-shadow-sm);
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-head {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    gap: 0.6rem;
+    list-style: none;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-head::-webkit-details-marker {
+    display: none;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-caret {
+    color: var(--sm-secondary-color);
+    font-size: 0.8rem;
+    transition: transform 0.15s ease;
+}
+
+.servicemanager-compare-page .sm-changes[open] .sm-changes-caret {
+    transform: rotate(90deg);
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    padding: 1rem;
+    border-top: 1px solid var(--sm-border-color);
+    gap: 1rem 1.5rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-area-title {
+    margin: 0 0 0.5rem;
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    gap: 0.4rem;
+    list-style: none;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip {
+    --sm-tone: var(--sm-secondary-color);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--sm-tone) 30%, var(--sm-body-bg));
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--sm-tone) 10%, var(--sm-body-bg));
+    color: var(--sm-body-color);
+    font-size: 0.8125rem;
+    gap: 0.4rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip.tone-success {
+    --sm-tone: var(--sm-success);
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip.tone-danger {
+    --sm-tone: var(--sm-danger);
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip.tone-warning {
+    --sm-tone: var(--sm-warning-text-emphasis);
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-sign {
+    color: var(--sm-tone);
+    font-size: 0.7rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-name {
+    font-weight: 600;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-values {
+    display: inline-flex;
+    align-items: center;
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    gap: 0.35rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-from {
+    text-decoration: line-through;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-to {
+    color: var(--sm-body-color);
+    font-weight: 600;
+}
+
+.servicemanager-compare-page .sm-changenav {
+    padding-inline-start: 0.6rem;
     gap: 0.5rem;
 }
 
-.servicemanager-compare-page .sm-change del {
-    color: var(--sm-danger-text-emphasis);
+.servicemanager-compare-page .sm-changenav .sm-navbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 50%;
+    background-color: var(--sm-body-bg);
+    color: var(--sm-body-color);
+    transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
 
-.servicemanager-compare-page .sm-change ins {
-    color: var(--sm-success-text-emphasis);
-    text-decoration: none;
+.servicemanager-compare-page .sm-changenav .sm-navbtn:hover,
+.servicemanager-compare-page .sm-changenav .sm-navbtn:focus-visible {
+    border-color: var(--sm-primary);
+    background-color: color-mix(in srgb, var(--sm-primary) 10%, var(--sm-body-bg));
+    color: var(--sm-primary);
 }
 
-.servicemanager-compare-page .sm-change-badge {
-    min-width: 1.5rem;
+.servicemanager-compare-page .sm-changenav .sm-changenav-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 11rem;
+    text-align: center;
+    line-height: 1.25;
+}
+
+.servicemanager-compare-page .sm-changenav .sm-changenav-info small {
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
 }
 
 .servicemanager-compare-page .sm-diff-card {
@@ -2431,15 +2607,28 @@
     font-size: 0.75rem;
 }
 
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    --sm-border-strong: color-mix(in srgb, var(--sm-body-color) 42%, var(--sm-body-bg));
+}
+
 .servicemanager-dashboard .sm-search,
 .servicemanager-history-page .sm-search {
     display: flex;
     flex-wrap: nowrap;
-    align-items: stretch;
+    align-items: center;
+    height: 2.25rem;
     overflow: hidden;
-    border: 1px solid var(--sm-secondary-color);
-    border-radius: var(--sm-btn-border-radius);
+    border: 1px solid var(--sm-border-strong);
+    border-radius: 999px;
     background-color: var(--sm-body-bg);
+    transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.servicemanager-dashboard .sm-search:has(input:not(:placeholder-shown)),
+.servicemanager-history-page .sm-search:has(input:not(:placeholder-shown)) {
+    border-color: var(--sm-primary);
+    background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
 }
 
 .servicemanager-dashboard .sm-search:focus-within,
@@ -2453,11 +2642,10 @@
     display: flex;
     align-items: center;
     margin: 0;
-    padding: 0 0.75rem;
+    padding: 0 0.25rem 0 0.9rem;
     border: 0;
-    border-right: 1px solid var(--sm-border-color);
     border-radius: 0;
-    background-color: var(--sm-tertiary-bg);
+    background-color: transparent;
     color: var(--sm-secondary-color);
 }
 
@@ -2468,20 +2656,78 @@
     flex: 1 1 auto;
     width: 1%;
     min-width: 0;
+    height: 100%;
     margin: 0;
+    padding: 0 0.75rem 0 0.5rem;
     border: 0;
     border-radius: 0;
+    background-color: transparent;
     box-shadow: none;
+    font-size: 0.875rem;
+    font-weight: inherit;
+}
+
+.servicemanager-dashboard .sm-search .form-control:not(:placeholder-shown),
+.servicemanager-dashboard .sm-search > .form-control:not(:last-child):not(:placeholder-shown),
+.servicemanager-history-page .sm-search .form-control:not(:placeholder-shown),
+.servicemanager-history-page .sm-search > .form-control:not(:last-child):not(:placeholder-shown) {
+    color: var(--sm-primary);
+    font-weight: 600;
+}
+
+.servicemanager-dashboard .sm-search input[type=search]::-webkit-search-cancel-button,
+.servicemanager-dashboard .sm-search input[type=search]::-webkit-search-decoration,
+.servicemanager-history-page .sm-search input[type=search]::-webkit-search-cancel-button,
+.servicemanager-history-page .sm-search input[type=search]::-webkit-search-decoration {
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .servicemanager-dashboard .sm-search .btn,
 .servicemanager-history-page .sm-search .btn {
-    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: 0 0.3rem 0 0;
+    padding: 0;
     border: 0;
-    border-left: 1px solid var(--sm-border-color);
-    border-radius: 0;
-    background-color: var(--sm-body-bg);
+    border-radius: 50%;
+    background-color: transparent;
     color: var(--sm-secondary-color);
+}
+
+.servicemanager-dashboard .sm-search .btn:hover,
+.servicemanager-history-page .sm-search .btn:hover {
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-primary);
+}
+
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary {
+    height: 2.25rem;
+    padding: 0 1rem;
+    border-color: var(--sm-border-strong);
+    border-radius: 999px;
+    background-color: var(--sm-body-bg);
+    color: inherit;
+    font-size: 0.875rem;
+}
+
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:hover,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary[aria-expanded=true],
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:hover,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary[aria-expanded=true] {
+    border-color: var(--sm-primary);
+    background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+    color: var(--sm-primary);
 }
 
 .sm-fa4 .fa-solid {

@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+import {get_strings as getStrings} from 'core/str';
+
 /** The selector of a cell that holds a difference. */
 const CHANGED = '.sm-diff-added, .sm-diff-removed, .sm-diff-changed';
 
@@ -66,15 +68,63 @@ export const init = () => {
         });
     };
 
-    const next = () => {
+    const title = root.querySelector('[data-region="change-title"]');
+    const detail = root.querySelector('[data-region="change-detail"]');
+    let strings = {of: '{n}/{total}', found: '{n}', at: '{line} {kind}', hint: '', added: '', removed: '', changed: ''};
+
+    const changed = (row) => row.querySelector(CHANGED) !== null;
+
+    /**
+     * The runs of rows that differ in the rows that are shown, with the line where each starts and what it is.
+     *
+     * @returns {Object[]} One entry for each run: its first row, its line and whether it was added, removed or changed.
+     */
+    const runs = () => {
         const rows = [...activeTable().querySelectorAll('tbody tr[data-row]')].filter((row) => !row.hidden);
-        const changed = (row) => row.querySelector(CHANGED) !== null;
-        const starts = rows.filter((row, index) => changed(row) && (index === 0 || !changed(rows[index - 1])));
-        if (starts.length === 0) {
+        const result = [];
+        rows.forEach((row, index) => {
+            if (!changed(row)) {
+                return;
+            }
+            if (index === 0 || !changed(rows[index - 1])) {
+                const cells = row.querySelectorAll('.sm-line-no');
+                const numbers = [...cells].map((cell) => cell.textContent.trim()).filter((value) => value !== '');
+                result.push({row, line: numbers.length ? numbers[numbers.length - 1] : '', kinds: new Set()});
+            }
+            const kinds = result[result.length - 1].kinds;
+            ['added', 'removed', 'changed'].forEach((kind) => {
+                if (row.querySelector('.sm-diff-' + kind)) {
+                    kinds.add(kind);
+                }
+            });
+        });
+        return result;
+    };
+
+    const showPosition = () => {
+        if (!title) {
             return;
         }
-        position = (position + 1) % starts.length;
-        starts[position].scrollIntoView({block: 'center', behavior: 'smooth'});
+        const list = runs();
+        if (position < 0 || position >= list.length) {
+            title.textContent = strings.found.replace('{n}', list.length);
+            detail.textContent = strings.hint;
+            return;
+        }
+        const kinds = list[position].kinds;
+        const kind = kinds.size === 1 ? [...kinds][0] : 'changed';
+        title.textContent = strings.of.replace('{n}', position + 1).replace('{total}', list.length);
+        detail.textContent = strings.at.replace('{line}', list[position].line).replace('{kind}', strings[kind]);
+    };
+
+    const move = (step) => {
+        const list = runs();
+        if (list.length === 0) {
+            return;
+        }
+        position = (position + step + list.length) % list.length;
+        list[position].row.scrollIntoView({block: 'center', behavior: 'smooth'});
+        showPosition();
     };
 
     root.addEventListener('click', (event) => {
@@ -84,16 +134,34 @@ export const init = () => {
             view = switcher.dataset.view;
             position = -1;
             render();
+            showPosition();
         } else if (fold) {
             opened.add(fold.closest('[data-region="fold"]').dataset.from);
             render();
         } else if (event.target.closest('[data-action="next-change"]')) {
-            next();
+            move(1);
+        } else if (event.target.closest('[data-action="prev-change"]')) {
+            move(-1);
         }
     });
     only.addEventListener('change', () => {
         position = -1;
         render();
+        showPosition();
     });
     render();
+    showPosition();
+    getStrings([
+        {key: 'compare_change_of', component: 'local_servicemanager', param: {n: '{n}', total: '{total}'}},
+        {key: 'compare_changes_found', component: 'local_servicemanager', param: '{n}'},
+        {key: 'compare_change_at', component: 'local_servicemanager', param: {line: '{line}', kind: '{kind}'}},
+        {key: 'compare_changes_hint', component: 'local_servicemanager'},
+        {key: 'change_added', component: 'local_servicemanager'},
+        {key: 'change_removed', component: 'local_servicemanager'},
+        {key: 'change_changed', component: 'local_servicemanager'},
+    ]).then(([of, found, at, hint, added, removed, changedLabel]) => {
+        strings = {of, found, at, hint, added, removed, changed: changedLabel};
+        showPosition();
+        return null;
+    }).catch(() => showPosition());
 };

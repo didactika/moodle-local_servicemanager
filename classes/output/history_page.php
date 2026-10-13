@@ -16,7 +16,6 @@
 
 namespace local_servicemanager\output;
 
-use local_servicemanager\schema\history_manager;
 
 /**
  * The versions of a schema: who changed it, when and why, with the way to see one, go back to it or compare two.
@@ -54,10 +53,7 @@ class history_page implements \renderable, \templatable {
         global $PAGE;
 
         $id = (int) $this->schema->id;
-        $rows = [];
-        foreach ((new history_manager())->list_versions($id) as $index => $record) {
-            $rows[] = $this->row($record, $PAGE, $index >= self::PERPAGE_OPTIONS[0]);
-        }
+        $rows = $this->rows($PAGE);
 
         return [
             'schemaid' => $id,
@@ -87,48 +83,17 @@ class history_page implements \renderable, \templatable {
     }
 
     /**
-     * One version of the list.
+     * The versions of the list, in the shape the template takes.
      *
-     * @param \stdClass $record The version, with the fields of the person who made it.
-     * @param \moodle_page $page The page, to draw the picture of the person.
-     * @param bool $hidden Whether the version is out of the first page.
-     * @return array The row.
+     * @param \moodle_page $page The page, to draw the picture of the person who made each version.
+     * @return array[] One entry for each version.
      */
-    private function row(\stdClass $record, \moodle_page $page, bool $hidden): array {
-        $user = new \stdClass();
-        $user->id = $record->changedby;
-        $fields = [
-            'firstname', 'lastname', 'middlename', 'alternatename', 'firstnamephonetic', 'lastnamephonetic', 'picture', 'email',
-            'imagealt',
-        ];
-        foreach ($fields as $field) {
-            $user->$field = $record->$field;
+    private function rows(\moodle_page $page): array {
+        $rows = version_rows::describe($this->schema, $page);
+        foreach ($rows as $index => $row) {
+            // Only the first page is shown until the script takes over.
+            $rows[$index]['hidden'] = $index >= self::PERPAGE_OPTIONS[0];
         }
-        $picture = new \user_picture($user);
-        $picture->size = 1;
-        $current = $record->version === $this->schema->version;
-        $name = fullname($user);
-        $reason = $record->change_reason ? format_string($record->change_reason) : '';
-
-        return [
-            'id' => (int) $record->id,
-            'version' => $record->version,
-            'username' => $name,
-            'userpicture' => $picture->get_url($page)->out(false),
-            'date' => userdate($record->timecreated, get_string('strftimedatetimeshort')),
-            'at' => (int) $record->timecreated,
-            'reason' => $reason,
-            'iscurrent' => $current,
-            'hidden' => $hidden,
-            'text' => $record->version . ' ' . $name . ' ' . $reason,
-            'viewurl' => $this->url('view_history.php', ['historyid' => $record->id]),
-            // A version that is the one the schema has now cannot be rolled back to.
-            'rollbackurl' => $current ? '' : $this->url('history.php', [
-                'id' => $this->schema->id,
-                'action' => 'rollback',
-                'historyid' => $record->id,
-                'sesskey' => sesskey(),
-            ]),
-        ];
+        return $rows;
     }
 }

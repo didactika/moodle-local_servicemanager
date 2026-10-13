@@ -41,6 +41,7 @@
         "areas": [],
         "hasareas": false,
         "hasstarts": true,
+        "changescount": 0,
         "split": [],
         "unified": []
     }
@@ -71,29 +72,36 @@
     </div>
 
     {{#hasareas}}
-        <div class="card sm-block" data-region="change-summary">
-            <div class="card-header"><h5 class="sm-flush">{{#str}}compare_changes_title, local_servicemanager{{/str}}</h5></div>
-            <div class="card-body">
-                <div class="row">
-                    {{#areas}}
-                        <div class="col-lg-6 sm-block">
-                            <div class="sm-muted small sm-upper sm-block-small"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{title}}</div>
-                            <ul class="list-unstyled sm-flush">
-                                {{#items}}
-                                    <li class="sm-change">
-                                        <span class="sm-badge tone-{{tone}} sm-change-badge" title="{{kindlabel}}"><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{kindlabel}}</span></span>
-                                        <span>
-                                            {{#code}}<code>{{label}}</code>{{/code}}{{^code}}{{label}}{{/code}}
-                                            {{#iskindchanged}}<span class="sm-muted">: <del>{{from}}</del> → <ins>{{to}}</ins></span>{{/iskindchanged}}
+        <details class="sm-changes sm-block" data-region="change-summary" open>
+            <summary class="sm-changes-head">
+                <i class="fa-solid fa-chevron-right sm-changes-caret" aria-hidden="true"></i>
+                <h5 class="sm-changes-title">{{#str}}compare_changes_title, local_servicemanager{{/str}}</h5>
+                <span class="sm-count-badge">{{changescount}}</span>
+            </summary>
+            <div class="sm-changes-body">
+                {{#areas}}
+                    <section class="sm-changes-area">
+                        <h6 class="sm-changes-area-title"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{title}}</h6>
+                        <ul class="sm-changes-list">
+                            {{#items}}
+                                <li class="sm-change-chip tone-{{tone}}">
+                                    <i class="fa-solid fa-{{icon}} sm-change-sign" aria-hidden="true"></i>
+                                    <span class="sr-only visually-hidden">{{kindlabel}}: </span>
+                                    <span class="sm-change-name">{{label}}</span>
+                                    {{#iskindchanged}}
+                                        <span class="sm-change-values">
+                                            <span class="sm-change-from">{{from}}</span>
+                                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                            <span class="sm-change-to">{{to}}</span>
                                         </span>
-                                    </li>
-                                {{/items}}
-                            </ul>
-                        </div>
-                    {{/areas}}
-                </div>
+                                    {{/iskindchanged}}
+                                </li>
+                            {{/items}}
+                        </ul>
+                    </section>
+                {{/areas}}
             </div>
-        </div>
+        </details>
     {{/hasareas}}
 
     <div class="sm-actions-row sm-spread sm-block" data-region="diff-tools">
@@ -110,11 +118,6 @@
                 <input class="custom-control-input form-check-input" type="checkbox" role="switch" id="only-changes" checked>
                 <label class="custom-control-label form-check-label" for="only-changes">{{#str}}compare_only_changes, local_servicemanager{{/str}}</label>
             </div>
-            {{#hasstarts}}
-                <button type="button" class="btn sm-pill tone-primary" data-action="next-change">
-                    <i class="fa-solid fa-arrow-down sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_next_change, local_servicemanager{{/str}}
-                </button>
-            {{/hasstarts}}
         </div>
     </div>
 
@@ -160,6 +163,20 @@
         </div>
     </div>
 </div>
+{{#hasstarts}}
+    <div class="sm-floating sm-changenav" role="status" data-region="change-navigator">
+        <button type="button" class="sm-navbtn" data-action="prev-change" title="{{#str}}compare_prev_change, local_servicemanager{{/str}}">
+            <i class="fa-solid fa-chevron-up" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_prev_change, local_servicemanager{{/str}}</span>
+        </button>
+        <span class="sm-changenav-info">
+            <strong data-region="change-title"></strong>
+            <small data-region="change-detail"></small>
+        </span>
+        <button type="button" class="sm-navbtn" data-action="next-change" title="{{#str}}compare_next_change, local_servicemanager{{/str}}">
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_next_change, local_servicemanager{{/str}}</span>
+        </button>
+    </div>
+{{/hasstarts}}
 {{#js}}
 require(['local_servicemanager/compare'], function(compare) {
     compare.init();

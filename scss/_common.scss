@@ -425,49 +425,44 @@
         display: flex;
         align-items: center;
         max-width: calc(100vw - 2rem);
-        padding: 0.4rem;
-        border-radius: 3rem;
+        padding: 0.5rem 0.6rem 0.5rem 1.25rem;
+        border: 1px solid var(--sm-border-color);
+        border-radius: 1rem;
         background-color: var(--sm-body-bg);
-        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.22);
-        gap: 0.5rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+        gap: 1rem;
         transform: translateX(-50%);
 
-        // How many are chosen, in the accent colour; pressing it clears the choice.
+        // How many are chosen: plain text, in the same weight as the title of a card.
         .sm-floating-count {
             display: inline-flex;
             align-items: center;
-            padding: 0.25rem 0.25rem 0.25rem 0.9rem;
-            border-radius: 2rem;
-            background-color: var(--sm-primary);
-            color: var(--sm-white);
-            gap: 0.5rem;
+            color: var(--sm-body-color);
+            font-weight: 600;
             white-space: nowrap;
         }
 
-        // The cross that clears the choice: a round button that lights up under the pointer.
+        // The cross at the end of the bar that clears the choice: a round button that lights up under the pointer.
         .sm-floating-clear {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 1.75rem;
-            height: 1.75rem;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
             border: 0;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.18);
-            color: inherit;
-            transition: background-color 0.12s ease, transform 0.12s ease;
+            background-color: transparent;
+            color: var(--sm-secondary-color);
+            transition: background-color 0.12s ease, color 0.12s ease;
 
             &:hover {
-                background-color: rgba(255, 255, 255, 0.4);
-                transform: scale(1.1);
-            }
-
-            &:active {
-                transform: scale(0.95);
+                background-color: var(--sm-tertiary-bg);
+                color: var(--sm-body-color);
             }
 
             &:focus-visible {
-                outline: 2px solid var(--sm-white);
+                outline: 2px solid var(--sm-primary);
                 outline-offset: 1px;
             }
         }
@@ -537,6 +532,12 @@
             pointer-events: none;
         }
 
+        // A text button as small as the badges next to it.
+        &.compact:not(.icon-only) {
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+
         // Only an icon: a round button, as big as the field next to it.
         &.icon-only {
             justify-content: center;
@@ -579,6 +580,14 @@
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
+    }
+
+    // The place of a button that a row does not have, so the buttons of the same kind are always in the same place.
+    .sm-slot {
+        display: inline-block;
+        flex: none;
+        width: 2rem;
+        height: 2rem;
     }
 
     // What a list shows when it has nothing to show.

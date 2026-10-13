@@ -111,6 +111,7 @@ class compare_page implements \renderable, \templatable {
             'changedlabel' => get_string('compare_changed', 'local_servicemanager', $counts['changed']),
             'areas' => $areas,
             'hasareas' => !empty($areas),
+            'changescount' => array_sum(array_map(static fn(array $area): int => count($area['items']), $areas)),
             'hasstarts' => !empty($this->starts($rows)),
             'split' => $this->split_rows($rows, $folded),
             'unified' => $this->unified_rows($rows, $folded),
