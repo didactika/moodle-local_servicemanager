@@ -202,63 +202,6 @@ class manager {
     }
 
     /**
-     * Get schemas with pagination and filters.
-     *
-     * @param int $page Current page (0-indexed).
-     * @param int $perpage Items per page.
-     * @param array $filters Optional filters: 'status', 'name', 'datefrom', 'dateto'.
-     * @return array Array of schema records.
-     */
-    public function get_schemas_paginated(int $page = 0, int $perpage = 10, array $filters = []): array {
-        global $DB;
-
-        [$where, $params] = $this->build_filter_conditions($filters);
-
-        // Select all from schemas, but override 'enabled' with the service's actual state.
-        $sql = "SELECT s.*, es.enabled AS service_enabled
-                  FROM {local_servicemanager_schemas} s
-             LEFT JOIN {external_services} es ON s.serviceid = es.id";
-
-        if ($where) {
-            $sql .= " WHERE " . $where;
-        }
-        $sql .= " ORDER BY s.name ASC";
-
-        $records = $DB->get_records_sql($sql, $params, $page * $perpage, $perpage);
-
-        // Normalize the enabled flag.
-        foreach ($records as $record) {
-            // If service exists, use its status. Otherwise fallback to schema status (shouldn't happen in healthy state).
-            if (property_exists($record, 'service_enabled') && $record->service_enabled !== null) {
-                // If there's a mismatch, we might want to update our local record,
-                // but for display purposes, the service status is the truth.
-                $record->enabled = $record->service_enabled;
-            }
-            unset($record->service_enabled);
-        }
-
-        return $records;
-    }
-
-    /**
-     * Count schemas with filters applied.
-     *
-     * @param array $filters Optional filters: 'status', 'name', 'datefrom', 'dateto'.
-     * @return int Total count.
-     */
-    public function count_schemas(array $filters = []): int {
-        global $DB;
-
-        [$where, $params] = $this->build_filter_conditions($filters);
-        $sql = "SELECT COUNT(*) FROM {local_servicemanager_schemas} s";
-        if ($where) {
-            $sql .= " WHERE " . $where;
-        }
-
-        return $DB->count_records_sql($sql, $params);
-    }
-
-    /**
      * Provision a schema and store it.
      *
      * If storing fails the provisioned objects are removed again, so a schema
@@ -275,7 +218,7 @@ class manager {
         // A schema that says no version starts at the first one.
         $yamlcontent = $this->versionresolver->resolve($yamlcontent, null, true);
         $validation = $this->validate_or_fail($yamlcontent);
-        $definition = schema_definition::from_data($this->parser, $validation['data']);
+        $definition = schema_definition::from_data($validation['data']);
 
         $provisioned = $this->provisioner->provision($definition, $generatetoken);
         $warnings = array_merge($validation['warnings'], $provisioned['warnings']);
@@ -329,7 +272,7 @@ class manager {
             $yamlcontent = $this->versionresolver->resolve($yamlcontent, $existing, $changes);
         }
         $validation = $this->validate_or_fail($yamlcontent, $id);
-        $definition = schema_definition::from_data($this->parser, $validation['data']);
+        $definition = schema_definition::from_data($validation['data']);
 
         if ($definition->get_schema_id() !== $existing->schema_id) {
             throw new \moodle_exception('error_id_change_forbidden', 'local_servicemanager');
@@ -483,42 +426,5 @@ class manager {
             $yamlcontent,
             get_string($stringkey, 'local_servicemanager', $version)
         );
-    }
-
-    /**
-     * Build SQL WHERE conditions from filters.
-     *
-     * @param array $filters Filters array.
-     * @return array [$whereClause, $params]
-     */
-    protected function build_filter_conditions(array $filters): array {
-        global $DB;
-
-        $conditions = [];
-        $params = [];
-
-        if (!empty($filters['status']) && $filters['status'] !== 'all') {
-            $conditions[] = 's.status = :status';
-            $params['status'] = $filters['status'];
-        }
-
-        if (!empty($filters['name'])) {
-            $conditions[] = $DB->sql_like('s.name', ':name', false);
-            $params['name'] = '%' . $DB->sql_like_escape($filters['name']) . '%';
-        }
-
-        if (!empty($filters['datefrom'])) {
-            $conditions[] = 's.timecreated >= :datefrom';
-            $params['datefrom'] = $filters['datefrom'];
-        }
-
-        if (!empty($filters['dateto'])) {
-            // Add 1 day to include the entire end day.
-            $conditions[] = 's.timecreated <= :dateto';
-            $params['dateto'] = $filters['dateto'] + 86400;
-        }
-
-        $where = implode(' AND ', $conditions);
-        return [$where, $params];
     }
 }

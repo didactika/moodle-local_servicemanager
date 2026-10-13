@@ -138,6 +138,7 @@ YAML;
      * @return array The context of the template.
      */
     public function export_for_template(\renderer_base $output): array {
+        unset($output);
         $links = [];
         foreach (self::SECTIONS as $section) {
             $links[] = ['id' => $section, 'label' => get_string('doc_' . $section, 'local_servicemanager')];

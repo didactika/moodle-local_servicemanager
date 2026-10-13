@@ -79,18 +79,17 @@ class schema_definition {
     /**
      * Read a definition out of parsed YAML data.
      *
-     * @param yaml_parser $parser Parser used for the extraction
      * @param array $data Parsed YAML data
      * @return self
      */
-    public static function from_data(yaml_parser $parser, array $data): self {
+    public static function from_data(array $data): self {
         return new self(
-            $parser->extract_meta($data),
-            $parser->extract_functions($data),
-            $parser->extract_extra_capabilities($data),
-            $parser->extract_additional_users($data),
-            service_settings::from_array($parser->extract_service_settings($data)),
-            $parser->extract_role_settings($data)
+            schema_extractor::meta($data),
+            schema_extractor::functions($data),
+            schema_extractor::extra_capabilities($data),
+            schema_extractor::additional_users($data),
+            service_settings::from_array(schema_extractor::service_settings($data)),
+            schema_extractor::role_settings($data)
         );
     }
 

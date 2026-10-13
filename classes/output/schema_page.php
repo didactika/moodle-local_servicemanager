@@ -17,6 +17,7 @@
 namespace local_servicemanager\output;
 
 use local_servicemanager\schema\yaml_parser;
+use local_servicemanager\schema\schema_extractor;
 
 /**
  * One schema: what it declares, what it provisioned and how healthy it is, or one past version of it.
@@ -36,12 +37,6 @@ class schema_page implements \renderable, \templatable {
         'critical' => ['tone' => 'danger', 'icon' => 'circle-xmark'],
         'history' => ['tone' => 'secondary', 'icon' => 'clock'],
     ];
-
-    /** @var int How many chips of a list are shown before the button that opens all of them. */
-    private const CHIPS_SHOWN = 8;
-
-    /** @var string[] The relations between roles, in the order the page lists them. */
-    private const RELATIONS = ['allow_assign', 'allow_override', 'allow_switch', 'allow_view'];
 
     /** @var \stdClass|null The schema record, when the page shows the schema as it is now. */
     private $schema;
@@ -93,6 +88,7 @@ class schema_page implements \renderable, \templatable {
      * @return array The context of the template.
      */
     public function export_for_template(\renderer_base $output): array {
+        unset($output);
         \local_servicemanager\compat\external_aliases::register();
         return $this->history ? $this->history_context() : $this->schema_context();
     }
@@ -122,14 +118,14 @@ class schema_page implements \renderable, \templatable {
             ];
         }
 
-        $service = $this->service($schema);
+        $service = schema_panels::service($schema);
         $params = ['id' => $id];
         $resources = array_values(array_filter([
-            $this->resource('service_user', 'user', $this->user($schema)),
-            $this->resource('service_role', 'shield-halved', $this->role($schema)),
+            $this->resource('service_user', 'user', schema_panels::user($schema)),
+            $this->resource('service_role', 'shield-halved', schema_panels::role($schema)),
             $this->resource('external_service', 'plug', $service['resource']),
         ]));
-        $functions = $this->functions($parser->extract_functions($data));
+        $functions = schema_panels::functions(schema_extractor::functions($data));
         $missing = count(array_filter($functions, static fn(array $function) => !$function['exists']));
 
         return [
@@ -140,18 +136,18 @@ class schema_page implements \renderable, \templatable {
             'ws' => ws_status::describe($canmanage),
             'backurl' => $this->url('dashboard.php'),
             'backlabel' => get_string('dashboard', 'local_servicemanager'),
-            'schema' => $this->schema_summary(
-                $schema->schema_id,
-                $schema->name,
-                $schema->version,
-                (string) $schema->description,
-                (string) $schema->maintainer,
-                $schema->status,
-                get_string('status_' . $schema->status, 'local_servicemanager'),
-                (bool) $schema->enabled,
-                userdate($schema->timecreated),
-                userdate($schema->timemodified)
-            ),
+            'schema' => $this->schema_summary([
+                'schemaid' => $schema->schema_id,
+                'name' => $schema->name,
+                'version' => $schema->version,
+                'description' => (string) $schema->description,
+                'maintainer' => (string) $schema->maintainer,
+                'status' => $schema->status,
+                'statuslabel' => get_string('status_' . $schema->status, 'local_servicemanager'),
+                'enabled' => (bool) $schema->enabled,
+                'created' => userdate($schema->timecreated),
+                'modified' => userdate($schema->timemodified),
+            ]),
             'newtoken' => $this->newtoken,
             'hasnewtoken' => $this->newtoken !== null,
             'hastoken' => !empty($schema->tokenid),
@@ -170,13 +166,12 @@ class schema_page implements \renderable, \templatable {
             'missinglabel' => get_string('tile_functions_missing', 'local_servicemanager', $missing),
             'hasresources' => !empty($resources),
             'resources' => $resources,
-            'access' => $this->access(
-                $service['downloadfiles'],
-                $service['uploadfiles'],
-                $this->plugins($parser->extract_required_plugins($data)),
-                array_values($parser->extract_extra_capabilities($data))
+            'access' => schema_panels::access(
+                $service,
+                schema_panels::plugins(schema_extractor::required_plugins($data)),
+                array_values(schema_extractor::extra_capabilities($data))
             ),
-            'role' => $this->role_panel($parser->extract_role_settings($data)->to_array()),
+            'role' => schema_panels::role_panel(schema_extractor::role_settings($data)->to_array()),
             'haslogs' => !empty($logs),
             'logs' => $logs,
             'logscount' => count($logs),
@@ -201,8 +196,8 @@ class schema_page implements \renderable, \templatable {
         $history = $this->history;
         $parser = new yaml_parser();
         $data = $parser->parse_stored($history->yaml_content);
-        $meta = $parser->extract_meta($data);
-        $functions = $this->functions($parser->extract_functions($data));
+        $meta = schema_extractor::meta($data);
+        $functions = schema_panels::functions(schema_extractor::functions($data));
         $missing = count(array_filter($functions, static fn(array $function) => !$function['exists']));
 
         return [
@@ -212,18 +207,18 @@ class schema_page implements \renderable, \templatable {
             'hasws' => false,
             'backurl' => $this->url('history.php', ['id' => $history->schemaid]),
             'backlabel' => get_string('back', 'local_servicemanager'),
-            'schema' => $this->schema_summary(
-                $meta['id'],
-                $meta['name'],
-                $meta['version'],
-                (string) $meta['description'],
-                (string) $meta['maintainer'],
-                'history',
-                get_string('version', 'local_servicemanager') . ' ' . $history->version,
-                false,
-                userdate($history->timecreated),
-                userdate($history->timecreated)
-            ),
+            'schema' => $this->schema_summary([
+                'schemaid' => $meta['id'],
+                'name' => $meta['name'],
+                'version' => $meta['version'],
+                'description' => (string) $meta['description'],
+                'maintainer' => (string) $meta['maintainer'],
+                'status' => 'history',
+                'statuslabel' => get_string('version', 'local_servicemanager') . ' ' . $history->version,
+                'enabled' => false,
+                'created' => userdate($history->timecreated),
+                'modified' => userdate($history->timecreated),
+            ]),
             'newtoken' => null,
             'hasnewtoken' => false,
             'hastoken' => false,
@@ -239,13 +234,8 @@ class schema_page implements \renderable, \templatable {
             'missinglabel' => get_string('tile_functions_missing', 'local_servicemanager', $missing),
             'hasresources' => false,
             'resources' => [],
-            'access' => $this->access(
-                false,
-                false,
-                [],
-                array_values($parser->extract_extra_capabilities($data))
-            ),
-            'role' => $this->role_panel($parser->extract_role_settings($data)->to_array()),
+            'access' => schema_panels::access(null, [], array_values(schema_extractor::extra_capabilities($data))),
+            'role' => schema_panels::role_panel(schema_extractor::role_settings($data)->to_array()),
             'haslogs' => false,
             'logs' => [],
             'logscount' => 0,
@@ -256,43 +246,24 @@ class schema_page implements \renderable, \templatable {
     /**
      * The part of the context that says what the schema is.
      *
-     * @param string $schemaid Id of the schema.
-     * @param string $name Name.
-     * @param string $version Version.
-     * @param string $description Description.
-     * @param string $maintainer Maintainer.
-     * @param string $status Status, or history for a past version.
-     * @param string $statuslabel What the status says.
-     * @param bool $enabled Whether the schema is enabled.
-     * @param string $created When it was created.
-     * @param string $modified When it was last modified.
+     * @param array $fields What it is: schemaid, name, version, description, maintainer, status (history for a past version),
+     *     statuslabel (what the status says), enabled, created and modified (when).
      * @return array The summary.
      */
-    private function schema_summary(
-        string $schemaid,
-        string $name,
-        string $version,
-        string $description,
-        string $maintainer,
-        string $status,
-        string $statuslabel,
-        bool $enabled,
-        string $created,
-        string $modified
-    ): array {
-        $look = $this->look($status);
+    private function schema_summary(array $fields): array {
+        $look = $this->look($fields['status']);
         return [
-            'schemaid' => $schemaid,
-            'name' => $name,
-            'version' => $version,
-            'description' => $description,
-            'maintainer' => $maintainer,
-            'statuslabel' => $statuslabel,
+            'schemaid' => $fields['schemaid'],
+            'name' => $fields['name'],
+            'version' => $fields['version'],
+            'description' => $fields['description'],
+            'maintainer' => $fields['maintainer'],
+            'statuslabel' => $fields['statuslabel'],
             'tone' => $look['tone'],
             'icon' => $look['icon'],
-            'enabled' => $enabled,
-            'created' => $created,
-            'modified' => $modified,
+            'enabled' => $fields['enabled'],
+            'created' => $fields['created'],
+            'modified' => $fields['modified'],
         ];
     }
 
@@ -334,114 +305,6 @@ class schema_page implements \renderable, \templatable {
     }
 
     /**
-     * The panel of access and requirements.
-     *
-     * @param bool $download Whether the service downloads files.
-     * @param bool $upload Whether the service uploads files.
-     * @param array $plugins The plugins the schema requires.
-     * @param string[] $capabilities The extra capabilities of the schema.
-     * @return array The panel.
-     */
-    private function access(bool $download, bool $upload, array $plugins, array $capabilities): array {
-        $ishistory = $this->history !== null;
-        $files = [
-            ['icon' => 'download', 'on' => $download, 'tone' => $download ? 'success' : 'secondary',
-                'label' => get_string('req_download_files', 'local_servicemanager'),
-                'title' => get_string(
-                    $download ? 'req_download_files_enabled' : 'req_download_files_disabled',
-                    'local_servicemanager'
-                )],
-            ['icon' => 'upload', 'on' => $upload, 'tone' => $upload ? 'success' : 'secondary',
-                'label' => get_string('req_upload_files', 'local_servicemanager'),
-                'title' => get_string($upload ? 'req_upload_files_enabled' : 'req_upload_files_disabled', 'local_servicemanager')],
-        ];
-        return [
-            'showfiles' => !$ishistory,
-            'files' => $files,
-            'hasplugins' => !empty($plugins),
-            'plugins' => $plugins,
-            'hascapabilities' => !empty($capabilities),
-            'capabilities' => array_map(static function (string $capability, int $index): array {
-                $parts = explode(':', $capability, 2);
-                return [
-                    'name' => $capability,
-                    'plugin' => $parts[0],
-                    'capability' => isset($parts[1]) ? $parts[1] : '',
-                    'folded' => $index >= self::CHIPS_SHOWN,
-                    'hiddenattr' => $index >= self::CHIPS_SHOWN ? 'hidden' : '',
-                ];
-            }, $capabilities, array_keys($capabilities)),
-            'hasmorecapabilities' => count($capabilities) > self::CHIPS_SHOWN,
-            'morecapabilities' => get_string('chips_all', 'local_servicemanager', count($capabilities)),
-            'morecapabilitiescount' => max(0, count($capabilities) - self::CHIPS_SHOWN),
-        ];
-    }
-
-    /**
-     * The panel of what the role may do, or an empty one when the schema says nothing about it.
-     *
-     * @param array $role The role section of the schema.
-     * @return array The panel; its visible flag is false when there is nothing to show.
-     */
-    private function role_panel(array $role): array {
-        $rows = [];
-        $levels = isset($role['context_levels']) ? $role['context_levels'] : [];
-        $levels = array_values(array_filter($levels, static fn($level) => $level !== 'system'));
-        if ($levels) {
-            $names = [];
-            foreach (array_merge(['system'], $levels) as $level) {
-                $key = 'role_level_' . $level;
-                $names[] = ['name' => get_string_manager()->string_exists($key, 'local_servicemanager')
-                    ? get_string($key, 'local_servicemanager') : $level, 'tone' => 'secondary'];
-            }
-            $rows[] = $this->role_row(get_string('role_context_levels', 'local_servicemanager'), $names);
-        }
-        foreach (self::RELATIONS as $relation) {
-            if (!empty($role[$relation])) {
-                $rows[] = $this->role_row(
-                    get_string('role_' . $relation, 'local_servicemanager'),
-                    array_map(static fn(string $name) => ['name' => $name, 'tone' => 'primary'], $role[$relation])
-                );
-            }
-        }
-        foreach (['prevent' => 'warning', 'prohibit' => 'danger'] as $permission => $tone) {
-            if (!empty($role['permissions'][$permission])) {
-                $rows[] = $this->role_row(
-                    get_string('role_permission_' . $permission, 'local_servicemanager'),
-                    array_map(
-                        static fn(string $name) => ['name' => $name, 'tone' => $tone],
-                        $role['permissions'][$permission]
-                    )
-                );
-            }
-        }
-        return ['visible' => !empty($rows), 'rows' => $rows];
-    }
-
-    /**
-     * One block of the role: its name over its list, with the names past the first few folded behind a button.
-     *
-     * @param string $label What the list is.
-     * @param array $names The names, each with its tone.
-     * @return array The block.
-     */
-    private function role_row(string $label, array $names): array {
-        foreach ($names as $index => $name) {
-            $names[$index]['folded'] = $index >= self::CHIPS_SHOWN;
-            $names[$index]['hiddenattr'] = $index >= self::CHIPS_SHOWN ? 'hidden' : '';
-        }
-        $more = count($names) - self::CHIPS_SHOWN;
-        return [
-            'label' => $label,
-            'count' => count($names),
-            'names' => array_values($names),
-            'hasmore' => $more > 0,
-            'morecount' => max(0, $more),
-            'morelabel' => $more > 0 ? get_string('chips_all', 'local_servicemanager', count($names)) : '',
-        ];
-    }
-
-    /**
      * One resource of the schema, as the page lists it.
      *
      * @param string $stringkey String that names the kind of resource.
@@ -471,154 +334,5 @@ class schema_page implements \renderable, \templatable {
      */
     private function url(string $page, array $params = []): string {
         return (new \moodle_url('/local/servicemanager/pages/' . $page, $params))->out(false);
-    }
-
-    /**
-     * The functions of the schema, each with whether this Moodle has it and what it does.
-     *
-     * What a function does and what it asks for is what Moodle itself says about it, so a person can read what a schema gives
-     * access to without looking each function up.
-     *
-     * @param array $functions The functions the schema declares.
-     * @return array The functions as the page lists them.
-     */
-    private function functions(array $functions): array {
-        global $DB;
-
-        if (!$functions) {
-            return [];
-        }
-        $records = $DB->get_records_list('external_functions', 'name', array_column($functions, 'name'));
-        $byname = [];
-        foreach ($records as $record) {
-            $byname[$record->name] = $record;
-        }
-
-        $rows = [];
-        foreach ($functions as $function) {
-            $record = isset($byname[$function['name']]) ? $byname[$function['name']] : null;
-            $description = '';
-            $type = '';
-            if ($record) {
-                try {
-                    $info = \core_external\external_api::external_function_info($record);
-                    $description = (string) $info->description;
-                    $type = (string) $info->type;
-                } catch (\Throwable $e) {
-                    // A function whose class cannot be read is still listed, without what it says about itself.
-                    debugging($e->getMessage(), DEBUG_DEVELOPER);
-                }
-            }
-            $capabilities = $record && !empty($record->capabilities)
-                ? array_values(array_filter(array_map('trim', explode(',', $record->capabilities))))
-                : [];
-            $exists = $record !== null;
-            $write = $type === 'write';
-            $rows[] = [
-                'name' => $function['name'],
-                'critical' => (bool) $function['critical'],
-                'exists' => $exists,
-                'description' => $description,
-                'type' => $type,
-                'typelabel' => $type !== '' ? get_string('function_' . $type, 'local_servicemanager') : '',
-                'tone' => $exists ? ($write ? 'warning' : 'success') : 'danger',
-                'icon' => $exists ? ($write ? 'pen' : 'eye') : 'circle-xmark',
-                'hascapabilities' => !empty($capabilities),
-                'capabilitiescount' => get_string('function_capabilities', 'local_servicemanager', count($capabilities)),
-                'capabilitiesjson' => json_encode($capabilities),
-                'search' => strtolower($function['name'] . ' ' . $description),
-            ];
-        }
-        return $rows;
-    }
-
-    /**
-     * The plugins that the schema requires, each with whether it is installed.
-     *
-     * @param array $names The names of the plugins.
-     * @return array The plugins as the page lists them.
-     */
-    private function plugins(array $names): array {
-        $manager = \core_plugin_manager::instance();
-        return array_map(static fn(string $name) => [
-            'name' => $name,
-            'installed' => $manager->get_plugin_info($name) !== null,
-        ], $names);
-    }
-
-    /**
-     * The service user of the schema.
-     *
-     * @param \stdClass $schema The schema record.
-     * @return array|null Name, username and address of the user, or null when there is none.
-     */
-    private function user(\stdClass $schema): ?array {
-        global $DB;
-
-        if (empty($schema->userid)) {
-            return null;
-        }
-        $fields = 'id, username, firstname, lastname, firstnamephonetic, lastnamephonetic, middlename, alternatename';
-        $user = $DB->get_record('user', ['id' => $schema->userid], $fields);
-        if (!$user) {
-            return null;
-        }
-        return [
-            'name' => fullname($user),
-            'detail' => $user->username,
-            'url' => (new \moodle_url('/user/profile.php', ['id' => $user->id]))->out(false),
-        ];
-    }
-
-    /**
-     * The service role of the schema.
-     *
-     * @param \stdClass $schema The schema record.
-     * @return array|null Name, short name and address of the role, or null when there is none.
-     */
-    private function role(\stdClass $schema): ?array {
-        global $DB;
-
-        if (empty($schema->roleid)) {
-            return null;
-        }
-        $role = $DB->get_record('role', ['id' => $schema->roleid], 'id, name, shortname');
-        if (!$role) {
-            return null;
-        }
-        return [
-            'name' => !empty($role->name) ? $role->name : $role->shortname,
-            'detail' => $role->shortname,
-            'url' => (new \moodle_url('/admin/roles/define.php', ['action' => 'view', 'roleid' => $role->id]))->out(false),
-        ];
-    }
-
-    /**
-     * The external service of the schema and what it allows for files.
-     *
-     * @param \stdClass $schema The schema record.
-     * @return array The resource, or null, and whether the service downloads and uploads files.
-     */
-    private function service(\stdClass $schema): array {
-        global $DB;
-
-        $none = ['resource' => null, 'downloadfiles' => false, 'uploadfiles' => false];
-        if (empty($schema->serviceid)) {
-            return $none;
-        }
-        $fields = 'id, name, shortname, downloadfiles, uploadfiles';
-        $service = $DB->get_record('external_services', ['id' => $schema->serviceid], $fields);
-        if (!$service) {
-            return $none;
-        }
-        return [
-            'resource' => [
-                'name' => $service->name,
-                'detail' => $service->shortname,
-                'url' => (new \moodle_url('/admin/webservice/service.php', ['id' => $service->id]))->out(false),
-            ],
-            'downloadfiles' => (bool) $service->downloadfiles,
-            'uploadfiles' => (bool) $service->uploadfiles,
-        ];
     }
 }

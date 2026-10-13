@@ -50,6 +50,7 @@ class history_page implements \renderable, \templatable {
      * @return array The context of the template.
      */
     public function export_for_template(\renderer_base $output): array {
+        unset($output);
         global $PAGE;
 
         $id = (int) $this->schema->id;
@@ -90,7 +91,7 @@ class history_page implements \renderable, \templatable {
      */
     private function rows(\moodle_page $page): array {
         $rows = version_rows::describe($this->schema, $page);
-        foreach ($rows as $index => $row) {
+        foreach (array_keys($rows) as $index) {
             // Only the first page is shown until the script takes over.
             $rows[$index]['hidden'] = $index >= self::PERPAGE_OPTIONS[0];
         }

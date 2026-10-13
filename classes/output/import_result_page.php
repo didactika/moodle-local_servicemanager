@@ -52,6 +52,7 @@ class import_result_page implements \renderable, \templatable {
      * @return array The context of the template.
      */
     public function export_for_template(\renderer_base $output): array {
+        unset($output);
         $items = isset($this->result['items']) ? $this->result['items'] : [];
         $failed = count(array_filter($items, static fn(array $item) => $item['status'] === 'failed'));
         $warnings = count($this->result['warnings']);

@@ -34,6 +34,7 @@ class import_intro implements \renderable, \templatable {
      * @return array The context of the template.
      */
     public function export_for_template(\renderer_base $output): array {
+        unset($output);
         return [
             'backurl' => (new \moodle_url('/local/servicemanager/pages/dashboard.php'))->out(false),
             'documentationurl' => (new \moodle_url('/local/servicemanager/pages/documentation.php'))->out(false),

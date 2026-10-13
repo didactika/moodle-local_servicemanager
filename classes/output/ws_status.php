@@ -45,12 +45,34 @@ class ws_status {
         global $CFG;
 
         $enabled = !empty($CFG->enablewebservices);
-        $active = ($enabled && !empty($CFG->webserviceprotocols))
-            ? array_map('trim', explode(',', $CFG->webserviceprotocols))
-            : [];
+        $active = self::active_protocols($enabled);
+        $level = self::level($enabled, count($active));
+        $fix = self::fix($level, $canmanage);
+        $tones = ['disabled' => 'danger', 'warning' => 'warning', 'operational' => 'success'];
+        $icons = ['disabled' => 'plug-circle-xmark', 'warning' => 'plug-circle-exclamation', 'operational' => 'plug-circle-check'];
 
+        return [
+            'enabled' => $enabled,
+            'level' => $level,
+            'tone' => $tones[$level],
+            'icon' => $icons[$level],
+            'label' => get_string('ws_status_' . $level, 'local_servicemanager'),
+            'protocols' => self::protocols($active),
+            'fixurl' => $fix['url'],
+            'fixlabel' => $fix['label'],
+            'protocolsurl' => $canmanage ? self::settings_url('webserviceprotocols') : '',
+        ];
+    }
+
+    /**
+     * Each protocol of the site, with whether it is on and how to say so.
+     *
+     * @param string[] $active Names of the protocols that are on.
+     * @return array[] One entry for each protocol.
+     */
+    private static function protocols(array $active): array {
         $protocols = [];
-        foreach (\core_plugin_manager::instance()->get_plugins_of_type('webservice') as $key => $plugin) {
+        foreach (array_keys(\core_plugin_manager::instance()->get_plugins_of_type('webservice')) as $key) {
             $on = in_array($key, $active);
             $protocols[] = [
                 'name' => strtoupper($key),
@@ -61,41 +83,56 @@ class ws_status {
                 'label' => get_string($on ? 'ws_enabled_label' : 'ws_disabled_label', 'local_servicemanager'),
             ];
         }
+        return $protocols;
+    }
 
+    /**
+     * The protocols that are turned on, when the web services are.
+     *
+     * @param bool $enabled Whether the web services are turned on.
+     * @return string[] Names of the protocols.
+     */
+    private static function active_protocols(bool $enabled): array {
+        global $CFG;
+
+        if (!$enabled || empty($CFG->webserviceprotocols)) {
+            return [];
+        }
+        return array_map('trim', explode(',', $CFG->webserviceprotocols));
+    }
+
+    /**
+     * How the web services are: off, on without a protocol, or working.
+     *
+     * @param bool $enabled Whether the web services are turned on.
+     * @param int $active How many protocols are turned on.
+     * @return string The level.
+     */
+    private static function level(bool $enabled, int $active): string {
         if (!$enabled) {
-            $level = 'disabled';
-        } else if (count($active) === 0) {
-            $level = 'warning';
-        } else {
-            $level = 'operational';
+            return 'disabled';
         }
-        $tones = ['disabled' => 'danger', 'warning' => 'warning', 'operational' => 'success'];
-        $icons = ['disabled' => 'plug-circle-xmark', 'warning' => 'plug-circle-exclamation', 'operational' => 'plug-circle-check'];
+        return $active === 0 ? 'warning' : 'operational';
+    }
 
-        $fix = ['url' => '', 'label' => ''];
-        if ($canmanage && $level === 'disabled') {
+    /**
+     * Where to turn on what is off, for a person who can.
+     *
+     * @param string $level How the web services are.
+     * @param bool $canmanage Whether the person can open the settings of the web services.
+     * @return string[] The address and the text of the button, empty when nothing is to be turned on.
+     */
+    private static function fix(string $level, bool $canmanage): array {
+        if (!$canmanage || $level === 'operational') {
+            return ['url' => '', 'label' => ''];
+        }
+        if ($level === 'disabled') {
             $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
-            $fix = [
-                'url' => $subsystems->out(false),
-                'label' => get_string('ws_enable_services', 'local_servicemanager'),
-            ];
-        } else if ($canmanage && $level === 'warning') {
-            $fix = [
-                'url' => self::settings_url('webserviceprotocols'),
-                'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
-            ];
+            return ['url' => $subsystems->out(false), 'label' => get_string('ws_enable_services', 'local_servicemanager')];
         }
-
         return [
-            'enabled' => $enabled,
-            'level' => $level,
-            'tone' => $tones[$level],
-            'icon' => $icons[$level],
-            'label' => get_string('ws_status_' . $level, 'local_servicemanager'),
-            'protocols' => $protocols,
-            'fixurl' => $fix['url'],
-            'fixlabel' => $fix['label'],
-            'protocolsurl' => $canmanage ? self::settings_url('webserviceprotocols') : '',
+            'url' => self::settings_url('webserviceprotocols'),
+            'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
         ];
     }
 }

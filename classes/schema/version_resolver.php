@@ -92,22 +92,57 @@ class version_resolver {
      * @return string The YAML to validate and store.
      */
     public function resolve(string $yaml, ?\stdClass $existing, bool $contentchanged): string {
-        try {
-            $data = $this->parser->parse($yaml);
-        } catch (\moodle_exception $e) {
+        $declared = $this->declared($yaml);
+        if ($declared === null) {
             return $yaml;
         }
-        if (!is_array($data) || !isset($data['meta']) || !is_array($data['meta'])) {
-            return $yaml;
-        }
-        $declared = trim((string) ($data['meta']['version'] ?? ''));
-
         if ($existing === null) {
             return $declared === '' ? $this->with_version($yaml, self::FIRST) : $yaml;
         }
-        if (!$contentchanged) {
-            return $declared === (string) $existing->version ? $yaml : $this->with_version($yaml, (string) $existing->version);
+        return $contentchanged
+            ? $this->for_a_change($yaml, $declared, $existing)
+            : $this->for_the_same($yaml, $declared, $existing);
+    }
+
+    /**
+     * The version that the YAML says it has.
+     *
+     * @param string $yaml The YAML.
+     * @return string|null The version, empty when it says none, and null when the YAML cannot be read or has no meta section.
+     */
+    private function declared(string $yaml): ?string {
+        try {
+            $data = $this->parser->parse($yaml);
+        } catch (\moodle_exception $e) {
+            return null;
         }
+        if (!isset($data['meta']) || !is_array($data['meta'])) {
+            return null;
+        }
+        return trim((string) ($data['meta']['version'] ?? ''));
+    }
+
+    /**
+     * The YAML of a schema whose content did not change: it keeps the version it has.
+     *
+     * @param string $yaml The YAML the person sent.
+     * @param string $declared The version it says.
+     * @param \stdClass $existing The record of the schema.
+     * @return string The YAML to store.
+     */
+    private function for_the_same(string $yaml, string $declared, \stdClass $existing): string {
+        return $declared === (string) $existing->version ? $yaml : $this->with_version($yaml, (string) $existing->version);
+    }
+
+    /**
+     * The YAML of a schema whose content changed: a version higher than every one it has had, or the next one.
+     *
+     * @param string $yaml The YAML the person sent.
+     * @param string $declared The version it says.
+     * @param \stdClass $existing The record of the schema.
+     * @return string The YAML to store.
+     */
+    private function for_a_change(string $yaml, string $declared, \stdClass $existing): string {
         $latest = $this->latest($existing);
         if ($declared !== '' && version_compare($declared, $latest, '>')) {
             return $yaml;

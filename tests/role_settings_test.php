@@ -20,6 +20,7 @@ use local_servicemanager\automation\role_manager;
 use local_servicemanager\automation\role_settings;
 use local_servicemanager\schema\validator;
 use local_servicemanager\schema\yaml_parser;
+use local_servicemanager\schema\schema_extractor;
 
 /**
  * Tests for the part of a schema that says what its role may do.
@@ -48,11 +49,11 @@ final class role_settings_test extends \advanced_testcase {
      */
     public function test_the_section_is_read(): void {
         $parser = new yaml_parser();
-        $none = $parser->extract_role_settings($parser->parse($this->yaml('')));
+        $none = schema_extractor::role_settings($parser->parse($this->yaml('')));
         $this->assertTrue($none->is_empty());
         $this->assertSame(['system'], $none->context_levels());
 
-        $settings = $parser->extract_role_settings($parser->parse($this->yaml(
+        $settings = schema_extractor::role_settings($parser->parse($this->yaml(
             "  context_levels:\n    - course\n    - category\n" .
             "  permissions:\n    prohibit:\n      - moodle/site:config\n    prevent:\n      - moodle/user:delete\n" .
             "  allow_assign:\n    - student\n  allow_view:\n    - student\n    - teacher\n"

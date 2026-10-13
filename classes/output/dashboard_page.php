@@ -41,6 +41,7 @@ class dashboard_page implements \renderable, \templatable {
      * @return array The context of the template.
      */
     public function export_for_template(\renderer_base $output): array {
+        unset($output);
         global $DB;
 
         $context = \context_system::instance();
