@@ -84,7 +84,7 @@ foreach ($functions as $func) {
 // Check for a freshly generated token to display once.
 $tokenvalue = null;
 if ($newtoken) {
-    $tokencache = \core_cache\cache::make('local_servicemanager', 'newtoken');
+    $tokencache = \local_servicemanager\cache_provider::newtoken();
     $cachedtoken = $tokencache->get($id);
     if ($cachedtoken !== false) {
         $tokenvalue = $cachedtoken;

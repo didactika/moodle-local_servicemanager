@@ -48,11 +48,57 @@ class role_manager {
 
         // Create role with no archetype.
         $roleid = create_role($name, $shortname, $metadescription, '');
+        if (class_exists('core\\event\\role_created') && !$this->core_announces_new_roles()) {
+            $this->announce_new_role($roleid);
+        }
 
         // Set role context to system level only.
         set_role_contextlevels($roleid, [CONTEXT_SYSTEM]);
 
         return $roleid;
+    }
+
+    /**
+     * Whether create_role() of this Moodle triggers the role_created event itself.
+     *
+     * Releases that have the event class but do not trigger it from create_role() leave it to the role editor, so it would never
+     * exist for a role that a schema creates. Reading the function is how this is told, because no version number says it for
+     * every release in the range the plugin supports. Releases without the event class have nothing to trigger.
+     *
+     * @return bool True when core triggers the event.
+     */
+    private function core_announces_new_roles(): bool {
+        static $announces = null;
+        if ($announces === null) {
+            $function = new \ReflectionFunction('create_role');
+            $lines = file($function->getFileName());
+            $first = $function->getStartLine() - 1;
+            $source = implode('', array_slice($lines, $first, $function->getEndLine() - $first));
+            $announces = strpos($source, 'role_created') !== false;
+        }
+        return $announces;
+    }
+
+    /**
+     * Trigger the role_created event of a role that was just created, as Moodle does where create_role() does not.
+     *
+     * @param int $roleid Role ID
+     */
+    private function announce_new_role(int $roleid): void {
+        global $DB;
+
+        $role = $DB->get_record('role', ['id' => $roleid], '*', MUST_EXIST);
+        $event = \core\event\role_created::create([
+            'objectid' => $role->id,
+            'context' => \context_system::instance(),
+            'other' => [
+                'name' => $role->name,
+                'shortname' => $role->shortname,
+                'archetype' => $role->archetype,
+            ],
+        ]);
+        $event->add_record_snapshot('role', $role);
+        $event->trigger();
     }
 
     /**

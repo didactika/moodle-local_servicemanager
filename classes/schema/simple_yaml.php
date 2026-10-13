@@ -256,7 +256,7 @@ class simple_yaml {
             return;
         }
 
-        if ($value !== '' && !str_starts_with($value, '#')) {
+        if ($value !== '' && strpos($value, '#') !== 0) {
             $current[$key] = $this->parse_value($value);
             return;
         }
@@ -282,7 +282,7 @@ class simple_yaml {
         }
 
         // A value that is purely a comment (e.g. key: # note) means null.
-        if (str_starts_with($value, '#')) {
+        if (strpos($value, '#') === 0) {
             return null;
         }
 
@@ -300,7 +300,7 @@ class simple_yaml {
      */
     protected function unquote(string $value): ?string {
         foreach (['"', "'"] as $quote) {
-            if (!str_starts_with($value, $quote)) {
+            if (strpos($value, $quote) !== 0) {
                 continue;
             }
 

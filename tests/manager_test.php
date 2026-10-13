@@ -85,9 +85,12 @@ YAML;
         $schema = $manager->get_schema($result['id']);
         $expectedevents = [
             \core\event\user_created::class => $schema->userid,
-            \core\event\role_created::class => $schema->roleid,
             \core\event\role_assigned::class => $schema->roleid,
         ];
+        // Moodle 4.0 has no event for a created role.
+        if (class_exists('core\\event\\role_created')) {
+            $expectedevents['core\\event\\role_created'] = $schema->roleid;
+        }
         foreach ($expectedevents as $eventclass => $objectid) {
             $matching = array_values(array_filter($events, static function ($event) use ($eventclass) {
                 return $event instanceof $eventclass;

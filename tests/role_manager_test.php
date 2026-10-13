@@ -52,6 +52,9 @@ final class role_manager_test extends \advanced_testcase {
      * Service role creation emits one standard Moodle event.
      */
     public function test_create_role_emits_core_event(): void {
+        if (!class_exists('core\\event\\role_created')) {
+            $this->markTestSkipped('This Moodle has no event for a created role.');
+        }
         $this->resetAfterTest();
         $this->setAdminUser();
 
@@ -63,7 +66,7 @@ final class role_manager_test extends \advanced_testcase {
 
         $this->assertCount(1, $events);
         $event = reset($events);
-        $this->assertInstanceOf(\core\event\role_created::class, $event);
+        $this->assertInstanceOf('core\\event\\role_created', $event);
         $this->assertEquals($roleid, $event->objectid);
         $this->assertEquals(\context_system::instance()->id, $event->contextid);
         $this->assertEquals('ws_test_events', $event->other['shortname']);
