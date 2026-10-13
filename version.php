@@ -27,8 +27,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_servicemanager';
-$plugin->version = 2026100500;
-$plugin->requires = 2024100700; // Moodle 4.5+.
+$plugin->version = 2026101404.503;
+$plugin->requires = 2026100500; // Moodle 5.3.
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.3';
-$plugin->supported = [405, 503]; // Moodle 4.5 to 5.3.
+$plugin->release = '5.3.0';
+$plugin->supported = [503, 503]; // Moodle 5.3.

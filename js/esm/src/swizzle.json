@@ -1,0 +1,250 @@
+{
+  "Compare": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "Dashboard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "Documentation": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "History": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "ImportIntro": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "ImportResult": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "SchemaDetail": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/ActionMenu": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/BackLink": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/ChipList": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/Chips": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/ConfirmModal": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/CopyButton": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/EmptyState": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/ErrorBoundary": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/FilterMenu": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/Icon": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/IconButton": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/Modal": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/PageHeader": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/Pagination": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/Panel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/RowMenu": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/SearchBox": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/Segmented": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/SplitButton": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/StatTile": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/common/StatusBadge": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/compare/ChangeNavigator": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/compare/ChangeSummary": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/compare/DiffTable": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/BulkBar": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/Filters": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/HealthSummary": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/SchemaTable": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/SelectionBar": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/StatusPanel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/SummaryTiles": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/Toolbar": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/dashboard/WsPill": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/documentation/FieldTable": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/history/CompareBar": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/history/CurrentVersion": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/history/HistoryFilters": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/history/HistoryTable": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/history/HistoryToolbar": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/history/VersionList": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/AccessPanel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/CapabilitiesCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/DetailsPanel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/FunctionsCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/FunctionsPanel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/HeaderCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/HealthLogsCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/HealthPanel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/OverviewCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/RequirementsCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/ResourcesCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/ResourcesPanel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/RolePanel": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/SummaryRow": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/TokenAlert": {
+    "eject": "risky",
+    "wrap": "risky"
+  }
+}

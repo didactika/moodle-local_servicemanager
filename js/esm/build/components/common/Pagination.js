@@ -1,0 +1,11 @@
+import{pageWindow as u}from"../../lib/paging";import o from"./Icon";import{jsx as a,jsxs as p}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
+ * The bar that goes from one page of a list to another, without leaving the page.
+ *
+ * @module     local_servicemanager/components/common/Pagination
+ * @copyright  2026 Didactika.org
+ * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */const b=({page:t,perpage:m,total:g,onPage:l,text:i})=>{const e=u(t,m,g);if(e.pages<2)return null;const s=(n,r,c)=>a("li",{className:"page-item",children:a("button",{type:"button",className:"page-link",title:r,"aria-label":r,onClick:()=>l(n),children:c})});return p("nav",{"aria-label":i("pagination_aria_label"),className:"servicemanager-pagination mt-3",children:[p("ul",{className:"pagination justify-content-center mb-1",children:[e.first&&s(0,i("pagination_first"),a(o,{name:"angles-left"})),e.previous&&s(t-1,i("pagination_previous"),a(o,{name:"angle-left"})),e.startDots&&a("li",{className:"page-item disabled",children:a("span",{className:"page-link",children:"..."})}),e.shown.map(n=>a("li",{className:`page-item${n===t?" active":""}`,children:a("button",{type:"button",className:"page-link",onClick:()=>l(n),"aria-current":n===t?"page":void 0,children:n+1})},n)),e.endDots&&a("li",{className:"page-item disabled",children:a("span",{className:"page-link",children:"..."})}),e.last&&s(e.pages-1,i("pagination_last"),e.pages),e.next&&s(t+1,i("pagination_next"),a(o,{name:"angle-right"}))]}),a("div",{className:"text-center text-body-secondary small",children:i("pagination_page_info",{current:t+1,total:e.pages})})]})};var d=b;export{d as default};

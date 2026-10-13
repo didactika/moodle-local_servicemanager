@@ -1,0 +1,11 @@
+import i from"../common/Icon";import{jsx as o,jsxs as s}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
+ * Whether the web services of the site work, in a line: the state, the protocols that are on and where to change them.
+ *
+ * @module     local_servicemanager/components/dashboard/WsPill
+ * @copyright  2026 Didactika.org
+ * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */const r={disabled:{tone:"danger",label:"ws_status_disabled",icon:"plug-circle-xmark"},warning:{tone:"warning",label:"ws_status_warning",icon:"plug-circle-exclamation"},operational:{tone:"success",label:"ws_status_operational",icon:"plug-circle-check"}},p=({status:e,canManage:c,text:a})=>{const n=r[e.level];return s("span",{className:"d-inline-flex flex-wrap align-items-center sm-badges-row","data-region":"ws-status",children:[s("span",{className:`sm-badge tone-${n.tone}`,children:[o(i,{name:n.icon,gap:!0}),a("tile_services"),": ",a(n.label)]}),e.protocols.map(l=>s("span",{className:`sm-protocol ${l.enabled?"on":"off"}`,title:a(l.enabled?"ws_enabled_label":"ws_disabled_label"),children:[o(i,{name:l.enabled?"circle-check":"circle-minus",gap:!0}),l.name,s("span",{className:"visually-hidden",children:[" ",a(l.enabled?"ws_enabled_label":"ws_disabled_label")]})]},l.name)),c&&e.fixUrl&&s("a",{href:e.fixUrl,className:`btn sm-pill compact tone-${n.tone}`,"data-region":"ws-fix",children:[o(i,{name:"power-off",gap:!0}),e.fixLabel]}),c&&e.protocolsUrl&&s("a",{href:e.protocolsUrl,className:"btn sm-pill compact",title:a("ws_manage_protocols_link"),children:[o(i,{name:"gear",gap:!0}),a("tile_manage")]})]})};var m=p;export{m as default};

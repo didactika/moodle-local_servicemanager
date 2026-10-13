@@ -37,9 +37,15 @@ class capability_calculator {
 
         $capabilities = [];
 
-        foreach ($functions as $func) {
-            $functionname = is_array($func) ? $func['name'] : $func;
-            $function = $DB->get_record('external_functions', ['name' => $functionname]);
+        // The functions are read once, by name.
+        $names = array_values(array_unique(array_map(
+            static fn($func): string => is_array($func) ? $func['name'] : $func,
+            $functions
+        )));
+        $known = $names ? $DB->get_records_list('external_functions', 'name', $names, '', 'name, capabilities') : [];
+
+        foreach ($names as $functionname) {
+            $function = $known[$functionname] ?? null;
 
             if ($function && !empty($function->capabilities)) {
                 $caps = explode(',', $function->capabilities);

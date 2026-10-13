@@ -1,22 +1,173 @@
 name: Moodle Plugin CI
 
 # Runs the moodle-plugin-ci checks (the same tests the Moodle.org plugins
-# database runs) so regressions are caught automatically:
-#   - on every push to `develop` (validate each commit during development), and
-#   - on `main` plus pull requests into `develop`/`main` (validate before a release,
-#     since release.yml publishes from `main`).
+# database runs) so regressions are caught automatically.
+#
+# Branch model (see README.md): `main` is the development branch. This
+# template also ships one MOODLE_XXX_STABLE branch per Moodle version listed
+# in branches/ at the time it was generated -- delete whichever ones this
+# plugin does not actually support, do not cut them from scratch. Both kinds
+# of branch are protected, and both can publish a release (release.yml
+# triggers on either).
+#
+# On pull requests only, deliberately. The suite is the gate a change has to
+# pass to get in: `CI complete` below is the required status check on those
+# branches, so nothing reaches them without it. A push to a protected branch
+# is therefore always an already-tested merge, and re-running the whole
+# matrix on it would test the same commit a second time to answer a question
+# that has already been answered. What does run on a push is release.yml,
+# which only decides whether version.php changed enough to tag a release --
+# the same split the npm template uses.
+#
+# workflow_dispatch is the escape hatch for re-running the suite against a
+# branch by hand, without opening a pull request to do it.
 on:
-  push:
-    branches:
-      - develop
-      - main
   pull_request:
     branches:
-      - develop
       - main
+      - 'MOODLE_*_STABLE'
+  workflow_dispatch:
+
+# A new push to a pull request cancels the run that is still going for the one before it, so the checks of a commit that is
+# already out of date do not keep running next to the ones of the commit that replaced it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
+  setup:
+    # Turns $plugin->supported (version.php) into the test matrix consumed by
+    # the `test` job below, so that array is the ONLY place in this repo that
+    # declares which Moodle versions this plugin is tested against. See the
+    # comment inside the step for the one other fact this needs -- a
+    # Moodle-version -> PHP-version table -- and why it lives here and
+    # nowhere else.
+    name: Build test matrix from version.php
+    runs-on: ubuntu-22.04
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v7
+
+      - name: Build test matrix from version.php
+        id: build
+        run: |
+          set -euo pipefail
+
+          # ===================================================================
+          # MOODLE_PHP_TABLE is the single place that maps a Moodle version
+          # (the integer codes used by $plugin->supported / $plugin->requires,
+          # e.g. 405 = 4.5, 502 = 5.2) to the PHP versions that Moodle version
+          # itself supports. This is a fact about Moodle, not about this
+          # plugin, so it only changes when a new Moodle version ships
+          # (roughly twice a year) -- unlike the list of Moodle versions THIS
+          # plugin supports, which lives solely in version.php (never here).
+          #
+          # Add a row here BEFORE adding the matching version number to
+          # $plugin->supported. If a supported version has no row below, the
+          # step fails loudly instead of silently testing the wrong (or no)
+          # PHP versions for it.
+          #
+          # Verified against https://moodledev.io/general/development/policies/php
+          # and the individual https://moodledev.io/general/releases/<x.y>
+          # pages on 2026-08-09.
+          # ===================================================================
+          MOODLE_PHP_TABLE='{
+            "400": ["7.4", "8.0"],
+            "401": ["7.4", "8.0", "8.1"],
+            "402": ["8.0", "8.1", "8.2"],
+            "403": ["8.0", "8.1", "8.2"],
+            "404": ["8.1", "8.2", "8.3"],
+            "405": ["8.1", "8.2", "8.3"],
+            "500": ["8.2", "8.3", "8.4"],
+            "501": ["8.2", "8.3", "8.4"],
+            "502": ["8.3", "8.4"],
+            "503": ["8.3", "8.4"]
+          }'
+          # VERIFY: the 400-404 rows were transcribed from the summary table
+          # on the policy page above, not each version's own release notes
+          # (unlike 405 and 500-503, which were each checked against their
+          # individual release page). Double-check the row you rely on if
+          # this plugin still supports a pre-4.5 Moodle.
+
+          # NOTE ON SEMANTICS: Moodle defines $plugin->supported as an
+          # inclusive RANGE, [lowest, highest], so [400, 502] means every
+          # Moodle version from 4.0 to 5.2. Testing all of them would multiply
+          # the matrix for little gain, so the matrix holds the two ENDS of the
+          # range and every LTS release (MOODLE_LTS below) that lies between
+          # them, each with the PHP versions Moodle supports for it: for
+          # [400, 502] that is 400, 401, 405 and 502. Add the code of a new LTS
+          # release to MOODLE_LTS when Moodle announces it.
+          MOODLE_LTS='["401", "405"]'
+          supported_raw=$(grep -oP '\$plugin->supported\s*=\s*\[\K[^\]]+' version.php || true)
+          if [ -z "$supported_raw" ]; then
+            echo "::error::Could not find \$plugin->supported = [...] in version.php."
+            exit 1
+          fi
+
+          # Named "entries", not "include": jq treats `include` as reserved
+          # (its own module-loading directive), and rejects it not just as a
+          # bareword object key but as a --arg/--argjson variable name too --
+          # confirmed against jqlang/jq#1619, `jq -n --arg end 1 '{end:$end}'`
+          # fails the same way for the same reason. Quoting the key alone
+          # ("include": ...) does not fix it: the --argjson name is a second,
+          # independent place the same reserved word can't appear. The JSON
+          # output still needs a field literally called "include" -- that's
+          # GitHub Actions' own matrix schema, not jq's, and unaffected by
+          # this rename.
+          lowest=$(echo "$supported_raw" | tr ',' '\n' | tr -d ' \t\r' | grep -v '^$' | sort -n | head -n 1)
+          highest=$(echo "$supported_raw" | tr ',' '\n' | tr -d ' \t\r' | grep -v '^$' | sort -n | tail -n 1)
+          for edge in "$lowest" "$highest"; do
+            if ! echo "$MOODLE_PHP_TABLE" | jq -e --arg v "$edge" 'has($v)' > /dev/null; then
+              echo "::error::Moodle version $edge is listed in \$plugin->supported but MOODLE_PHP_TABLE above has no entry for it. Add one (see https://moodledev.io/general/development/policies/php) before this can run."
+              exit 1
+            fi
+          done
+          versions=$(jq -rn --argjson lo "$lowest" --argjson hi "$highest" --argjson lts "$MOODLE_LTS" \
+            '([($lo | tostring), ($hi | tostring)] + ($lts | map(select((tonumber) > $lo and (tonumber) < $hi)))) | unique | sort_by(tonumber) | .[]' | tr -d '\r')
+
+          entries='[]'
+          for v in $versions; do
+            # The trailing `tr -d '\r'` guards against a stray carriage
+            # return ending up in a PHP version string (e.g. from a tool in
+            # the pipeline emitting CRLF) and silently corrupting the
+            # generated branch/PHP values downstream.
+            phps=$(echo "$MOODLE_PHP_TABLE" | jq -r --arg v "$v" '.[$v] // empty | .[]' | tr -d '\r')
+            if [ -z "$phps" ]; then
+              echo "::error::Moodle version $v is listed in \$plugin->supported but MOODLE_PHP_TABLE above has no entry for it. Add one (see https://moodledev.io/general/development/policies/php) before this can run."
+              exit 1
+            fi
+
+            # Moodle 5.3 asks for PostgreSQL 17 and MariaDB 11.4 at least; the earlier releases keep the
+            # versions that they were tested with.
+            if [ "$v" -ge 503 ]; then
+              pg="17"
+              maria="11.4"
+            else
+              pg="16"
+              maria="10"
+            fi
+
+            while IFS= read -r php; do
+              for db in pgsql mariadb; do
+                entries=$(echo "$entries" | jq -c \
+                  --arg php "$php" --arg branch "MOODLE_${v}_STABLE" --arg db "$db" --arg pg "$pg" --arg maria "$maria" \
+                  '. + [{"php": $php, "moodle-branch": $branch, "database": $db, "postgres-version": $pg, "mariadb-version": $maria}]')
+              done
+            done <<< "$phps"
+          done
+
+          matrix=$(jq -c -n --argjson entries "$entries" '{"include": $entries}')
+          echo "Generated test matrix:"
+          echo "$matrix" | jq .
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
   test:
+    needs: setup
     runs-on: ubuntu-22.04
 
     services:
@@ -42,43 +193,15 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix:
-        # This plugin targets Moodle 4.5–5.3 (see version.php $plugin->supported).
-        # We test the floor (4.5), the previous stable (5.2) and the current highest
-        # stable (5.3). Moodle 5.2+ requires PHP 8.3+, so PHP 8.1/8.2 are excluded
-        # for those branches; Moodle 4.5 runs on 8.1–8.3. PHP 8.4 is tested on 5.3 only.
-        # Database images are picked per branch (see `include`): Moodle 5.3 requires
-        # MariaDB 11.4+ and PostgreSQL 17+, older branches keep their current versions.
-        php: ['8.1', '8.2', '8.3', '8.4']
-        moodle-branch: ['MOODLE_405_STABLE', 'MOODLE_502_STABLE', 'MOODLE_503_STABLE']
-        database: [pgsql, mariadb]
-        exclude:
-          - php: '8.1'
-            moodle-branch: 'MOODLE_502_STABLE'
-          - php: '8.2'
-            moodle-branch: 'MOODLE_502_STABLE'
-          - php: '8.1'
-            moodle-branch: 'MOODLE_503_STABLE'
-          - php: '8.2'
-            moodle-branch: 'MOODLE_503_STABLE'
-          - php: '8.4'
-            moodle-branch: 'MOODLE_405_STABLE'
-          - php: '8.4'
-            moodle-branch: 'MOODLE_502_STABLE'
-        include:
-          - moodle-branch: 'MOODLE_405_STABLE'
-            postgres-version: '16'
-            mariadb-version: '10'
-          - moodle-branch: 'MOODLE_502_STABLE'
-            postgres-version: '16'
-            mariadb-version: '10'
-          - moodle-branch: 'MOODLE_503_STABLE'
-            postgres-version: '17'
-            mariadb-version: '11.4'
+      # Populated entirely by the `setup` job above. Do not hand-edit this or
+      # add an `exclude:` list here -- change version.php (to add/drop a
+      # supported Moodle version) and/or MOODLE_PHP_TABLE in the `setup` job
+      # (to fix which PHP versions a Moodle version tests against) instead.
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
 
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: plugin
 
@@ -141,6 +264,16 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci grunt --max-lint-warnings 0
 
+      # Only for a plugin that writes its styles as SCSS and compiles them with its own tools/build-styles.mjs, which takes
+      # the root of a Moodle checkout and, with --check, fails when styles.css is not what the SCSS produces.
+      - name: Check generated component styles
+        if: ${{ !cancelled() && hashFiles('plugin/tools/build-styles.mjs') != '' }}
+        run: |
+          # Match the installed core's Node runtime, including legacy Node Sass bindings.
+          source "$NVM_DIR/nvm.sh"
+          nvm use "$(cat moodle/.nvmrc)"
+          node plugin/tools/build-styles.mjs moodle --check
+
       - name: PHPUnit tests
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpunit --fail-on-warning
@@ -148,15 +281,16 @@ jobs:
       - name: Behat features
         id: behat
         if: ${{ !cancelled() }}
-        # NOTE: --scss-deprecations is intentionally omitted. The plugin still uses
-        # Bootstrap 4 utility classes (mr-*, badge-*, text-right, ...) which Moodle 5.x
-        # renders via its compat shim but flags as deprecated. They work on both 4.5
-        # (native BS4) and 5.x (shim); re-enable this flag after migrating to BS5 classes.
+        # Example (delete if it does not apply to your plugin): if your SCSS
+        # still uses Bootstrap-4-era utility classes (mr-*, badge-*,
+        # text-right, ...) that Moodle 5.x renders through its Bootstrap 5
+        # compat shim but reports as deprecated, you may need to omit
+        # --scss-deprecations here until you migrate to Bootstrap 5 classes.
         run: moodle-plugin-ci behat --profile chrome
 
       - name: Upload Behat Faildump
         if: ${{ failure() && steps.behat.outcome == 'failure' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Behat Faildump (${{ join(matrix.*, ', ') }})
           path: ${{ github.workspace }}/moodledata/behat_dump
@@ -168,11 +302,19 @@ jobs:
         run: exit 1
 
   ci-complete:
-    # Single, stable status check to mark as "required" in branch protection on
-    # `main`. The individual matrix job names (e.g. "test (8.3, MOODLE_405_STABLE,
-    # pgsql)") change whenever the matrix changes, which makes them brittle to
-    # require directly; this aggregator name never changes. It succeeds only when
-    # every matrix combination in `test` succeeded.
+    # Single, stable status check to mark as "required" in branch protection
+    # on `main` and every `MOODLE_*_STABLE` branch. The individual matrix job
+    # names (e.g. "test (8.3, MOODLE_405_STABLE, pgsql)") change whenever the
+    # matrix changes, which makes them brittle to require directly; this
+    # aggregator name never changes. It succeeds only when every matrix
+    # combination in `test` succeeded. Do not rename this job's `name:` --
+    # branch protection targets it by this exact string.
+    #
+    # `if: always()` is what makes it report at all when the matrix failed or
+    # was skipped, and is exactly why the step below has to assert the
+    # result instead of just echoing. A gate that runs unconditionally and
+    # succeeds unconditionally reports green over a red suite, which is worse
+    # than having no gate: it looks like one.
     name: CI complete
     if: always()
     needs: test

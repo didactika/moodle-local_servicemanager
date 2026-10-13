@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../src/lib/dates.ts"],
+  "sourceRoot": "../../../../../../sources/public/local/servicemanager/js/esm/build",
+  "sourcesContent": ["/**\n * This file is part of Moodle - https://moodle.org/\n * Moodle is free software under the GNU General Public License, version 3 or later.\n *\n * The dates of the filters, which a date field writes as text and the server reads as a Unix time.\n *\n * @module     local_servicemanager/lib/dates\n * @copyright  2026 Didactika.org\n * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>\n * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\n */\n\n/**\n * The Unix time of the start of a day.\n *\n * @param day Day as a date field writes it, such as 2026-10-13.\n * @returns Seconds since 1970, or an empty string when there is no day.\n */\nexport const toTimestamp = (day: string): string => {\n    if (!day) {\n        return '';\n    }\n    return String(Math.floor(new Date(day).getTime() / 1000));\n};\n"],
+  "mappings": ";;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAkBO,MAAM,cAAc,wBAAC,QAAwB;AAChD,MAAI,CAAC,KAAK;AACN,WAAO;AAAA,EACX;AACA,SAAO,OAAO,KAAK,MAAM,IAAI,KAAK,GAAG,EAAE,QAAQ,IAAI,GAAI,CAAC;AAC5D,GAL2B;",
+  "names": []
+}

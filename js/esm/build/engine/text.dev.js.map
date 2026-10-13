@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../src/engine/text.ts"],
+  "sourceRoot": "../../../../../../sources/public/local/servicemanager/js/esm/build",
+  "sourcesContent": ["/**\n * This file is part of Moodle - https://moodle.org/\n * Moodle is free software under the GNU General Public License, version 3 or later.\n *\n * Text of the page, which the server sends once with the properties of the component.\n *\n * @module     local_servicemanager/engine/text\n * @copyright  2026 Didactika.org\n * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>\n * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\n */\nimport type {Text} from '../types';\n\n/**\n * Create the function that looks a text up.\n *\n * @param strings Texts by name, where {n} marks the place of a value, or {name} the place of each value when there are several.\n * @returns Function that returns the text, with the values in place.\n */\nexport const createText = (strings: Record<string, string>): Text => (name, value = '') => {\n    const text = strings[name] ?? '';\n    if (value !== null && typeof value === 'object') {\n        return Object.keys(value).reduce((result, key) => result.split(`{${key}}`).join(String(value[key])), text);\n    }\n    return text.replace('{n}', String(value));\n};\n"],
+  "mappings": ";;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAmBO,MAAM,aAAa,wBAAC,YAA0C,CAAC,MAAM,QAAQ,OAAO;AACvF,QAAM,OAAO,QAAQ,IAAI,KAAK;AAC9B,MAAI,UAAU,QAAQ,OAAO,UAAU,UAAU;AAC7C,WAAO,OAAO,KAAK,KAAK,EAAE,OAAO,CAAC,QAAQ,QAAQ,OAAO,MAAM,IAAI,GAAG,GAAG,EAAE,KAAK,OAAO,MAAM,GAAG,CAAC,CAAC,GAAG,IAAI;AAAA,EAC7G;AACA,SAAO,KAAK,QAAQ,OAAO,OAAO,KAAK,CAAC;AAC5C,GAN0B;",
+  "names": []
+}

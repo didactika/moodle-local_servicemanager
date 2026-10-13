@@ -16,6 +16,8 @@
 
 namespace local_servicemanager\schema;
 
+use local_servicemanager\automation\role_settings;
+
 /**
  * YAML parser for service schema definitions
  *
@@ -122,7 +124,74 @@ class yaml_parser {
             return $errors;
         }
 
-        return array_merge($errors, $this->validate_definition($data['definition']));
+        return array_merge($errors, $this->validate_definition($data['definition']), $this->validate_role($data['role'] ?? null));
+    }
+
+    /**
+     * Check the role section, which is optional: it must be a map that only has the keys that mean something, and each of those
+     * must have the shape it needs.
+     *
+     * @param mixed $role The role section, or null when the schema has none.
+     * @return array Array of error strings (empty if valid)
+     */
+    protected function validate_role($role): array {
+        if ($role === null) {
+            return [];
+        }
+        if (!is_array($role) || ($role && array_is_list($role))) {
+            return [get_string('error_role_section', 'local_servicemanager')];
+        }
+
+        $errors = [];
+        $known = array_merge(['context_levels', 'permissions'], role_settings::RELATIONS);
+        foreach (array_diff(array_keys($role), $known) as $key) {
+            $errors[] = get_string('error_role_unknown_key', 'local_servicemanager', $key);
+        }
+
+        $lists = array_merge(['context_levels'], role_settings::RELATIONS);
+        foreach ($lists as $key) {
+            if (isset($role[$key]) && !$this->is_list_of_text($role[$key])) {
+                $errors[] = get_string('error_role_list', 'local_servicemanager', $key);
+            }
+        }
+        foreach ((array) ($role['context_levels'] ?? []) as $level) {
+            if (is_string($level) && !isset(role_settings::CONTEXT_LEVELS[$level])) {
+                $errors[] = get_string('error_role_context_level', 'local_servicemanager', $level);
+            }
+        }
+
+        if (isset($role['permissions'])) {
+            if (!is_array($role['permissions']) || array_is_list($role['permissions'])) {
+                $errors[] = get_string('error_role_permissions', 'local_servicemanager');
+            } else {
+                foreach ($role['permissions'] as $permission => $capabilities) {
+                    if (!in_array($permission, role_settings::PERMISSIONS, true)) {
+                        $errors[] = get_string('error_role_permission_name', 'local_servicemanager', $permission);
+                    } else if (!$this->is_list_of_text($capabilities)) {
+                        $errors[] = get_string('error_role_list', 'local_servicemanager', 'permissions.' . $permission);
+                    }
+                }
+            }
+        }
+        return $errors;
+    }
+
+    /**
+     * Whether a value is a list of texts.
+     *
+     * @param mixed $value The value.
+     * @return bool True when it is an array whose items are all text.
+     */
+    private function is_list_of_text($value): bool {
+        if (!is_array($value)) {
+            return false;
+        }
+        foreach ($value as $item) {
+            if (!is_string($item) || $item === '') {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -144,10 +213,6 @@ class yaml_parser {
 
         if (empty($meta['name'])) {
             $errors[] = get_string('error_missing_meta_name', 'local_servicemanager');
-        }
-
-        if (empty($meta['version'])) {
-            $errors[] = get_string('error_missing_meta_version', 'local_servicemanager');
         }
 
         return $errors;
@@ -249,6 +314,18 @@ class yaml_parser {
      */
     public function extract_required_plugins(array $data): array {
         return $data['requirements']['plugins'] ?? [];
+    }
+
+    /**
+     * Extract what the schema says about its role: where it can be assigned, which capabilities it has explicitly and which other
+     * roles it may assign, override, switch to and see.
+     *
+     * @param array $data Parsed YAML data
+     * @return role_settings The settings; empty when the schema has no role section.
+     */
+    public function extract_role_settings(array $data): role_settings {
+        $section = $data['role'] ?? [];
+        return role_settings::from_array(is_array($section) ? $section : []);
     }
 
     /**

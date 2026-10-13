@@ -1,0 +1,1021 @@
+// What every page of the plugin shares: the head of a page, the figures at the top, the tools above a list, the menus and the
+// empty state. Every colour is a variable of Bootstrap, which follows the colour mode of the page and what the theme changes.
+
+.servicemanager-dashboard,
+.servicemanager-detail,
+.servicemanager-history-page,
+.servicemanager-compare-page,
+.servicemanager-documentation,
+.servicemanager-import-page,
+.servicemanager-import-result {
+    .sm-icon-gap {
+        margin-inline-end: 0.35rem;
+    }
+
+    // A label with the colour of what it says.
+    .sm-badge {
+        --sm-tone: var(--bs-secondary-color);
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.55rem;
+        border-radius: 2rem;
+        background-color: color-mix(in srgb, var(--sm-tone) 16%, var(--bs-body-bg));
+        color: var(--sm-tone);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        white-space: nowrap;
+
+        &.tone-success {
+            --sm-tone: var(--bs-success);
+        }
+
+        &.tone-warning {
+            --sm-tone: var(--bs-warning-text-emphasis);
+        }
+
+        &.tone-danger {
+            --sm-tone: var(--bs-danger);
+        }
+
+        &.tone-info {
+            --sm-tone: var(--bs-info-text-emphasis);
+        }
+    }
+
+    // How many there are, next to a title.
+    .sm-count-badge {
+        display: inline-block;
+        min-width: 1.25rem;
+        margin-inline-start: 0.5rem;
+        padding: 0 0.4rem;
+        border-radius: 2rem;
+        background-color: var(--bs-primary);
+        color: var(--bs-white);
+        font-size: 0.75rem;
+        text-align: center;
+    }
+
+    .sm-badges-row,
+    .sm-actions-row {
+        gap: 0.5rem;
+    }
+
+    .sm-check-column {
+        width: 2.5rem;
+    }
+
+    .sm-half {
+        width: 50%;
+    }
+
+    .sm-auto-width {
+        width: auto;
+    }
+
+    // A rule between two columns, only where they are side by side.
+    .sm-divider {
+        @media (min-width: 768px) {
+            border-inline-end: 1px solid var(--bs-border-color);
+        }
+    }
+
+    & .table th {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    & .table code {
+        padding: 0.2em 0.4em;
+        border-radius: var(--bs-border-radius-sm);
+        background-color: var(--bs-tertiary-bg);
+        font-size: 0.875em;
+    }
+
+    // The head of a page.
+    .sm-page-header {
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+    }
+
+    .sm-page-title {
+        min-width: 0;
+    }
+
+    // The figures at the top of a page: a row of cards that wraps by itself.
+    .sm-tiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        &.sm-tiles-four {
+            grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+        }
+    }
+
+    .sm-tile {
+        height: 100%;
+        box-shadow: var(--bs-box-shadow-sm);
+
+        .sm-tile-label {
+            letter-spacing: 0.04em;
+        }
+
+        .sm-tile-value {
+            margin: 0.25rem 0;
+            font-size: 1.75rem;
+            font-weight: 600;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+
+        .sm-tile-icon {
+            font-size: 1.1rem;
+        }
+
+        &.sm-tile-link:hover,
+        &.sm-tile-link:focus-visible {
+            border-color: var(--bs-primary);
+        }
+
+        &.sm-tile-active {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 1px var(--bs-primary);
+        }
+    }
+
+    // The tools above a list: search, choice of status, filters.
+    .sm-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 1rem;
+        gap: 0.75rem;
+
+        .sm-search {
+            flex: 1 1 14rem;
+            max-width: 26rem;
+
+            // The browser draws a cross of its own in a search field; the button of the box is the one cross.
+            & input[type='search']::-webkit-search-cancel-button,
+            & input[type='search']::-webkit-search-decoration {
+                appearance: none;
+                -webkit-appearance: none;
+            }
+        }
+
+        // The actions of the page stay at the end of the row.
+        .sm-toolbar-actions {
+            margin-inline-start: auto;
+        }
+
+    }
+
+    & .dropdown,
+    & .btn-group {
+        position: relative;
+    }
+
+    // Menus that open from the edge of the page toward the inside of it, so they never push the page wider.
+    .sm-filter-menu,
+    .sm-row-menu {
+        right: 0;
+        left: auto;
+        max-width: 20rem;
+
+        @media (max-width: 576px) {
+            max-width: calc(100vw - 2rem);
+        }
+    }
+
+    .sm-filter-menu {
+        width: 19rem;
+        padding: 1rem;
+
+        // The title of the panel and, at its right, the button that clears every filter: a funnel with a cross.
+        .sm-filter-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .sm-filter-heading {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .sm-iconbtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            border: 0;
+            border-radius: 0.5rem;
+            background: transparent;
+            color: inherit;
+            transition: background-color 0.12s ease, color 0.12s ease;
+
+            &:hover:not(:disabled) {
+                background-color: color-mix(in srgb, var(--bs-primary) 14%, var(--bs-body-bg));
+                color: var(--bs-primary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--bs-primary);
+                outline-offset: 1px;
+            }
+
+            &:disabled {
+                opacity: 0.35;
+            }
+        }
+
+        .sm-filter-title {
+            margin-bottom: 0.4rem;
+            color: var(--bs-secondary-color);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        & .form-control {
+            width: 100%;
+        }
+    }
+
+    // Pills: one choice among a few, each as wide as the others, the chosen one tinted.
+    .sm-chips {
+        display: flex;
+        margin-bottom: 1rem;
+        gap: 0.375rem;
+    }
+
+    .sm-chip {
+        flex: 1 1 0;
+        padding: 0.25rem 0.75rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 999px;
+        background-color: transparent;
+        color: var(--bs-body-color);
+        font-size: 0.8125rem;
+        white-space: nowrap;
+        transition: background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+
+        &:hover:not(:disabled) {
+            border-color: var(--bs-primary);
+            background-color: var(--bs-tertiary-bg);
+            box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.16);
+            transform: translateY(-1px);
+        }
+
+        &.active {
+            border-color: var(--bs-primary);
+            background-color: var(--bs-primary-bg-subtle);
+            box-shadow: 0 0 0 2px var(--bs-primary-bg-subtle);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-primary);
+            outline-offset: 2px;
+        }
+    }
+
+    // A menu that is the last button of a group keeps the rounded end of the group.
+    & .btn-group > .sm-action-menu {
+        > .btn {
+            border-top-right-radius: var(--bs-btn-border-radius, var(--bs-border-radius-sm));
+            border-bottom-right-radius: var(--bs-btn-border-radius, var(--bs-border-radius-sm));
+        }
+    }
+
+    & .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .sm-row-menu {
+        min-width: 12rem;
+    }
+
+    // A section of a page: the same card everywhere.
+    .sm-panel {
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--bs-border-color);
+        background-color: var(--bs-body-bg);
+        box-shadow: var(--bs-box-shadow-sm);
+
+        // Lists and tables inside a card take the colour of the card, so all the cards of a page look the same.
+        & .list-group-item,
+        & .table {
+            background-color: transparent;
+        }
+
+        & .card-header {
+            padding: 0.75rem 1rem;
+            background-color: var(--bs-tertiary-bg);
+        }
+
+        .sm-panel-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    }
+
+    // A list of facts: the name of each at the left and its value at the right.
+    .sm-facts {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 0.6rem 1rem;
+
+        & dt {
+            color: var(--bs-secondary-color);
+            font-weight: 500;
+        }
+
+        & dd {
+            margin: 0;
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        // A pair that is wrapped in an element keeps the two columns of the list.
+        .sm-fact-pair {
+            display: contents;
+        }
+    }
+
+    .sm-resource-icon {
+        width: 2rem;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .sm-list {
+        box-shadow: var(--bs-box-shadow-sm);
+
+        & thead {
+            background-color: var(--bs-tertiary-bg);
+        }
+    }
+
+    // The dialogues: a card over the page, with a head that stays, a body that scrolls and a foot that stays.
+    .sm-dialog {
+        width: 28rem;
+        max-width: calc(100vw - 2rem);
+        max-height: calc(100vh - 3rem);
+        padding: 0;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 1rem;
+        background-color: var(--bs-body-bg);
+        color: var(--bs-body-color);
+        box-shadow: var(--bs-box-shadow-lg);
+
+        &.wide {
+            width: 36rem;
+        }
+
+        &[open] {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &::backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .sm-dialog-body {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            max-height: calc(100vh - 3rem);
+        }
+
+        .sm-dialog-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--bs-border-color);
+            gap: 1rem;
+
+            // The cross that closes the window: a round button without the frame that the browser draws around a button.
+            .sm-iconbtn {
+                display: inline-flex;
+                flex: none;
+                align-items: center;
+                justify-content: center;
+                width: 2rem;
+                height: 2rem;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background-color: transparent;
+                color: var(--bs-secondary-color);
+                font-size: 0.95rem;
+                transition: background-color 0.12s ease, color 0.12s ease;
+
+                &:hover {
+                    background-color: var(--bs-tertiary-bg);
+                    color: var(--bs-body-color);
+                }
+
+                &:focus-visible {
+                    outline: 2px solid var(--bs-primary);
+                    outline-offset: 1px;
+                }
+            }
+        }
+
+        .sm-dialog-title {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .sm-dialog-scroll {
+            flex: 1 1 auto;
+            min-height: 0;
+            padding: 1.25rem;
+            overflow-y: auto;
+        }
+
+        .sm-dialog-foot {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.9rem 1.25rem;
+            border-top: 1px solid var(--bs-border-color);
+            background-color: var(--bs-tertiary-bg);
+            gap: 0.5rem;
+        }
+
+        .sm-dialog-search {
+            position: sticky;
+            top: -1.25rem;
+            z-index: 1;
+            margin: -1.25rem -1.25rem 1rem;
+            padding: 0.9rem 1.25rem;
+            border-bottom: 1px solid var(--bs-border-color);
+            background-color: var(--bs-body-bg);
+        }
+    }
+
+    // How healthy the schemas are: the total, one bar and a legend that doubles as the choice of status.
+    .sm-health {
+        margin-bottom: 1rem;
+        box-shadow: var(--bs-box-shadow-sm);
+
+        & .card-body {
+            gap: 1rem 1.5rem;
+        }
+
+        .sm-health-total {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .sm-health-number {
+            font-size: 1.75rem;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .sm-health-bar {
+            display: flex;
+            flex: 1 1 8rem;
+            height: 0.6rem;
+            border-radius: 0.3rem;
+            background-color: var(--bs-tertiary-bg);
+            overflow: hidden;
+            gap: 2px;
+        }
+
+        .sm-health-part {
+            min-width: 0.4rem;
+        }
+
+        .sm-health-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .sm-health-chip {
+            display: inline-flex;
+            flex: 0 0 auto;
+            align-items: center;
+            padding: 0.3rem 0.8rem;
+            gap: 0.4rem;
+
+            &:disabled {
+                opacity: 0.55;
+            }
+        }
+    }
+
+    // A protocol of the web services: the one that is on says so, and the one that is off looks off.
+    .sm-protocol {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.55rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 2rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+
+        &.on {
+            border-color: var(--bs-success);
+            background-color: color-mix(in srgb, var(--bs-success) 14%, var(--bs-body-bg));
+            color: var(--bs-success-text-emphasis);
+        }
+
+        &.off {
+            color: var(--bs-secondary-color);
+            opacity: 0.8;
+        }
+    }
+
+    // What follows the person at the bottom of the screen while they have a choice of schemas: how many, and what to do with them.
+    .sm-floating {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        z-index: 1040;
+        display: flex;
+        align-items: center;
+        max-width: calc(100vw - 2rem);
+        padding: 0.5rem 0.6rem 0.5rem 1.25rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 1rem;
+        background-color: var(--bs-body-bg);
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+        gap: 1rem;
+        transform: translateX(-50%);
+
+        // How many are chosen: plain text, in the same weight as the title of a card.
+        .sm-floating-count {
+            display: inline-flex;
+            align-items: center;
+            color: var(--bs-body-color);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        // The cross at the end of the bar that clears the choice: a round button that lights up under the pointer.
+        .sm-floating-clear {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            border: 0;
+            border-radius: 0.5rem;
+            background-color: transparent;
+            color: var(--bs-secondary-color);
+            transition: background-color 0.12s ease, color 0.12s ease;
+
+            &:hover,
+            &:focus-visible {
+                background-color: color-mix(in srgb, var(--bs-primary) 14%, var(--bs-body-bg));
+                color: var(--bs-primary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--bs-primary);
+                outline-offset: 1px;
+            }
+        }
+
+        .sm-floating-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        @media (max-width: 576px) {
+            flex-wrap: wrap;
+            justify-content: center;
+            border-radius: var(--bs-border-radius-lg);
+        }
+    }
+
+    // An action as a pill that has the colour of what it does.
+    .sm-pill {
+        --sm-tone: var(--bs-body-color);
+        display: inline-flex;
+        align-items: center;
+        padding: 0.45rem 0.9rem;
+        border: 1px solid transparent;
+        border-radius: 2rem;
+        background-color: color-mix(in srgb, var(--sm-tone) 14%, var(--bs-body-bg));
+        color: var(--sm-tone);
+        font-weight: 500;
+        white-space: nowrap;
+        transition: background-color 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+
+        &.tone-primary {
+            --sm-tone: var(--bs-primary);
+        }
+
+        &.tone-success {
+            --sm-tone: var(--bs-success);
+        }
+
+        &.tone-warning {
+            --sm-tone: var(--bs-warning-text-emphasis);
+        }
+
+        &.tone-info {
+            --sm-tone: var(--bs-info-text-emphasis);
+        }
+
+        &.tone-danger {
+            --sm-tone: var(--bs-danger);
+        }
+
+        &:hover {
+            border-color: var(--sm-tone);
+            background-color: color-mix(in srgb, var(--sm-tone) 24%, var(--bs-body-bg));
+            box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.16);
+            transform: translateY(-1px);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--sm-tone);
+            outline-offset: 2px;
+        }
+
+        &:disabled,
+        &.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        // A text button as small as the badges next to it.
+        &.compact:not(.icon-only) {
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+
+        // Only an icon: a round button, as big as the field next to it.
+        &.icon-only {
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            padding: 0;
+            border-radius: 50%;
+
+            &.compact {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+
+        // A button that opens a menu: the icon and the small arrow that says so.
+        &.has-caret {
+            height: 2.25rem;
+            padding: 0 0.7rem;
+            gap: 0.35rem;
+
+            .sm-caret {
+                font-size: 0.65rem;
+            }
+        }
+
+        // The one action of the page that matters most, in the full colour of its tone.
+        &.solid {
+            background-color: var(--sm-tone);
+            color: var(--bs-white);
+
+            &:hover {
+                border-color: transparent;
+                background-color: color-mix(in srgb, var(--sm-tone) 85%, black);
+            }
+        }
+    }
+
+    // The actions of a place, each apart from the others and all of the same kind.
+    .sm-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    // The place of a button that a row does not have, so the buttons of the same kind are always in the same place.
+    .sm-slot {
+        display: inline-block;
+        flex: none;
+        width: 2rem;
+        height: 2rem;
+    }
+
+    // What a list shows when it has nothing to show.
+    .sm-empty {
+        border-style: dashed;
+
+        .sm-empty-icon {
+            font-size: 2.5rem;
+        }
+
+        .sm-empty-text {
+            max-width: 32rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sm-tile .sm-tile-value {
+            font-size: 1.4rem;
+        }
+    }
+}
+
+// What holds the place of a page while the script that draws it loads: grey blocks that breathe a little. It is inside the element that
+// the component fills in, so it disappears when the component is there.
+.sm-skeleton {
+    padding: 0.5rem 0;
+
+    .sm-skeleton-line {
+        display: block;
+        height: 0.9rem;
+        max-width: 100%;
+        margin-bottom: 0.7rem;
+        border-radius: 0.4rem;
+        background-color: color-mix(in srgb, var(--bs-body-color) 10%, var(--bs-body-bg));
+        animation: sm-skeleton-breathe 1.4s ease-in-out infinite;
+
+        &.title {
+            height: 1.8rem;
+        }
+
+        &.tall {
+            height: 2.4rem;
+        }
+
+        &.round {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+    }
+
+    .sm-skeleton-head {
+        margin-bottom: 1.25rem;
+    }
+
+    .sm-skeleton-card {
+        margin-bottom: 1.25rem;
+        padding: 1rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        background-color: var(--bs-body-bg);
+    }
+
+    .sm-skeleton-tools {
+        display: flex;
+        margin-bottom: 1.25rem;
+        gap: 0.75rem;
+    }
+
+    .sm-skeleton-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.3rem;
+        gap: 1rem;
+    }
+
+    .sm-skeleton-columns {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.25rem;
+    }
+
+    // A row with something at each end, such as a title and its actions.
+    .sm-skeleton-between {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .sm-skeleton-actions {
+        display: inline-flex;
+        max-width: 100%;
+        gap: 0.4rem;
+    }
+
+    // What a card of facts has in one row.
+    .sm-skeleton-facts {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0.8rem;
+        gap: 2.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .sm-skeleton-columns {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.sm-skeleton-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+@keyframes sm-skeleton-breathe {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.45;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sm-skeleton .sm-skeleton-line {
+        animation: none;
+    }
+}
+
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    .sm-filter > .btn {
+        position: relative;
+    }
+
+    // The button of the filters wears the colour of the search box when it is on, open or has the focus: one colour for both.
+    .sm-filter > .btn.btn-outline-secondary {
+        &:focus,
+        &:focus-visible,
+        &.active,
+        &[aria-expanded='true'] {
+            border-color: var(--bs-primary);
+            background-color: var(--bs-body-bg);
+            color: var(--bs-primary);
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--bs-primary) 25%, transparent);
+        }
+    }
+
+    // The count of filters that are on sits on the corner of the button, so the button does not grow and the panel under it stays put.
+    .sm-filter .sm-count-badge {
+        position: absolute;
+        top: -0.45rem;
+        right: -0.45rem;
+        min-width: 1.15rem;
+        height: 1.15rem;
+        margin: 0;
+        padding: 0 0.3rem;
+        border-radius: 1rem;
+        background-color: var(--bs-primary);
+        color: var(--bs-white);
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.15rem;
+        text-align: center;
+    }
+}
+
+.servicemanager-dashboard,
+.servicemanager-detail {
+    // The identifier of a schema or of what it created: a small neutral label in monospace, not code in the colour of code.
+    .sm-id-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.15rem 0.65rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 2rem;
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-secondary-color);
+        font-family: inherit;
+        font-size: 0.82rem;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+
+        &.compact {
+            padding: 0.05rem 0.5rem;
+            font-size: 0.75rem;
+        }
+    }
+}
+
+// The search box and the button of the filters are pills: one rounded outline, the icon inside the field and the cross at its end. The
+// search takes the tint of the accent colour while it has text, and the button does the same while it has filters on or is open.
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    --sm-border-strong: color-mix(in srgb, var(--bs-body-color) 42%, var(--bs-body-bg));
+
+    .sm-search {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        height: 2.25rem;
+        overflow: hidden;
+        border: 1px solid var(--sm-border-strong);
+        border-radius: 999px;
+        background-color: var(--bs-body-bg);
+        transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+
+        &:has(input:not(:placeholder-shown)) {
+            border-color: var(--bs-primary);
+            background-color: color-mix(in srgb, var(--bs-primary) 9%, var(--bs-body-bg));
+        }
+
+        &:focus-within {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--bs-primary) 25%, transparent);
+        }
+
+        & .input-group-text {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0 0.25rem 0 0.9rem;
+            border: 0;
+            border-radius: 0;
+            background-color: transparent;
+            color: var(--bs-secondary-color);
+        }
+
+        & .form-control,
+        > .form-control:not(:last-child) {
+            flex: 1 1 auto;
+            width: 1%;
+            min-width: 0;
+            height: 100%;
+            margin: 0;
+            padding: 0 0.75rem 0 0.5rem;
+            border: 0;
+            border-radius: 0;
+            background-color: transparent;
+            box-shadow: none;
+            font-size: 0.875rem;
+            font-weight: inherit;
+
+            &:not(:placeholder-shown) {
+                color: var(--bs-primary);
+                font-weight: 600;
+            }
+        }
+
+        // The browser draws a cross of its own in a search field; the button of the box is the one cross.
+        & input[type='search']::-webkit-search-cancel-button,
+        & input[type='search']::-webkit-search-decoration {
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        & .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            margin: 0 0.3rem 0 0;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background-color: transparent;
+            color: var(--bs-secondary-color);
+
+            &:hover {
+                background-color: var(--bs-tertiary-bg);
+                color: var(--bs-primary);
+            }
+        }
+    }
+
+    .sm-filter > .btn.btn-outline-secondary {
+        height: 2.25rem;
+        padding: 0 1rem;
+        border-color: var(--sm-border-strong);
+        border-radius: 999px;
+        background-color: var(--bs-body-bg);
+        color: inherit;
+        font-size: 0.875rem;
+
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &.active,
+        &[aria-expanded='true'] {
+            border-color: var(--bs-primary);
+            background-color: color-mix(in srgb, var(--bs-primary) 9%, var(--bs-body-bg));
+            color: var(--bs-primary);
+        }
+    }
+}

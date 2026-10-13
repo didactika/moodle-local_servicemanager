@@ -71,68 +71,9 @@ $PAGE->navbar->add(get_string('compare_versions', 'local_servicemanager'));
 
 echo $OUTPUT->header();
 
-// Get version details.
-$ver1 = $historymanager->get_version($v1);
-$ver2 = $historymanager->get_version($v2);
-
-if (!$ver1 || !$ver2) {
-    throw new \moodle_exception('historynotfound', 'local_servicemanager');
-}
-
-// Calculate comparison.
-$comparison = $historymanager->compare_versions($v1, $v2);
-
-// Prepare lines for template.
-$lines = [];
-$max = max(count($comparison['lines1']), count($comparison['lines2']));
-
-for ($i = 0; $i < $max; $i++) {
-    $l1 = $comparison['lines1'][$i] ?? null;
-    $l2 = $comparison['lines2'][$i] ?? null;
-
-    $class1 = '';
-    $class2 = '';
-
-    if ($l1 !== $l2) {
-        if ($l1 !== null && $l2 === null) {
-            // Deleted in v2 (present in v1).
-            $class1 = 'bg-danger text-white';
-            $class2 = 'bg-light'; // Empty placeholder.
-        } else if ($l1 === null && $l2 !== null) {
-            // Added in v2.
-            $class1 = 'bg-light'; // Empty placeholder.
-            $class2 = 'bg-success text-white';
-        } else {
-            // Modified.
-            $class1 = 'bg-warning';
-            $class2 = 'bg-warning';
-        }
-    }
-
-    $lines[] = [
-        'content1' => $l1 !== null ? $l1 : '',
-        'class1' => $class1,
-        'content2' => $l2 !== null ? $l2 : '',
-        'class2' => $class2,
-    ];
-}
-
-$context = [
-    'backurl' => (new moodle_url('/local/servicemanager/pages/history.php', ['id' => $id]))->out(false),
-    'pagetitle' => get_string('compare_versions', 'local_servicemanager'),
-    'v1' => [
-        'version' => $ver1->version,
-        'date' => userdate($ver1->timecreated),
-        'user' => fullname(\core_user::get_user($ver1->changedby)),
-    ],
-    'v2' => [
-        'version' => $ver2->version,
-        'date' => userdate($ver2->timecreated),
-        'user' => fullname(\core_user::get_user($ver2->changedby)),
-    ],
-    'lines' => $lines,
-];
-
-echo $OUTPUT->render_from_template('local_servicemanager/compare_page', $context);
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\compare_page($id, $v1, $v2),
+    'list'
+);
 
 echo $OUTPUT->footer();

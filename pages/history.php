@@ -29,29 +29,6 @@ $id = required_param('id', PARAM_INT);
 $action = optional_param('action', '', PARAM_ALPHA);
 $historyid = optional_param('historyid', 0, PARAM_INT);
 
-// Pagination parameters.
-$page = optional_param('page', 0, PARAM_INT);
-$perpage = optional_param('perpage', 10, PARAM_INT);
-
-// Filter parameters.
-$filterversion = optional_param('version', '', PARAM_TEXT);
-$datefrom = optional_param('datefrom', 0, PARAM_INT);
-$dateto = optional_param('dateto', 0, PARAM_INT);
-
-// Build filters array.
-$filters = [];
-if (!empty($filterversion)) {
-    $filters['version'] = $filterversion;
-}
-if ($datefrom > 0) {
-    $filters['datefrom'] = $datefrom;
-}
-if ($dateto > 0) {
-    $filters['dateto'] = $dateto;
-}
-
-$hasfilters = !empty($filters);
-
 require_login();
 require_capability('local/servicemanager:manage', context_system::instance());
 
@@ -68,17 +45,10 @@ if (!$schema) {
     );
 }
 
-$urlparams = [
-    'id' => $id,
-    'perpage' => $perpage,
-    'version' => $filterversion,
-    'datefrom' => $datefrom,
-    'dateto' => $dateto,
-];
-$PAGE->set_url(new moodle_url('/local/servicemanager/pages/history.php', $urlparams));
+$PAGE->set_url(new moodle_url('/local/servicemanager/pages/history.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('pluginname', 'local_servicemanager') . ' - ' . get_string('version_history', 'local_servicemanager'));
-$PAGE->set_heading(get_string('version_history', 'local_servicemanager') . ': ' . $schema->name);
+$PAGE->set_heading($schema->name);
 $PAGE->set_pagelayout('admin');
 
 // Navigation.
@@ -134,99 +104,9 @@ if ($action === 'rollback' && $historyid && confirm_sesskey()) {
 
 echo $OUTPUT->header();
 
-// Get paginated history.
-$totalcount = $historymanager->count_history($id, $filters);
-$history = $historymanager->get_history_paginated($id, $page, $perpage, $filters);
-
-// Prepare context for template.
-$context = [
-    'id' => $id,
-    'backurl' => (new moodle_url('/local/servicemanager/pages/view.php', ['id' => $id]))->out(false),
-    'hasfilters' => $hasfilters,
-    'filtercount' => count($filters),
-    'filterversion' => $filterversion,
-    'datefromval' => $datefrom > 0 ? date('Y-m-d', $datefrom) : '',
-    'datetoval' => $dateto > 0 ? date('Y-m-d', $dateto) : '',
-    'clearurl' => (new moodle_url($PAGE->url, [
-        'id' => $id, 'page' => 0, 'perpage' => 10, 'version' => '', 'datefrom' => 0, 'dateto' => 0,
-    ]))->out(false),
-    'compareaction' => (new moodle_url('/local/servicemanager/pages/compare.php'))->out(false),
-    'totalcount' => $totalcount,
-    'nohistory' => empty($history),
-];
-
-// Per page options.
-$context['perpageoptions'] = [];
-foreach ([10, 25, 50, 100] as $opt) {
-    $context['perpageoptions'][] = [
-        'value' => $opt,
-        'selected' => ($perpage == $opt),
-    ];
-}
-
-// Current version info.
-if (!$hasfilters && $page === 0) {
-    $context['currentversion'] = [
-        'version' => $schema->version,
-        'timemodified' => userdate($schema->timemodified),
-        'editurl' => (new moodle_url('/local/servicemanager/pages/edit.php', ['id' => $id]))->out(false),
-    ];
-}
-
-// History table.
-if (!empty($history)) {
-    $historyrows = [];
-    foreach ($history as $record) {
-        $user = new stdClass();
-        $user->id = $record->changedby;
-        $user->firstname = $record->firstname;
-        $user->lastname = $record->lastname;
-        $user->middlename = $record->middlename;
-        $user->alternatename = $record->alternatename;
-        $user->firstnamephonetic = $record->firstnamephonetic;
-        $user->lastnamephonetic = $record->lastnamephonetic;
-        $user->picture = $record->picture;
-        $user->email = $record->email;
-        $user->imagealt = $record->imagealt;
-
-        $userpic = $OUTPUT->user_picture($user, ['size' => 30, 'link' => false]);
-        $username = fullname($user);
-
-        $row = [
-            'id' => $record->id,
-            'version' => $record->version,
-            'user_profile' => $userpic . ' ' . $username,
-            'date' => userdate($record->timecreated, get_string('strftimedatetimeshort')),
-            'change_reason' => format_text($record->change_reason, FORMAT_MOODLE),
-            'yaml_content' => $record->yaml_content,
-            'view_url' => (new moodle_url(
-                '/local/servicemanager/pages/view_history.php',
-                ['historyid' => $record->id]
-            ))->out(false),
-        ];
-
-        // Only show rollback if version is different from current.
-        if ($record->version !== $schema->version) {
-            $row['rollback_url'] = (new moodle_url($PAGE->url, [
-                'action' => 'rollback',
-                'historyid' => $record->id,
-                'sesskey' => sesskey(),
-            ]))->out(false);
-        }
-
-        $historyrows[] = $row;
-    }
-
-    $context['history_rows'] = $historyrows;
-
-    // Standard Moodle Pagination.
-    $pagingbar = new \core\output\paging_bar($totalcount, $page, $perpage, $PAGE->url);
-    $context['pagingbar'] = $OUTPUT->render($pagingbar);
-}
-
-// Load AMD module.
-$PAGE->requires->js_call_amd('local_servicemanager/history', 'init');
-
-echo $OUTPUT->render_from_template('local_servicemanager/history_page', $context);
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\history_page($schema),
+    'list'
+);
 
 echo $OUTPUT->footer();

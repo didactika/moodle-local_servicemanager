@@ -1,0 +1,11 @@
+import i from"../common/IconButton";import c from"../common/Panel";import{jsx as e,jsxs as o}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
+ * What a schema says about itself: its description, who maintains it, when it was made and changed and whether it is on.
+ *
+ * @module     local_servicemanager/components/schema/DetailsPanel
+ * @copyright  2026 Didactika.org
+ * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */const m=({schema:d,urls:l,canManage:n,isHistory:s,busy:r,onToggle:t,text:a})=>o(c,{title:a("schema_information"),icon:"circle-info",region:"details",actions:s?void 0:o("div",{className:"sm-group",role:"group","aria-label":a("core_actions"),children:[n&&e(i,{icon:"pen-to-square",label:a("action_edit"),href:l.edit}),n&&e(i,{icon:"clock-rotate-left",label:a("version_history"),href:l.history,tone:"primary"}),e(i,{icon:"download",label:a("action_export"),href:l.export,tone:"info"}),n&&e(i,{icon:d.enabled?"toggle-on":"toggle-off",label:a(d.enabled?"bulk_disable":"bulk_enable"),onClick:t,disabled:r,tone:d.enabled?"success":"secondary"}),n&&e(i,{icon:"trash",label:a("action_delete"),href:l.delete,tone:"danger"})]}),children:[d.description&&e("p",{className:"mb-3",children:d.description}),o("dl",{className:"sm-facts-row mb-0",children:[o("div",{className:"sm-fact",children:[e("dt",{children:a("schema_version")}),e("dd",{children:d.version})]}),d.maintainer&&o("div",{className:"sm-fact",children:[e("dt",{children:a("schema_maintainer")}),e("dd",{children:d.maintainer})]}),o("div",{className:"sm-fact",children:[e("dt",{children:a("schema_created")}),e("dd",{children:d.created})]}),o("div",{className:"sm-fact",children:[e("dt",{children:a("schema_modified")}),e("dd",{children:d.modified})]}),!s&&o("div",{className:"sm-fact",children:[e("dt",{children:a("schema_enabled")}),e("dd",{children:e("span",{className:`sm-badge tone-${d.enabled?"success":"secondary"}`,children:a(d.enabled?"core_yes":"core_no")})})]})]})]});var p=m;export{p as default};

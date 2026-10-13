@@ -55,35 +55,39 @@ class version_cleanup_task extends \core\task\scheduled_task {
 
         mtrace("Running version cleanup. Maintaining max $maxversions versions per schema.");
 
-        // Get all schemas.
-        $schemas = $DB->get_records('local_servicemanager_schemas');
+        // The schemas and the history of all of them are read once; each version is looked at in order, newest first.
+        $schemas = $DB->get_records('local_servicemanager_schemas', null, '', 'id, name');
+        $kept = [];
+        $todelete = [];
+        $versions = $DB->get_recordset(
+            'local_servicemanager_history',
+            null,
+            'schemaid, timecreated DESC',
+            'id, schemaid, timecreated'
+        );
+        foreach ($versions as $version) {
+            $kept[$version->schemaid] = ($kept[$version->schemaid] ?? 0) + 1;
+            if ($kept[$version->schemaid] > $maxversions) {
+                $todelete[$version->schemaid][] = (int) $version->id;
+            }
+        }
+        $versions->close();
 
         foreach ($schemas as $schema) {
             mtrace("Processing schema: {$schema->name} (ID: {$schema->id})");
 
-            // Get all history records for this schema, ordered by timecreated DESC.
-            // We want to KEEP the top N records.
-            $history = $DB->get_records(
-                'local_servicemanager_history',
-                ['schemaid' => $schema->id],
-                'timecreated DESC',
-                'id, timecreated'
-            );
-
-            $count = count($history);
+            $count = $kept[$schema->id] ?? 0;
             if ($count <= $maxversions) {
                 mtrace("  - Has $count versions. No cleanup needed.");
                 continue;
             }
 
-            // Slice to get records to DELETE (skip the first $maxversions).
-            $todelete = array_slice($history, $maxversions);
-            $deletecount = count($todelete);
+            $ids = $todelete[$schema->id];
+            mtrace("  - Has $count versions. Deleting " . count($ids) . ' old versions.');
 
-            mtrace("  - Has $count versions. Deleting $deletecount old versions.");
-
-            $ids = array_keys($todelete);
-            $DB->delete_records_list('local_servicemanager_history', 'id', $ids);
+            foreach (array_chunk($ids, 500) as $chunk) {
+                $DB->delete_records_list('local_servicemanager_history', 'id', $chunk);
+            }
 
             mtrace("  - Deleted IDs: " . implode(', ', $ids));
         }

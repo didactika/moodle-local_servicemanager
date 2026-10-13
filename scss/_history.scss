@@ -1,0 +1,101 @@
+// The history of a schema.
+
+.servicemanager-history-page {
+    // The versions: one row each, in one card.
+    .sm-versions {
+        margin: 0 0 5rem;
+        padding: 0;
+        list-style: none;
+        overflow: hidden;
+
+        .sm-version {
+            border-bottom: 1px solid var(--bs-border-color);
+
+            &:last-child {
+                border-bottom: 0;
+            }
+
+            // A version that is chosen to compare, tinted with the colour of the page so it reads in any colour mode.
+            &.active-version {
+                background-color: color-mix(in srgb, var(--bs-primary) 9%, var(--bs-body-bg));
+            }
+        }
+
+        .sm-version-main {
+            display: grid;
+            grid-template-columns: 1.5rem 7.5rem 5rem minmax(11rem, 15rem) minmax(0, 1fr) auto;
+            align-items: center;
+            padding: 0.55rem 1rem;
+            gap: 0.75rem;
+        }
+
+        .sm-version-number {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .sm-version-who {
+            display: flex;
+            align-items: center;
+            min-width: 0;
+            gap: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .sm-version-name {
+            overflow: hidden;
+            font-size: 0.875rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sm-version-date {
+            color: var(--bs-secondary-color);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .sm-version-reason {
+            overflow: hidden;
+            color: var(--bs-secondary-color);
+            font-size: 0.875rem;
+            font-style: italic;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sm-version-yaml {
+            padding: 0 1rem 0.75rem 3.5rem;
+        }
+    }
+
+    // The YAML of a version, which opens under it.
+    .sm-yaml {
+        max-height: 14rem;
+        overflow: auto;
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-body-color);
+    }
+
+    // The choice to compare floats at the bottom, as the one of the dashboard does.
+    .sm-compare {
+        .sm-compare-warning {
+            color: var(--bs-danger);
+            font-size: 0.8125rem;
+            white-space: nowrap;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .sm-versions .sm-version-main {
+            grid-template-columns: 1.5rem auto auto minmax(0, 1fr) auto;
+        }
+
+        .sm-versions .sm-version-reason {
+            grid-column: 2 / -1;
+            white-space: normal;
+        }
+    }
+}

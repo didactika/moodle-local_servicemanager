@@ -43,59 +43,9 @@ $PAGE->navbar->add(get_string('documentation', 'local_servicemanager'));
 
 echo $OUTPUT->header();
 
-// Back button URL.
-$backurl = !empty($returnurl) ? $returnurl : new moodle_url('/local/servicemanager/pages/dashboard.php');
-$downloadurl = new moodle_url('/local/servicemanager/pages/download_example.php');
-
-// Define parameters for template.
-$structurecode = <<<'YAML'
-meta:
-  id: "example.service"           # Required: Unique identifier
-  name: "Example Service"         # Required: Display name
-  version: "1.0.0"               # Required: Version number
-  maintainer: "Your Name"         # Optional: Maintainer
-  description: "Description"      # Optional: Description
-
-requirements:                     # Optional
-  plugins:
-    - mod_forum
-  download_files: false           # Allow file downloads (default: false)
-  upload_files: false             # Allow file uploads (default: false)
-
-definition:
-  functions:                      # Required: Web service functions
-    - core_user_get_users
-    - name: core_course_get_courses
-      critical: true
-  
-  extra_capabilities:             # Optional: Additional capabilities
-    - moodle/user:viewdetails
-  
-  additional_users:               # Optional: Users to authorize
-    - admin@example.com
-YAML;
-
-$funccode = <<<'YAML'
-# Simple format (critical: true by default)
-functions:
-  - core_user_get_users
-  - core_course_get_courses
-
-# Extended format
-functions:
-  - name: core_user_get_users
-    critical: true    # Blocks creation if missing
-  - name: mod_forum_get_forums
-    critical: false   # Warning only if missing
-YAML;
-
-$context = [
-    'backurl' => $backurl->out(false),
-    'downloadurl' => $downloadurl->out(false),
-    'structure_code' => $structurecode,
-    'function_code' => $funccode,
-];
-
-echo $OUTPUT->render_from_template('local_servicemanager/documentation_page', $context);
+echo \local_servicemanager\output\react_page::render(
+    new \local_servicemanager\output\documentation_page($returnurl),
+    'text'
+);
 
 echo $OUTPUT->footer();

@@ -46,10 +46,24 @@ class importer {
     /**
      * Get an empty result totals structure.
      *
-     * @return array Result with imported, skipped, errors, warnings.
+     * @return array Result with imported, skipped, errors, warnings and items, which has a row for each schema that was read:
+     *     its id, its name, what became of it (imported, updated, skipped or failed) and what went wrong or was noted.
      */
     public static function empty_result(): array {
-        return ['imported' => 0, 'skipped' => 0, 'errors' => [], 'warnings' => []];
+        return ['imported' => 0, 'skipped' => 0, 'errors' => [], 'warnings' => [], 'items' => []];
+    }
+
+    /**
+     * A row of the items of a result.
+     *
+     * @param string $id Id of the schema.
+     * @param string $name Name of the schema.
+     * @param string $status What became of it: imported, updated, skipped or failed.
+     * @param string[] $messages What went wrong or was noted.
+     * @return array The row.
+     */
+    private static function item(string $id, string $name, string $status, array $messages = []): array {
+        return ['id' => $id, 'name' => $name, 'status' => $status, 'messages' => array_values($messages)];
     }
 
     /**
@@ -64,16 +78,26 @@ class importer {
 
         $result = self::empty_result();
         $schemaid = null;
+        $name = '';
 
         try {
             // Parse YAML first to get ID.
             $parser = new yaml_parser();
             $data = $parser->parse($yamlcontent);
+            if ($data === null) {
+                $message = get_string('import_error_invalid_yaml', 'local_servicemanager');
+                $result['errors'][] = $message;
+                $result['items'][] = self::item('', '', 'failed', [$message]);
+                return $result;
+            }
             $meta = $parser->extract_meta($data);
             $schemaid = $meta['id'] ?? null;
+            $name = (string) ($meta['name'] ?? '');
 
             if (!$schemaid) {
-                $result['errors'][] = get_string('import_error_no_id', 'local_servicemanager');
+                $message = get_string('import_error_no_id', 'local_servicemanager');
+                $result['errors'][] = $message;
+                $result['items'][] = self::item('', $name, 'failed', [$message]);
                 return $result;
             }
 
@@ -84,6 +108,7 @@ class importer {
                 switch ($conflictaction) {
                     case 'skip':
                         $result['skipped']++;
+                        $result['items'][] = self::item($schemaid, $name, 'skipped');
                         return $result;
 
                     case 'overwrite':
@@ -91,6 +116,7 @@ class importer {
                         $updateresult = $this->manager->update_schema($existing->id, $yamlcontent);
                         $result['imported']++;
                         $result['warnings'] = array_merge($result['warnings'], $updateresult['warnings']);
+                        $result['items'][] = self::item($schemaid, $name, 'updated', $updateresult['warnings']);
                         return $result;
 
                     case 'rename':
@@ -117,6 +143,7 @@ class importer {
             $validation = $this->validator->validate_content($yamlcontent, $existing->id ?? null);
             if (!empty($validation['errors'])) {
                 $result['errors'] = array_merge($result['errors'], $validation['errors']);
+                $result['items'][] = self::item($schemaid, $name, 'failed', $validation['errors']);
                 return $result;
             }
 
@@ -124,8 +151,11 @@ class importer {
             $createresult = $this->manager->create_schema($yamlcontent);
             $result['imported']++;
             $result['warnings'] = array_merge($result['warnings'], $createresult['warnings']);
-        } catch (\Exception $e) {
-            $result['errors'][] = ($schemaid ?? '?') . ': ' . $e->getMessage();
+            $result['items'][] = self::item($newid ?? $schemaid, $name, 'imported', $createresult['warnings']);
+        } catch (\Throwable $e) {
+            $message = ($schemaid ?? '?') . ': ' . $e->getMessage();
+            $result['errors'][] = $message;
+            $result['items'][] = self::item((string) ($schemaid ?? ''), $name, 'failed', [$e->getMessage()]);
         }
 
         return $result;
@@ -142,5 +172,6 @@ class importer {
         $totals['skipped'] += $result['skipped'];
         $totals['errors'] = array_merge($totals['errors'], $result['errors']);
         $totals['warnings'] = array_merge($totals['warnings'], $result['warnings']);
+        $totals['items'] = array_merge($totals['items'] ?? [], $result['items'] ?? []);
     }
 }

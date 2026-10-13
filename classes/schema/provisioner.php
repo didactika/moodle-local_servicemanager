@@ -93,6 +93,7 @@ class provisioner {
                 $definition->get_description()
             );
             $this->rolemanager->assign_capabilities($created['roleid'], $this->capabilities_for($definition));
+            $this->rolemanager->apply_settings($created['roleid'], $definition->get_role_settings());
             $this->rolemanager->assign_role_to_user($created['roleid'], $created['userid']);
 
             $created['serviceid'] = $this->servicemanager->create_external_service(
@@ -136,6 +137,7 @@ class provisioner {
 
         $this->rolemanager->reset_capabilities($roleid);
         $this->rolemanager->assign_capabilities($roleid, $this->capabilities_for($definition));
+        $this->rolemanager->apply_settings($roleid, $definition->get_role_settings());
 
         $serviceid = $this->reconcile_service($existing, $definition, $userid);
 
