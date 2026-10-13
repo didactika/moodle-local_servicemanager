@@ -1116,21 +1116,28 @@
     height: 2rem;
     padding: 0;
     border: 0;
-    border-radius: 50%;
+    border-radius: 0.5rem;
     background-color: transparent;
     color: var(--bs-secondary-color);
     transition: background-color 0.12s ease, color 0.12s ease;
 }
 
 .servicemanager-dashboard .sm-floating .sm-floating-clear:hover,
+.servicemanager-dashboard .sm-floating .sm-floating-clear:focus-visible,
 .servicemanager-detail .sm-floating .sm-floating-clear:hover,
+.servicemanager-detail .sm-floating .sm-floating-clear:focus-visible,
 .servicemanager-history-page .sm-floating .sm-floating-clear:hover,
+.servicemanager-history-page .sm-floating .sm-floating-clear:focus-visible,
 .servicemanager-compare-page .sm-floating .sm-floating-clear:hover,
+.servicemanager-compare-page .sm-floating .sm-floating-clear:focus-visible,
 .servicemanager-documentation .sm-floating .sm-floating-clear:hover,
+.servicemanager-documentation .sm-floating .sm-floating-clear:focus-visible,
 .servicemanager-import-page .sm-floating .sm-floating-clear:hover,
-.servicemanager-import-result .sm-floating .sm-floating-clear:hover {
-    background-color: var(--bs-tertiary-bg);
-    color: var(--bs-body-color);
+.servicemanager-import-page .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-import-result .sm-floating .sm-floating-clear:hover,
+.servicemanager-import-result .sm-floating .sm-floating-clear:focus-visible {
+    background-color: color-mix(in srgb, var(--bs-primary) 14%, var(--bs-body-bg));
+    color: var(--bs-primary);
 }
 
 .servicemanager-dashboard .sm-floating .sm-floating-clear:focus-visible,
