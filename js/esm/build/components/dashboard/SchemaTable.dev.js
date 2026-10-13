@@ -106,7 +106,7 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
         lineNumber: 59,
         columnNumber: 25
       }),
-      !row.enabled && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-secondary ms-2", children: text("disabled") }, void 0, false, {
+      !row.enabled && /* @__PURE__ */ jsxDEV("span", { className: "sm-count-badge", children: text("disabled") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SchemaTable.tsx",
         lineNumber: 60,
         columnNumber: 42

@@ -43,109 +43,109 @@ const label = /* @__PURE__ */ __name((text, change) => {
   }
   return change.name;
 }, "label");
-const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__ */ jsxDEV("div", { className: "card mb-4", "data-region": "change-summary", children: [
-  /* @__PURE__ */ jsxDEV("div", { className: "card-header", children: /* @__PURE__ */ jsxDEV("h5", { className: "mb-0", children: text("compare_changes_title") }, void 0, false, {
+const KIND_SIGN = { added: "plus", removed: "minus", changed: "pen" };
+const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__ */ jsxDEV("details", { className: "sm-changes", "data-region": "change-summary", open: true, children: [
+  /* @__PURE__ */ jsxDEV("summary", { className: "sm-changes-head", children: [
+    /* @__PURE__ */ jsxDEV(Icon, { name: "chevron-right", className: "sm-changes-caret" }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+      lineNumber: 62,
+      columnNumber: 9
+    }),
+    /* @__PURE__ */ jsxDEV("h5", { className: "sm-changes-title", children: text("compare_changes_title") }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+      lineNumber: 63,
+      columnNumber: 9
+    }),
+    /* @__PURE__ */ jsxDEV("span", { className: "sm-count-badge", children: changes.length }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+      lineNumber: 64,
+      columnNumber: 9
+    })
+  ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-    lineNumber: 59,
-    columnNumber: 34
-  }) }, void 0, false, {
-    fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-    lineNumber: 59,
+    lineNumber: 61,
     columnNumber: 5
   }),
-  /* @__PURE__ */ jsxDEV("div", { className: "card-body", children: /* @__PURE__ */ jsxDEV("div", { className: "row", children: AREAS.map(({ area, title, icon }) => {
+  /* @__PURE__ */ jsxDEV("div", { className: "sm-changes-body", children: AREAS.map(({ area, title, icon }) => {
     const items = ofArea(changes, area);
     if (items.length === 0) {
       return null;
     }
-    return /* @__PURE__ */ jsxDEV("div", { className: "col-lg-6 mb-3", children: [
-      /* @__PURE__ */ jsxDEV("div", { className: "text-body-secondary small text-uppercase mb-2", children: [
+    return /* @__PURE__ */ jsxDEV("section", { className: "sm-changes-area", children: [
+      /* @__PURE__ */ jsxDEV("h6", { className: "sm-changes-area-title", children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: icon, gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-          lineNumber: 68,
-          columnNumber: 84
+          lineNumber: 73,
+          columnNumber: 55
         }),
         text(title)
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-        lineNumber: 68,
-        columnNumber: 21
+        lineNumber: 73,
+        columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("ul", { className: "list-unstyled mb-0", children: items.map((change) => {
-        const kind = KINDS[change.kind];
-        return /* @__PURE__ */ jsxDEV("li", { className: "d-flex align-items-start sm-change", children: [
-          /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${kind.tone} sm-change-badge`, title: text("change_" + change.kind), children: [
-            /* @__PURE__ */ jsxDEV(Icon, { name: kind.icon }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-              lineNumber: 74,
-              columnNumber: 37
-            }),
-            /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("change_" + change.kind) }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-              lineNumber: 74,
-              columnNumber: 62
-            })
-          ] }, void 0, true, {
-            fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-            lineNumber: 73,
-            columnNumber: 33
-          }),
-          /* @__PURE__ */ jsxDEV("span", { children: [
-            area === "function" || area === "capability" || area === "plugin" || area === "role" ? /* @__PURE__ */ jsxDEV("code", { children: label(text, change) }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-              lineNumber: 77,
-              columnNumber: 125
-            }) : label(text, change),
-            change.kind === "changed" && /* @__PURE__ */ jsxDEV("span", { className: "text-body-secondary", children: [
-              ": ",
-              /* @__PURE__ */ jsxDEV("del", { children: named(text, area, change.name, change.from) }, void 0, false, {
-                fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-                lineNumber: 79,
-                columnNumber: 47
-              }),
-              " \u2192 ",
-              /* @__PURE__ */ jsxDEV("ins", { children: named(text, area, change.name, change.to) }, void 0, false, {
-                fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-                lineNumber: 80,
-                columnNumber: 48
-              })
-            ] }, void 0, true, {
-              fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-              lineNumber: 78,
-              columnNumber: 67
-            })
-          ] }, void 0, true, {
-            fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-            lineNumber: 76,
-            columnNumber: 33
-          })
-        ] }, change.kind + change.name, true, {
+      /* @__PURE__ */ jsxDEV("ul", { className: "sm-changes-list", children: items.map((change) => /* @__PURE__ */ jsxDEV("li", { className: `sm-change-chip tone-${KINDS[change.kind].tone}`, children: [
+        /* @__PURE__ */ jsxDEV(Icon, { name: KIND_SIGN[change.kind], className: "sm-change-sign" }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-          lineNumber: 72,
-          columnNumber: 36
-        });
-      }) }, void 0, false, {
+          lineNumber: 76,
+          columnNumber: 25
+        }),
+        /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: [
+          text("change_" + change.kind),
+          ": "
+        ] }, void 0, true, {
+          fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+          lineNumber: 77,
+          columnNumber: 25
+        }),
+        /* @__PURE__ */ jsxDEV("span", { className: "sm-change-name", children: label(text, change) }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+          lineNumber: 78,
+          columnNumber: 25
+        }),
+        change.kind === "changed" && /* @__PURE__ */ jsxDEV("span", { className: "sm-change-values", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "sm-change-from", children: named(text, area, change.name, change.from) }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+            lineNumber: 80,
+            columnNumber: 29
+          }),
+          /* @__PURE__ */ jsxDEV(Icon, { name: "arrow-right" }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+            lineNumber: 81,
+            columnNumber: 29
+          }),
+          /* @__PURE__ */ jsxDEV("span", { className: "sm-change-to", children: named(text, area, change.name, change.to) }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+            lineNumber: 82,
+            columnNumber: 29
+          })
+        ] }, void 0, true, {
+          fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+          lineNumber: 79,
+          columnNumber: 55
+        })
+      ] }, change.kind + change.name, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-        lineNumber: 69,
-        columnNumber: 21
+        lineNumber: 75,
+        columnNumber: 44
+      })) }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
+        lineNumber: 74,
+        columnNumber: 17
       })
     ] }, area, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-      lineNumber: 67,
-      columnNumber: 24
+      lineNumber: 72,
+      columnNumber: 20
     });
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-    lineNumber: 61,
-    columnNumber: 9
-  }) }, void 0, false, {
-    fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-    lineNumber: 60,
+    lineNumber: 66,
     columnNumber: 5
   })
 ] }, void 0, true, {
   fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-  lineNumber: 58,
+  lineNumber: 60,
   columnNumber: 64
 }), "ChangeSummary");
 var ChangeSummary_default = ChangeSummary;

@@ -13,7 +13,7 @@ import { statusLook } from "../../lib/status";
 import Icon from "./Icon";
 const StatusBadge = /* @__PURE__ */ __name(({ status, label }) => {
   const look = statusLook(status);
-  return /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${look.tone}`, children: [
+  return /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${look.tone}`, children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: look.icon, gap: true }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/StatusBadge.tsx",
       lineNumber: 23,

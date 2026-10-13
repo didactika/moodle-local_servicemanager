@@ -69,11 +69,22 @@ class react_page {
                     $line('6rem', 'tall') . '</div>' . $card($rows);
                 break;
             case 'detail':
-                $left = $card($line('60%') . $line('90%') . $line('70%') . $line('80%')) . $card($line('50%') . $line('85%'));
-                $fact = '<div class="sm-skeleton-row">' . $line('2rem') . $line('55%') . '</div>';
-                $right = $card($line('45%') . str_repeat($fact, 3)) .
-                    $card($line('35%') . $line('100%') . $line('100%'));
-                $body = $head . '<div class="sm-skeleton-columns"><div>' . $left . '</div><div>' . $right . '</div></div>';
+                $round = '<span class="sm-skeleton-line round"></span>';
+                $facts = '<div class="sm-skeleton-facts">' . $line('4rem') . $line('9rem') . $line('9rem') . $line('3rem') .
+                    '</div>';
+                $fnrow = '<div class="sm-skeleton-row">' . $line('1.5rem') . $line('35%') . $line('12%') . '</div>' .
+                    $line('55%');
+                $info = $card('<div class="sm-skeleton-between">' . $line('11rem', 'title') . '<span class="sm-skeleton-actions">' .
+                    str_repeat($round, 5) . '</span></div>' . $line('60%') . $facts);
+                $functions = $card($line('8rem', 'title') . str_repeat($fnrow, 2));
+                $resources = $card($line('12rem', 'title') . str_repeat($fnrow, 3));
+                $access = $card($line('14rem', 'title') . str_repeat('<div class="sm-skeleton-row">' . $line('5rem') . $line('30%') .
+                    $line('2rem') . '</div>', 3));
+                $role = $card($line('6rem', 'title') . str_repeat($line('35%') . $line('90%'), 3));
+                $head = '<div class="sm-skeleton-head sm-skeleton-between"><div>' . $line('14rem', 'title') . $line('7rem') .
+                    '</div><span class="sm-skeleton-actions">' . $line('22rem', 'tall') . '</span></div>';
+                $body = $head . '<div class="sm-skeleton-columns"><div>' . $info . $functions . $resources . '</div><div>' .
+                    $access . $role . '</div></div>';
                 break;
             default:
                 $body = $head . $card($line('70%') . $line('95%') . $line('85%') . $line('60%') . $line('90%'));

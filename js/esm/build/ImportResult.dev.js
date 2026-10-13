@@ -133,7 +133,7 @@ const ImportResult = /* @__PURE__ */ __name((props) => {
               lineNumber: 62,
               columnNumber: 66
             }),
-            /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${look.tone} ms-2`, children: text("import_status_" + item.status) }, void 0, false, {
+            /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${look.tone} ms-2`, children: text("import_status_" + item.status) }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
               lineNumber: 63,
               columnNumber: 41

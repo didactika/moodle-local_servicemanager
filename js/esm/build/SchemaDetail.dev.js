@@ -87,7 +87,7 @@ const SchemaDetail = /* @__PURE__ */ __name((props) => {
             lineNumber: 81,
             columnNumber: 21
           }),
-          !isHistory && !enabled && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-secondary", children: text("disabled") }, void 0, false, {
+          !isHistory && !enabled && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge", children: text("disabled") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
             lineNumber: 82,
             columnNumber: 48

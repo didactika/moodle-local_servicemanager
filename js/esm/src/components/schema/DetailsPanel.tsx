@@ -51,7 +51,7 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}
         {!isHistory && <div className="sm-fact">
             <dt>{text('schema_enabled')}</dt>
             <dd>
-                <span className={`badge text-bg-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
+                <span className={`sm-badge tone-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
             </dd>
         </div>}
     </dl>

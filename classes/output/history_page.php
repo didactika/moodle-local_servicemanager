@@ -17,7 +17,6 @@
 namespace local_servicemanager\output;
 
 use core\output\react_component_renderable;
-use local_servicemanager\schema\history_manager;
 
 /**
  * The versions a schema has had, to filter, read, compare and roll back to.
@@ -69,10 +68,7 @@ class history_page implements react_component_renderable, \renderable {
         global $PAGE;
 
         $id = (int) $this->schema->id;
-        $rows = [];
-        foreach ((new history_manager())->list_versions($id) as $record) {
-            $rows[] = $this->row($record, $PAGE);
-        }
+        $rows = $this->rows($PAGE);
 
         return (object) [
             'strings' => page_text::strings(),
@@ -101,47 +97,23 @@ class history_page implements react_component_renderable, \renderable {
     }
 
     /**
-     * One version of the list.
+     * The versions of the list, in the shape the component takes.
      *
-     * @param \stdClass $record Record of the version, with the fields of the person who made it.
-     * @param \moodle_page $page The page, to find the picture of that person.
-     * @return array The row.
+     * @param \moodle_page $page The page, to find the picture of the person who made each version.
+     * @return array[] One entry for each version.
      */
-    private function row(\stdClass $record, \moodle_page $page): array {
-        $user = new \stdClass();
-        $user->id = $record->changedby;
-        $fields = [
-            'firstname', 'lastname', 'middlename', 'alternatename', 'firstnamephonetic', 'lastnamephonetic', 'picture', 'email',
-            'imagealt',
-        ];
-        foreach ($fields as $field) {
-            $user->$field = $record->$field;
-        }
-        $picture = new \user_picture($user);
-        $picture->size = 1;
-
-        $row = [
-            'id' => (int) $record->id,
-            'version' => $record->version,
-            'userName' => fullname($user),
-            'userPicture' => $picture->get_url($page)->out(false),
-            'date' => userdate($record->timecreated, get_string('strftimedatetimeshort')),
-            'at' => (int) $record->timecreated,
-            'reason' => $record->change_reason ? format_string($record->change_reason) : '',
-            'isCurrent' => $record->version === $this->schema->version,
-            'viewUrl' => $this->url('view_history.php', ['historyid' => $record->id]),
-            'rollbackUrl' => '',
-        ];
-
-        // A version that is the one the schema has now cannot be rolled back to.
-        if ($record->version !== $this->schema->version) {
-            $row['rollbackUrl'] = $this->url('history.php', [
-                'id' => $this->schema->id,
-                'action' => 'rollback',
-                'historyid' => $record->id,
-                'sesskey' => sesskey(),
-            ]);
-        }
-        return $row;
+    private function rows(\moodle_page $page): array {
+        return array_map(static fn(array $row): array => [
+            'id' => $row['id'],
+            'version' => $row['version'],
+            'userName' => $row['username'],
+            'userPicture' => $row['userpicture'],
+            'date' => $row['date'],
+            'at' => $row['at'],
+            'reason' => $row['reason'],
+            'isCurrent' => $row['iscurrent'],
+            'viewUrl' => $row['viewurl'],
+            'canRollback' => $row['canrollback'],
+        ], version_rows::describe($this->schema, $page));
     }
 }

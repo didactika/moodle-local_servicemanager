@@ -54,7 +54,7 @@ const HealthPanel = ({logs, text}: HealthPanelProps) => {
                 <tbody>
                     {shown.map((log, index) => <tr key={index} data-status={log.status}>
                         <td>{log.time}</td>
-                        <td><span className={`badge text-bg-${statusLook(log.status).tone}`}>{log.status}</span></td>
+                        <td><span className={`sm-badge tone-${statusLook(log.status).tone}`}>{log.status}</span></td>
                         <td>{log.message}</td>
                     </tr>)}
                 </tbody>

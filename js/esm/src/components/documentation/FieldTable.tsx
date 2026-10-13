@@ -35,7 +35,7 @@ const FieldTable = ({fields, text}: FieldTableProps) => <table className="table 
     <tbody>
         {fields.map((field) => <tr key={field.name}>
             <td><code>{field.name}</code></td>
-            <td><span className={`badge text-bg-${field.required ? 'success' : 'secondary'}`}>{text(field.required ? 'core_yes' : 'core_no')}</span></td>
+            <td><span className={`sm-badge tone-${field.required ? 'success' : 'secondary'}`}>{text(field.required ? 'core_yes' : 'core_no')}</span></td>
             <td>{text(field.description)}</td>
         </tr>)}
     </tbody>

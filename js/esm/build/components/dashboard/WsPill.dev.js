@@ -18,7 +18,7 @@ const LEVELS = {
 const WsPill = /* @__PURE__ */ __name(({ status, canManage, text }) => {
   const level = LEVELS[status.level];
   return /* @__PURE__ */ jsxDEV("span", { className: "d-inline-flex flex-wrap align-items-center sm-badges-row", "data-region": "ws-status", children: [
-    /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${level.tone}`, children: [
+    /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${level.tone}`, children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: level.icon, gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/WsPill.tsx",
         lineNumber: 31,
@@ -74,7 +74,7 @@ const WsPill = /* @__PURE__ */ __name(({ status, canManage, text }) => {
       lineNumber: 40,
       columnNumber: 40
     }),
-    canManage && status.protocolsUrl && /* @__PURE__ */ jsxDEV("a", { href: status.protocolsUrl, className: "btn btn-sm btn-outline-secondary", title: text("ws_manage_protocols_link"), children: [
+    canManage && status.protocolsUrl && /* @__PURE__ */ jsxDEV("a", { href: status.protocolsUrl, className: "btn sm-pill compact", title: text("ws_manage_protocols_link"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "gear", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/WsPill.tsx",
         lineNumber: 44,

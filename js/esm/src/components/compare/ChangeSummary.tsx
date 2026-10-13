@@ -55,38 +55,37 @@ const label = (text: Text, change: Change): string => {
     return change.name;
 };
 
-const ChangeSummary = ({changes, text}: ChangeSummaryProps) => <div className="card mb-4" data-region="change-summary">
-    <div className="card-header"><h5 className="mb-0">{text('compare_changes_title')}</h5></div>
-    <div className="card-body">
-        <div className="row">
-            {AREAS.map(({area, title, icon}) => {
-                const items = ofArea(changes, area);
-                if (items.length === 0) {
-                    return null;
-                }
-                return <div key={area} className="col-lg-6 mb-3">
-                    <div className="text-body-secondary small text-uppercase mb-2"><Icon name={icon} gap />{text(title)}</div>
-                    <ul className="list-unstyled mb-0">
-                        {items.map((change) => {
-                            const kind = KINDS[change.kind];
-                            return <li key={change.kind + change.name} className="d-flex align-items-start sm-change">
-                                <span className={`badge text-bg-${kind.tone} sm-change-badge`} title={text('change_' + change.kind)}>
-                                    <Icon name={kind.icon} /><span className="visually-hidden">{text('change_' + change.kind)}</span>
-                                </span>
-                                <span>
-                                    {area === 'function' || area === 'capability' || area === 'plugin' || area === 'role' ? <code>{label(text, change)}</code> : label(text, change)}
-                                    {change.kind === 'changed' && <span className="text-body-secondary">
-                                        {': '}<del>{named(text, area, change.name, change.from)}</del>
-                                        {' → '}<ins>{named(text, area, change.name, change.to)}</ins>
-                                    </span>}
-                                </span>
-                            </li>;
-                        })}
-                    </ul>
-                </div>;
-            })}
-        </div>
+const KIND_SIGN = {added: 'plus', removed: 'minus', changed: 'pen'} as const;
+
+const ChangeSummary = ({changes, text}: ChangeSummaryProps) => <details className="sm-changes" data-region="change-summary" open>
+    <summary className="sm-changes-head">
+        <Icon name="chevron-right" className="sm-changes-caret" />
+        <h5 className="sm-changes-title">{text('compare_changes_title')}</h5>
+        <span className="sm-count-badge">{changes.length}</span>
+    </summary>
+    <div className="sm-changes-body">
+        {AREAS.map(({area, title, icon}) => {
+            const items = ofArea(changes, area);
+            if (items.length === 0) {
+                return null;
+            }
+            return <section key={area} className="sm-changes-area">
+                <h6 className="sm-changes-area-title"><Icon name={icon} gap />{text(title)}</h6>
+                <ul className="sm-changes-list">
+                    {items.map((change) => <li key={change.kind + change.name} className={`sm-change-chip tone-${KINDS[change.kind].tone}`}>
+                        <Icon name={KIND_SIGN[change.kind]} className="sm-change-sign" />
+                        <span className="visually-hidden">{text('change_' + change.kind)}: </span>
+                        <span className="sm-change-name">{label(text, change)}</span>
+                        {change.kind === 'changed' && <span className="sm-change-values">
+                            <span className="sm-change-from">{named(text, area, change.name, change.from)}</span>
+                            <Icon name="arrow-right" />
+                            <span className="sm-change-to">{named(text, area, change.name, change.to)}</span>
+                        </span>}
+                    </li>)}
+                </ul>
+            </section>;
+        })}
     </div>
-</div>;
+</details>;
 
 export default ChangeSummary;

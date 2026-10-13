@@ -12,20 +12,20 @@ import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
  */
 import Icon from "./Icon";
 import Modal from "./Modal";
-const ConfirmModal = /* @__PURE__ */ __name(({ open, title, message, confirmLabel, cancelLabel, onConfirm, onCancel }) => /* @__PURE__ */ jsxDEV(
+const ConfirmModal = /* @__PURE__ */ __name(({ open, title, message, confirmLabel, cancelLabel, onConfirm, onCancel, tone = "danger" }) => /* @__PURE__ */ jsxDEV(
   Modal,
   {
     open,
     title: /* @__PURE__ */ jsxDEV(Fragment, { children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "triangle-exclamation", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/ConfirmModal.tsx",
-        lineNumber: 28,
+        lineNumber: 30,
         columnNumber: 14
       }),
       title
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/ConfirmModal.tsx",
-      lineNumber: 28,
+      lineNumber: 30,
       columnNumber: 12
     }),
     onClose: onCancel,
@@ -33,22 +33,22 @@ const ConfirmModal = /* @__PURE__ */ __name(({ open, title, message, confirmLabe
     footer: /* @__PURE__ */ jsxDEV(Fragment, { children: [
       /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: onCancel, children: cancelLabel }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/ConfirmModal.tsx",
-        lineNumber: 32,
+        lineNumber: 34,
         columnNumber: 9
       }),
-      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-danger", onClick: onConfirm, children: confirmLabel }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("button", { type: "button", className: `btn btn-${tone}`, onClick: onConfirm, children: confirmLabel }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/ConfirmModal.tsx",
-        lineNumber: 33,
+        lineNumber: 35,
         columnNumber: 9
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/ConfirmModal.tsx",
-      lineNumber: 31,
+      lineNumber: 33,
       columnNumber: 13
     }),
     children: /* @__PURE__ */ jsxDEV("p", { className: "mb-0", children: message }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/ConfirmModal.tsx",
-      lineNumber: 36,
+      lineNumber: 38,
       columnNumber: 5
     })
   },
@@ -56,8 +56,8 @@ const ConfirmModal = /* @__PURE__ */ __name(({ open, title, message, confirmLabe
   false,
   {
     fileName: "public/local/servicemanager/js/esm/src/components/common/ConfirmModal.tsx",
-    lineNumber: 26,
-    columnNumber: 117
+    lineNumber: 28,
+    columnNumber: 134
   }
 ), "ConfirmModal");
 var ConfirmModal_default = ConfirmModal;

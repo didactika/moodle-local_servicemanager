@@ -16,7 +16,7 @@ import IconButton from "../common/IconButton";
 import Panel from "../common/Panel";
 const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeToken, text }) => {
   const { requirements, extraCapabilities, schema, isHistory, canManage } = props;
-  const file = /* @__PURE__ */ __name((on, icon, label, title) => /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${on ? "success" : "secondary"}`, title, children: [
+  const file = /* @__PURE__ */ __name((on, icon, label, title) => /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${on ? "success" : "secondary"}`, title, children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: icon, gap: true }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
       lineNumber: 31,
@@ -36,7 +36,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("dd", { children: [
-        /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${schema.hasToken ? "success" : "secondary"}`, children: text(schema.hasToken ? "token_active" : "token_none") }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${schema.hasToken ? "success" : "secondary"}`, children: text(schema.hasToken ? "token_active" : "token_none") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
           lineNumber: 39,
           columnNumber: 21

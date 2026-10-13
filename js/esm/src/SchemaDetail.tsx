@@ -79,7 +79,7 @@ const SchemaDetail = (props: SchemaDetailProps) => {
                 title={schema.name}
                 badges={<>
                     <StatusBadge status={schema.status} label={schema.statusLabel} />
-                    {!isHistory && !enabled && <span className="badge text-bg-secondary">{text('disabled')}</span>}
+                    {!isHistory && !enabled && <span className="sm-badge">{text('disabled')}</span>}
                 </>}
                 actions={props.wsStatus ? <WsPill status={props.wsStatus} canManage={canManage} text={text} /> : undefined}
                 subtitle={<span className="sm-id-chip" title={text('schema_id')}><Icon name="fingerprint" gap />{schema.schemaId}</span>}

@@ -45,7 +45,7 @@ const FieldTable = /* @__PURE__ */ __name(({ fields, text }) => /* @__PURE__ */ 
       lineNumber: 37,
       columnNumber: 13
     }),
-    /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${field.required ? "success" : "secondary"}`, children: text(field.required ? "core_yes" : "core_no") }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${field.required ? "success" : "secondary"}`, children: text(field.required ? "core_yes" : "core_no") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/documentation/FieldTable.tsx",
       lineNumber: 38,
       columnNumber: 17

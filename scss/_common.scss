@@ -12,6 +12,49 @@
         margin-inline-end: 0.35rem;
     }
 
+    // A label with the colour of what it says.
+    .sm-badge {
+        --sm-tone: var(--bs-secondary-color);
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.55rem;
+        border-radius: 2rem;
+        background-color: color-mix(in srgb, var(--sm-tone) 16%, var(--bs-body-bg));
+        color: var(--sm-tone);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        white-space: nowrap;
+
+        &.tone-success {
+            --sm-tone: var(--bs-success);
+        }
+
+        &.tone-warning {
+            --sm-tone: var(--bs-warning-text-emphasis);
+        }
+
+        &.tone-danger {
+            --sm-tone: var(--bs-danger);
+        }
+
+        &.tone-info {
+            --sm-tone: var(--bs-info-text-emphasis);
+        }
+    }
+
+    // How many there are, next to a title.
+    .sm-count-badge {
+        display: inline-block;
+        min-width: 1.25rem;
+        margin-inline-start: 0.5rem;
+        padding: 0 0.4rem;
+        border-radius: 2rem;
+        background-color: var(--bs-primary);
+        color: var(--bs-white);
+        font-size: 0.75rem;
+        text-align: center;
+    }
+
     .sm-badges-row,
     .sm-actions-row {
         gap: 0.5rem;
@@ -114,6 +157,13 @@
         .sm-search {
             flex: 1 1 14rem;
             max-width: 26rem;
+
+            // The browser draws a cross of its own in a search field; the button of the box is the one cross.
+            input[type='search']::-webkit-search-cancel-button,
+            input[type='search']::-webkit-search-decoration {
+                appearance: none;
+                -webkit-appearance: none;
+            }
         }
 
         // The actions of the page stay at the end of the row.
@@ -355,6 +405,33 @@
             padding: 1rem 1.25rem;
             border-bottom: 1px solid var(--bs-border-color);
             gap: 1rem;
+
+            // The cross that closes the window: a round button without the frame that the browser draws around a button.
+            .sm-iconbtn {
+                display: inline-flex;
+                flex: none;
+                align-items: center;
+                justify-content: center;
+                width: 2rem;
+                height: 2rem;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background-color: transparent;
+                color: var(--bs-secondary-color);
+                font-size: 0.95rem;
+                transition: background-color 0.12s ease, color 0.12s ease;
+
+                &:hover {
+                    background-color: var(--bs-tertiary-bg);
+                    color: var(--bs-body-color);
+                }
+
+                &:focus-visible {
+                    outline: 2px solid var(--bs-primary);
+                    outline-offset: 1px;
+                }
+            }
         }
 
         .sm-dialog-title {
@@ -475,49 +552,44 @@
         display: flex;
         align-items: center;
         max-width: calc(100vw - 2rem);
-        padding: 0.4rem;
-        border-radius: 3rem;
+        padding: 0.5rem 0.6rem 0.5rem 1.25rem;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 1rem;
         background-color: var(--bs-body-bg);
-        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.22);
-        gap: 0.5rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+        gap: 1rem;
         transform: translateX(-50%);
 
-        // How many are chosen, in the accent colour; pressing it clears the choice.
+        // How many are chosen: plain text, in the same weight as the title of a card.
         .sm-floating-count {
             display: inline-flex;
             align-items: center;
-            padding: 0.25rem 0.25rem 0.25rem 0.9rem;
-            border-radius: 2rem;
-            background-color: var(--bs-primary);
-            color: var(--bs-white);
-            gap: 0.5rem;
+            color: var(--bs-body-color);
+            font-weight: 600;
             white-space: nowrap;
         }
 
-        // The cross that clears the choice: a round button that lights up under the pointer.
+        // The cross at the end of the bar that clears the choice: a round button that lights up under the pointer.
         .sm-floating-clear {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 1.75rem;
-            height: 1.75rem;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
             border: 0;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.18);
-            color: inherit;
-            transition: background-color 0.12s ease, transform 0.12s ease;
+            background-color: transparent;
+            color: var(--bs-secondary-color);
+            transition: background-color 0.12s ease, color 0.12s ease;
 
             &:hover {
-                background-color: rgba(255, 255, 255, 0.4);
-                transform: scale(1.1);
-            }
-
-            &:active {
-                transform: scale(0.95);
+                background-color: var(--bs-tertiary-bg);
+                color: var(--bs-body-color);
             }
 
             &:focus-visible {
-                outline: 2px solid var(--bs-white);
+                outline: 2px solid var(--bs-primary);
                 outline-offset: 1px;
             }
         }
@@ -587,6 +659,12 @@
             pointer-events: none;
         }
 
+        // A text button as small as the badges next to it.
+        &.compact:not(.icon-only) {
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+
         // Only an icon: a round button, as big as the field next to it.
         &.icon-only {
             justify-content: center;
@@ -631,6 +709,14 @@
         gap: 0.4rem;
     }
 
+    // The place of a button that a row does not have, so the buttons of the same kind are always in the same place.
+    .sm-slot {
+        display: inline-block;
+        flex: none;
+        width: 2rem;
+        height: 2rem;
+    }
+
     // What a list shows when it has nothing to show.
     .sm-empty {
         border-style: dashed;
@@ -672,6 +758,12 @@
         &.tall {
             height: 2.4rem;
         }
+
+        &.round {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
     }
 
     .sm-skeleton-head {
@@ -701,8 +793,30 @@
 
     .sm-skeleton-columns {
         display: grid;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: 2fr 1fr;
         gap: 1.25rem;
+    }
+
+    // A row with something at each end, such as a title and its actions.
+    .sm-skeleton-between {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .sm-skeleton-actions {
+        display: inline-flex;
+        max-width: 100%;
+        gap: 0.4rem;
+    }
+
+    // What a card of facts has in one row.
+    .sm-skeleton-facts {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0.8rem;
+        gap: 2.5rem;
     }
 
     @media (max-width: 768px) {
@@ -794,6 +908,113 @@
         &.compact {
             padding: 0.05rem 0.5rem;
             font-size: 0.75rem;
+        }
+    }
+}
+
+// The search box and the button of the filters are pills: one rounded outline, the icon inside the field and the cross at its end. The
+// search takes the tint of the accent colour while it has text, and the button does the same while it has filters on or is open.
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    --sm-border-strong: color-mix(in srgb, var(--bs-body-color) 42%, var(--bs-body-bg));
+
+    .sm-search {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        height: 2.25rem;
+        overflow: hidden;
+        border: 1px solid var(--sm-border-strong);
+        border-radius: 999px;
+        background-color: var(--bs-body-bg);
+        transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+
+        &:has(input:not(:placeholder-shown)) {
+            border-color: var(--bs-primary);
+            background-color: color-mix(in srgb, var(--bs-primary) 9%, var(--bs-body-bg));
+        }
+
+        &:focus-within {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--bs-primary) 25%, transparent);
+        }
+
+        .input-group-text {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0 0.25rem 0 0.9rem;
+            border: 0;
+            border-radius: 0;
+            background-color: transparent;
+            color: var(--bs-secondary-color);
+        }
+
+        .form-control,
+        > .form-control:not(:last-child) {
+            flex: 1 1 auto;
+            width: 1%;
+            min-width: 0;
+            height: 100%;
+            margin: 0;
+            padding: 0 0.75rem 0 0.5rem;
+            border: 0;
+            border-radius: 0;
+            background-color: transparent;
+            box-shadow: none;
+            font-size: 0.875rem;
+            font-weight: inherit;
+
+            &:not(:placeholder-shown) {
+                color: var(--bs-primary);
+                font-weight: 600;
+            }
+        }
+
+        // The browser draws a cross of its own in a search field; the button of the box is the one cross.
+        input[type='search']::-webkit-search-cancel-button,
+        input[type='search']::-webkit-search-decoration {
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            margin: 0 0.3rem 0 0;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background-color: transparent;
+            color: var(--bs-secondary-color);
+
+            &:hover {
+                background-color: var(--bs-tertiary-bg);
+                color: var(--bs-primary);
+            }
+        }
+    }
+
+    .sm-filter > .btn.btn-outline-secondary {
+        height: 2.25rem;
+        padding: 0 1rem;
+        border-color: var(--sm-border-strong);
+        border-radius: 999px;
+        background-color: var(--bs-body-bg);
+        color: inherit;
+        font-size: 0.875rem;
+
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &.active,
+        &[aria-expanded='true'] {
+            border-color: var(--bs-primary);
+            background-color: color-mix(in srgb, var(--bs-primary) 9%, var(--bs-body-bg));
+            color: var(--bs-primary);
         }
     }
 }

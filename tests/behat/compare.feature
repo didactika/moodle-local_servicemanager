@@ -41,8 +41,19 @@ Feature: Schema versions
   @javascript
   Scenario: The comparison is available only when two versions are chosen
     Given I am on the history page of the schema "test.service"
-    Then the "Compare Versions" "button" should be disabled
+    Then "Compare Versions" "button" should not be visible
     When I click on "Choose version 1.0.0" "checkbox"
     Then the "Compare Versions" "button" should be disabled
     And I click on "Choose version 1.1.0" "checkbox"
     And the "Compare Versions" "button" should be enabled
+
+  @javascript
+  Scenario: Rolling back asks in a window and changes the history without leaving the page
+    Given I am on the history page of the schema "test.service"
+    Then I should see "currently 1.1.0"
+    When I click on "Rollback" "button"
+    Then I should see "Are you sure you want to rollback" in the "dialog[open], .modal.show" "css_element"
+    When I click on "Rollback" "button" in the "dialog[open], .modal.show" "css_element"
+    Then I should see "rolled back successfully"
+    And I should see "currently 1.0.0"
+    And "Rollback" "button" should exist

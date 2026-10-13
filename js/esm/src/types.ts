@@ -151,7 +151,8 @@ export interface HistoryRow {
     reason: string;
     isCurrent: boolean;
     viewUrl: string;
-    rollbackUrl: string;
+    /** Whether the schema can be brought back to this version, which it cannot when it is the current one. */
+    canRollback: boolean;
 }
 
 /** Properties of the history of a schema. */

@@ -21,13 +21,14 @@ interface VersionListProps {
     rows: HistoryRow[];
     chosen: ReadonlySet<number>;
     onToggle: (id: number) => void;
+    onRollback: (row: HistoryRow) => void;
     text: Text;
 }
 
 /** What opening a version leads to: its YAML, or the reason it could not be had. */
 type Opened = {yaml: string} | {error: true} | 'loading';
 
-const VersionList = ({rows, chosen, onToggle, text}: VersionListProps) => {
+const VersionList = ({rows, chosen, onToggle, onRollback, text}: VersionListProps) => {
     const [opened, setOpened] = useState<Record<number, Opened | undefined>>({});
 
     const toggleYaml = (id: number) => {
@@ -58,7 +59,7 @@ const VersionList = ({rows, chosen, onToggle, text}: VersionListProps) => {
                     <span className="sm-version-number">
                         <Icon name="code-branch" gap /><span className="visually-hidden">{text('version')} </span>{row.version}
                     </span>
-                    {row.isCurrent ? <span className="badge text-bg-success">{text('current')}</span> : <span />}
+                    {row.isCurrent ? <span className="sm-badge tone-success">{text('current')}</span> : <span />}
                     <span className="sm-version-who">
                         <img src={row.userPicture} alt="" width={24} height={24} className="rounded-circle" loading="lazy" />
                         <span className="sm-version-name">{row.userName}</span>
@@ -72,7 +73,9 @@ const VersionList = ({rows, chosen, onToggle, text}: VersionListProps) => {
                             onClick={() => toggleYaml(row.id)}
                         />
                         <IconButton icon="eye" label={text('action_view')} href={row.viewUrl} tone="primary" />
-                        {row.rollbackUrl && <IconButton icon="rotate-left" label={text('rollback')} href={row.rollbackUrl} tone="warning" />}
+                        {row.canRollback
+                            ? <IconButton icon="rotate-left" label={text('rollback')} onClick={() => onRollback(row)} tone="warning" />
+                            : <span className="sm-slot" aria-hidden="true" />}
                     </div>
                 </div>
                 {open === 'loading' && <div className="sm-version-yaml small text-body-secondary"><Icon name="spinner" gap />{text('loading')}</div>}

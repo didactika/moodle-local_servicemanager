@@ -30,7 +30,7 @@ const Panel = ({title, icon, count, actions, flush = false, region, children}: P
         <h3 className="sm-panel-title mb-0">
             <span className="sm-panel-icon text-body-secondary"><Icon name={icon} gap /></span>
             {title}
-            {count !== undefined && <span className="badge text-bg-secondary ms-2">{count}</span>}
+            {count !== undefined && <span className="sm-count-badge">{count}</span>}
         </h3>
         {actions}
     </header>

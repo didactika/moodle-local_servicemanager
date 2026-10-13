@@ -24,11 +24,15 @@ First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is o
 
 ### Changed
 
+- Rolling back to a version asks in a window and changes the history where it is, without leaving the page, through the new function `local_servicemanager_rollback_schema`. A row that cannot be rolled back keeps the place of its button, so the buttons of the same kind are always in the same place.
+- The comparison goes through its changes from a bar at the bottom with the arrows, which change it is and where; what changed is a card that folds, with each change as a small label.
+- The search box and the button of the filters are pills; the search has one cross, not two.
+
 - The history of a schema has compact rows, icon actions and a floating bar that appears only when a version is chosen to compare; the filters button and the search box take the same colour when they are on.
 - The interface is written in React and TypeScript (ESM) and follows the colour modes of Moodle; colours come from Bootstrap variables, so themes can override them.
 - Search filters as you type and the filters are asked for once.
 - Errors and notifications are shown as dismissible messages next to what failed.
-- Requires Moodle 5.3; version `2026101402.503`.
+- Requires Moodle 5.3; version `2026101403.503`.
 
 ### Removed
 

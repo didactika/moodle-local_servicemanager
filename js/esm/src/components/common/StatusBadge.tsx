@@ -19,7 +19,7 @@ interface StatusBadgeProps {
 
 const StatusBadge = ({status, label}: StatusBadgeProps) => {
     const look = statusLook(status);
-    return <span className={`badge text-bg-${look.tone}`}>
+    return <span className={`sm-badge tone-${look.tone}`}>
         <Icon name={look.icon} gap />{label}
     </span>;
 };

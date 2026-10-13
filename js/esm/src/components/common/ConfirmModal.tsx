@@ -21,16 +21,18 @@ interface ConfirmModalProps {
     cancelLabel: string;
     onConfirm: () => void;
     onCancel: () => void;
+    /** Bootstrap colour of the button that confirms; danger when it is not given. */
+    tone?: string;
 }
 
-const ConfirmModal = ({open, title, message, confirmLabel, cancelLabel, onConfirm, onCancel}: ConfirmModalProps) => <Modal
+const ConfirmModal = ({open, title, message, confirmLabel, cancelLabel, onConfirm, onCancel, tone = 'danger'}: ConfirmModalProps) => <Modal
     open={open}
     title={<><Icon name="triangle-exclamation" gap />{title}</>}
     onClose={onCancel}
     closeLabel={cancelLabel}
     footer={<>
         <button type="button" className="btn btn-secondary" onClick={onCancel}>{cancelLabel}</button>
-        <button type="button" className="btn btn-danger" onClick={onConfirm}>{confirmLabel}</button>
+        <button type="button" className={`btn btn-${tone}`} onClick={onConfirm}>{confirmLabel}</button>
     </>}
 >
     <p className="mb-0">{message}</p>

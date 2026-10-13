@@ -12,37 +12,15 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  */
 import Icon from "../common/Icon";
 const SelectionBar = /* @__PURE__ */ __name(({ count, actions, onAction, onClear, text }) => /* @__PURE__ */ jsxDEV("div", { className: "sm-floating", "data-region": "bulk-actions", role: "status", children: [
-  /* @__PURE__ */ jsxDEV("span", { className: "sm-floating-count", children: [
-    /* @__PURE__ */ jsxDEV("span", { children: [
-      /* @__PURE__ */ jsxDEV("strong", { children: count }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-        lineNumber: 27,
-        columnNumber: 15
-      }),
-      " ",
-      text("selected")
-    ] }, void 0, true, {
-      fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-      lineNumber: 27,
-      columnNumber: 9
-    }),
-    /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-floating-clear", onClick: onClear, title: text("compare_clear"), children: [
-      /* @__PURE__ */ jsxDEV(Icon, { name: "xmark" }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-        lineNumber: 29,
-        columnNumber: 13
-      }),
-      /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("compare_clear") }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-        lineNumber: 29,
-        columnNumber: 34
-      })
-    ] }, void 0, true, {
-      fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-      lineNumber: 28,
-      columnNumber: 9
-    })
+  /* @__PURE__ */ jsxDEV("span", { className: "sm-floating-count", children: /* @__PURE__ */ jsxDEV("span", { children: [
+    count,
+    " ",
+    text("selected")
   ] }, void 0, true, {
+    fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
+    lineNumber: 26,
+    columnNumber: 41
+  }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
     lineNumber: 26,
     columnNumber: 5
@@ -51,54 +29,70 @@ const SelectionBar = /* @__PURE__ */ __name(({ count, actions, onAction, onClear
     actions.enable && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-pill tone-success", onClick: () => onAction("enable"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "toggle-on", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-        lineNumber: 34,
+        lineNumber: 29,
         columnNumber: 13
       }),
       text("bulk_enable")
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-      lineNumber: 33,
+      lineNumber: 28,
       columnNumber: 28
     }),
     actions.disable && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-pill tone-warning", onClick: () => onAction("disable"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "toggle-off", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-        lineNumber: 37,
+        lineNumber: 32,
         columnNumber: 13
       }),
       text("bulk_disable")
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-      lineNumber: 36,
+      lineNumber: 31,
       columnNumber: 29
     }),
     /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-pill tone-info", onClick: () => onAction("export"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "download", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-        lineNumber: 40,
+        lineNumber: 35,
         columnNumber: 13
       }),
       text("bulk_export")
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-      lineNumber: 39,
+      lineNumber: 34,
       columnNumber: 9
     }),
     /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-pill tone-danger", onClick: () => onAction("delete"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "trash", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-        lineNumber: 43,
+        lineNumber: 38,
         columnNumber: 13
       }),
       text("bulk_delete")
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-      lineNumber: 42,
+      lineNumber: 37,
       columnNumber: 9
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
-    lineNumber: 32,
+    lineNumber: 27,
+    columnNumber: 5
+  }),
+  /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-floating-clear", onClick: onClear, title: text("compare_clear"), children: [
+    /* @__PURE__ */ jsxDEV(Icon, { name: "xmark" }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
+      lineNumber: 42,
+      columnNumber: 9
+    }),
+    /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("compare_clear") }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
+      lineNumber: 42,
+      columnNumber: 30
+    })
+  ] }, void 0, true, {
+    fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SelectionBar.tsx",
+    lineNumber: 41,
     columnNumber: 5
   })
 ] }, void 0, true, {

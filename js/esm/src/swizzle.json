@@ -3,6 +3,30 @@
     "eject": "risky",
     "wrap": "risky"
   },
+  "Dashboard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "Documentation": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "History": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "ImportIntro": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "ImportResult": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "SchemaDetail": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
   "components/common/ActionMenu": {
     "eject": "risky",
     "wrap": "risky"
@@ -32,14 +56,6 @@
     "wrap": "risky"
   },
   "components/common/ErrorBoundary": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "components/common/FilterClearIcon": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "components/common/FilterIcon": {
     "eject": "risky",
     "wrap": "risky"
   },
@@ -92,6 +108,10 @@
     "wrap": "risky"
   },
   "components/common/StatusBadge": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/compare/ChangeNavigator": {
     "eject": "risky",
     "wrap": "risky"
   },
@@ -224,30 +244,6 @@
     "wrap": "risky"
   },
   "components/schema/TokenAlert": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "Dashboard": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "Documentation": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "History": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "ImportIntro": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "ImportResult": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "SchemaDetail": {
     "eject": "risky",
     "wrap": "risky"
   }

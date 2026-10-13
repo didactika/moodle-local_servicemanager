@@ -12,8 +12,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import { useDropdown } from "../../hooks/useDropdown";
-import FilterClearIcon from "./FilterClearIcon";
-import FilterIcon from "./FilterIcon";
+import Icon from "./Icon";
 const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) => {
   const menu = useDropdown();
   return /* @__PURE__ */ jsxDEV("div", { className: "dropdown sm-filter", ref: menu.ref, children: [
@@ -26,19 +25,19 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
         "aria-expanded": menu.open,
         onClick: menu.toggle,
         children: [
-          /* @__PURE__ */ jsxDEV("span", { className: "sm-icon-gap", children: /* @__PURE__ */ jsxDEV(FilterIcon, {}, void 0, false, {
+          /* @__PURE__ */ jsxDEV("span", { className: "sm-icon-gap", children: /* @__PURE__ */ jsxDEV(Icon, { name: "filter" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-            lineNumber: 40,
+            lineNumber: 38,
             columnNumber: 43
           }) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-            lineNumber: 40,
+            lineNumber: 38,
             columnNumber: 13
           }),
           text("filters"),
           count > 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-count-badge", children: count }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-            lineNumber: 41,
+            lineNumber: 39,
             columnNumber: 27
           })
         ]
@@ -47,7 +46,7 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
       true,
       {
         fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-        lineNumber: 33,
+        lineNumber: 31,
         columnNumber: 9
       }
     ),
@@ -55,7 +54,7 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
       /* @__PURE__ */ jsxDEV("div", { className: "sm-filter-head", children: [
         /* @__PURE__ */ jsxDEV("h2", { className: "sm-filter-heading", children: text("filters") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-          lineNumber: 45,
+          lineNumber: 43,
           columnNumber: 17
         }),
         /* @__PURE__ */ jsxDEV(
@@ -67,9 +66,9 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
             disabled: count === 0,
             title: text("filter_clear"),
             "aria-label": text("filter_clear"),
-            children: /* @__PURE__ */ jsxDEV(FilterClearIcon, {}, void 0, false, {
+            children: /* @__PURE__ */ jsxDEV(Icon, { name: "rotate-right" }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-              lineNumber: 54,
+              lineNumber: 52,
               columnNumber: 21
             })
           },
@@ -77,24 +76,24 @@ const FilterMenu = /* @__PURE__ */ __name(({ text, count, onReset, children }) =
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-            lineNumber: 46,
+            lineNumber: 44,
             columnNumber: 17
           }
         )
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-        lineNumber: 44,
+        lineNumber: 42,
         columnNumber: 13
       }),
       children
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-      lineNumber: 43,
+      lineNumber: 41,
       columnNumber: 9
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/FilterMenu.tsx",
-    lineNumber: 32,
+    lineNumber: 30,
     columnNumber: 12
   });
 }, "FilterMenu");

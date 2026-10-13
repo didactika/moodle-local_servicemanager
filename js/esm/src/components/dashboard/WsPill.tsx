@@ -28,7 +28,7 @@ const WsPill = ({status, canManage, text}: WsPillProps) => {
     const level = LEVELS[status.level];
 
     return <span className="d-inline-flex flex-wrap align-items-center sm-badges-row" data-region="ws-status">
-        <span className={`badge text-bg-${level.tone}`}><Icon name={level.icon} gap />{text('tile_services')}: {text(level.label)}</span>
+        <span className={`sm-badge tone-${level.tone}`}><Icon name={level.icon} gap />{text('tile_services')}: {text(level.label)}</span>
         {status.protocols.map((protocol) => <span
             key={protocol.name}
             className={`sm-protocol ${protocol.enabled ? 'on' : 'off'}`}
@@ -40,7 +40,7 @@ const WsPill = ({status, canManage, text}: WsPillProps) => {
         {canManage && status.fixUrl && <a href={status.fixUrl} className={`btn sm-pill compact tone-${level.tone}`} data-region="ws-fix">
             <Icon name="power-off" gap />{status.fixLabel}
         </a>}
-        {canManage && status.protocolsUrl && <a href={status.protocolsUrl} className="btn btn-sm btn-outline-secondary" title={text('ws_manage_protocols_link')}>
+        {canManage && status.protocolsUrl && <a href={status.protocolsUrl} className="btn sm-pill compact" title={text('ws_manage_protocols_link')}>
             <Icon name="gear" gap />{text('tile_manage')}
         </a>}
     </span>;

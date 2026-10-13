@@ -40,7 +40,7 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
         count={functions.length}
         flush
         region="functions"
-        actions={missing > 0 ? <span className="badge text-bg-danger">{text('tile_functions_missing', missing)}</span> : undefined}
+        actions={missing > 0 ? <span className="sm-badge tone-danger">{text('tile_functions_missing', missing)}</span> : undefined}
     >
         {functions.length >= SEARCHABLE_FROM && <div className="p-3 border-bottom">
             <SearchBox value={query} onChange={setQuery} placeholder={text('functions_search')} clearLabel={text('filter_clear')} id="sm-functions-search" />
@@ -53,15 +53,15 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
                 <div className="flex-grow-1 sm-function-body">
                     <div className="d-flex flex-wrap align-items-center sm-badges-row">
                         <span className="sm-fn">{fn.name}</span>
-                        {fn.type && <span className="badge text-bg-light border">{text('function_' + fn.type)}</span>}
-                        {fn.critical && <span className="badge text-bg-light border">{text('function_critical')}</span>}
-                        {!fn.exists && <span className="badge text-bg-danger">{text('function_missing')}</span>}
+                        {fn.type && <span className="sm-badge">{text('function_' + fn.type)}</span>}
+                        {fn.critical && <span className="sm-badge">{text('function_critical')}</span>}
+                        {!fn.exists && <span className="sm-badge tone-danger">{text('function_missing')}</span>}
                     </div>
                     {fn.description && <div className="text-body-secondary small">{fn.description}</div>}
                 </div>
                 {fn.capabilities.length > 0 && <button
                     type="button"
-                    className="btn btn-sm btn-outline-primary sm-function-caps"
+                    className="btn sm-pill tone-primary compact sm-function-caps"
                     onClick={() => setViewing(fn)}
                     title={text('function_capabilities_view')}
                 >

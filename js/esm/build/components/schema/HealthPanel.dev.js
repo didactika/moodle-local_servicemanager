@@ -94,7 +94,7 @@ const HealthPanel = /* @__PURE__ */ __name(({ logs, text }) => {
             lineNumber: 56,
             columnNumber: 25
           }),
-          /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${statusLook(log.status).tone}`, children: log.status }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${statusLook(log.status).tone}`, children: log.status }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
             lineNumber: 57,
             columnNumber: 29

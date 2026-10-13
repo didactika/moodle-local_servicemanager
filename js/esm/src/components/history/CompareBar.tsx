@@ -26,9 +26,6 @@ const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) =
     {[...chosen].map((id) => <input key={id} type="hidden" name="compare[]" value={id} />)}
     <span className="sm-floating-count" data-region="compare-chosen">
         <span>{text('compare_chosen', {n: chosen.size, total: needed})}</span>
-        {chosen.size > 0 && <button type="button" className="sm-floating-clear" onClick={onClear} title={text('compare_clear')}>
-            <Icon name="xmark" /><span className="visually-hidden">{text('compare_clear')}</span>
-        </button>}
     </span>
     {tooMany && <span className="sm-compare-warning" role="alert">{text('compare_select_two')}</span>}
     <div className="sm-floating-actions">
@@ -36,6 +33,9 @@ const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) =
             <Icon name="code-compare" gap />{text('compare_versions')}
         </button>
     </div>
+    <button type="button" className="sm-floating-clear" onClick={onClear} title={text('compare_clear')}>
+        <Icon name="xmark" /><span className="visually-hidden">{text('compare_clear')}</span>
+    </button>
 </div>;
 
 export default CompareBar;

@@ -18,6 +18,16 @@ const changeStarts = /* @__PURE__ */ __name((rows) => {
   });
   return starts;
 }, "changeStarts");
+const changeRuns = /* @__PURE__ */ __name((rows) => changeStarts(rows).map((start) => {
+  let end = start;
+  const kinds = /* @__PURE__ */ new Set();
+  while (end < rows.length && isChange(rows[end])) {
+    kinds.add(rows[end].kind);
+    end++;
+  }
+  const only = kinds.size === 1 ? [...kinds][0] : "changed";
+  return { start, kind: only === "added" || only === "removed" ? only : "changed", line: rows[start].right?.no ?? rows[start].left?.no ?? 0 };
+}), "changeRuns");
 const segments = /* @__PURE__ */ __name((rows, context, expanded = /* @__PURE__ */ new Set()) => {
   const keep = new Array(rows.length).fill(false);
   rows.forEach((row, index2) => {
@@ -45,6 +55,7 @@ const segments = /* @__PURE__ */ __name((rows, context, expanded = /* @__PURE__ 
 }, "segments");
 const ofArea = /* @__PURE__ */ __name((changes, area) => changes.filter((change) => change.area === area), "ofArea");
 export {
+  changeRuns,
   changeStarts,
   isChange,
   ofArea,

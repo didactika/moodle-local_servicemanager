@@ -19,6 +19,7 @@ import EmptyState from './components/common/EmptyState';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Chips from './components/common/Chips';
 import FilterMenu from './components/common/FilterMenu';
+import ConfirmModal from './components/common/ConfirmModal';
 import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
 import Pagination from './components/common/Pagination';
@@ -26,8 +27,10 @@ import SearchBox from './components/common/SearchBox';
 import CompareBar from './components/history/CompareBar';
 import VersionList from './components/history/VersionList';
 import {createText} from './engine/text';
+import {addToast} from './engine/toast';
 import {useListState} from './hooks/useListState';
 import {matches, paginate} from './lib/listing';
+import {rollbackSchema} from './services/api';
 import type {HistoryProps, HistoryRow} from './types';
 
 /** How many versions are compared at once. */
@@ -37,7 +40,10 @@ const TO_COMPARE = 2;
 const findable = (row: HistoryRow) => ({texts: [row.version, row.userName, row.reason], at: row.at});
 
 const History = (props: HistoryProps) => {
-    const {urls, rows, perPageOptions} = props;
+    const {urls, perPageOptions} = props;
+    const [rows, setRows] = useState<HistoryRow[]>(props.rows);
+    const [currentVersion, setCurrentVersion] = useState(props.currentVersion);
+    const [rollingBack, setRollingBack] = useState<HistoryRow | null>(null);
     const text = useMemo(() => createText(props.strings), [props.strings]);
     const list = useListState(perPageOptions[0], perPageOptions);
     const [chosen, setChosen] = useState<ReadonlySet<number>>(new Set());
@@ -61,6 +67,20 @@ const History = (props: HistoryProps) => {
         setTooMany(false);
     }, [chosen]);
 
+    const confirmRollback = () => {
+        const target = rollingBack;
+        setRollingBack(null);
+        if (!target) {
+            return;
+        }
+        rollbackSchema(props.schemaId, target.id).then((result) => {
+            setRows(result.rows);
+            setCurrentVersion(result.version);
+            setChosen(new Set());
+            return addToast(text('rollback_success'), {type: 'success'});
+        }).catch(() => addToast(text('rollback_error'), {type: 'danger'})).catch(() => undefined);
+    };
+
     const clear = useCallback(() => {
         setChosen(new Set());
         setTooMany(false);
@@ -72,7 +92,7 @@ const History = (props: HistoryProps) => {
 
             <PageHeader
                 title={text('version_history')}
-                subtitle={<>{props.schemaName} · {text('history_current', props.currentVersion)}</>}
+                subtitle={<>{props.schemaName} · {text('history_current', currentVersion)}</>}
             />
 
             {rows.length === 0
@@ -114,12 +134,23 @@ const History = (props: HistoryProps) => {
                         : <form action={urls.compare} method="get" className="servicemanager-history">
                             <input type="hidden" name="id" value={props.schemaId} />
                             <p className="text-body-secondary small mb-2">{text('history_count', found.length)} {text('compare_hint')}</p>
-                            <VersionList rows={page.rows} chosen={chosen} onToggle={toggle} text={text} />
+                            <VersionList rows={page.rows} chosen={chosen} onToggle={toggle} onRollback={setRollingBack} text={text} />
                             {chosen.size > 0 && <CompareBar chosen={chosen} needed={TO_COMPARE} tooMany={tooMany} onClear={clear} text={text} />}
                         </form>}
 
                     <Pagination page={page.page} perpage={list.state.perpage} total={page.total} onPage={(next) => list.set({page: next})} text={text} />
                 </>}
+
+            <ConfirmModal
+                open={rollingBack !== null}
+                title={text('rollback_title', rollingBack?.version ?? '')}
+                message={text('rollback_confirm')}
+                confirmLabel={text('rollback')}
+                cancelLabel={text('core_cancel')}
+                tone="warning"
+                onConfirm={confirmRollback}
+                onCancel={() => setRollingBack(null)}
+            />
         </div>
     </ErrorBoundary>;
 };

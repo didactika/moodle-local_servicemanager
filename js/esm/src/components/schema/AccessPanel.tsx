@@ -27,7 +27,7 @@ interface AccessPanelProps {
 
 const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelProps) => {
     const {requirements, extraCapabilities, schema, isHistory, canManage} = props;
-    const file = (on: boolean, icon: string, label: string, title: string) => <span className={`badge text-bg-${on ? 'success' : 'secondary'}`} title={title}>
+    const file = (on: boolean, icon: string, label: string, title: string) => <span className={`sm-badge tone-${on ? 'success' : 'secondary'}`} title={title}>
         <Icon name={icon} gap />{label}
     </span>;
 
@@ -36,7 +36,7 @@ const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelPr
             {!isHistory && <>
                 <dt>{text('tile_token')}</dt>
                 <dd>
-                    <span className={`badge text-bg-${schema.hasToken ? 'success' : 'secondary'}`}>{text(schema.hasToken ? 'token_active' : 'token_none')}</span>
+                    <span className={`sm-badge tone-${schema.hasToken ? 'success' : 'secondary'}`}>{text(schema.hasToken ? 'token_active' : 'token_none')}</span>
                     {canManage && <span className="ms-2">
                         <IconButton
                             icon={schema.hasToken ? 'rotate' : 'key'}

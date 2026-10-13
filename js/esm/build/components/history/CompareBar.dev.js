@@ -17,52 +17,50 @@ const CompareBar = /* @__PURE__ */ __name(({ chosen, needed, tooMany, onClear, t
     lineNumber: 26,
     columnNumber: 30
   })),
-  /* @__PURE__ */ jsxDEV("span", { className: "sm-floating-count", "data-region": "compare-chosen", children: [
-    /* @__PURE__ */ jsxDEV("span", { children: text("compare_chosen", { n: chosen.size, total: needed }) }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-      lineNumber: 28,
-      columnNumber: 9
-    }),
-    chosen.size > 0 && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-floating-clear", onClick: onClear, title: text("compare_clear"), children: [
-      /* @__PURE__ */ jsxDEV(Icon, { name: "xmark" }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-        lineNumber: 30,
-        columnNumber: 13
-      }),
-      /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("compare_clear") }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-        lineNumber: 30,
-        columnNumber: 34
-      })
-    ] }, void 0, true, {
-      fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-      lineNumber: 29,
-      columnNumber: 29
-    })
-  ] }, void 0, true, {
+  /* @__PURE__ */ jsxDEV("span", { className: "sm-floating-count", "data-region": "compare-chosen", children: /* @__PURE__ */ jsxDEV("span", { children: text("compare_chosen", { n: chosen.size, total: needed }) }, void 0, false, {
+    fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
+    lineNumber: 28,
+    columnNumber: 9
+  }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
     lineNumber: 27,
     columnNumber: 5
   }),
   tooMany && /* @__PURE__ */ jsxDEV("span", { className: "sm-compare-warning", role: "alert", children: text("compare_select_two") }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-    lineNumber: 33,
+    lineNumber: 30,
     columnNumber: 17
   }),
   /* @__PURE__ */ jsxDEV("div", { className: "sm-floating-actions", children: /* @__PURE__ */ jsxDEV("button", { type: "submit", id: "compare-btn", className: "btn sm-pill solid tone-primary", disabled: chosen.size !== needed, children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: "code-compare", gap: true }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-      lineNumber: 36,
+      lineNumber: 33,
       columnNumber: 13
     }),
     text("compare_versions")
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-    lineNumber: 35,
+    lineNumber: 32,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
-    lineNumber: 34,
+    lineNumber: 31,
+    columnNumber: 5
+  }),
+  /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-floating-clear", onClick: onClear, title: text("compare_clear"), children: [
+    /* @__PURE__ */ jsxDEV(Icon, { name: "xmark" }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
+      lineNumber: 37,
+      columnNumber: 9
+    }),
+    /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("compare_clear") }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
+      lineNumber: 37,
+      columnNumber: 30
+    })
+  ] }, void 0, true, {
+    fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
+    lineNumber: 36,
     columnNumber: 5
   })
 ] }, void 0, true, {

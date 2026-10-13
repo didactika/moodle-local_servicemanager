@@ -72,10 +72,19 @@
 
         .sm-token-value {
             display: inline-block;
-            max-width: calc(100% - 2.6rem);
+            max-width: calc(100% - 3.4rem);
             overflow-wrap: anywhere;
             color: var(--bs-body-color);
             font-size: 0.8125rem;
+            vertical-align: middle;
+        }
+
+        // The button that copies it: a little smaller than the other round buttons, with room between it and the token.
+        .sm-pill.icon-only.compact {
+            width: 1.75rem;
+            height: 1.75rem;
+            margin-inline-start: 0.75rem;
+            font-size: 0.8rem;
             vertical-align: middle;
         }
     }

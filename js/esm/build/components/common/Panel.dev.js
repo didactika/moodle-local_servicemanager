@@ -25,7 +25,7 @@ const Panel = /* @__PURE__ */ __name(({ title, icon, count, actions, flush = fal
         columnNumber: 13
       }),
       title,
-      count !== void 0 && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-secondary ms-2", children: count }, void 0, false, {
+      count !== void 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-count-badge", children: count }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/Panel.tsx",
         lineNumber: 33,
         columnNumber: 37

@@ -19,7 +19,8 @@ import PageHeader from './components/common/PageHeader';
 import ChangeSummary from './components/compare/ChangeSummary';
 import DiffTable, {type DiffView} from './components/compare/DiffTable';
 import {createText} from './engine/text';
-import {changeStarts} from './lib/diff';
+import ChangeNavigator from './components/compare/ChangeNavigator';
+import {changeRuns} from './lib/diff';
 import type {CompareProps} from './types';
 
 const Compare = (props: CompareProps) => {
@@ -29,13 +30,13 @@ const Compare = (props: CompareProps) => {
     const [onlyChanges, setOnlyChanges] = useState(true);
     const [expanded, setExpanded] = useState<ReadonlySet<number>>(new Set());
     const [position, setPosition] = useState(-1);
-    const starts = useMemo(() => changeStarts(rows), [rows]);
+    const runs = useMemo(() => changeRuns(rows), [rows]);
     const identical = counts.added + counts.removed + counts.changed === 0;
 
-    const next = () => {
-        const target = (position + 1) % starts.length;
+    const move = (step: 1 | -1) => {
+        const target = (position + step + runs.length) % runs.length;
         setPosition(target);
-        document.getElementById(`diff-row-${starts[target]}`)?.scrollIntoView({block: 'center', behavior: 'smooth'});
+        document.getElementById(`diff-row-${runs[target].start}`)?.scrollIntoView({block: 'center', behavior: 'smooth'});
     };
 
     return <ErrorBoundary strings={props.strings}>
@@ -53,11 +54,11 @@ const Compare = (props: CompareProps) => {
 
             <div className="d-flex flex-wrap align-items-center mb-3 sm-badges-row" data-region="diff-counts">
                 {identical
-                    ? <span className="badge text-bg-secondary">{text('compare_no_changes')}</span>
+                    ? <span className="sm-badge">{text('compare_no_changes')}</span>
                     : <>
-                        {counts.added > 0 && <span className="badge text-bg-success">{text('compare_added', counts.added)}</span>}
-                        {counts.removed > 0 && <span className="badge text-bg-danger">{text('compare_removed', counts.removed)}</span>}
-                        {counts.changed > 0 && <span className="badge text-bg-warning">{text('compare_changed', counts.changed)}</span>}
+                        {counts.added > 0 && <span className="sm-badge tone-success">{text('compare_added', counts.added)}</span>}
+                        {counts.removed > 0 && <span className="sm-badge tone-danger">{text('compare_removed', counts.removed)}</span>}
+                        {counts.changed > 0 && <span className="sm-badge tone-warning">{text('compare_changed', counts.changed)}</span>}
                     </>}
             </div>
 
@@ -84,9 +85,6 @@ const Compare = (props: CompareProps) => {
                         />
                         <label className="form-check-label" htmlFor="only-changes">{text('compare_only_changes')}</label>
                     </div>
-                    {starts.length > 0 && <button type="button" className="btn btn-outline-primary" onClick={next}>
-                        <Icon name="arrow-down" gap />{text('compare_next_change')}
-                    </button>}
                 </div>
             </div>
 
@@ -100,6 +98,8 @@ const Compare = (props: CompareProps) => {
                 onExpand={(from) => setExpanded(new Set(expanded).add(from))}
                 text={text}
             />
+
+            {runs.length > 0 && <ChangeNavigator runs={runs} position={position} onMove={move} text={text} />}
         </div>
     </ErrorBoundary>;
 };

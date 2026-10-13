@@ -23,12 +23,7 @@ interface SelectionBarProps {
 }
 
 const SelectionBar = ({count, actions, onAction, onClear, text}: SelectionBarProps) => <div className="sm-floating" data-region="bulk-actions" role="status">
-    <span className="sm-floating-count">
-        <span><strong>{count}</strong> {text('selected')}</span>
-        <button type="button" className="sm-floating-clear" onClick={onClear} title={text('compare_clear')}>
-            <Icon name="xmark" /><span className="visually-hidden">{text('compare_clear')}</span>
-        </button>
-    </span>
+    <span className="sm-floating-count"><span>{count} {text('selected')}</span></span>
     <div className="sm-floating-actions" role="group" aria-label={text('core_actions')}>
         {actions.enable && <button type="button" className="sm-pill tone-success" onClick={() => onAction('enable')}>
             <Icon name="toggle-on" gap />{text('bulk_enable')}
@@ -43,6 +38,9 @@ const SelectionBar = ({count, actions, onAction, onClear, text}: SelectionBarPro
             <Icon name="trash" gap />{text('bulk_delete')}
         </button>
     </div>
+    <button type="button" className="sm-floating-clear" onClick={onClear} title={text('compare_clear')}>
+        <Icon name="xmark" /><span className="visually-hidden">{text('compare_clear')}</span>
+    </button>
 </div>;
 
 export default SelectionBar;

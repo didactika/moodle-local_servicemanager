@@ -40,6 +40,33 @@ export const changeStarts = (rows: DiffRow[]): number[] => {
     return starts;
 };
 
+/** A run of rows that differ, which is one change for the person who goes through them. */
+export interface ChangeRun {
+    /** Position of its first row. */
+    start: number;
+    /** What the run is: all rows added, all removed, or a mix. */
+    kind: 'added' | 'removed' | 'changed';
+    /** Line where it starts, in the new version when it has one. */
+    line: number;
+}
+
+/**
+ * The runs of differences, in order.
+ *
+ * @param rows Rows of the comparison.
+ * @returns One entry for each run.
+ */
+export const changeRuns = (rows: DiffRow[]): ChangeRun[] => changeStarts(rows).map((start) => {
+    let end = start;
+    const kinds = new Set<DiffRow['kind']>();
+    while (end < rows.length && isChange(rows[end])) {
+        kinds.add(rows[end].kind);
+        end++;
+    }
+    const only = kinds.size === 1 ? [...kinds][0] : 'changed';
+    return {start, kind: only === 'added' || only === 'removed' ? only : 'changed', line: rows[start].right?.no ?? rows[start].left?.no ?? 0};
+});
+
 /**
  * Cut the comparison into the rows to show and the runs of unchanged rows to fold, keeping some rows of context around each
  * difference.

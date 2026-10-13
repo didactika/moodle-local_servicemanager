@@ -137,7 +137,7 @@ const DetailsPanel = /* @__PURE__ */ __name(({ schema, urls, canManage, isHistor
             lineNumber: 52,
             columnNumber: 13
           }),
-          /* @__PURE__ */ jsxDEV("dd", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge text-bg-${schema.enabled ? "success" : "secondary"}`, children: text(schema.enabled ? "core_yes" : "core_no") }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("dd", { children: /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${schema.enabled ? "success" : "secondary"}`, children: text(schema.enabled ? "core_yes" : "core_no") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
             lineNumber: 54,
             columnNumber: 17
