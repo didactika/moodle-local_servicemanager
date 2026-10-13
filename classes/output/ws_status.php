@@ -54,12 +54,11 @@ class ws_status {
             $on = in_array($key, $active);
             $protocols[] = [
                 'name' => strtoupper($key),
-                'component' => 'webservice_' . $key,
+                'fullname' => get_string('pluginname', 'webservice_' . $key),
                 'enabled' => $on,
                 'state' => $on ? 'on' : 'off',
                 'icon' => $on ? 'circle-check' : 'circle-minus',
                 'label' => get_string($on ? 'ws_enabled_label' : 'ws_disabled_label', 'local_servicemanager'),
-                'labelkey' => $on ? 'ws_enabled_label' : 'ws_disabled_label',
             ];
         }
 
