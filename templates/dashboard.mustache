@@ -50,7 +50,7 @@
             <span class="sm-badge tone-{{ws.tone}}"><i class="fa-solid fa-{{ws.icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
             {{#ws.protocols}}
                 <span class="sm-protocol {{state}}" title="{{#str}}{{labelkey}}, local_servicemanager{{/str}}">
-                    <i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{name}}
+                    <i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}pluginname, {{component}}{{/str}}
                     <span class="sr-only visually-hidden"> {{#str}}{{labelkey}}, local_servicemanager{{/str}}</span>
                 </span>
             {{/ws.protocols}}

@@ -54,6 +54,7 @@ class ws_status {
             $on = in_array($key, $active);
             $protocols[] = [
                 'name' => strtoupper($key),
+                'component' => 'webservice_' . $key,
                 'enabled' => $on,
                 'state' => $on ? 'on' : 'off',
                 'icon' => $on ? 'circle-check' : 'circle-minus',
