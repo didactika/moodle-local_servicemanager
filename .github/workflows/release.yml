@@ -7,9 +7,10 @@ name: Release on version bump
 # The latest release is always the one of `main`, whichever branch published last: a release from a MOODLE_XXX_STABLE
 # branch is created with --latest=false, and every run ends by marking the release that `main` declares as the latest one.
 #
-# The version of every line ends with the lowest Moodle version it supports, as a numeric string so trailing zeros are kept
-# ('2026101105.400' for $plugin->supported = [400, 502]), so lines never collide and a site that moves to a newer line always
-# sees a higher version. A release whose version does not follow that is refused before anything is created.
+# The version of a line is YYYYMMDDXX with the date the line was created, and only the counter XX goes up, so every number of
+# a newer line is higher than every number of the older one. The release is the same X.Y.Z for the lines that carry the same
+# delivery, followed by -m and the lowest Moodle version the line supports (1.8.3-m405, 1.8.3-m503). A release that does not
+# follow that is refused before anything is created.
 #
 # It only acts when a tag for that release does not already exist, so re-running or unrelated edits to version.php are
 # safe (idempotent). It can also be started by hand from the Actions tab, for instance to mark the latest release again.
@@ -79,8 +80,12 @@ jobs:
             echo "::error::Could not parse \$plugin->supported from version.php"
             exit 1
           fi
-          if ! echo "$version" | grep -qE "^[0-9]{10}\\.${line}\$"; then
-            echo "::error::\$plugin->version is $version; on $branch it must be YYYYMMDDXX.$line."
+          if ! echo "$version" | grep -qE "^[0-9]{10}\$"; then
+            echo "::error::\$plugin->version is $version; it must be YYYYMMDDXX."
+            exit 1
+          fi
+          if ! echo "$release" | grep -qE "^[0-9]+\\.[0-9]+\\.[0-9]+-m${line}\$"; then
+            echo "::error::\$plugin->release is $release; on $branch it must be X.Y.Z-m$line."
             exit 1
           fi
           echo "release=$release" >> "$GITHUB_OUTPUT"
