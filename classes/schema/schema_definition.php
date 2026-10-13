@@ -127,7 +127,7 @@ class schema_definition {
      * @return string
      */
     public function get_version(): string {
-        return (string) $this->meta['version'];
+        return (string) ($this->meta['version'] ?? '');
     }
 
     /**

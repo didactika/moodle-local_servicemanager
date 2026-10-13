@@ -1371,6 +1371,20 @@
     position: relative;
 }
 
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary[aria-expanded=true],
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary[aria-expanded=true] {
+    border-color: var(--bs-primary);
+    background-color: var(--bs-body-bg);
+    color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--bs-primary) 25%, transparent);
+}
+
 .servicemanager-dashboard .sm-filter .sm-count-badge,
 .servicemanager-history-page .sm-filter .sm-count-badge {
     position: absolute;

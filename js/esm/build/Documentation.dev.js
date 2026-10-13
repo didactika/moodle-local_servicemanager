@@ -22,7 +22,7 @@ import { createText } from "./engine/text";
 const META = [
   { name: "id", required: true, description: "doc_meta_id" },
   { name: "name", required: true, description: "doc_meta_name" },
-  { name: "version", required: true, description: "doc_meta_version" },
+  { name: "version", required: false, description: "doc_meta_version" },
   { name: "maintainer", required: false, description: "doc_meta_maintainer" },
   { name: "description", required: false, description: "doc_meta_description" }
 ];

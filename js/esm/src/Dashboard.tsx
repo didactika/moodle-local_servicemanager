@@ -66,7 +66,7 @@ const Dashboard = (props: DashboardProps) => {
         <div className="servicemanager-dashboard">
             <PageHeader
                 title={text('dashboard')}
-                subtitle={<WsPill status={wsStatus} canManage={canManage} text={text} />}
+                actions={<WsPill status={wsStatus} canManage={canManage} text={text} />}
             />
 
             {schemas.length === 0

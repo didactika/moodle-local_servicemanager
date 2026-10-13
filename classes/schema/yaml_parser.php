@@ -215,10 +215,6 @@ class yaml_parser {
             $errors[] = get_string('error_missing_meta_name', 'local_servicemanager');
         }
 
-        if (empty($meta['version'])) {
-            $errors[] = get_string('error_missing_meta_version', 'local_servicemanager');
-        }
-
         return $errors;
     }
 

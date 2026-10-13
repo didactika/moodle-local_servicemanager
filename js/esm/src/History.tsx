@@ -20,7 +20,6 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import Chips from './components/common/Chips';
 import FilterMenu from './components/common/FilterMenu';
 import Icon from './components/common/Icon';
-import IconButton from './components/common/IconButton';
 import PageHeader from './components/common/PageHeader';
 import Pagination from './components/common/Pagination';
 import SearchBox from './components/common/SearchBox';
@@ -103,9 +102,6 @@ const History = (props: HistoryProps) => {
                                 chips={perPageOptions.map((option) => ({value: String(option), label: String(option)}))}
                             />
                         </FilterMenu>
-                        <div className="sm-toolbar-actions">
-                            <IconButton large icon="pen-to-square" label={text('action_edit')} href={urls.edit} />
-                        </div>
                     </div>
 
                     {page.rows.length === 0
@@ -119,7 +115,7 @@ const History = (props: HistoryProps) => {
                             <input type="hidden" name="id" value={props.schemaId} />
                             <p className="text-body-secondary small mb-2">{text('history_count', found.length)} {text('compare_hint')}</p>
                             <VersionList rows={page.rows} chosen={chosen} onToggle={toggle} text={text} />
-                            <CompareBar chosen={chosen} needed={TO_COMPARE} tooMany={tooMany} onClear={clear} text={text} />
+                            {chosen.size > 0 && <CompareBar chosen={chosen} needed={TO_COMPARE} tooMany={tooMany} onClear={clear} text={text} />}
                         </form>}
 
                     <Pagination page={page.page} perpage={list.state.perpage} total={page.total} onPage={(next) => list.set({page: next})} text={text} />

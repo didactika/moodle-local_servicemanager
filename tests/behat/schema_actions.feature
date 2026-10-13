@@ -18,6 +18,12 @@ Feature: Changing a schema without leaving its page
     And "Enable" "button" should exist
 
   @javascript
+  Scenario: The page of a schema shows the state of the web services as the dashboard does
+    Given I navigate to "Server > Web Service Manager > Dashboard" in site administration
+    When I click on "Test Service" "link"
+    Then I should see "Enable web services" in the "[data-region='ws-status']" "css_element"
+
+  @javascript
   Scenario: A token is made after a confirmation and shown next to the button
     Given I navigate to "Server > Web Service Manager > Dashboard" in site administration
     When I click on "Test Service" "link"

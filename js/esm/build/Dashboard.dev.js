@@ -57,10 +57,10 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
       PageHeader,
       {
         title: text("dashboard"),
-        subtitle: /* @__PURE__ */ jsxDEV(WsPill, { status: wsStatus, canManage, text }, void 0, false, {
+        actions: /* @__PURE__ */ jsxDEV(WsPill, { status: wsStatus, canManage, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
           lineNumber: 69,
-          columnNumber: 27
+          columnNumber: 26
         })
       },
       void 0,

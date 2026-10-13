@@ -130,69 +130,19 @@ class dashboard_page implements react_component_renderable, \renderable {
     }
 
     /**
-     * The address of a page of the settings of Moodle.
-     *
-     * @param string $section Section of the settings.
-     * @return string The address.
-     */
-    private function settings_url(string $section): string {
-        return (new \moodle_url('/admin/settings.php', ['section' => $section]))->out(false);
-    }
-
-    /**
      * The state of the web services of the site and how healthy the schemas are.
      *
      * @param bool $canmanage Whether the person can open the settings of the web services.
      * @return array The state.
      */
     private function web_service_status(bool $canmanage): array {
-        global $CFG, $DB;
-
-        $enabled = !empty($CFG->enablewebservices);
-        $active = ($enabled && !empty($CFG->webserviceprotocols))
-            ? array_map('trim', explode(',', $CFG->webserviceprotocols))
-            : [];
-
-        $protocols = [];
-        foreach (\core_plugin_manager::instance()->get_plugins_of_type('webservice') as $key => $plugin) {
-            $protocols[] = ['name' => strtoupper($key), 'enabled' => in_array($key, $active)];
-        }
-
-        if (!$enabled) {
-            $level = 'disabled';
-        } else if (count($active) === 0) {
-            $level = 'warning';
-        } else {
-            $level = 'operational';
-        }
-
-        $fix = ['url' => '', 'label' => ''];
-        if ($canmanage && $level === 'disabled') {
-            $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
-            $fix = [
-                'url' => $subsystems->out(false),
-                'label' => get_string('ws_enable_services', 'local_servicemanager'),
-            ];
-        } else if ($canmanage && $level === 'warning') {
-            $fix = [
-                'url' => $this->settings_url('webserviceprotocols'),
-                'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
-            ];
-        }
+        global $DB;
 
         $rows = $DB->get_records_sql('SELECT status, COUNT(*) AS cnt FROM {local_servicemanager_schemas} GROUP BY status');
-        return [
-            'enabled' => $enabled,
-            'level' => $level,
-            'protocols' => $protocols,
-            'enabledProtocols' => count($active),
+        return ws_status::describe($canmanage) + [
             'healthy' => (int) ($rows['healthy']->cnt ?? 0),
             'warning' => (int) ($rows['warning']->cnt ?? 0),
             'critical' => (int) ($rows['critical']->cnt ?? 0),
-            'overviewUrl' => $canmanage ? $this->settings_url('webservicesoverview') : '',
-            'fixUrl' => $fix['url'],
-            'fixLabel' => $fix['label'],
-            'protocolsUrl' => $canmanage ? $this->settings_url('webserviceprotocols') : '',
         ];
     }
 }

@@ -44,7 +44,9 @@ class schema_builder {
         $lines = ['meta:'];
         $lines[] = '  id: ' . $this->quote($fields['id'] ?? '');
         $lines[] = '  name: ' . $this->quote($fields['name'] ?? '');
-        $lines[] = '  version: ' . $this->quote($fields['version'] ?? '');
+        if (trim((string) ($fields['version'] ?? '')) !== '') {
+            $lines[] = '  version: ' . $this->quote($fields['version']);
+        }
         foreach (['maintainer', 'description'] as $optional) {
             $value = trim((string) ($fields[$optional] ?? ''));
             if ($value !== '') {

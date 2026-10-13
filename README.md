@@ -185,7 +185,7 @@ Click on a schema name to view:
 meta:
   id: "myapp.users"                    # Required: Unique identifier
   name: "My Application User Service"  # Required: Display name
-  version: "1.0.0"                     # Required: Version number
+  version: "1.0.0"                     # Optional: set by the plugin when it is missing or already used
   maintainer: "IT Department"          # Optional: Maintainer info
   description: "User management API"   # Optional: Description
 

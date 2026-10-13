@@ -20,7 +20,6 @@ import ErrorBoundary from "./components/common/ErrorBoundary";
 import Chips from "./components/common/Chips";
 import FilterMenu from "./components/common/FilterMenu";
 import Icon from "./components/common/Icon";
-import IconButton from "./components/common/IconButton";
 import PageHeader from "./components/common/PageHeader";
 import Pagination from "./components/common/Pagination";
 import SearchBox from "./components/common/SearchBox";
@@ -60,11 +59,11 @@ const History = /* @__PURE__ */ __name((props) => {
   return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-history-page", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: urls.back, label: text("back") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 72,
+      lineNumber: 71,
       columnNumber: 35
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 72,
+      lineNumber: 71,
       columnNumber: 13
     }),
     /* @__PURE__ */ jsxDEV(
@@ -77,7 +76,7 @@ const History = /* @__PURE__ */ __name((props) => {
           text("history_current", props.currentVersion)
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 76,
+          lineNumber: 75,
           columnNumber: 27
         })
       },
@@ -85,13 +84,13 @@ const History = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 74,
+        lineNumber: 73,
         columnNumber: 13
       }
     ),
     rows.length === 0 ? /* @__PURE__ */ jsxDEV(EmptyState, { icon: "clock-rotate-left", title: text("history_empty_title"), text: text("no_history") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 80,
+      lineNumber: 79,
       columnNumber: 19
     }) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
       /* @__PURE__ */ jsxDEV("div", { className: "sm-toolbar", children: [
@@ -107,7 +106,7 @@ const History = /* @__PURE__ */ __name((props) => {
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 83,
+            lineNumber: 82,
             columnNumber: 25
           }
         ),
@@ -115,38 +114,38 @@ const History = /* @__PURE__ */ __name((props) => {
           /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: [
             /* @__PURE__ */ jsxDEV("label", { htmlFor: "sm-from", className: "form-label", children: text("filter_date_from") }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 91,
+              lineNumber: 90,
               columnNumber: 33
             }),
             /* @__PURE__ */ jsxDEV("input", { type: "date", id: "sm-from", className: "form-control", value: list.state.from, onChange: (event) => list.set({ from: event.target.value }) }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 92,
+              lineNumber: 91,
               columnNumber: 33
             })
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 90,
+            lineNumber: 89,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: [
             /* @__PURE__ */ jsxDEV("label", { htmlFor: "sm-to", className: "form-label", children: text("filter_date_to") }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 95,
+              lineNumber: 94,
               columnNumber: 33
             }),
             /* @__PURE__ */ jsxDEV("input", { type: "date", id: "sm-to", className: "form-control", value: list.state.to, onChange: (event) => list.set({ to: event.target.value }) }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 96,
+              lineNumber: 95,
               columnNumber: 33
             })
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 94,
+            lineNumber: 93,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("div", { className: "sm-filter-title", children: text("filter_per_page") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 98,
+            lineNumber: 97,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV(
@@ -161,27 +160,18 @@ const History = /* @__PURE__ */ __name((props) => {
             false,
             {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 99,
+              lineNumber: 98,
               columnNumber: 29
             }
           )
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 89,
-          columnNumber: 25
-        }),
-        /* @__PURE__ */ jsxDEV("div", { className: "sm-toolbar-actions", children: /* @__PURE__ */ jsxDEV(IconButton, { large: true, icon: "pen-to-square", label: text("action_edit"), href: urls.edit }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 107,
-          columnNumber: 29
-        }) }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 106,
+          lineNumber: 88,
           columnNumber: 25
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 82,
+        lineNumber: 81,
         columnNumber: 21
       }),
       page.rows.length === 0 ? /* @__PURE__ */ jsxDEV(
@@ -193,13 +183,13 @@ const History = /* @__PURE__ */ __name((props) => {
           actions: /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: list.reset, children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: "xmark", gap: true }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 116,
+              lineNumber: 112,
               columnNumber: 111
             }),
             text("filter_clear")
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 116,
+            lineNumber: 112,
             columnNumber: 38
           })
         },
@@ -207,13 +197,13 @@ const History = /* @__PURE__ */ __name((props) => {
         false,
         {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 112,
+          lineNumber: 108,
           columnNumber: 27
         }
       ) : /* @__PURE__ */ jsxDEV("form", { action: urls.compare, method: "get", className: "servicemanager-history", children: [
         /* @__PURE__ */ jsxDEV("input", { type: "hidden", name: "id", value: props.schemaId }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 119,
+          lineNumber: 115,
           columnNumber: 29
         }),
         /* @__PURE__ */ jsxDEV("p", { className: "text-body-secondary small mb-2", children: [
@@ -222,41 +212,41 @@ const History = /* @__PURE__ */ __name((props) => {
           text("compare_hint")
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 120,
+          lineNumber: 116,
           columnNumber: 29
         }),
         /* @__PURE__ */ jsxDEV(VersionList, { rows: page.rows, chosen, onToggle: toggle, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 121,
+          lineNumber: 117,
           columnNumber: 29
         }),
-        /* @__PURE__ */ jsxDEV(CompareBar, { chosen, needed: TO_COMPARE, tooMany, onClear: clear, text }, void 0, false, {
+        chosen.size > 0 && /* @__PURE__ */ jsxDEV(CompareBar, { chosen, needed: TO_COMPARE, tooMany, onClear: clear, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 122,
-          columnNumber: 29
+          lineNumber: 118,
+          columnNumber: 49
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 118,
+        lineNumber: 114,
         columnNumber: 27
       }),
       /* @__PURE__ */ jsxDEV(Pagination, { page: page.page, perpage: list.state.perpage, total: page.total, onPage: (next) => list.set({ page: next }), text }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 125,
+        lineNumber: 121,
         columnNumber: 21
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 81,
+      lineNumber: 80,
       columnNumber: 19
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-    lineNumber: 71,
+    lineNumber: 70,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-    lineNumber: 70,
+    lineNumber: 69,
     columnNumber: 12
   });
 }, "History");

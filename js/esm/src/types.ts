@@ -110,6 +110,8 @@ export interface SchemaDetailProps {
         hasToken: boolean;
     };
     newToken: string | null;
+    /** The state of the web services of the site, shown at the end of the head as in the dashboard; none for a past version. */
+    wsStatus: WsStatus | null;
     functions: SchemaFunction[];
     resources: {user: Resource | null; role: Resource | null; service: Resource | null};
     requirements: {
@@ -158,7 +160,7 @@ export interface HistoryProps {
     schemaId: number;
     schemaName: string;
     currentVersion: string;
-    urls: {back: string; edit: string; compare: string; history: string};
+    urls: {back: string; compare: string; history: string};
     rows: HistoryRow[];
     perPageOptions: number[];
 }

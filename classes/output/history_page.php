@@ -81,7 +81,6 @@ class history_page implements react_component_renderable, \renderable {
             'currentVersion' => $this->schema->version,
             'urls' => [
                 'back' => $this->url('view.php', ['id' => $id]),
-                'edit' => $this->url('create.php', ['id' => $id]),
                 'compare' => $this->url('compare.php'),
                 'history' => $this->url('history.php', ['id' => $id]),
             ],

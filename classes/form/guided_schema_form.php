@@ -82,8 +82,7 @@ class guided_schema_form extends \moodleform {
             ['size' => 12, 'maxlength' => 50]
         );
         $mform->setType('version', PARAM_RAW_TRIMMED);
-        $mform->setDefault('version', '1.0.0');
-        $mform->addRule('version', null, 'required', null, 'client');
+        $mform->addHelpButton('version', 'guided_version', 'local_servicemanager');
 
         $mform->addElement('text', 'maintainer', get_string('schema_maintainer', 'local_servicemanager'), ['size' => 40]);
         $mform->setType('maintainer', PARAM_TEXT);

@@ -10,7 +10,7 @@ A service schema YAML file must contain the following sections:
 meta:
   id: "example.service"           # Required: Unique identifier (letters, numbers, dots only; max 50 chars)
   name: "Example Service"         # Required: Display name (must be unique across all schemas)
-  version: "1.0.0"               # Required: Version number (must increment on definition changes)
+  version: "1.0.0"               # Optional: set by the plugin when it is missing or already used
   maintainer: "Your Name"         # Optional: Maintainer info
   description: "Description"      # Optional: Service description
 
@@ -65,7 +65,7 @@ role:                             # Optional section: what the role of the schem
 |-------|:--------:|-------------|
 | `id` | ✅ | Unique identifier. Only letters, numbers, and dots (.) allowed. Max 50 characters. Example: `myapp.users` |
 | `name` | ✅ | Human-readable name for the service. Must be unique across all schemas. |
-| `version` | ✅ | Version string (semantic versioning recommended). Must be incremented when the definition (functions or capabilities) changes. Metadata-only edits (name, maintainer, description) do not require a version bump. |
+| `version` | ❌ | Version of the schema, such as `1.0.0`. A new schema without one starts at `1.0.0`. When the definition changes and the version is missing or not higher than every one the schema has had, it is saved with the highest one plus one in its last number (`1.0.0` becomes `1.0.1`). Changing only the name, the maintainer or the description keeps the version. |
 | `maintainer` | ❌ | Person or team responsible for the schema. |
 | `description` | ❌ | Brief description of the service's purpose. |
 
