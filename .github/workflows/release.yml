@@ -1,55 +1,130 @@
 name: Release on version bump
 
-# Creates a git tag and a GitHub release automatically whenever the
-# $plugin->release value in version.php changes on the main branch.
-# It only acts when a tag for that release does not already exist, so
-# re-running or unrelated edits to version.php are safe (idempotent).
+# Creates a git tag and a GitHub release automatically whenever version.php changes on `main` OR on any MOODLE_XXX_STABLE
+# branch and its $plugin->release has not been published yet. A stable branch backporting a fix has its own release line,
+# same as `main`, so it can publish one too.
+#
+# The latest release is always the one of `main`, whichever branch published last: a release from a MOODLE_XXX_STABLE
+# branch is created with --latest=false, and every run ends by marking the release that `main` declares as the latest one.
+#
+# The version of every line ends with the lowest Moodle version it supports, as a numeric string so trailing zeros are kept
+# ('2026101105.400' for $plugin->supported = [400, 502]), so lines never collide and a site that moves to a newer line always
+# sees a higher version. A release whose version does not follow that is refused before anything is created.
+#
+# It only acts when a tag for that release does not already exist, so re-running or unrelated edits to version.php are
+# safe (idempotent). It can also be started by hand from the Actions tab, for instance to mark the latest release again.
+#
+# This plugin has no other release surface: there is no package registry to publish to and no environment to deploy to, just
+# the zip attached to a GitHub Release (see README.md).
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'MOODLE_*_STABLE'
     paths:
       - version.php
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+# One release at a time, so which release is the latest is settled in a fixed order.
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
+      - name: Stop while version.php still has the template's placeholders
+        id: placeholder
+        run: |
+          # A repository made from the template carries PLUGINTYPE_PLUGINNAME and a version of 2000010100 until somebody
+          # fills version.php in. Its first push must not publish the 0.1.0 of the template as a release of the plugin.
+          if grep -q "PLUGINTYPE_PLUGINNAME" version.php; then
+            echo "value=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::version.php still has the template's placeholders, so nothing is released."
+          else
+            echo "value=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Read release info from version.php
+        if: steps.placeholder.outputs.value != 'true'
         id: ver
         run: |
-          release=$(grep -oP '\$plugin->release\s*=\s*'\''\K[^'\'']+' version.php)
-          version=$(grep -oP '\$plugin->version\s*=\s*\K[0-9]+' version.php)
-          if [ -z "$release" ]; then
-            echo "::error::Could not parse \$plugin->release from version.php"
+          read_field() { grep -oP "\\\$plugin->$1\\s*=\\s*\\K[^;]+" version.php | head -n 1 | tr -d " '\"\r"; }
+          release=$(read_field release)
+          version=$(read_field version)
+          line=$(grep -oP '\$plugin->supported\s*=\s*\[\K[^\]]+' version.php | tr ',' '\n' | tr -d ' \t\r' | grep -v '^$' | sort -n | head -n 1)
+          if [ -z "$release" ] || [ -z "$version" ]; then
+            echo "::error::Could not parse \$plugin->release and \$plugin->version from version.php"
+            exit 1
+          fi
+          branch="${GITHUB_REF_NAME}"
+          case "$branch" in
+            main|MOODLE_*_STABLE) ;;
+            *)
+              echo "::error::Release only from main or a MOODLE_XXX_STABLE branch, not from $branch."
+              exit 1
+              ;;
+          esac
+          if [ -z "$line" ]; then
+            echo "::error::Could not parse \$plugin->supported from version.php"
+            exit 1
+          fi
+          if ! echo "$version" | grep -qE "^[0-9]{10}\\.${line}\$"; then
+            echo "::error::\$plugin->version is $version; on $branch it must be YYYYMMDDXX.$line."
             exit 1
           fi
           echo "release=$release" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "tag=v$release" >> "$GITHUB_OUTPUT"
-          echo "Detected release v$release (version $version)"
+          echo "Detected release v$release (version $version) on $branch"
+
+      - name: Derive plugin name from version.php
+        if: steps.placeholder.outputs.value != 'true'
+        id: plugin
+        run: |
+          # The release zip's filename and the folder name it unpacks into both need the plugin's short name, not the git
+          # repository's name. Both are derived from $plugin->component (e.g. "local_servicemanager"), the same field Moodle
+          # itself uses to know where to install the plugin:
+          #   - component = the full value, used as the zip filename prefix.
+          #   - shortname = component with its "<type>_" prefix stripped ("servicemanager"), because a Moodle plugin zip must
+          #                 contain a single top-level folder matching the install path under the type folder.
+          component=$(grep -oP '\$plugin->component\s*=\s*'\''\K[^'\'']+' version.php || true)
+          if [ -z "$component" ]; then
+            component=$(basename "$(pwd)")
+            component="${component#moodle-}"
+            echo "::warning::\$plugin->component not found in version.php; falling back to directory-derived name '$component'. Add \$plugin->component to version.php."
+          fi
+          shortname="${component#*_}"
+          if [ "$shortname" = "$component" ]; then
+            shortname="$component"
+          fi
+          echo "component=$component" >> "$GITHUB_OUTPUT"
+          echo "shortname=$shortname" >> "$GITHUB_OUTPUT"
+          echo "Derived component='$component' shortname='$shortname'"
 
       - name: Check whether the tag already exists
+        if: steps.placeholder.outputs.value != 'true'
         id: check
         run: |
           if git ls-remote --exit-code --tags origin "refs/tags/${{ steps.ver.outputs.tag }}" >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
-            echo "Tag ${{ steps.ver.outputs.tag }} already exists — nothing to do."
+            echo "Tag ${{ steps.ver.outputs.tag }} already exists — nothing to publish."
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Extract release notes from CHANGELOG.md
-        if: steps.check.outputs.exists == 'false'
-        id: notes
+        if: steps.placeholder.outputs.value != 'true' && steps.check.outputs.exists == 'false'
         run: |
           release='${{ steps.ver.outputs.release }}'
           awk -v ver="$release" '
@@ -64,23 +139,44 @@ jobs:
           cat release_notes.md
 
       - name: Build plugin release zip
-        if: steps.check.outputs.exists == 'false'
+        if: steps.placeholder.outputs.value != 'true' && steps.check.outputs.exists == 'false'
         id: zip
         run: |
-          # Package the plugin into a zip file
-          zipname="local_servicemanager-${{ steps.ver.outputs.tag }}.zip"
-          git archive --format=zip --prefix=servicemanager/ -o "$zipname" "${{ github.sha }}"
+          zipname="${{ steps.plugin.outputs.component }}-${{ steps.ver.outputs.tag }}.zip"
+          git archive --format=zip --prefix="${{ steps.plugin.outputs.shortname }}/" -o "$zipname" "${{ github.sha }}"
           echo "zipname=$zipname" >> "$GITHUB_OUTPUT"
           echo "----- contents of $zipname -----"
           unzip -l "$zipname"
 
       - name: Create tag and release
-        if: steps.check.outputs.exists == 'false'
+        if: steps.placeholder.outputs.value != 'true' && steps.check.outputs.exists == 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Only a release of main may take the "latest" badge when it is created.
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then latest="--latest"; else latest="--latest=false"; fi
           gh release create "${{ steps.ver.outputs.tag }}" \
             "${{ steps.zip.outputs.zipname }}" \
             --target "${{ github.sha }}" \
             --title "${{ steps.ver.outputs.tag }}" \
-            --notes-file release_notes.md
+            --notes-file release_notes.md \
+            "$latest"
+
+      - name: Keep the latest release on main
+        if: steps.placeholder.outputs.value != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Whatever branch published last, the release that main declares is the latest one.
+          git fetch --no-tags origin main
+          main_release=$(git show origin/main:version.php | grep -oP "\\\$plugin->release\\s*=\\s*\\K[^;]+" | head -n 1 | tr -d " '\"\r")
+          if [ -z "$main_release" ]; then
+            echo "main has no \$plugin->release; nothing to mark."
+            exit 0
+          fi
+          if gh release view "v$main_release" >/dev/null 2>&1; then
+            gh release edit "v$main_release" --latest
+            echo "v$main_release is the latest release."
+          else
+            echo "main has not published v$main_release yet; the latest release is left as it is."
+          fi
