@@ -1,4 +1,7 @@
 import s from"../common/Chips";import i from"../common/FilterMenu";import p from"../common/SearchBox";import{jsx as o,jsxs as t}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The tools to find a schema: a search that filters as the person types, and the dates and the size of the page in a menu. The
  * status is chosen in the summary above, so it is not asked for twice.
  *

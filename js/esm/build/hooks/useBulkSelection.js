@@ -1,4 +1,7 @@
 import{useCallback as s,useMemo as h,useState as d}from"react";import{bulkActions as g}from"../lib/selection";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The schemas chosen in the list, and what can be done with them together.
  *
  * @module     local_servicemanager/hooks/useBulkSelection

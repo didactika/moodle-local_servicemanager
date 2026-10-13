@@ -1,4 +1,7 @@
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What the schemas chosen in the dashboard allow doing to them together.
  *
  * @module     local_servicemanager/lib/selection

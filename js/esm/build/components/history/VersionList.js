@@ -1,4 +1,7 @@
 import{useState as y}from"react";import{getVersionYaml as g}from"../../services/api";import b from"../common/CopyButton";import l from"../common/Icon";import m from"../common/IconButton";import{jsx as a,jsxs as n}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The versions of a schema, one row each: who made it and when, what the change was for and what can be done with it. The YAML of a
  * version opens under its row when it is asked for.
  *

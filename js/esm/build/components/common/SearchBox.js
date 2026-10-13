@@ -1,4 +1,7 @@
 import r from"./Icon";import{jsx as a,jsxs as i}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A search field that filters as the person types, with a way to clear it.
  *
  * @module     local_servicemanager/components/common/SearchBox

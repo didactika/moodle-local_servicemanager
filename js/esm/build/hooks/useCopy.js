@@ -1,4 +1,7 @@
 import{useCallback as r,useEffect as a,useRef as d,useState as l}from"react";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * Copying a text to the clipboard, and saying so for a moment.
  *
  * @module     local_servicemanager/hooks/useCopy

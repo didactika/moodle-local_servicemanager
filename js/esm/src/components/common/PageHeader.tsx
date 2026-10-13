@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The head of a page: its title, a line that says what it is for and the actions that belong to the whole page.
  *
  * @module     local_servicemanager/components/common/PageHeader

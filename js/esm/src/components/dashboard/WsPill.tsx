@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * Whether the web services of the site work, in a line: the state, the protocols that are on and where to change them.
  *
  * @module     local_servicemanager/components/dashboard/WsPill

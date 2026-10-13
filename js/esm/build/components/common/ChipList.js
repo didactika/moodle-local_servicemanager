@@ -1,4 +1,7 @@
 import{useMemo as N,useState as p}from"react";import C from"./Icon";import L from"./Modal";import _ from"./SearchBox";import{Fragment as m,jsx as t,jsxs as s}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A list of chips that shows the first few and, when there are more, a button that opens all of them in a dialogue, as rows that scroll,
  * with a search for the ones that are many.
  *

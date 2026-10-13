@@ -1,4 +1,7 @@
 import i from"../common/IconButton";import c from"../common/Panel";import{jsx as e,jsxs as o}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What a schema says about itself: its description, who maintains it, when it was made and changed and whether it is on.
  *
  * @module     local_servicemanager/components/schema/DetailsPanel

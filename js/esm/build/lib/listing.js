@@ -1,4 +1,7 @@
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What a list shows for what the person asked: the rows that match a search, a status and a range of dates, and the page of them.
  *
  * The lists are filtered in the page, so nothing here touches the server, the DOM or React.

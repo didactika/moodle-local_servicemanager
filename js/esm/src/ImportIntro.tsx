@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What a person reads above the form that imports schemas: what files it takes and where the format is explained.
  *
  * Mounted by core/react_autoinit from the data-react-component that the page writes.

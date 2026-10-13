@@ -1,4 +1,7 @@
 import b from"../common/ChipList";import N from"../common/CopyButton";import p from"../common/Icon";import w from"../common/IconButton";import y from"../common/Panel";import{Fragment as t,jsx as e,jsxs as n}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What the consumer of a schema gets and what it needs: the token, the files it may move, the plugins it requires and the extra capabilities.
  *
  * @module     local_servicemanager/components/schema/AccessPanel

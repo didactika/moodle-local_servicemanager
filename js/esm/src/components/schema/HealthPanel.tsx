@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The results of the scheduled health checks of a schema, which can be narrowed to one status.
  *
  * @module     local_servicemanager/components/schema/HealthPanel

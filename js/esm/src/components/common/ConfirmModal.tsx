@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A question that must be answered before something that cannot be undone, in a dialog of the browser, which takes the focus,
  * closes with Escape and is drawn over the page with the style of Bootstrap.
  *

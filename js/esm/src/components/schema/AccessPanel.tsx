@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What the consumer of a schema gets and what it needs: the token, the files it may move, the plugins it requires and the extra capabilities.
  *
  * @module     local_servicemanager/components/schema/AccessPanel

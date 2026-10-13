@@ -1,4 +1,7 @@
 import r from"./Icon";import{jsx as o,jsxs as t}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The button that goes back to the page before.
  *
  * @module     local_servicemanager/components/common/BackLink

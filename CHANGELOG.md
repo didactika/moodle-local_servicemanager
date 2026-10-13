@@ -24,6 +24,8 @@ First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is o
 
 ### Changed
 
+- Moodle Marketplace review: the nested element selectors and the classes of Moodle inside the styles are written with an explicit parent (`& .btn`), the email of the health report carries its styles on its elements and not in a `<style>` block, and the places that read the database inside a loop (the cleanup of old versions, the recipients of the notification, the users that a schema authorises, the capabilities of the functions and the schemas of an import) read it once.
+- The source of every component carries the Moodle banner in the first comment, so the built files have it.
 - Rolling back to a version asks in a window and changes the history where it is, without leaving the page, through the new function `local_servicemanager_rollback_schema`. A row that cannot be rolled back keeps the place of its button, so the buttons of the same kind are always in the same place.
 - The comparison goes through its changes from a bar at the bottom with the arrows, which change it is and where; what changed is a card that folds, with each change as a small label.
 - The search box and the button of the filters are pills; the search has one cross, not two.
@@ -32,7 +34,7 @@ First release of the Moodle 5.3 line, on `main`. The Moodle 4.0 to 5.2 line is o
 - The interface is written in React and TypeScript (ESM) and follows the colour modes of Moodle; colours come from Bootstrap variables, so themes can override them.
 - Search filters as you type and the filters are asked for once.
 - Errors and notifications are shown as dismissible messages next to what failed.
-- Requires Moodle 5.3; version `2026101403.503`.
+- Requires Moodle 5.3; version `2026101404.503`.
 
 ### Removed
 

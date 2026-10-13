@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The dashboard: the schemas of the site, found by typing, filtered by status and acted on one by one or together.
  *
  * It gets every schema at once and filters them in the page, so searching never waits for the server and never reloads.

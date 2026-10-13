@@ -1,4 +1,7 @@
 import{useEffect as y}from"react";import{addToast as s}from"../../engine/toast";import{useCopy as f}from"../../hooks/useCopy";import i from"./Icon";import{jsx as e,jsxs as a}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The button that copies a text to the clipboard and says that it did, in the toast of Moodle.
  *
  * @module     local_servicemanager/components/common/CopyButton

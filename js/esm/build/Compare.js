@@ -1,4 +1,7 @@
 import{useMemo as w,useState as m}from"react";import E from"./components/common/BackLink";import S from"./components/common/ErrorBoundary";import p from"./components/common/Icon";import B from"./components/common/PageHeader";import P from"./components/compare/ChangeSummary";import V from"./components/compare/DiffTable";import{createText as D}from"./engine/text";import I from"./components/compare/ChangeNavigator";import{changeRuns as U}from"./lib/diff";import{Fragment as y,jsx as e,jsxs as t}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * Two versions of a schema: what changed in terms of the schema, and the lines of both with the changes marked.
  *
  * Mounted by core/react_autoinit from the data-react-component that the page writes.

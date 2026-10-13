@@ -1,4 +1,7 @@
 import{useMemo as f}from"react";import v from"./components/common/ErrorBoundary";import i from"./components/common/Icon";import b from"./components/common/PageHeader";import n from"./components/common/StatTile";import{createText as y}from"./engine/text";import{Fragment as w,jsx as a,jsxs as t}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What an import did, schema by schema, with the reason for each one that failed.
  *
  * Mounted by core/react_autoinit from the data-react-component that the page writes.

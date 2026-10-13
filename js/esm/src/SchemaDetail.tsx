@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * One schema, or one past version of it: what it declares, what the plugin created for it and how healthy it is.
  *
  * The actions of the schema are one group of buttons in the head of the page, and the rest of the page is made of sections that

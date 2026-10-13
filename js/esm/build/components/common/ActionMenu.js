@@ -1,4 +1,7 @@
 import{useDropdown as h}from"../../hooks/useDropdown";import r from"./Icon";import{toneClass as w}from"./IconButton";import{Fragment as y,jsx as n,jsxs as t}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A menu of actions that opens from three dots, which is how the less frequent actions of a row or of a page are kept at hand.
  *
  * It can sit at the end of a group of buttons as one more button of the group.

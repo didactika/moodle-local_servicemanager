@@ -1,4 +1,7 @@
 import{useMemo as u,useState as N}from"react";import P from"./components/dashboard/HealthSummary";import M from"./components/dashboard/SchemaTable";import C from"./components/dashboard/SelectionBar";import D from"./components/dashboard/Toolbar";import L from"./components/dashboard/WsPill";import z from"./components/common/ConfirmModal";import y from"./components/common/EmptyState";import T from"./components/common/ErrorBoundary";import d from"./components/common/Icon";import E from"./components/common/PageHeader";import I from"./components/common/Pagination";import q from"./components/common/ActionMenu";import h from"./components/common/IconButton";import{createText as H}from"./engine/text";import{postForm as R}from"./engine/post";import{useBulkSelection as F}from"./hooks/useBulkSelection";import{useListState as O}from"./hooks/useListState";import{countBy as W,matches as G,paginate as J}from"./lib/listing";import{Fragment as k,jsx as e,jsxs as r}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The dashboard: the schemas of the site, found by typing, filtered by status and acted on one by one or together.
  *
  * It gets every schema at once and filters them in the page, so searching never waits for the server and never reloads.

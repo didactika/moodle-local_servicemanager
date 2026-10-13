@@ -1,4 +1,7 @@
 import{useCallback as y,useMemo as _,useState as i}from"react";import P from"./components/common/BackLink";import v from"./components/common/EmptyState";import L from"./components/common/ErrorBoundary";import T from"./components/common/Chips";import E from"./components/common/FilterMenu";import F from"./components/common/ConfirmModal";import V from"./components/common/Icon";import I from"./components/common/PageHeader";import O from"./components/common/Pagination";import q from"./components/common/SearchBox";import z from"./components/history/CompareBar";import A from"./components/history/VersionList";import{createText as D}from"./engine/text";import{addToast as k}from"./engine/toast";import{useListState as G}from"./hooks/useListState";import{matches as J,paginate as K}from"./lib/listing";import{rollbackSchema as Q}from"./services/api";import{Fragment as x,jsx as r,jsxs as s}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The versions a schema has had, to find by typing, read, compare two of them and roll back to one.
  *
  * It gets the versions without their YAML and filters them in the page, so searching never waits for the server.

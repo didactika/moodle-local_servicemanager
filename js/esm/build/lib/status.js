@@ -1,4 +1,7 @@
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * How a status is shown: the colour of its badge and its icon.
  *
  * @module     local_servicemanager/lib/status

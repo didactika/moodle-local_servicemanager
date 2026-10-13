@@ -1,4 +1,7 @@
 import o from"./Icon";import{jsx as s,jsxs as n}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A choice of one among a few, drawn as pills that take the whole width of their row; the one that is chosen is tinted and has a check.
  *
  * @module     local_servicemanager/components/common/Chips

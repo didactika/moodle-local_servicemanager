@@ -1,4 +1,7 @@
 import r from"./Icon";import{jsx as e,jsxs as a}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A section of a page: a card with a title, an icon, how many things it holds and, when it has them, its own actions.
  *
  * Every section of every page is one, so they look the same.

@@ -1,4 +1,7 @@
 import{Component as n}from"react";import a from"./Icon";import{jsx as e,jsxs as t}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * Catches an error of the page, so a mistake in one part leaves a message with a way out instead of a blank page.
  *
  * @module     local_servicemanager/components/common/ErrorBoundary

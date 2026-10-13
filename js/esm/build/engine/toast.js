@@ -1,4 +1,7 @@
 import{requireAsync as s}from"@moodle/lms/core/amd";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * Typed adapter for the toasts of Moodle, which have no native ESM module yet.
  *
  * @module     local_servicemanager/engine/toast

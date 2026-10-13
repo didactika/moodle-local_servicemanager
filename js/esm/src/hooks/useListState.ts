@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What the person asked of a list, kept in the address of the page so that a refresh or a shared link shows the same list.
  *
  * Changing the state filters the list at once and never reloads the page; the address follows a moment later.

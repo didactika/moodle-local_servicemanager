@@ -1,4 +1,7 @@
 import n from"../common/CopyButton";import l from"../common/Icon";import{jsx as e,jsxs as o}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The token that was just generated, which is shown once.
  *
  * @module     local_servicemanager/components/schema/TokenAlert

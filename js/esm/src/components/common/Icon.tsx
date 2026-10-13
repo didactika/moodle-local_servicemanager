@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * An icon of Font Awesome, which Moodle already loads, so it takes the colour and the size of the text around it.
  *
  * @module     local_servicemanager/components/common/Icon

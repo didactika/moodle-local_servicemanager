@@ -1,4 +1,7 @@
 import{useEffect as m,useRef as f}from"react";import g from"./Icon";import{jsx as o,jsxs as s}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A window over the page, in a dialog of the browser: it takes the focus, closes with Escape or with its button and returns the focus to
  * where the person was.
  *

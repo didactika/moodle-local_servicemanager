@@ -1,4 +1,7 @@
 import{segments as y}from"../../lib/diff";import p from"../common/Icon";import{jsx as e,jsxs as a}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The two versions line by line, side by side or one over the other, with the numbers of the lines and what changed marked.
  *
  * Runs of lines that did not change are folded, and a person opens them when they want them.

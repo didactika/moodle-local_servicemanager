@@ -7,7 +7,7 @@
         background-color: color-mix(in srgb, var(--bs-success) 18%, var(--bs-body-bg));
         color: var(--bs-body-color);
 
-        input {
+        & input {
             font-size: 0.95rem;
         }
     }
@@ -17,7 +17,7 @@
         max-height: 21.875rem;
         overflow-y: auto;
 
-        thead {
+        & thead {
             position: sticky;
             top: 0;
             z-index: 1;
@@ -94,7 +94,7 @@
         grid-column: 1 / -1;
     }
 
-    dt.sm-fact-wide {
+    & dt.sm-fact-wide {
         margin-bottom: -0.2rem;
     }
 
@@ -203,7 +203,7 @@
             min-width: 0;
         }
 
-        dt {
+        & dt {
             margin-bottom: 0.15rem;
             color: var(--bs-secondary-color);
             font-size: 0.75rem;
@@ -212,7 +212,7 @@
             text-transform: uppercase;
         }
 
-        dd {
+        & dd {
             margin: 0;
         }
     }
@@ -293,7 +293,7 @@
     border-radius: 0.75rem;
     overflow: hidden;
 
-    .list-group-item {
+    & .list-group-item {
         padding: 0.7rem 1rem;
         border-width: 0 0 1px;
         border-color: var(--bs-border-color);

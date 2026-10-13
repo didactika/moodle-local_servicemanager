@@ -1,4 +1,7 @@
 import{useMemo as s}from"react";import n from"./components/common/BackLink";import l from"./components/common/CopyButton";import c from"./components/common/ErrorBoundary";import i from"./components/common/Icon";import m from"./components/common/PageHeader";import d from"./components/documentation/FieldTable";import{createText as _}from"./engine/text";import{jsx as e,jsxs as r}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The reference of the YAML format of a schema.
  *
  * Mounted by core/react_autoinit from the data-react-component that the page writes.

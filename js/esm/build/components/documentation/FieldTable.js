@@ -1,4 +1,7 @@
 import{jsx as e,jsxs as d}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A table of the fields of one part of a schema, with whether each is required and what it is for.
  *
  * @module     local_servicemanager/components/documentation/FieldTable

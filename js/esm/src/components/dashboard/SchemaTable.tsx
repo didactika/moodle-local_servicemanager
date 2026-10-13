@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The list of schemas of the page: what each is, how it is, when it changed and what can be done with it.
  *
  * The actions of a row are one group of buttons: look at it, edit it and, in the caret at the end of the group, the rest.

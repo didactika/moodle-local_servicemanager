@@ -1,4 +1,7 @@
 import{useCallback as d,useEffect as u,useRef as a,useState as f}from"react";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * A menu that opens and closes: with its button, with Escape and with a click anywhere else.
  *
  * @module     local_servicemanager/hooks/useDropdown

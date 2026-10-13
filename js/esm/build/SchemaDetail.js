@@ -1,4 +1,7 @@
 import{useMemo as B,useState as o}from"react";import L from"./components/common/BackLink";import M from"./components/common/ConfirmModal";import H from"./components/common/ErrorBoundary";import w from"./components/common/Icon";import C from"./components/common/PageHeader";import D from"./components/common/StatusBadge";import E from"./components/dashboard/WsPill";import R from"./components/schema/AccessPanel";import A from"./components/schema/DetailsPanel";import F from"./components/schema/FunctionsPanel";import I from"./components/schema/HealthPanel";import W from"./components/schema/ResourcesPanel";import q from"./components/schema/RolePanel";import z from"./components/schema/TokenAlert";import{createText as G}from"./engine/text";import{addToast as h}from"./engine/toast";import{regenerateToken as J,setSchemaEnabled as K}from"./services/api";import{Fragment as Q,jsx as t,jsxs as s}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * One schema, or one past version of it: what it declares, what the plugin created for it and how healthy it is.
  *
  * The actions of the schema are one group of buttons in the head of the page, and the rest of the page is made of sections that

@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * How many schemas are healthy, in doubt or failing, as one bar with a legend. Pressing a part of the legend shows only those schemas, and
  * pressing it again shows them all, so the same choice is not offered twice.
  *

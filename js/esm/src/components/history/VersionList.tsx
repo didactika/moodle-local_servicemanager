@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The versions of a schema, one row each: who made it and when, what the change was for and what can be done with it. The YAML of a
  * version opens under its row when it is asked for.
  *

@@ -1,4 +1,7 @@
 import o from"../common/Icon";import c from"../common/Panel";import{jsx as r,jsxs as a}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The user, the role and the service that the plugin created for a schema, each linked to where Moodle manages it.
  *
  * @module     local_servicemanager/components/schema/ResourcesPanel

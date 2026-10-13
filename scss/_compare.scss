@@ -150,7 +150,7 @@
             text-align: center;
             line-height: 1.25;
 
-            small {
+            & small {
                 color: var(--bs-secondary-color);
                 font-size: 0.75rem;
             }
@@ -161,13 +161,13 @@
         box-shadow: var(--bs-box-shadow-sm);
     }
 
-    .comparison-table {
+    & .comparison-table {
         --sm-removed: color-mix(in srgb, var(--bs-danger) 24%, var(--bs-body-bg));
         --sm-added: color-mix(in srgb, var(--bs-success) 24%, var(--bs-body-bg));
         --sm-changed: color-mix(in srgb, var(--bs-warning) 24%, var(--bs-body-bg));
         --sm-empty: var(--bs-tertiary-bg);
 
-        td {
+        & td {
             vertical-align: top;
         }
 

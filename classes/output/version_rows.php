@@ -65,7 +65,10 @@ class version_rows {
                 // A version that is the one the schema has now cannot be rolled back to.
                 'canrollback' => !$current,
                 'text' => $record->version . ' ' . $name . ' ' . $reason,
-                'viewurl' => (new \moodle_url('/local/servicemanager/pages/view_history.php', ['historyid' => $record->id]))->out(false),
+                'viewurl' => (new \moodle_url(
+                    '/local/servicemanager/pages/view_history.php',
+                    ['historyid' => $record->id]
+                ))->out(false),
             ];
         }
         return $rows;

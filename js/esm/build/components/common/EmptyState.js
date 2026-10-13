@@ -1,4 +1,7 @@
 import o from"./Icon";import{jsx as t,jsxs as d}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What a list shows when it has nothing to list: what happened and what the person can do about it.
  *
  * @module     local_servicemanager/components/common/EmptyState

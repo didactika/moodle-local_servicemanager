@@ -1,4 +1,7 @@
 import c from"../common/ChipList";import m from"../common/Panel";import{jsx as s,jsxs as i}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What the role of the schema may do: where it can be assigned, which roles it may assign, override, switch to and see, and which
  * capabilities it is kept from or forbidden.
  *

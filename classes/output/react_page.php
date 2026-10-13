@@ -78,8 +78,8 @@ class react_page {
                     str_repeat($round, 5) . '</span></div>' . $line('60%') . $facts);
                 $functions = $card($line('8rem', 'title') . str_repeat($fnrow, 2));
                 $resources = $card($line('12rem', 'title') . str_repeat($fnrow, 3));
-                $access = $card($line('14rem', 'title') . str_repeat('<div class="sm-skeleton-row">' . $line('5rem') . $line('30%') .
-                    $line('2rem') . '</div>', 3));
+                $accessrow = '<div class="sm-skeleton-row">' . $line('5rem') . $line('30%') . $line('2rem') . '</div>';
+                $access = $card($line('14rem', 'title') . str_repeat($accessrow, 3));
                 $role = $card($line('6rem', 'title') . str_repeat($line('35%') . $line('90%'), 3));
                 $head = '<div class="sm-skeleton-head sm-skeleton-between"><div>' . $line('14rem', 'title') . $line('7rem') .
                     '</div><span class="sm-skeleton-actions">' . $line('22rem', 'tall') . '</span></div>';

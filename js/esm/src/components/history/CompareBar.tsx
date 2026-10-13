@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * What the person has chosen to compare and the button that compares it. It floats at the bottom of the screen, as the bar of the
  * schemas of the dashboard does, so it is at hand however long the list is.
  *

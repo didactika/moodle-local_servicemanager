@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The button that opens the less used filters of a list, such as the dates and the size of the page.
  *
  * What is chosen in it applies at once, so there is nothing to confirm; it only has a way to put everything back.

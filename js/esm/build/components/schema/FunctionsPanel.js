@@ -1,4 +1,7 @@
 import{useMemo as h,useState as d}from"react";import o from"../common/Icon";import y from"../common/Modal";import f from"../common/Panel";import N from"../common/SearchBox";import{Fragment as u,jsx as s,jsxs as i}from"react/jsx-runtime";/**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The web service functions that a schema declares: what each does, whether it reads or writes, what it asks of whoever calls it
  * and whether this Moodle has it. The capabilities of a function open in a window.
  *

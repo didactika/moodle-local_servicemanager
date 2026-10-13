@@ -1,7 +1,7 @@
-// This file is part of Moodle - https://moodle.org/
-// Moodle is free software under the GNU General Public License, version 3 or later.
-
 /**
+ * This file is part of Moodle - https://moodle.org/
+ * Moodle is free software under the GNU General Public License, version 3 or later.
+ *
  * The button that copies a text to the clipboard and says that it did, in the toast of Moodle.
  *
  * @module     local_servicemanager/components/common/CopyButton

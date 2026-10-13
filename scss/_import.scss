@@ -1,7 +1,7 @@
 // What an import did.
 
 .servicemanager-import-result {
-    .list-group-item {
+    & .list-group-item {
         background-color: var(--bs-body-bg);
     }
 }
