@@ -23,11 +23,25 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import ModalFactory from 'core/modal_factory';
 import ModalEvents from 'core/modal_events';
 import ModalSaveCancel from 'core/modal_save_cancel';
 import ModalCancel from 'core/modal_cancel';
 import {get_string as getString} from 'core/str';
+
+/**
+ * Open a modal through the factory, which the releases before 4.3 need and Moodle 5.2 no longer has, so it is loaded only here.
+ *
+ * @param {String} type Name of its type in the factory.
+ * @param {Object} config Title and body.
+ * @returns {Promise} Resolves with the modal, which is shown.
+ */
+const openWithFactory = (type, config) => import('core/modal_factory').then((module) => {
+    const factory = module.default || module;
+    return factory.create({type: factory.types[type], ...config, removeOnClose: true});
+}).then((modal) => {
+    modal.show();
+    return modal;
+});
 
 /**
  * Open a modal.
@@ -40,10 +54,7 @@ import {get_string as getString} from 'core/str';
 const open = (ModalClass, type, config) => {
     const made = typeof ModalClass.create === 'function'
         ? ModalClass.create({...config, show: true, removeOnClose: true})
-        : ModalFactory.create({type: ModalFactory.types[type], ...config, removeOnClose: true}).then((modal) => {
-            modal.show();
-            return modal;
-        });
+        : openWithFactory(type, config);
     // A long body scrolls inside the dialogue, with its head and its foot in place.
     return made.then((modal) => {
         const dialogue = modal.getRoot()[0].querySelector('.modal-dialog');
