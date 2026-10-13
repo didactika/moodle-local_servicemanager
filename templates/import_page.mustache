@@ -1,42 +1,47 @@
 {{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
     @template local_servicemanager/import_page
 
-    Import schemas page: intro text and the embedded import form.
+    What the person reads above the form that imports schemas.
 
     Context variables required for this template:
-    * backurl - URL back to the dashboard
-    * docurl - URL to the documentation page
-    * formhtml - Pre-rendered import form HTML
+    * backurl - Where Back leads
+    * documentationurl - The reference of the YAML format
 
     Example context (json):
     {
-        "backurl": "https://example.com/local/servicemanager/pages/dashboard.php",
-        "docurl": "https://example.com/local/servicemanager/pages/documentation.php",
-        "formhtml": "<p>Import form.</p>"
+        "backurl": "#",
+        "documentationurl": "#"
     }
 }}
-<div class="servicemanager-import-page">
-    <div class="mb-4">
-        <a href="{{backurl}}" class="btn btn-secondary">
-            <i class="fa fa-arrow-left mr-2"></i>{{#str}}back, local_servicemanager{{/str}}
-        </a>
+<div class="servicemanager-import-page{{#legacyicons}} sm-fa4{{/legacyicons}}">
+    <div class="sm-block">
+        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
     </div>
-
     <div class="alert alert-info">
-        <h5><i class="fa fa-info-circle mr-2"></i>{{#str}}import_info_title, local_servicemanager{{/str}}</h5>
+        <h5><i class="fa-solid fa-circle-info sm-icon-gap" aria-hidden="true"></i>{{#str}}import_info_title, local_servicemanager{{/str}}</h5>
         <p>{{#str}}import_info_text, local_servicemanager{{/str}}</p>
         <ul>
             <li>{{#str}}import_info_yaml, local_servicemanager{{/str}}</li>
             <li>{{#str}}import_info_zip, local_servicemanager{{/str}}</li>
         </ul>
-        <p>
-            <a href="{{docurl}}" class="text-info font-weight-bold">
-                <i class="fa fa-book mr-1"></i>{{#str}}view_documentation, local_servicemanager{{/str}}
-            </a>
+        <p class="sm-flush">
+            <a href="{{documentationurl}}" class="alert-link sm-strong"><i class="fa-solid fa-book sm-icon-gap" aria-hidden="true"></i>{{#str}}view_documentation, local_servicemanager{{/str}}</a>
         </p>
-    </div>
-
-    <div class="import-form-container">
-        {{{formhtml}}}
     </div>
 </div>

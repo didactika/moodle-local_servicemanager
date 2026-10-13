@@ -85,6 +85,28 @@ class history_manager {
     }
 
     /**
+     * The versions of a schema as a list, without their YAML, which is the heavy part of each record and is asked for when one is
+     * opened.
+     *
+     * @param int $schemaid Schema ID.
+     * @param int $limit Maximum number of records.
+     * @return array The versions, newest first, with the fields of the person who made each.
+     */
+    public function list_versions(int $schemaid, int $limit = 500): array {
+        global $DB;
+
+        $sql = "SELECT h.id, h.schemaid, h.version, h.change_reason, h.changedby, h.timecreated,
+                       u.firstname, u.lastname, u.middlename, u.alternatename,
+                       u.firstnamephonetic, u.lastnamephonetic, u.picture, u.email, u.imagealt
+                FROM {" . self::TABLE . "} h
+                JOIN {user} u ON u.id = h.changedby
+                WHERE h.schemaid = :schemaid
+                ORDER BY h.timecreated DESC, h.id DESC";
+
+        return $DB->get_records_sql($sql, ['schemaid' => $schemaid], 0, $limit);
+    }
+
+    /**
      * Get a specific version record.
      *
      * @param int $historyid History record ID.

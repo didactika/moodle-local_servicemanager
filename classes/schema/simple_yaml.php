@@ -306,11 +306,27 @@ class simple_yaml {
 
             $endquote = strrpos($value, $quote);
             if ($endquote > 0) {
-                return substr($value, 1, $endquote - 1);
+                return $this->unescape(substr($value, 1, $endquote - 1), $quote);
             }
         }
 
         return null;
+    }
+
+    /**
+     * The text of a quoted string with the escapes of YAML resolved, as the yaml extension reads it.
+     *
+     * A double-quoted string escapes a quote and a backslash with a backslash; a single-quoted one writes a quote twice.
+     *
+     * @param string $text The text between the quotes.
+     * @param string $quote The quote that surrounds it.
+     * @return string
+     */
+    protected function unescape(string $text, string $quote): string {
+        if ($quote === "'") {
+            return str_replace("''", "'", $text);
+        }
+        return preg_replace_callback('/\\\\(["\\\\])/', fn($match) => $match[1], $text);
     }
 
     /**

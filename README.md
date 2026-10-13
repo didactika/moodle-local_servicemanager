@@ -4,7 +4,7 @@ A Moodle local plugin for managing web service integrations from declarative YAM
 
 Web Service Manager lets administrators define a complete Moodle web service setup in one version-controlled file. For each schema, the plugin provisions the service user, role, capabilities, external service, authorized functions, and token, then keeps those resources synchronized as the schema changes.
 
-[![Moodle Plugin CI](https://img.shields.io/badge/Moodle-4.5+-blue.svg)](https://moodle.org)
+[![Moodle](https://img.shields.io/badge/Moodle-4.0%20to%205.2-blue.svg)](https://moodle.org)
 [![License](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Contents
@@ -78,7 +78,12 @@ The plugin keeps all Moodle resources in sync with the schema throughout its lif
 | **Health Monitoring** | Scheduled health checks with email notifications |
 | **Token Management** | Secure token generation, display, and regeneration |
 | **Multi-language** | English, Spanish, Portuguese, Italian, French |
-| **In-Browser Editor** | Edit schemas directly in Moodle |
+| **Guided Form** | Create a schema by filling in fields, with suggestions for functions, plugins, users and capabilities as you type |
+| **In-Browser Editor** | Edit schemas directly in Moodle, or paste YAML |
+| **Roles** | Say which roles the service role may assign, override, switch to and see, and where it can be assigned |
+| **Dashboard** | Health summary, active protocols, search that filters as you type, and bulk actions in a floating bar |
+| **Comparator** | Side by side or unified differences between two versions, with a summary of what changed |
+| **Theme friendly** | Uses the colours of Bootstrap, so the theme of the site changes it too |
 | **Validation** | Real-time syntax and function validation |
 | **Capability Calculation** | Automatic capability assignment from functions |
 | **Versioning** | Full history tracking with rollback and diff view |
@@ -87,8 +92,8 @@ The plugin keeps all Moodle resources in sync with the schema throughout its lif
 
 | Requirement | Version |
 |-------------|---------|
-| Moodle | 4.5 or later |
-| PHP | 8.1 or later |
+| Moodle | 4.0 to 5.2 on this branch; 5.3 on `main` (see Branches and versions) |
+| PHP | 7.4 or later (the one that your Moodle supports) |
 | PHP YAML Extension | Recommended (fallback parser included) |
 
 ## Installation
@@ -107,6 +112,20 @@ cd /path/to/moodle/local
 git clone https://github.com/didactika/moodle-local_servicemanager.git servicemanager
 ```
 
+### Branches and versions
+
+| Branch | Moodle | Interface |
+|--------|--------|-----------|
+| `main` | 5.3 | React and TypeScript (ESM) |
+| `MOODLE_400_STABLE` | 4.0 to 5.2 | AMD modules and Mustache templates |
+
+Both branches offer the same functions. Check out the one that matches your Moodle.
+
+## Documentation
+
+The user manual, with screenshots, is in the **[wiki](https://github.com/didactika/moodle-local_servicemanager/wiki)**.
+The reference of the YAML format is in [docs/schema_reference.md](docs/schema_reference.md) and, inside Moodle, in the **Documentation** menu of the dashboard.
+
 After installation, visit **Site Administration** to complete the setup.
 
 ## Usage
@@ -117,10 +136,16 @@ Navigate to: **Site Administration → Server → Service Manager → Dashboard*
 
 ### Creating a Schema
 
-1. Click **"Import Schemas"**
-2. Upload a YAML file or download the example by going to **View Documentation**
-3. Check **"Generate token automatically"** if needed
-4. Click **"Upload"**
+1. Click **New schema** (the plus button).
+2. Fill in the **Guided form**, or switch to **YAML editor** and paste the YAML.
+3. Check **"Generate token automatically"** if needed.
+4. Click **Create schema**.
+
+To bring in schemas you already have as files, use the **import** button next to it; **export all** downloads every schema in one archive.
+
+### Finding a Schema
+
+Type in the search box and the list narrows as you type. Choose **Healthy**, **Warning** or **Critical** in the summary above to see only those; the dates and the size of the page are in the **Filters** menu. Tick one or more rows and a bar floats at the bottom with what can be done to them: enable, disable, export or delete.
 
 ### Editing a Schema
 
@@ -187,15 +212,29 @@ definition:
   additional_users:                    # Optional: Users to authorize
     - admin@example.com
     - apiuser@example.com
+
+role:                                  # Optional: what the role of the service may do
+  context_levels:                      # Where it can be assigned, besides the whole site
+    - course
+  permissions:
+    prevent:
+      - moodle/user:delete
+    prohibit:
+      - moodle/site:config
+  allow_assign:                        # Roles it may assign to other people
+    - student
+  allow_view:                          # Roles whose members it may see
+    - student
 ```
 
 ### In Short
 
-A schema has three sections:
+A schema has up to four sections:
 
 - **`meta`** — who the service is: `id`, `name`, and `version` (required), plus optional `maintainer` and `description`.
 - **`requirements`** *(optional)* — plugins the service needs, and whether it may download or upload files.
 - **`definition`** — the `functions` the service exposes (required), plus optional `extra_capabilities` and `additional_users`.
+- **`role`** *(optional)* — where the role can be assigned, the capabilities it is kept from or forbidden, and the roles it may assign, override, switch to and see (`allow_assign`, `allow_override`, `allow_switch`, `allow_view`).
 
 You don't list the capabilities each function needs — the plugin reads them from Moodle and assigns them automatically, and `webservice/rest:use` / `webservice/soap:use` are always included. When a schema is created it also provisions a user, role, service, and token following fixed naming patterns.
 
@@ -273,6 +312,8 @@ A pre-configured external service (`ws_servicemanager`) is installed automatical
 | `local_servicemanager_create_schema` | write | Create a new schema from YAML content |
 | `local_servicemanager_update_schema` | write | Update an existing schema with new YAML content |
 | `local_servicemanager_delete_schema` | write | Delete a schema and all its provisioned resources |
+| `local_servicemanager_get_version` | read | The YAML of one version of a schema |
+| `local_servicemanager_get_suggestions` | read | Suggestions for the autocomplete fields of the guided form |
 
 **Example — create a schema via REST:**
 
@@ -318,6 +359,10 @@ vendor/bin/behat --config /path/to/behatrun/behat.yml --tags=@local_servicemanag
 | `service_manager_test.php` | External service management |
 | `capability_calculator_test.php` | Capability calculation |
 | `manager_test.php` | Full schema lifecycle |
+| `role_settings_test.php` | The `role` section: parsing, validation and what it does to the role |
+| `schema_builder_test.php` | The YAML written by the guided form |
+| `suggester_test.php` | Suggestions while typing |
+| `line_diff_test.php`, `version_summary_test.php` | The comparator |
 
 ## Security
 

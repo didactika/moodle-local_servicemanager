@@ -1,0 +1,12 @@
+// The component styles of the plugin. Edit the partials in scss/ and rebuild styles.css with tools/build-styles.mjs.
+
+@import 'scss/tokens';
+@import 'scss/common';
+@import 'scss/dashboard';
+@import 'scss/detail';
+@import 'scss/history';
+@import 'scss/compare';
+@import 'scss/documentation';
+@import 'scss/import';
+@import 'scss/legacy';
+@import 'scss/icons';

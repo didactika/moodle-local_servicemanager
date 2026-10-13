@@ -1,0 +1,83 @@
+// The comparison of two versions. What was taken out, put in or changed is a tint of its colour over the colour of the page, so
+// the lines stay readable in the light and in the dark mode.
+
+.servicemanager-compare-page {
+    .sm-change {
+        margin-bottom: 0.35rem;
+        gap: 0.5rem;
+
+        del {
+            color: var(--sm-danger-text-emphasis);
+        }
+
+        ins {
+            color: var(--sm-success-text-emphasis);
+            text-decoration: none;
+        }
+    }
+
+    .sm-change-badge {
+        min-width: 1.5rem;
+    }
+
+    .sm-diff-card {
+        box-shadow: var(--sm-box-shadow-sm);
+    }
+
+    .comparison-table {
+        --sm-removed: color-mix(in srgb, var(--sm-danger) 24%, var(--sm-body-bg));
+        --sm-added: color-mix(in srgb, var(--sm-success) 24%, var(--sm-body-bg));
+        --sm-changed: color-mix(in srgb, var(--sm-warning) 24%, var(--sm-body-bg));
+        --sm-empty: var(--sm-tertiary-bg);
+
+        td {
+            vertical-align: top;
+        }
+
+        .sm-line-no {
+            width: 3rem;
+            background-color: var(--sm-tertiary-bg);
+            color: var(--sm-secondary-color);
+            font-family: var(--sm-font-monospace);
+            font-size: 0.75rem;
+            text-align: end;
+            user-select: none;
+        }
+
+        .sm-sign {
+            width: 1.5rem;
+            font-family: var(--sm-font-monospace);
+            text-align: center;
+            user-select: none;
+        }
+
+        .sm-diff {
+            color: var(--sm-body-color);
+            font-family: var(--sm-font-monospace);
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+
+            &.sm-diff-removed {
+                background-color: var(--sm-removed);
+            }
+
+            &.sm-diff-added {
+                background-color: var(--sm-added);
+            }
+
+            &.sm-diff-changed {
+                background-color: var(--sm-changed);
+            }
+
+            &.sm-diff-empty {
+                background-color: var(--sm-empty);
+            }
+        }
+
+        .sm-folded td {
+            background-color: var(--sm-tertiary-bg);
+            text-align: center;
+        }
+    }
+}

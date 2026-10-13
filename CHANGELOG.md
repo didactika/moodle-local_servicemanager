@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-10-13
+
+First release of the Moodle 4.0 to 5.2 line, on `MOODLE_400_STABLE`. The Moodle 5.3 line is on `main` (5.3.0).
+
+### Added
+
+- Moodle 4.0 to 5.2 support. The plugin worked from 4.5 before; the code that differs between releases (the `core_external` classes, the cache API, the event of a created role) is handled in one place.
+- Guided form to create or edit a schema, next to the YAML editor, with suggestions as you type (at least ten) for functions, plugins, users and capabilities. Editing a schema opens the same form already filled in.
+- `role` section in the schema: where the role can be assigned, capabilities that are prevented or prohibited, and the roles it may assign, override, switch to and see. The role-allow matrices that `moodle/role:assign`, `review`, `override` and `switch` need are filled from it.
+- Health summary on the dashboard (healthy, warning, critical) and the state of each web service protocol.
+- Floating bar for bulk actions, a Documentation menu (reference of the format, this plugin's wiki and Moodle's documentation) and history one click away from each schema.
+- Comparator with side by side and unified views, a summary of the changes and the YAML of each version loaded on demand.
+- Moodle web service functions `local_servicemanager_get_version` and `local_servicemanager_get_suggestions`.
+
+### Changed
+
+- The dashboard, the schema, the history and the comparator are redrawn with the same design as the 5.3 line: search that filters as you type, filters asked for once, actions as coloured icons, errors and notifications as dismissible messages.
+- The pages are drawn by Mustache templates and AMD modules; the colours come from Bootstrap, so the theme can override them.
+- Version `2026101302.400`.
+
 ## [1.0.3] - 2026-10-05
 
 ### Changed

@@ -1,446 +1,281 @@
 {{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
     @template local_servicemanager/dashboard
 
-    Dashboard template for Web Service Manager.
+    The dashboard: the state of the web services, the health of the schemas, the schemas and what can be done with them.
 
-    Context variables required:
-    * schemas - Array of schema objects
-    * has_schemas - Boolean
-    * import_url - URL to import page
-    * can_manage - Boolean
-    * has_pagination - Boolean
-    * pagination - Pagination data object
-    * has_filters - Boolean indicating if filters are applied
-    * filter_count - Number of active filters
+    Context variables required for this template:
+    * canmanage - Whether the person can change schemas
+    * sesskey - Session key for the bulk actions
+    * hasschemas - Whether there is any schema
+    * schemas - The schemas
+    * ws - State of the web services
+    * total - Number of schemas
+    * perpage - Sizes of page
+    * urls - Places the actions lead to
 
     Example context (json):
     {
-        "import_url": "https://example.com/local/servicemanager/pages/import.php",
-        "bulk_action_url": "https://example.com/local/servicemanager/pages/bulk_action.php",
-        "can_manage": true,
-        "has_schemas": false,
-        "has_filters": false,
-        "has_pagination": false
+        "canmanage": true,
+        "sesskey": "abc",
+        "hasschemas": false,
+        "schemas": [],
+        "truncated": false,
+        "ws": {"tone": "success", "icon": "plug-circle-check", "label": "Operational", "protocols": [], "healthy": 0, "warning": 0, "critical": 0},
+        "total": 0,
+        "totallabel": "Schemas",
+        "perpage": [{"size": 10, "first": true}],
+        "urls": {"create": "#", "import": "#", "exportall": "#", "bulk": "#", "documentation": "#", "wiki": "#", "moodledocs": "#"}
     }
 }}
-
-<div class="servicemanager-dashboard">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">{{#str}}dashboard, local_servicemanager{{/str}}</h2>
-        <div class="btn-toolbar">
-            {{#can_manage}}
-            <a href="{{import_url}}" class="btn btn-primary">
-                <i class="fa fa-download mr-2"></i>{{#str}}import_schemas, local_servicemanager{{/str}}
-            </a>
-            {{/can_manage}}
-            {{#has_any_schemas}}
-            <a href="{{export_all_url}}" class="btn btn-outline-secondary ml-2">
-                <i class="fa fa-file-archive-o mr-2"></i>{{#str}}export_all, local_servicemanager{{/str}}
-            </a>
-            {{/has_any_schemas}}
-        </div>
-    </div>
-
-    {{! Web Service Status Panel — accordion }}
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center"
-             data-toggle="collapse" data-target="#ws-status-details"
-             data-bs-toggle="collapse" data-bs-target="#ws-status-details"
-             aria-expanded="false" aria-controls="ws-status-details"
-             role="button" style="cursor: pointer;">
-            <div>
-                <i class="fa fa-plug mr-2"></i>
-                <strong>{{#str}}ws_status_panel, local_servicemanager{{/str}}</strong>
-            </div>
-            <div class="d-flex align-items-center">
-                <span class="badge {{ws_status.status_class}} mr-2">
-                    <i class="fa fa-circle mr-1"></i>{{ws_status.status_label}}
+<div class="servicemanager-dashboard{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-dashboard" data-bulk-url="{{urls.bulk}}" data-sesskey="{{sesskey}}">
+    <header class="sm-page-header">
+        <h2 class="sm-page-title">{{#str}}dashboard, local_servicemanager{{/str}}</h2>
+        <span class="sm-badges-row" data-region="ws-status">
+            <span class="sm-badge tone-{{ws.tone}}"><i class="fa-solid fa-{{ws.icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
+            {{#ws.protocols}}
+                <span class="sm-protocol {{#enabled}}on{{/enabled}}{{^enabled}}off{{/enabled}}" title="{{label}}">
+                    <i class="fa-solid fa-{{#enabled}}circle-check{{/enabled}}{{^enabled}}circle-minus{{/enabled}} sm-icon-gap" aria-hidden="true"></i>{{name}}
+                    <span class="sr-only visually-hidden"> {{label}}</span>
                 </span>
-                <i class="fa fa-chevron-down"></i>
+            {{/ws.protocols}}
+            {{#canmanage}}{{#ws.protocolsurl}}
+                <a href="{{ws.protocolsurl}}" class="btn sm-pill compact" title="{{#str}}ws_manage_protocols_link, local_servicemanager{{/str}}">
+                    <i class="fa-solid fa-gear sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_manage, local_servicemanager{{/str}}
+                </a>
+            {{/ws.protocolsurl}}{{/canmanage}}
+        </span>
+    </header>
+
+    {{^hasschemas}}
+        <div class="card sm-empty" data-region="empty-state">
+            <div class="card-body">
+                <div class="sm-empty-icon"><i class="fa-solid fa-plug" aria-hidden="true"></i></div>
+                <h3>{{#str}}empty_title, local_servicemanager{{/str}}</h3>
+                <p class="sm-empty-text">{{#str}}no_schemas, local_servicemanager{{/str}}</p>
+                <div class="sm-actions-row">
+                    {{#canmanage}}
+                        <a href="{{urls.create}}" class="btn btn-primary"><i class="fa-solid fa-plus sm-icon-gap" aria-hidden="true"></i>{{#str}}new_schema, local_servicemanager{{/str}}</a>
+                        <a href="{{urls.import}}" class="btn btn-outline-primary"><i class="fa-solid fa-file-import sm-icon-gap" aria-hidden="true"></i>{{#str}}import_schemas, local_servicemanager{{/str}}</a>
+                    {{/canmanage}}
+                    <a href="{{urls.documentation}}" class="btn btn-outline-secondary"><i class="fa-solid fa-book sm-icon-gap" aria-hidden="true"></i>{{#str}}view_documentation, local_servicemanager{{/str}}</a>
+                </div>
             </div>
         </div>
-        <div id="ws-status-details" class="collapse">
-            <div class="card-body py-3">
-                <div class="row">
-                    <div class="col-md-4 border-right">
-                        <div class="text-muted small text-uppercase mb-1">
-                            {{#str}}ws_services_label, local_servicemanager{{/str}}
-                        </div>
-                        <span class="{{ws_status.ws_enabled_class}} font-weight-bold">
-                            <i class="fa fa-circle mr-1"></i>{{ws_status.ws_enabled_label}}
-                        </span>
+    {{/hasschemas}}
+
+    {{#hasschemas}}
+        <div class="card sm-health" data-region="summary">
+            <div class="card-body sm-health-body">
+                <div class="sm-health-total">
+                    <span class="sm-health-number" data-region="total">{{total}}</span>
+                    <span class="sm-muted" data-region="total-label" data-one="{{#str}}tile_schema, local_servicemanager{{/str}}" data-many="{{#str}}tile_schemas, local_servicemanager{{/str}}">{{totallabel}}</span>
+                </div>
+                <div class="sm-health-bar" aria-hidden="true" data-region="health-bar"></div>
+                <div class="sm-health-legend" role="group" aria-label="{{#str}}filter_status, local_servicemanager{{/str}}">
+                    <button type="button" class="sm-chip sm-health-chip" data-status="healthy" aria-pressed="false">
+                        <span class="sm-text-success"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></span>
+                        <strong data-region="count-healthy">{{ws.healthy}}</strong> {{#str}}status_healthy, local_servicemanager{{/str}}
+                    </button>
+                    <button type="button" class="sm-chip sm-health-chip" data-status="warning" aria-pressed="false">
+                        <span class="sm-text-warning"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
+                        <strong data-region="count-warning">{{ws.warning}}</strong> {{#str}}status_warning, local_servicemanager{{/str}}
+                    </button>
+                    <button type="button" class="sm-chip sm-health-chip" data-status="critical" aria-pressed="false">
+                        <span class="sm-text-danger"><i class="fa-solid fa-circle-xmark" aria-hidden="true"></i></span>
+                        <strong data-region="count-critical">{{ws.critical}}</strong> {{#str}}status_critical, local_servicemanager{{/str}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sm-toolbar">
+            <div class="input-group sm-search">
+                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
+                <input type="search" id="sm-search" name="q" class="form-control" autocomplete="off"
+                       placeholder="{{#str}}filter_name, local_servicemanager{{/str}}" aria-label="{{#str}}filter_name, local_servicemanager{{/str}}">
+                <button type="button" class="btn btn-outline-secondary" data-action="clear-search" hidden title="{{#str}}filter_clear, local_servicemanager{{/str}}">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}filter_clear, local_servicemanager{{/str}}</span>
+                </button>
+            </div>
+            <div class="dropdown sm-filter" data-region="filters">
+                <button class="btn btn-outline-secondary" type="button" data-sm-menu aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-sliders sm-icon-gap" aria-hidden="true"></i>{{#str}}filters, local_servicemanager{{/str}}
+                    <span class="sm-count-badge" data-region="filters-count" hidden>0</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-filter-menu">
+                    <div class="sm-field">
+                        <label for="sm-from" class="sm-label">{{#str}}filter_date_from, local_servicemanager{{/str}}</label>
+                        <input type="date" id="sm-from" class="form-control">
                     </div>
-                    <div class="col-md-4 pl-4 border-right">
-                        <div class="text-muted small text-uppercase mb-1">
-                            {{#str}}ws_protocols_label, local_servicemanager{{/str}}
-                            ({{ws_status.enabled_protocols_count}})
-                        </div>
-                        {{#ws_status.protocols}}
-                        <span class="badge {{badge_class}} mr-1">{{name}}</span>
-                        {{/ws_status.protocols}}
+                    <div class="sm-field">
+                        <label for="sm-to" class="sm-label">{{#str}}filter_date_to, local_servicemanager{{/str}}</label>
+                        <input type="date" id="sm-to" class="form-control">
                     </div>
-                    <div class="col-md-4 pl-4">
-                        <div class="text-muted small text-uppercase mb-1">
-                            {{#str}}ws_health_label, local_servicemanager{{/str}}
-                        </div>
-                        <div>
-                            <span class="text-success mr-3">
-                                <i class="fa fa-circle mr-1"></i>{{ws_status.health_healthy}}
-                            </span>
-                            <span class="text-warning mr-3">
-                                <i class="fa fa-circle mr-1"></i>{{ws_status.health_warning}}
-                            </span>
-                            <span class="text-danger">
-                                <i class="fa fa-circle mr-1"></i>{{ws_status.health_critical}}
-                            </span>
-                        </div>
-                        <div class="text-muted small mt-1">
-                            {{#str}}status_healthy, local_servicemanager{{/str}} ·
-                            {{#str}}status_warning, local_servicemanager{{/str}} ·
-                            {{#str}}status_critical, local_servicemanager{{/str}}
-                        </div>
+                    <div class="sm-filter-title">{{#str}}filter_per_page, local_servicemanager{{/str}}</div>
+                    <div class="sm-chips" role="group" aria-label="{{#str}}filter_per_page, local_servicemanager{{/str}}">
+                        {{#perpage}}
+                            <button type="button" class="sm-chip{{#first}} active{{/first}}" data-perpage="{{size}}" aria-pressed="{{#first}}true{{/first}}{{^first}}false{{/first}}">{{size}}</button>
+                        {{/perpage}}
+                    </div>
+                    <button type="button" class="btn btn-link sm-reset" data-action="reset-filters" disabled>
+                        <i class="fa-solid fa-rotate-left sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
+                    </button>
+                </div>
+            </div>
+            <div class="sm-toolbar-actions">
+                <div class="sm-group" role="group" aria-label="{{#str}}actions, moodle{{/str}}">
+                    {{#canmanage}}
+                        <a href="{{urls.create}}" class="btn sm-pill icon-only solid tone-primary" title="{{#str}}new_schema, local_servicemanager{{/str}}">
+                            <i class="fa-solid fa-plus" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}new_schema, local_servicemanager{{/str}}</span>
+                        </a>
+                        <a href="{{urls.import}}" class="btn sm-pill icon-only tone-success" title="{{#str}}import_schemas, local_servicemanager{{/str}}">
+                            <i class="fa-solid fa-file-import" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}import_schemas, local_servicemanager{{/str}}</span>
+                        </a>
+                    {{/canmanage}}
+                    <a href="{{urls.exportall}}" class="btn sm-pill icon-only tone-info" title="{{#str}}export_all, local_servicemanager{{/str}}">
+                        <i class="fa-solid fa-file-zipper" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}export_all, local_servicemanager{{/str}}</span>
+                    </a>
+                    <div class="dropdown sm-action-menu">
+                        <button type="button" class="btn sm-pill has-caret" data-sm-menu aria-haspopup="true" aria-expanded="false" title="{{#str}}docs_menu, local_servicemanager{{/str}}">
+                            <i class="fa-solid fa-book" aria-hidden="true"></i><i class="fa-solid fa-chevron-down sm-caret" aria-hidden="true"></i>
+                            <span class="sr-only visually-hidden">{{#str}}docs_menu, local_servicemanager{{/str}}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-row-menu">
+                            <li><a class="dropdown-item" href="{{urls.documentation}}"><i class="fa-solid fa-file-lines sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_schema_reference, local_servicemanager{{/str}}</a></li>
+                            <li><a class="dropdown-item" href="{{urls.wiki}}" target="_blank" rel="noreferrer"><i class="fa-solid fa-book-open sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_plugin_wiki, local_servicemanager{{/str}}</a></li>
+                            <li><a class="dropdown-item" href="{{urls.moodledocs}}" target="_blank" rel="noreferrer"><i class="fa-solid fa-life-ring sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_moodle, local_servicemanager{{/str}}</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            {{#ws_status.can_manage}}
-            <div class="card-footer py-2 text-muted small">
-                <a href="{{ws_status.overview_url}}" target="_blank">
-                    {{#str}}ws_overview_link, local_servicemanager{{/str}}
-                    <i class="fa fa-external-link ml-1"></i>
-                </a>
-                <span class="mx-2">·</span>
-                <a href="{{ws_status.protocols_url}}" target="_blank">
-                    {{#str}}ws_manage_protocols_link, local_servicemanager{{/str}}
-                    <i class="fa fa-external-link ml-1"></i>
-                </a>
-            </div>
-            {{/ws_status.can_manage}}
-        </div>
-    </div>
-
-    <!-- Header Row with Filter on Right -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- Left side: Bulk actions (visible when items selected) -->
-        <div class="d-flex align-items-center">
-            {{#can_manage}}
-            <div class="bulk-actions d-none" id="bulk-actions-bar">
-                <span class="selected-count font-weight-bold mr-2"><span id="selected-count">0</span> {{#str}}selected, local_servicemanager{{/str}}</span>
-                <button type="submit" form="bulk-form" name="action" value="enable" class="btn btn-sm btn-success bulk-btn-enable mr-1" style="display:none">
-                    <i class="fa fa-check mr-1"></i>{{#str}}bulk_enable, local_servicemanager{{/str}}
-                </button>
-                <button type="submit" form="bulk-form" name="action" value="disable" class="btn btn-sm btn-secondary bulk-btn-disable mr-1" style="display:none">
-                    <i class="fa fa-ban mr-1"></i>{{#str}}bulk_disable, local_servicemanager{{/str}}
-                </button>
-                <button type="submit" form="bulk-form" name="action" value="export" class="btn btn-sm btn-info mr-1">
-                    <i class="fa fa-download mr-1"></i>{{#str}}bulk_export, local_servicemanager{{/str}}
-                </button>
-                <button type="submit" form="bulk-form" name="action" value="delete" class="btn btn-sm btn-danger" onclick="return confirm('{{#str}}bulk_delete_confirm, local_servicemanager{{/str}}');">
-                    <i class="fa fa-trash mr-1"></i>{{#str}}bulk_delete, local_servicemanager{{/str}}
-                </button>
-            </div>
-            {{/can_manage}}
-            {{^can_manage}}
-            <div></div>
-            {{/can_manage}}
         </div>
 
-        <!-- Right side: Filter Dropdown -->
-        <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle"
-                    type="button" id="filtersDropdown" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-filter mr-1"></i>
-                {{#str}}filters, local_servicemanager{{/str}}
-                {{#has_filters}}
-                <span class="badge badge-primary ml-1">{{filter_count}}</span>
-                {{/has_filters}}
-            </button>
-            <div class="dropdown-menu dropdown-menu-right dropdown-menu-end p-3" style="min-width: 280px;" aria-labelledby="filtersDropdown" onclick="event.stopPropagation();">
-                <form method="get" id="filter-form">
-                    <!-- Status -->
-                    <div class="mb-3">
-                        <label for="status">{{#str}}filter_status, local_servicemanager{{/str}}</label>
-                        <select name="status" id="status" class="form-control">
-                            <option value="">{{#str}}filter_status_all, local_servicemanager{{/str}}</option>
-                            <option value="healthy" {{#filter_status_healthy}}selected{{/filter_status_healthy}}>{{#str}}status_healthy, local_servicemanager{{/str}}</option>
-                            <option value="warning" {{#filter_status_warning}}selected{{/filter_status_warning}}>{{#str}}status_warning, local_servicemanager{{/str}}</option>
-                            <option value="critical" {{#filter_status_critical}}selected{{/filter_status_critical}}>{{#str}}status_critical, local_servicemanager{{/str}}</option>
-                        </select>
-                    </div>
-
-                    <!-- Per page -->
-                    <div class="mb-3">
-                        <label for="perpage">{{#str}}filter_per_page, local_servicemanager{{/str}}</label>
-                        <select name="perpage" id="perpage" class="form-control">
-                            {{#perpage_options}}
-                            <option value="{{value}}" {{#selected}}selected{{/selected}}>{{value}}</option>
-                            {{/perpage_options}}
-                        </select>
-                    </div>
-
-                    <!-- Name search -->
-                    <div class="mb-3">
-                        <label for="name">{{#str}}schema_name, local_servicemanager{{/str}}</label>
-                        <input type="text" name="name" id="name" value="{{filter_name}}" class="form-control" placeholder="{{#str}}filter_name, local_servicemanager{{/str}}">
-                    </div>
-
-                    <!-- Date from -->
-                    <div class="mb-3">
-                        <label for="datefrom_date">{{#str}}filter_date_from, local_servicemanager{{/str}}</label>
-                        <input type="date" name="datefrom_date" id="datefrom_date" value="{{filter_datefrom}}" class="form-control">
-                    </div>
-
-                    <!-- Date to -->
-                    <div class="mb-3">
-                        <label for="dateto_date">{{#str}}filter_date_to, local_servicemanager{{/str}}</label>
-                        <input type="date" name="dateto_date" id="dateto_date" value="{{filter_dateto}}" class="form-control">
-                    </div>
-
-                    <input type="hidden" name="datefrom" id="datefrom-timestamp" value="">
-                    <input type="hidden" name="dateto" id="dateto-timestamp" value="">
-
-                    <div class="dropdown-divider"></div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="?" class="btn btn-secondary">
-                            <i class="fa fa-times mr-1"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-check mr-1"></i>{{#str}}filter_apply, local_servicemanager{{/str}}
-                        </button>
-                    </div>
-                </form>
+        <div class="card sm-table-card" data-region="schema-table">
+            <div class="table-responsive">
+                <table class="table sm-table">
+                    <thead>
+                        <tr>
+                            {{#canmanage}}
+                                <th class="sm-check-cell">
+                                    <input type="checkbox" id="sm-select-all">
+                                    <label for="sm-select-all" class="sr-only visually-hidden">{{#str}}select_all, local_servicemanager{{/str}}</label>
+                                </th>
+                            {{/canmanage}}
+                            <th>{{#str}}schema_name, local_servicemanager{{/str}}</th>
+                            <th>{{#str}}schema_version, local_servicemanager{{/str}}</th>
+                            <th>{{#str}}status, moodle{{/str}}</th>
+                            <th class="sm-hide-small">{{#str}}schema_modified, local_servicemanager{{/str}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#schemas}}
+                            <tr data-region="schema-row" data-id="{{id}}" data-status="{{status}}" data-enabled="{{#enabled}}1{{/enabled}}{{^enabled}}0{{/enabled}}"
+                                data-modified="{{modifiedat}}" data-text="{{name}} {{schemaid}} {{version}}"{{#hidden}} hidden{{/hidden}}>
+                                {{#canmanage}}
+                                    <td class="sm-check-cell">
+                                        <input type="checkbox" id="schema-{{id}}" value="{{id}}" data-region="schema-check">
+                                        <label for="schema-{{id}}" class="sr-only visually-hidden">{{name}}</label>
+                                    </td>
+                                {{/canmanage}}
+                                <td>
+                                    <a href="{{viewurl}}" class="sm-name">{{name}}</a>
+                                    {{^enabled}}<span class="sm-badge tone-secondary sm-gap-left">{{#str}}disabled, local_servicemanager{{/str}}</span>{{/enabled}}
+                                    <div><code class="small">{{schemaid}}</code></div>
+                                </td>
+                                <td>{{version}}</td>
+                                <td><span class="sm-badge tone-{{tone}}">{{statuslabel}}</span></td>
+                                <td class="sm-hide-small sm-muted">{{modified}}</td>
+                                <td class="sm-actions-cell">
+                                    <div class="sm-group" role="group">
+                                        <a href="{{viewurl}}" class="btn sm-pill icon-only compact tone-primary" title="{{#str}}action_view, local_servicemanager{{/str}}">
+                                            <i class="fa-solid fa-eye" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_view, local_servicemanager{{/str}}</span>
+                                        </a>
+                                        {{#canmanage}}
+                                            <a href="{{editurl}}" class="btn sm-pill icon-only compact" title="{{#str}}action_edit, local_servicemanager{{/str}}">
+                                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_edit, local_servicemanager{{/str}}</span>
+                                            </a>
+                                            <a href="{{historyurl}}" class="btn sm-pill icon-only compact tone-warning" title="{{#str}}version_history, local_servicemanager{{/str}}">
+                                                <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}version_history, local_servicemanager{{/str}}</span>
+                                            </a>
+                                        {{/canmanage}}
+                                        <div class="dropdown sm-action-menu">
+                                            <button type="button" class="btn sm-pill icon-only compact" data-sm-menu aria-haspopup="true" aria-expanded="false" title="{{#str}}row_more, local_servicemanager{{/str}}">
+                                                <i class="fa-solid fa-ellipsis" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}row_more, local_servicemanager{{/str}}</span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-row-menu">
+                                                <li><a class="dropdown-item" href="{{exporturl}}"><i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>{{#str}}action_export, local_servicemanager{{/str}}</a></li>
+                                                {{#canmanage}}
+                                                    <li><button type="button" class="dropdown-item" data-action="toggle-one">
+                                                        <i class="fa-solid fa-{{#enabled}}toggle-off{{/enabled}}{{^enabled}}toggle-on{{/enabled}} sm-icon-gap" aria-hidden="true"></i>{{#enabled}}{{#str}}bulk_disable, local_servicemanager{{/str}}{{/enabled}}{{^enabled}}{{#str}}bulk_enable, local_servicemanager{{/str}}{{/enabled}}
+                                                    </button></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item sm-danger" href="{{deleteurl}}"><i class="fa-solid fa-trash sm-icon-gap" aria-hidden="true"></i>{{#str}}action_delete, local_servicemanager{{/str}}</a></li>
+                                                {{/canmanage}}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/schemas}}
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
 
-    {{#can_manage}}
-    <!-- Hidden form for bulk actions -->
-    <form id="bulk-form" method="post" action="{{bulk_action_url}}" style="display: none;">
-        <input type="hidden" name="sesskey" value="{{sesskey}}">
-    </form>
-    {{/can_manage}}
-
-    {{#schemas_length}}
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="thead-light">
-                <tr>
-                    {{#can_manage}}
-                    <th class="text-center" style="width: 40px;">
-                        <input type="checkbox" id="select-all" class="bulk-checkbox-small" title="{{#str}}select_all, local_servicemanager{{/str}}">
-                    </th>
-                    {{/can_manage}}
-                    <th>{{#str}}schema_name, local_servicemanager{{/str}}</th>
-                    <th>{{#str}}schema_id, local_servicemanager{{/str}}</th>
-                    <th>{{#str}}schema_version, local_servicemanager{{/str}}</th>
-                    <th>{{#str}}schema_status, local_servicemanager{{/str}}</th>
-                    <th>{{#str}}schema_modified, local_servicemanager{{/str}}</th>
-                    <th class="text-right">{{#str}}actions{{/str}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#schemas}}
-                <tr>
-                    {{#can_manage}}
-                    <td class="text-center">
-                        <input type="checkbox" name="ids[]" value="{{id}}" form="bulk-form" class="bulk-checkbox-small schema-checkbox" data-enabled="{{#enabled}}1{{/enabled}}{{^enabled}}0{{/enabled}}">
-                    </td>
-                    {{/can_manage}}
-                    <td>
-                        <a href="{{view_url}}" class="font-weight-bold">{{name}}</a>
-                        {{^enabled}}
-                        <span class="badge badge-secondary ml-2">{{#str}}disabled, local_servicemanager{{/str}}</span>
-                        {{/enabled}}
-                    </td>
-                    <td><code>{{schema_id}}</code></td>
-                    <td>{{version}}</td>
-                    <td>
-                        <span class="badge {{status_class}}">
-                            <i class="fa {{status_icon}} mr-1"></i>{{status_label}}
-                        </span>
-                    </td>
-                    <td>{{timemodified}}</td>
-                    <td class="text-right">
-                        <div class="btn-group btn-group-sm">
-                            <a href="{{view_url}}" class="btn btn-outline-primary" title="{{#str}}action_view, local_servicemanager{{/str}}">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                            {{#can_manage}}
-                            <a href="{{edit_url}}" class="btn btn-outline-secondary" title="{{#str}}action_edit, local_servicemanager{{/str}}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a href="{{export_url}}" class="btn btn-outline-info" title="{{#str}}action_export, local_servicemanager{{/str}}">
-                                <i class="fa fa-download"></i>
-                            </a>
-
-                            <a href="{{delete_url}}" class="btn btn-outline-danger" title="{{#str}}action_delete, local_servicemanager{{/str}}">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                            {{/can_manage}}
-                        </div>
-                    </td>
-                </tr>
-                {{/schemas}}
-            </tbody>
-        </table>
-    </div>
-    {{/schemas_length}}
-
-    {{^schemas_length}}
-    <div class="alert alert-info">
-        <i class="fa fa-info-circle mr-2"></i>
-        {{#has_filters}}
-        {{#str}}no_schemas_filtered, local_servicemanager{{/str}}
-        {{/has_filters}}
-        {{^has_filters}}
-        {{#str}}no_schemas, local_servicemanager{{/str}}
-        <a href="{{documentation_url}}" class="ml-2 text-info">
-            <i class="fa fa-book mr-1"></i>{{#str}}view_documentation, local_servicemanager{{/str}}
-        </a>
-        {{/has_filters}}
-    </div>
-    {{/schemas_length}}
-
-    {{#has_pagination}}
-    <!-- Pagination -->
-    <nav aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}" class="servicemanager-pagination mt-4">
-        <ul class="pagination justify-content-center">
-            {{#pagination.show_first}}
-            <li class="page-item">
-                <a class="page-link" href="{{pagination.first_url}}" title="{{#str}}pagination_first, local_servicemanager{{/str}}">
-                    <i class="fa fa-angle-double-left"></i>
-                </a>
-            </li>
-            {{/pagination.show_first}}
-
-            {{#pagination.show_previous}}
-            <li class="page-item">
-                <a class="page-link" href="{{pagination.previous_url}}" title="{{#str}}pagination_previous, local_servicemanager{{/str}}">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-            </li>
-            {{/pagination.show_previous}}
-
-            {{#pagination.show_start_dots}}
-            <li class="page-item disabled"><span class="page-link">...</span></li>
-            {{/pagination.show_start_dots}}
-
-            {{#pagination.pages}}
-            <li class="page-item {{#is_current}}active{{/is_current}}">
-                <a class="page-link" href="{{page_url}}">{{page_num}}</a>
-            </li>
-            {{/pagination.pages}}
-
-            {{#pagination.show_end_dots}}
-            <li class="page-item disabled"><span class="page-link">...</span></li>
-            {{/pagination.show_end_dots}}
-
-            {{#pagination.show_last}}
-            <li class="page-item">
-                <a class="page-link" href="{{pagination.last_url}}">{{pagination.last_page_num}}</a>
-            </li>
-            {{/pagination.show_last}}
-
-            {{#pagination.show_next}}
-            <li class="page-item">
-                <a class="page-link" href="{{pagination.next_url}}" title="{{#str}}pagination_next, local_servicemanager{{/str}}">
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            </li>
-            {{/pagination.show_next}}
-        </ul>
-        <div class="text-center text-muted mt-2">
-            {{#str}}pagination_page_info, local_servicemanager, {"current": "{{pagination.current_page}}", "total": "{{pagination.total_pages}}"}{{/str}}
+        <div class="card sm-empty" data-region="empty-state" hidden>
+            <div class="card-body">
+                <div class="sm-empty-icon"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
+                <h3>{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h3>
+                <p class="sm-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
+                <button type="button" class="btn btn-secondary" data-action="reset-all">
+                    <i class="fa-solid fa-xmark sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
+                </button>
+            </div>
         </div>
-    </nav>
-    {{/has_pagination}}
+
+        <nav class="servicemanager-pagination" data-region="pagination" hidden aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}">
+            <ul class="pagination justify-content-center"></ul>
+            <div class="sm-muted small sm-center" data-region="page-info"></div>
+        </nav>
+        {{#truncated}}<p class="sm-muted small sm-center">{{truncatedtext}}</p>{{/truncated}}
+
+        {{#canmanage}}
+            <div class="sm-floating" data-region="bulk-actions" role="status" hidden>
+                <span class="sm-floating-count">
+                    <span><strong data-region="selected-count">0</strong> {{#str}}selected, local_servicemanager{{/str}}</span>
+                    <button type="button" class="sm-floating-clear" data-action="clear-selection" title="{{#str}}compare_clear, local_servicemanager{{/str}}">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_clear, local_servicemanager{{/str}}</span>
+                    </button>
+                </span>
+                <div class="sm-floating-actions" role="group" aria-label="{{#str}}actions, moodle{{/str}}">
+                    <button type="button" class="btn sm-pill tone-success" data-bulk="enable"><i class="fa-solid fa-toggle-on sm-icon-gap" aria-hidden="true"></i>{{#str}}bulk_enable, local_servicemanager{{/str}}</button>
+                    <button type="button" class="btn sm-pill tone-warning" data-bulk="disable"><i class="fa-solid fa-toggle-off sm-icon-gap" aria-hidden="true"></i>{{#str}}bulk_disable, local_servicemanager{{/str}}</button>
+                    <button type="button" class="btn sm-pill tone-info" data-bulk="export"><i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>{{#str}}bulk_export, local_servicemanager{{/str}}</button>
+                    <button type="button" class="btn sm-pill tone-danger" data-bulk="delete"><i class="fa-solid fa-trash sm-icon-gap" aria-hidden="true"></i>{{#str}}bulk_delete, local_servicemanager{{/str}}</button>
+                </div>
+            </div>
+        {{/canmanage}}
+    {{/hasschemas}}
 </div>
-
 {{#js}}
-require(['jquery'], function($) {
-    var $selectAll = $('#select-all');
-    var $checkboxes = $('.schema-checkbox');
-    var $bulkBar = $('#bulk-actions-bar');
-    var $selectedCount = $('#selected-count');
-    var $enableBtn = $('.bulk-btn-enable');
-    var $disableBtn = $('.bulk-btn-disable');
-
-    function updateBulkBar() {
-        var $checked = $checkboxes.filter(':checked');
-        var count = $checked.length;
-
-        // Update count text.
-        $selectedCount.text(count);
-
-        if (count > 0) {
-            $bulkBar.removeClass('d-none');
-            $bulkBar.show(); // Ensure visibility.
-
-            var hasDisabled = false;
-            var hasEnabled = false;
-
-            $checked.each(function() {
-                var enabled = $(this).data('enabled');
-                // Use loose comparison.
-                if (enabled == 0) {
-                    hasDisabled = true;
-                }
-                if (enabled == 1) {
-                    hasEnabled = true;
-                }
-            });
-
-            // Toggle buttons based on selection state.
-            if (hasDisabled) {
-                $enableBtn.show();
-                $enableBtn.removeClass('d-none');
-            } else {
-                $enableBtn.hide();
-            }
-
-            if (hasEnabled) {
-                $disableBtn.show();
-                $disableBtn.removeClass('d-none');
-            } else {
-                $disableBtn.hide();
-            }
-        } else {
-            $bulkBar.addClass('d-none');
-            $bulkBar.hide();
-        }
-    }
-
-    // Event listeners.
-    $selectAll.on('change', function() {
-        $checkboxes.prop('checked', this.checked);
-        updateBulkBar();
-    });
-
-    $checkboxes.on('change', function() {
-        var allChecked = $checkboxes.length > 0 && $checkboxes.length === $checkboxes.filter(':checked').length;
-        $selectAll.prop('checked', allChecked);
-        updateBulkBar();
-    });
-
-    // Handle date conversion for filters.
-    $('#filter-form').on('submit', function() {
-        var datefrom = $('#datefrom_date').val();
-        var dateto = $('#dateto_date').val();
-
-        if (datefrom) {
-            $('#datefrom-timestamp').val(Math.floor(new Date(datefrom).getTime() / 1000));
-        }
-        if (dateto) {
-            $('#dateto-timestamp').val(Math.floor(new Date(dateto).getTime() / 1000));
-        }
-
-        // Remove the date inputs from submission to avoid cluttering URL.
-        $('#datefrom_date').prop('disabled', true);
-        $('#dateto_date').prop('disabled', true);
-    });
-
-    // Initial check.
-    updateBulkBar();
+require(['local_servicemanager/dashboard'], function(dashboard) {
+    dashboard.init();
 });
 {{/js}}

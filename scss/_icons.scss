@@ -1,0 +1,262 @@
+// Moodle releases that have Font Awesome 4 do not know the names of the icons of the later versions that the templates use, and
+// draw an empty box in their place. The page says it has that font with the class sm-fa4, and here each name has the glyph that
+// Font Awesome 4.7 has for it. Releases that have the later font never get the class, so none of this reaches them.
+
+.sm-fa4 {
+    .fa-solid {
+        display: inline-block;
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        text-rendering: auto;
+    }
+
+    .fa-angle-left::before {
+        content: '\f104';
+    }
+
+    .fa-angle-right::before {
+        content: '\f105';
+    }
+
+    .fa-angles-left::before {
+        content: '\f100';
+    }
+
+    .fa-arrow-down::before {
+        content: '\f063';
+    }
+
+    .fa-arrow-left::before {
+        content: '\f060';
+    }
+
+    .fa-arrow-right::before {
+        content: '\f061';
+    }
+
+    .fa-arrows-rotate::before {
+        content: '\f021';
+    }
+
+    .fa-bars::before {
+        content: '\f0c9';
+    }
+
+    .fa-book::before {
+        content: '\f02d';
+    }
+
+    .fa-book-open::before {
+        content: '\f02d';
+    }
+
+    .fa-check::before {
+        content: '\f00c';
+    }
+
+    .fa-chevron-down::before {
+        content: '\f078';
+    }
+
+    .fa-chevron-right::before {
+        content: '\f054';
+    }
+
+    .fa-circle-check::before {
+        content: '\f058';
+    }
+
+    .fa-circle-exclamation::before {
+        content: '\f06a';
+    }
+
+    .fa-circle-info::before {
+        content: '\f05a';
+    }
+
+    .fa-circle-minus::before {
+        content: '\f056';
+    }
+
+    .fa-circle-xmark::before {
+        content: '\f057';
+    }
+
+    .fa-clock::before {
+        content: '\f017';
+    }
+
+    .fa-clock-rotate-left::before {
+        content: '\f1da';
+    }
+
+    .fa-code::before {
+        content: '\f121';
+    }
+
+    .fa-code-compare::before {
+        content: '\f0ec';
+    }
+
+    .fa-copy::before {
+        content: '\f0c5';
+    }
+
+    .fa-download::before {
+        content: '\f019';
+    }
+
+    .fa-ellipsis::before {
+        content: '\f141';
+    }
+
+    .fa-eye::before {
+        content: '\f06e';
+    }
+
+    .fa-file-arrow-down::before {
+        content: '\f019';
+    }
+
+    .fa-file-import::before {
+        content: '\f093';
+    }
+
+    .fa-file-lines::before {
+        content: '\f0f6';
+    }
+
+    .fa-file-zipper::before {
+        content: '\f1c6';
+    }
+
+    .fa-filter-circle-xmark::before {
+        content: '\f0b0';
+    }
+
+    .fa-forward::before {
+        content: '\f04e';
+    }
+
+    .fa-gear::before {
+        content: '\f013';
+    }
+
+    .fa-heart-pulse::before {
+        content: '\f21e';
+    }
+
+    .fa-id-card::before {
+        content: '\f2c3';
+    }
+
+    .fa-key::before {
+        content: '\f084';
+    }
+
+    .fa-life-ring::before {
+        content: '\f1cd';
+    }
+
+    .fa-magnifying-glass::before {
+        content: '\f002';
+    }
+
+    .fa-pen::before {
+        content: '\f040';
+    }
+
+    .fa-pen-to-square::before {
+        content: '\f044';
+    }
+
+    .fa-plug::before {
+        content: '\f1e6';
+    }
+
+    .fa-plug-circle-check::before {
+        content: '\f1e6';
+    }
+
+    .fa-plug-circle-exclamation::before {
+        content: '\f1e6';
+    }
+
+    .fa-plug-circle-xmark::before {
+        content: '\f1e6';
+    }
+
+    .fa-plus::before {
+        content: '\f067';
+    }
+
+    .fa-puzzle-piece::before {
+        content: '\f12e';
+    }
+
+    .fa-rotate::before {
+        content: '\f021';
+    }
+
+    .fa-rotate-left::before {
+        content: '\f0e2';
+    }
+
+    .fa-server::before {
+        content: '\f233';
+    }
+
+    .fa-shield-halved::before {
+        content: '\f132';
+    }
+
+    .fa-sliders::before {
+        content: '\f1de';
+    }
+
+    .fa-spinner::before {
+        content: '\f110';
+    }
+
+    .fa-table-columns::before {
+        content: '\f0db';
+    }
+
+    .fa-table-list::before {
+        content: '\f00b';
+    }
+
+    .fa-toggle-off::before {
+        content: '\f204';
+    }
+
+    .fa-toggle-on::before {
+        content: '\f205';
+    }
+
+    .fa-trash::before {
+        content: '\f1f8';
+    }
+
+    .fa-triangle-exclamation::before {
+        content: '\f071';
+    }
+
+    .fa-upload::before {
+        content: '\f093';
+    }
+
+    .fa-user::before {
+        content: '\f007';
+    }
+
+    .fa-user-shield::before {
+        content: '\f21b';
+    }
+
+    .fa-xmark::before {
+        content: '\f00d';
+    }
+}
