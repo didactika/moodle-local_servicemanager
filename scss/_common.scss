@@ -216,7 +216,14 @@
     .sm-panel {
         margin-bottom: 1.5rem;
         border: 1px solid var(--bs-border-color);
+        background-color: var(--bs-body-bg);
         box-shadow: var(--bs-box-shadow-sm);
+
+        // Lists and tables inside a card take the colour of the card, so all the cards of a page look the same.
+        .list-group-item,
+        .table {
+            background-color: transparent;
+        }
 
         .card-header {
             padding: 0.75rem 1rem;

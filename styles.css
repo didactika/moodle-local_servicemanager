@@ -449,7 +449,25 @@
 .servicemanager-import-result .sm-panel {
     margin-bottom: 1.5rem;
     border: 1px solid var(--bs-border-color);
+    background-color: var(--bs-body-bg);
     box-shadow: var(--bs-box-shadow-sm);
+}
+
+.servicemanager-dashboard .sm-panel .list-group-item,
+.servicemanager-dashboard .sm-panel .table,
+.servicemanager-detail .sm-panel .list-group-item,
+.servicemanager-detail .sm-panel .table,
+.servicemanager-history-page .sm-panel .list-group-item,
+.servicemanager-history-page .sm-panel .table,
+.servicemanager-compare-page .sm-panel .list-group-item,
+.servicemanager-compare-page .sm-panel .table,
+.servicemanager-documentation .sm-panel .list-group-item,
+.servicemanager-documentation .sm-panel .table,
+.servicemanager-import-page .sm-panel .list-group-item,
+.servicemanager-import-page .sm-panel .table,
+.servicemanager-import-result .sm-panel .list-group-item,
+.servicemanager-import-result .sm-panel .table {
+    background-color: transparent;
 }
 
 .servicemanager-dashboard .sm-panel .card-header,
