@@ -117,9 +117,10 @@ git clone https://github.com/didactika/moodle-local_servicemanager.git servicema
 | Branch | Moodle | Interface |
 |--------|--------|-----------|
 | `main` | 5.3 | React and TypeScript (ESM) |
+| `MOODLE_503_STABLE` | 5.3 | React and TypeScript (ESM), the line that `main` development ends up in |
 | `MOODLE_400_STABLE` | 4.0 to 5.2 | AMD modules and Mustache templates |
 
-Both branches offer the same functions. Check out the one that matches your Moodle.
+Both lines offer the same functions. Check out the one that matches your Moodle. A release is named `X.Y.Z-m<LLL>`, where `<LLL>` is the lowest Moodle version of the line (`1.1.0-m400`, `1.1.0-m503`); the 5.3 line does not run on Moodle 5.2, which lacks the React renderer it uses (`coreoutputeact_component_renderable`).
 
 ## Documentation
 
