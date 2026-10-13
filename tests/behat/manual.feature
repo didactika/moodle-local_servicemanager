@@ -73,6 +73,24 @@ Feature: The screenshots of the wiki
     And I press "Compare Versions"
     And I wait "2" seconds
     And I take a screenshot of the page as "compare"
+    And I draw the numbered marks:
+      | selector                       | number | where     |
+      | [data-region='change-summary'] | 1      | top-left  |
+      | [data-region='diff-tools']     | 2      | top-left  |
+      | .comparison-table              | 3      | top-left  |
+      | [data-region='change-navigator'] | 4    | top-left  |
+    And I take a screenshot of the page as "compare-marked"
+    And I remove the numbered marks
+    And I click on "Next change" "button"
+    And I wait "1" seconds
+    And I take a screenshot of the page as "compare-next"
+
+  Scenario: The window that asks before a rollback
+    Given I am on the history page of the schema "crm.integration"
+    And I wait "2" seconds
+    When I click on "Rollback" "button"
+    And I wait "1" seconds
+    And I take a screenshot of the page as "history-rollback"
 
   Scenario: Creating a schema
     When I navigate to "Server > Web Service Manager > Dashboard" in site administration

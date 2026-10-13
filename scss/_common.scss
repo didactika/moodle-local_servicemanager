@@ -457,14 +457,15 @@
             height: 2rem;
             padding: 0;
             border: 0;
-            border-radius: 50%;
+            border-radius: 0.5rem;
             background-color: transparent;
             color: var(--sm-secondary-color);
             transition: background-color 0.12s ease, color 0.12s ease;
 
-            &:hover {
-                background-color: var(--sm-tertiary-bg);
-                color: var(--sm-body-color);
+            &:hover,
+            &:focus-visible {
+                background-color: color-mix(in srgb, var(--sm-primary) 14%, var(--sm-body-bg));
+                color: var(--sm-primary);
             }
 
             &:focus-visible {
