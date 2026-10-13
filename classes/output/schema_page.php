@@ -116,9 +116,10 @@ class schema_page implements react_component_renderable, \renderable {
 
         $service = $this->service($schema);
         $params = ['id' => $id];
+        $canmanage = has_capability('local/servicemanager:manage', \context_system::instance());
         return (object) [
             'strings' => page_text::strings(),
-            'canManage' => has_capability('local/servicemanager:manage', \context_system::instance()),
+            'canManage' => $canmanage,
             'isHistory' => false,
             'sesskey' => sesskey(),
             'schema' => [
