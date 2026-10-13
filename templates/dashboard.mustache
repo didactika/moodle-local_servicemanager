@@ -49,9 +49,9 @@
         <span class="sm-badges-row" data-region="ws-status">
             <span class="sm-badge tone-{{ws.tone}}"><i class="fa-solid fa-{{ws.icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
             {{#ws.protocols}}
-                <span class="sm-protocol {{state}}" title="{{label}}">
+                <span class="sm-protocol {{state}}" title="{{#str}}{{labelkey}}, local_servicemanager{{/str}}">
                     <i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{name}}
-                    <span class="sr-only visually-hidden"> {{label}}</span>
+                    <span class="sr-only visually-hidden"> {{#str}}{{labelkey}}, local_servicemanager{{/str}}</span>
                 </span>
             {{/ws.protocols}}
             {{#ws.fixurl}}
@@ -232,7 +232,7 @@
                                                 <li><a class="dropdown-item" href="{{exporturl}}"><i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>{{#str}}action_export, local_servicemanager{{/str}}</a></li>
                                                 {{#canmanage}}
                                                     <li><button type="button" class="dropdown-item" data-action="toggle-one">
-                                                        <i class="fa-solid fa-{{toggleicon}} sm-icon-gap" aria-hidden="true"></i>{{togglelabel}}
+                                                        <i class="fa-solid fa-{{toggleicon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}{{togglekey}}, local_servicemanager{{/str}}
                                                     </button></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     <li><a class="dropdown-item sm-danger" href="{{deleteurl}}"><i class="fa-solid fa-trash sm-icon-gap" aria-hidden="true"></i>{{#str}}action_delete, local_servicemanager{{/str}}</a></li>

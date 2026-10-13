@@ -158,7 +158,7 @@ class schema_page implements \renderable, \templatable {
             'tokenbutton' => $this->token_button(!empty($schema->tokenid)),
             'tokenbadge' => [
                 'tone' => !empty($schema->tokenid) ? 'success' : 'secondary',
-                'label' => get_string(!empty($schema->tokenid) ? 'token_active' : 'token_none', 'local_servicemanager'),
+                'labelkey' => !empty($schema->tokenid) ? 'token_active' : 'token_none',
             ],
             'toggle' => $this->toggle_button((bool) $schema->enabled),
             'hasfunctions' => !empty($functions),
@@ -228,7 +228,7 @@ class schema_page implements \renderable, \templatable {
             'hasnewtoken' => false,
             'hastoken' => false,
             'tokenbutton' => $this->token_button(false),
-            'tokenbadge' => ['tone' => 'secondary', 'label' => get_string('token_none', 'local_servicemanager')],
+            'tokenbadge' => ['tone' => 'secondary', 'labelkey' => 'token_none'],
             'toggle' => $this->toggle_button(false),
             'hasfunctions' => !empty($functions),
             'functions' => $functions,
@@ -316,7 +316,7 @@ class schema_page implements \renderable, \templatable {
         return [
             'icon' => $enabled ? 'toggle-on' : 'toggle-off',
             'tone' => $enabled ? 'tone-success' : '',
-            'label' => get_string($enabled ? 'bulk_disable' : 'bulk_enable', 'local_servicemanager'),
+            'labelkey' => $enabled ? 'bulk_disable' : 'bulk_enable',
         ];
     }
 
@@ -329,7 +329,7 @@ class schema_page implements \renderable, \templatable {
     private function token_button(bool $hastoken): array {
         return [
             'icon' => $hastoken ? 'rotate' : 'key',
-            'label' => get_string($hastoken ? 'action_regenerate_token' : 'action_generate_token', 'local_servicemanager'),
+            'labelkey' => $hastoken ? 'action_regenerate_token' : 'action_generate_token',
         ];
     }
 
@@ -346,14 +346,11 @@ class schema_page implements \renderable, \templatable {
         $ishistory = $this->history !== null;
         $files = [
             ['icon' => 'download', 'on' => $download, 'tone' => $download ? 'success' : 'secondary',
-                'label' => get_string('req_download_files', 'local_servicemanager'),
-                'title' => get_string(
-                    $download ? 'req_download_files_enabled' : 'req_download_files_disabled',
-                    'local_servicemanager'
-                )],
+                'labelkey' => 'req_download_files',
+                'titlekey' => $download ? 'req_download_files_enabled' : 'req_download_files_disabled'],
             ['icon' => 'upload', 'on' => $upload, 'tone' => $upload ? 'success' : 'secondary',
-                'label' => get_string('req_upload_files', 'local_servicemanager'),
-                'title' => get_string($upload ? 'req_upload_files_enabled' : 'req_upload_files_disabled', 'local_servicemanager')],
+                'labelkey' => 'req_upload_files',
+                'titlekey' => $upload ? 'req_upload_files_enabled' : 'req_upload_files_disabled'],
         ];
         return [
             'showfiles' => !$ishistory,

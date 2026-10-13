@@ -120,7 +120,7 @@ class dashboard_page implements \renderable, \templatable {
             'enabled' => (bool) $schema->enabled,
             'enabledvalue' => $schema->enabled ? '1' : '0',
             'toggleicon' => $schema->enabled ? 'toggle-off' : 'toggle-on',
-            'togglelabel' => get_string($schema->enabled ? 'bulk_disable' : 'bulk_enable', 'local_servicemanager'),
+            'togglekey' => $schema->enabled ? 'bulk_disable' : 'bulk_enable',
             'modified' => userdate($schema->timemodified),
             'modifiedat' => (int) $schema->timemodified,
             'hidden' => $hidden,

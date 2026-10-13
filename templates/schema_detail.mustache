@@ -80,9 +80,9 @@
         <span class="sm-badges-row" data-region="ws-status">
             <span class="sm-badge tone-{{ws.tone}}"><i class="fa-solid fa-{{ws.icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
             {{#ws.protocols}}
-                <span class="sm-protocol {{state}}" title="{{label}}">
+                <span class="sm-protocol {{state}}" title="{{#str}}{{labelkey}}, local_servicemanager{{/str}}">
                     <i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{name}}
-                    <span class="sr-only visually-hidden"> {{label}}</span>
+                    <span class="sr-only visually-hidden"> {{#str}}{{labelkey}}, local_servicemanager{{/str}}</span>
                 </span>
             {{/ws.protocols}}
             {{#ws.fixurl}}
@@ -119,8 +119,8 @@
                             </a>
                             {{#canmanage}}
                                 <button type="button" class="btn sm-pill icon-only compact {{toggle.tone}}" data-action="toggle-schema" data-region="toggle-schema"
-                                        title="{{toggle.label}}">
-                                    <i class="fa-solid fa-{{toggle.icon}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{toggle.label}}</span>
+                                        title="{{#str}}{{toggle.labelkey}}, local_servicemanager{{/str}}">
+                                    <i class="fa-solid fa-{{toggle.icon}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}{{toggle.labelkey}}, local_servicemanager{{/str}}</span>
                                 </button>
                                 <a href="{{urls.delete}}" class="btn sm-pill icon-only compact tone-danger" title="{{#str}}action_delete, local_servicemanager{{/str}}">
                                     <i class="fa-solid fa-trash" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_delete, local_servicemanager{{/str}}</span>
@@ -241,10 +241,10 @@
                         {{#access.showfiles}}
                             <dt>{{#str}}tile_token, local_servicemanager{{/str}}</dt>
                             <dd>
-                                <span class="sm-badge tone-{{tokenbadge.tone}}" data-region="token-badge">{{tokenbadge.label}}</span>
+                                <span class="sm-badge tone-{{tokenbadge.tone}}" data-region="token-badge">{{#str}}{{tokenbadge.labelkey}}, local_servicemanager{{/str}}</span>
                                 {{#canmanage}}
-                                    <button type="button" class="btn sm-pill icon-only compact sm-gap-left" data-action="make-token" data-region="make-token" title="{{tokenbutton.label}}">
-                                        <i class="fa-solid fa-{{tokenbutton.icon}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{tokenbutton.label}}</span>
+                                    <button type="button" class="btn sm-pill icon-only compact sm-gap-left" data-action="make-token" data-region="make-token" title="{{#str}}{{tokenbutton.labelkey}}, local_servicemanager{{/str}}">
+                                        <i class="fa-solid fa-{{tokenbutton.icon}}" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}{{tokenbutton.labelkey}}, local_servicemanager{{/str}}</span>
                                     </button>
                                 {{/canmanage}}
                                 <div class="sm-fresh-token" data-region="fresh-token" hidden>
@@ -257,7 +257,7 @@
                             </dd>
                             <dt>{{#str}}req_file_access, local_servicemanager{{/str}}</dt>
                             <dd class="sm-badges-row">
-                                {{#access.files}}<span class="sm-badge tone-{{tone}}" title="{{title}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{label}}</span>{{/access.files}}
+                                {{#access.files}}<span class="sm-badge tone-{{tone}}" title="{{#str}}{{titlekey}}, local_servicemanager{{/str}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{#str}}{{labelkey}}, local_servicemanager{{/str}}</span>{{/access.files}}
                             </dd>
                         {{/access.showfiles}}
                         {{#access.hasplugins}}

@@ -58,6 +58,7 @@ class ws_status {
                 'state' => $on ? 'on' : 'off',
                 'icon' => $on ? 'circle-check' : 'circle-minus',
                 'label' => get_string($on ? 'ws_enabled_label' : 'ws_disabled_label', 'local_servicemanager'),
+                'labelkey' => $on ? 'ws_enabled_label' : 'ws_disabled_label',
             ];
         }
 
