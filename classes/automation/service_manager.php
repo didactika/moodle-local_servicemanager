@@ -170,8 +170,26 @@ class service_manager {
 
         $warnings = [];
 
+        // The users that have those addresses are read once; when several have the same address the first is the one.
+        $users = [];
+        foreach (array_chunk(array_values($emails), 100) as $chunk) {
+            [$insql, $params] = $DB->get_in_or_equal($chunk, SQL_PARAMS_NAMED);
+            $found = $DB->get_records_select(
+                'user',
+                "email $insql AND deleted = 0",
+                $params,
+                'id',
+                'id, email',
+                0,
+                count($chunk) * 10
+            );
+            foreach ($found as $candidate) {
+                $users[$candidate->email] = $users[$candidate->email] ?? $candidate;
+            }
+        }
+
         foreach ($emails as $email) {
-            $user = $DB->get_record('user', ['email' => $email, 'deleted' => 0]);
+            $user = $users[$email] ?? null;
             if ($user) {
                 $this->authorize_user($serviceid, $user->id);
             } else {

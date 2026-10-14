@@ -21,6 +21,10 @@ use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
 
+// The classes below extend those of core_external, which Moodle 4.0 and 4.1 only have under their old names.
+// phpcs:ignore moodle.Files.MoodleInternal.MoodleInternalGlobalState
+\local_servicemanager\compat\external_aliases::register();
+
 /**
  * External web service function: get a single service schema by ID.
  *

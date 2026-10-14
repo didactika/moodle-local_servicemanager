@@ -15,76 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Edit page for existing schemas
+ * Old address of the page that edits a schema, kept so that links and bookmarks still work.
+ *
+ * A schema is edited in the same form that creates one, which comes filled in with it.
  *
  * @package    local_servicemanager
- * @author     Eduardo Estrada <me@e2rd0.com>
- * @author     Hector Arrechea
  * @copyright  2026 Didactika.org
+ * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../config.php');
 
 require_login();
-$context = context_system::instance();
-require_capability('local/servicemanager:manage', $context);
+require_capability('local/servicemanager:manage', context_system::instance());
 
-$id = required_param('id', PARAM_INT);
-
-$PAGE->set_context($context);
-$PAGE->set_url(new moodle_url('/local/servicemanager/pages/edit.php', ['id' => $id]));
-$PAGE->set_title(get_string('edit_schema', 'local_servicemanager'));
-$PAGE->set_heading(get_string('edit_schema', 'local_servicemanager'));
-$PAGE->set_pagelayout('admin');
-
-$manager = new \local_servicemanager\schema\manager();
-$schema = $manager->get_schema($id);
-
-if (!$schema) {
-    redirect(
-        new moodle_url('/local/servicemanager/pages/dashboard.php'),
-        get_string('schema_not_found', 'local_servicemanager'),
-        null,
-        \core\output\notification::NOTIFY_WARNING
-    );
-}
-
-$dashboardurl = new moodle_url('/local/servicemanager/pages/dashboard.php');
-$viewurl = new moodle_url('/local/servicemanager/pages/view.php', ['id' => $id]);
-
-$form = new \local_servicemanager\form\edit_schema_form(null, ['schema' => $schema]);
-
-// Set default values.
-$form->set_data([
-    'id' => $schema->id,
-    'yaml_content' => $schema->yaml_content,
-    'enabled' => (int)$schema->enabled,
-]);
-
-if ($form->is_cancelled()) {
-    redirect($viewurl);
-} else if ($data = $form->get_data()) {
-    try {
-        $result = $manager->update_schema($data->id, $data->yaml_content);
-
-        // Apply enabled state (independent of YAML content).
-        $manager->set_enabled($data->id, (bool)$data->enabled);
-
-        // Show warnings if any.
-        if (!empty($result['warnings'])) {
-            foreach ($result['warnings'] as $warning) {
-                \core\notification::warning($warning);
-            }
-        }
-
-        \core\notification::success(get_string('schema_updated_success', 'local_servicemanager', $schema->name));
-        redirect($viewurl);
-    } catch (\Exception $e) {
-        \core\notification::error($e->getMessage());
-    }
-}
-
-echo $OUTPUT->header();
-$form->display();
-echo $OUTPUT->footer();
+redirect(new moodle_url('/local/servicemanager/pages/create.php', ['id' => required_param('id', PARAM_INT)]));

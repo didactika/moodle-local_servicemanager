@@ -40,16 +40,11 @@ namespace local_servicemanager\schema;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class simple_yaml {
-    /** Unquoted words that stand for a value rather than naming a string. */
-    const KEYWORDS = [
-        'true' => true,
-        'yes' => true,
-        'false' => false,
-        'no' => false,
-        'null' => null,
-        '~' => null,
-        '' => null,
-    ];
+    /** Reject lines that are indented inconsistently. */
+    const STRICT = 'strict';
+
+    /** Read the indentation as releases before 1.0.3 did, which accepted what does not fit. */
+    const LENIENT = 'lenient';
 
     /** @var bool Whether to reject lines that fit no open container. */
     protected $strict;
@@ -57,10 +52,10 @@ class simple_yaml {
     /**
      * Constructor.
      *
-     * @param bool $strict Reject inconsistent indentation; false reads it as releases before 1.0.3 did
+     * @param string $mode STRICT, which rejects inconsistent indentation, or LENIENT
      */
-    public function __construct(bool $strict = true) {
-        $this->strict = $strict;
+    public function __construct(string $mode = self::STRICT) {
+        $this->strict = $mode !== self::LENIENT;
     }
 
     /**
@@ -189,11 +184,7 @@ class simple_yaml {
      */
     protected function belongs_to(array $frame, array $token): bool {
         if ($frame['childindent'] === null) {
-            // Container opened but no child seen yet.
-            if ($token['isseq']) {
-                return $token['indent'] >= $frame['keyindent'];
-            }
-            return $token['iskey'] && $token['indent'] > $frame['keyindent'];
+            return $this->belongs_to_an_empty_one($frame, $token);
         }
 
         if (!$this->strict && $token['indent'] > $frame['childindent']) {
@@ -206,6 +197,20 @@ class simple_yaml {
 
         return ($token['isseq'] && $frame['type'] === 'seq')
             || ($token['iskey'] && $frame['type'] === 'map');
+    }
+
+    /**
+     * Whether a line belongs inside a container that has been opened and has no child yet.
+     *
+     * @param array $frame Frame of the container
+     * @param array $token Classified line
+     * @return bool
+     */
+    private function belongs_to_an_empty_one(array $frame, array $token): bool {
+        if ($token['isseq']) {
+            return $token['indent'] >= $frame['keyindent'];
+        }
+        return $token['iskey'] && $token['indent'] > $frame['keyindent'];
     }
 
     /**
@@ -256,7 +261,7 @@ class simple_yaml {
             return;
         }
 
-        if ($value !== '' && !str_starts_with($value, '#')) {
+        if ($value !== '' && strpos($value, '#') !== 0) {
             $current[$key] = $this->parse_value($value);
             return;
         }
@@ -274,79 +279,6 @@ class simple_yaml {
      * @return mixed Parsed value
      */
     public function parse_value(string $value) {
-        $value = trim($value);
-
-        $unquoted = $this->unquote($value);
-        if ($unquoted !== null) {
-            return $unquoted;
-        }
-
-        // A value that is purely a comment (e.g. key: # note) means null.
-        if (str_starts_with($value, '#')) {
-            return null;
-        }
-
-        return $this->scalar($this->strip_comment($value));
-    }
-
-    /**
-     * Contents of a quoted string, or null if the value is not quoted.
-     *
-     * strrpos finds the closing quote, so a trailing comment after it
-     * (e.g. "value" # comment) does not break the match.
-     *
-     * @param string $value Trimmed value
-     * @return string|null
-     */
-    protected function unquote(string $value): ?string {
-        foreach (['"', "'"] as $quote) {
-            if (!str_starts_with($value, $quote)) {
-                continue;
-            }
-
-            $endquote = strrpos($value, $quote);
-            if ($endquote > 0) {
-                return substr($value, 1, $endquote - 1);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Drop an inline comment from an unquoted value.
-     *
-     * Per the YAML spec a comment starts at " #" (space followed by hash).
-     *
-     * @param string $value Trimmed value
-     * @return string
-     */
-    protected function strip_comment(string $value): string {
-        $commentpos = strpos($value, ' #');
-        if ($commentpos === false) {
-            return $value;
-        }
-
-        return trim(substr($value, 0, $commentpos));
-    }
-
-    /**
-     * Read an unquoted scalar as a boolean, null or number, or leave it a string.
-     *
-     * @param string $value Value with any comment already removed
-     * @return mixed
-     */
-    protected function scalar(string $value) {
-        $lower = strtolower($value);
-
-        if (array_key_exists($lower, self::KEYWORDS)) {
-            return self::KEYWORDS[$lower];
-        }
-
-        if (is_numeric($value)) {
-            return strpos($value, '.') !== false ? (float) $value : (int) $value;
-        }
-
-        return $value;
+        return yaml_scalar::parse($value);
     }
 }

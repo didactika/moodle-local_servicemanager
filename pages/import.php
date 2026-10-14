@@ -74,7 +74,13 @@ if ($form->is_cancelled()) {
         $file->copy_content_to($zippath);
 
         $zip = new ZipArchive();
-        if ($zip->open($zippath) === true) {
+        $opened = $zip->open($zippath) === true;
+        $read = 0;
+        if (!$opened) {
+            $message = get_string('import_error_zip', 'local_servicemanager', $filename);
+            $results['errors'][] = $message;
+            $results['items'][] = ['id' => '', 'name' => $filename, 'status' => 'failed', 'messages' => [$message]];
+        } else {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $entryname = $zip->getNameIndex($i);
 
@@ -87,8 +93,14 @@ if ($form->is_cancelled()) {
                 $yamlcontent = $zip->getFromIndex($i);
                 $importresult = $importer->import_single($yamlcontent, $data->conflict_action);
                 $importer->merge_result($results, $importresult);
+                $read++;
             }
             $zip->close();
+            if ($read === 0) {
+                $message = get_string('import_error_zip_empty', 'local_servicemanager', $filename);
+                $results['errors'][] = $message;
+                $results['items'][] = ['id' => '', 'name' => $filename, 'status' => 'failed', 'messages' => [$message]];
+            }
         }
         unlink($zippath);
     } else {
@@ -97,42 +109,19 @@ if ($form->is_cancelled()) {
         $importer->merge_result($results, $importresult);
     }
 
-    // Show each error as a separate notification so the user knows what went wrong.
-    foreach ($results['errors'] as $error) {
-        \core\notification::error($error);
-    }
-
-    // Show warnings (e.g. non-critical functions not installed in this Moodle instance).
-    foreach ($results['warnings'] as $warning) {
-        \core\notification::warning($warning);
-    }
-
-    // Generate result message.
-    $results['errors_count'] = count($results['errors']);
-    $message = get_string('import_complete', 'local_servicemanager', $results);
-    $notifytype = empty($results['errors']) ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_WARNING;
-
-    redirect(
-        new moodle_url('/local/servicemanager/pages/dashboard.php'),
-        $message,
-        null,
-        $notifytype
+    // The page says what became of each schema; nothing is lost in a message that goes away.
+    echo $OUTPUT->header();
+    echo \local_servicemanager\output\page_drawer::render(
+        'import_result_page',
+        new \local_servicemanager\output\import_result_page($results)
     );
+    echo $OUTPUT->footer();
+    exit;
 }
 
 echo $OUTPUT->header();
 
-// Capture form HTML.
-ob_start();
+echo \local_servicemanager\output\page_drawer::render('import_page', new \local_servicemanager\output\import_intro());
 $form->display();
-$formhtml = ob_get_clean();
-
-$context = [
-    'backurl' => (new moodle_url('/local/servicemanager/pages/dashboard.php'))->out(false),
-    'docurl' => (new moodle_url('/local/servicemanager/pages/documentation.php'))->out(false),
-    'formhtml' => $formhtml,
-];
-
-echo $OUTPUT->render_from_template('local_servicemanager/import_page', $context);
 
 echo $OUTPUT->footer();

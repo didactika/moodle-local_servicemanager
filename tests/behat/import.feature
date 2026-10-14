@@ -13,8 +13,9 @@ Feature: Schema import
     When I click on "Import Schemas" "link"
     And I upload "local/servicemanager/examples/sample_schema.yaml" file to "Import File" filemanager
     And I press "Import"
-    Then I should see "Import complete"
-    And I should see "Example Service"
+    Then I should see "Import result"
+    And I should see "Example Service" in the "[data-region='import-items']" "css_element"
+    And I should see "Imported" in the "[data-region='summary']" "css_element"
 
   @javascript
   Scenario: Attempt import without a file
@@ -28,5 +29,5 @@ Feature: Schema import
     And I reload the page
     When I click on "Test Service" "link"
     Then I should see "test.service"
-    And I should see "Functions"
+    And I should see "Function"
     And I should see "Dashboard"

@@ -59,7 +59,7 @@ if ($confirm && confirm_sesskey()) {
     $result = $tokenmanager->regenerate_token($id);
 
     // Stash the token so the view page can show it once.
-    $tokencache = \core_cache\cache::make('local_servicemanager', 'newtoken');
+    $tokencache = \local_servicemanager\cache_provider::newtoken();
     $tokencache->set($id, $result['token']);
 
     \core\notification::success(get_string('token_regenerated', 'local_servicemanager'));

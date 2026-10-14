@@ -1,0 +1,34 @@
+// The colours and measures that the styles of the plugin use. Releases that have Bootstrap 5.3 give them as custom properties of the
+// theme, which also follow the colour mode of the page; the rest of the supported releases do not, so each one has the colour that
+// Boost has for it. A theme that changes the colours of Bootstrap changes the plugin too, wherever the variable exists.
+
+.servicemanager-dashboard,
+.servicemanager-detail,
+.servicemanager-history-page,
+.servicemanager-compare-page,
+.servicemanager-documentation,
+.servicemanager-import-page,
+.servicemanager-import-result,
+.sm-modal {
+    --sm-body-bg: var(--bs-body-bg, #fff);
+    --sm-body-color: var(--bs-body-color, #1d2125);
+    --sm-tertiary-bg: var(--bs-tertiary-bg, #f8f9fa);
+    --sm-secondary-color: var(--bs-secondary-color, #6a737b);
+    --sm-border-color: var(--bs-border-color, #dee2e6);
+    --sm-primary: var(--bs-primary, #0f6cbf);
+    --sm-primary-bg-subtle: var(--bs-primary-bg-subtle, #cfe2f3);
+    --sm-success: var(--bs-success, #357a32);
+    --sm-success-text-emphasis: var(--bs-success-text-emphasis, #1c3d1a);
+    --sm-warning: var(--bs-warning, #f0ad4e);
+    --sm-warning-text-emphasis: var(--bs-warning-text-emphasis, #664d03);
+    --sm-danger: var(--bs-danger, #ca3120);
+    --sm-danger-text-emphasis: var(--bs-danger-text-emphasis, #58151c);
+    --sm-info-text-emphasis: var(--bs-info-text-emphasis, #055160);
+    --sm-white: var(--bs-white, #fff);
+    --sm-font-monospace: var(--bs-font-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+    --sm-border-radius-sm: var(--bs-border-radius-sm, 0.2rem);
+    --sm-border-radius-lg: var(--bs-border-radius-lg, 0.5rem);
+    --sm-btn-border-radius: var(--bs-btn-border-radius, 0.25rem);
+    --sm-box-shadow-sm: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
+    --sm-box-shadow-lg: var(--bs-box-shadow-lg, 0 1rem 3rem rgba(0, 0, 0, 0.175));
+}

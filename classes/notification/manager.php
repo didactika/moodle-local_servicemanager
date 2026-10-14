@@ -154,6 +154,7 @@ class manager {
         if (!empty($issues)) {
             return [
                 'status_class' => 'danger',
+                'status_style' => 'background-color: #dc3545; color: #ffffff;',
                 'status_text' => get_string('healthcheck_issues_found', 'local_servicemanager', count($issues)),
                 'summary_text' => get_string('healthcheck_issues_summary', 'local_servicemanager'),
             ];
@@ -161,6 +162,7 @@ class manager {
 
         return [
             'status_class' => 'success',
+            'status_style' => 'background-color: #28a745; color: #ffffff;',
             'status_text' => get_string('healthcheck_all_healthy', 'local_servicemanager'),
             'summary_text' => get_string('healthcheck_healthy_summary', 'local_servicemanager'),
         ];
@@ -184,6 +186,10 @@ class manager {
                 'schema_id' => $schema->schema_id,
                 'status' => $result['status'], // Either warning or critical.
                 'status_label' => strtoupper($result['status']),
+                // The mail is read outside Moodle, so its colours are written on the element and not in a stylesheet.
+                'badge_style' => $result['status'] === 'warning'
+                    ? 'background-color: #ffc107; color: #212529;'
+                    : 'background-color: #dc3545; color: #ffffff;',
                 'messages' => explode('; ', $result['message']),
                 'view_url' => (new \moodle_url(
                     '/local/servicemanager/pages/view.php',
@@ -262,12 +268,30 @@ class manager {
 
         $recipients = [];
 
-        foreach (array_map('trim', explode(',', $emailsconfig)) as $email) {
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                continue;
+        $emails = array_filter(
+            array_map('trim', explode(',', $emailsconfig)),
+            static fn(string $email): bool => $email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) !== false
+        );
+        // The users that have those addresses are read once; when several have the same address the first is the one.
+        $users = [];
+        foreach (array_chunk(array_values($emails), 100) as $chunk) {
+            [$insql, $params] = $DB->get_in_or_equal($chunk, SQL_PARAMS_NAMED);
+            $found = $DB->get_records_select(
+                'user',
+                "email $insql AND deleted = 0 AND suspended = 0",
+                $params,
+                'id',
+                '*',
+                0,
+                count($chunk) * 10
+            );
+            foreach ($found as $candidate) {
+                $users[$candidate->email] = $users[$candidate->email] ?? $candidate;
             }
+        }
 
-            $user = $DB->get_record('user', ['email' => $email, 'deleted' => 0, 'suspended' => 0]);
+        foreach ($emails as $email) {
+            $user = $users[$email] ?? null;
             if ($user) {
                 $recipients[$user->id] = $user;
             } else {

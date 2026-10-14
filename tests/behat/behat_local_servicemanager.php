@@ -54,6 +54,48 @@ YAML;
     }
 
     /**
+     * Give a schema a second version, which is what the history and the comparison have to show.
+     *
+     * The new version is the next minor one, with another description, one more function, and the first of them is now optional.
+     *
+     * @Given the schema :schemaid has a second version
+     * @param string $schemaid The schema ID.
+     */
+    public function the_schema_has_a_second_version($schemaid) {
+        global $DB;
+
+        $record = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid], '*', MUST_EXIST);
+        [$major, $minor] = array_map('intval', explode('.', $record->version) + [0, 0]);
+        $version = $major . '.' . ($minor + 1) . '.0';
+        $yaml = <<<YAML
+meta:
+  id: "{$schemaid}"
+  name: "{$record->name}"
+  version: "{$version}"
+  description: "Now it also reads users."
+definition:
+  functions:
+    - name: core_webservice_get_site_info
+      critical: false
+    - core_user_get_users
+YAML;
+        (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
+    }
+
+    /**
+     * Open the history of a schema.
+     *
+     * @Given I am on the history page of the schema :schemaid
+     * @param string $schemaid The schema ID.
+     */
+    public function i_am_on_the_history_page_of_the_schema($schemaid) {
+        global $DB;
+
+        $record = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid], '*', MUST_EXIST);
+        $this->getSession()->visit($this->locate_path('/local/servicemanager/pages/history.php?id=' . $record->id));
+    }
+
+    /**
      * Create multiple schemas for testing.
      *
      * @Given the following schemas exist:
@@ -104,5 +146,77 @@ YAML;
         if ($exists) {
             throw new Exception("Schema with ID '{$schemaid}' still exists");
         }
+    }
+
+    /**
+     * Open a page of the plugin.
+     *
+     * @Given I open the page :page of the plugin
+     * @param string $page File of the page, such as documentation.php.
+     */
+    public function i_open_the_page_of_the_plugin($page) {
+        $this->getSession()->visit($this->locate_path('/local/servicemanager/pages/' . $page));
+    }
+
+    /**
+     * Give a schema a role section, so that the page of the schema has something to show about it.
+     *
+     * @Given the schema :schemaid has a role section
+     * @param string $schemaid Id of the schema.
+     */
+    public function the_schema_has_a_role_section($schemaid) {
+        global $DB;
+
+        $record = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid], '*', MUST_EXIST);
+        [$major, $minor] = array_map('intval', explode('.', $record->version) + [0, 0]);
+        $version = $major . '.' . ($minor + 1) . '.0';
+        $yaml = <<<YAML
+meta:
+  id: "{$schemaid}"
+  name: "{$record->name}"
+  version: "{$version}"
+definition:
+  functions:
+    - core_webservice_get_site_info
+    - core_user_get_users
+  extra_capabilities:
+    - moodle/user:viewdetails
+role:
+  context_levels:
+    - course
+  permissions:
+    prevent:
+      - moodle/user:delete
+    prohibit:
+      - moodle/site:config
+  allow_assign:
+    - student
+  allow_view:
+    - student
+    - editingteacher
+YAML;
+        (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
+    }
+
+    /**
+     * Give a schema more extra capabilities than the page shows before its button.
+     *
+     * @Given the schema :schemaid has many extra capabilities
+     * @param string $schemaid Id of the schema.
+     */
+    public function the_schema_has_many_extra_capabilities($schemaid) {
+        global $DB;
+
+        $record = $DB->get_record('local_servicemanager_schemas', ['schema_id' => $schemaid], '*', MUST_EXIST);
+        [$major, $minor] = array_map('intval', explode('.', $record->version) + [0, 0]);
+        $version = $major . '.' . ($minor + 1) . '.0';
+        $capabilities = [
+            'moodle/user:viewdetails', 'moodle/user:update', 'moodle/user:create', 'moodle/user:delete', 'moodle/course:view',
+            'moodle/course:update', 'moodle/course:create', 'moodle/course:delete', 'moodle/category:manage', 'moodle/role:assign',
+        ];
+        $list = implode("\n", array_map(static fn(string $capability) => '    - ' . $capability, $capabilities));
+        $yaml = "meta:\n  id: \"{$schemaid}\"\n  name: \"{$record->name}\"\n  version: \"{$version}\"\n" .
+            "definition:\n  functions:\n    - core_webservice_get_site_info\n  extra_capabilities:\n{$list}\n";
+        (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
     }
 }

@@ -1,0 +1,220 @@
+// The comparison of two versions. What was taken out, put in or changed is a tint of its colour over the colour of the page, so
+// the lines stay readable in the light and in the dark mode.
+
+.servicemanager-compare-page {
+    // What changed, said in terms of the schema: a card that folds, and in it each change as a small label with the colour of what it did.
+    .sm-changes {
+        margin-bottom: 1.25rem;
+        border: 1px solid var(--sm-border-color);
+        border-radius: var(--sm-border-radius-lg);
+        background-color: var(--sm-body-bg);
+        box-shadow: var(--sm-box-shadow-sm);
+
+        .sm-changes-head {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            gap: 0.6rem;
+            list-style: none;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+        }
+
+        .sm-changes-caret {
+            color: var(--sm-secondary-color);
+            font-size: 0.8rem;
+            transition: transform 0.15s ease;
+        }
+
+        &[open] .sm-changes-caret {
+            transform: rotate(90deg);
+        }
+
+        .sm-changes-title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .sm-changes-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+            padding: 1rem;
+            border-top: 1px solid var(--sm-border-color);
+            gap: 1rem 1.5rem;
+        }
+
+        .sm-changes-area-title {
+            margin: 0 0 0.5rem;
+            color: var(--sm-secondary-color);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .sm-changes-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            gap: 0.4rem;
+            list-style: none;
+        }
+
+        .sm-change-chip {
+            --sm-tone: var(--sm-secondary-color);
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.7rem;
+            border: 1px solid color-mix(in srgb, var(--sm-tone) 30%, var(--sm-body-bg));
+            border-radius: 2rem;
+            background-color: color-mix(in srgb, var(--sm-tone) 10%, var(--sm-body-bg));
+            color: var(--sm-body-color);
+            font-size: 0.8125rem;
+            gap: 0.4rem;
+
+            &.tone-success {
+                --sm-tone: var(--sm-success);
+            }
+
+            &.tone-danger {
+                --sm-tone: var(--sm-danger);
+            }
+
+            &.tone-warning {
+                --sm-tone: var(--sm-warning-text-emphasis);
+            }
+        }
+
+        .sm-change-sign {
+            color: var(--sm-tone);
+            font-size: 0.7rem;
+        }
+
+        .sm-change-name {
+            font-weight: 600;
+        }
+
+        .sm-change-values {
+            display: inline-flex;
+            align-items: center;
+            color: var(--sm-secondary-color);
+            font-size: 0.75rem;
+            gap: 0.35rem;
+        }
+
+        .sm-change-from {
+            text-decoration: line-through;
+        }
+
+        .sm-change-to {
+            color: var(--sm-body-color);
+            font-weight: 600;
+        }
+    }
+
+    // The bar that goes through the changes: the arrows, and which change it is and where.
+    .sm-changenav {
+        padding-inline-start: 0.6rem;
+        gap: 0.5rem;
+
+        .sm-navbtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            padding: 0;
+            border: 1px solid var(--sm-border-color);
+            border-radius: 50%;
+            background-color: var(--sm-body-bg);
+            color: var(--sm-body-color);
+            transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+
+            &:hover,
+            &:focus-visible {
+                border-color: var(--sm-primary);
+                background-color: color-mix(in srgb, var(--sm-primary) 10%, var(--sm-body-bg));
+                color: var(--sm-primary);
+            }
+        }
+
+        .sm-changenav-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 11rem;
+            text-align: center;
+            line-height: 1.25;
+
+            & small {
+                color: var(--sm-secondary-color);
+                font-size: 0.75rem;
+            }
+        }
+    }
+
+    .sm-diff-card {
+        box-shadow: var(--sm-box-shadow-sm);
+    }
+
+    & .comparison-table {
+        --sm-removed: color-mix(in srgb, var(--sm-danger) 24%, var(--sm-body-bg));
+        --sm-added: color-mix(in srgb, var(--sm-success) 24%, var(--sm-body-bg));
+        --sm-changed: color-mix(in srgb, var(--sm-warning) 24%, var(--sm-body-bg));
+        --sm-empty: var(--sm-tertiary-bg);
+
+        & td {
+            vertical-align: top;
+        }
+
+        .sm-line-no {
+            width: 3rem;
+            background-color: var(--sm-tertiary-bg);
+            color: var(--sm-secondary-color);
+            font-family: var(--sm-font-monospace);
+            font-size: 0.75rem;
+            text-align: end;
+            user-select: none;
+        }
+
+        .sm-sign {
+            width: 1.5rem;
+            font-family: var(--sm-font-monospace);
+            text-align: center;
+            user-select: none;
+        }
+
+        .sm-diff {
+            color: var(--sm-body-color);
+            font-family: var(--sm-font-monospace);
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+
+            &.sm-diff-removed {
+                background-color: var(--sm-removed);
+            }
+
+            &.sm-diff-added {
+                background-color: var(--sm-added);
+            }
+
+            &.sm-diff-changed {
+                background-color: var(--sm-changed);
+            }
+
+            &.sm-diff-empty {
+                background-color: var(--sm-empty);
+            }
+        }
+
+        .sm-folded td {
+            background-color: var(--sm-tertiary-bg);
+            text-align: center;
+        }
+    }
+}

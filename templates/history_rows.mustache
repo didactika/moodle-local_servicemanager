@@ -1,0 +1,62 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_servicemanager/history_rows
+
+    The versions of a schema, one row each in a list. The history draws them once and draws them again when a rollback changes them.
+
+    Context variables required for this template:
+    * rows - The versions
+
+    Example context (json):
+    {
+        "rows": [{"id": 1, "version": "1.0.0", "username": "Admin", "userpicture": "#", "date": "today", "reason": "", "iscurrent": true, "canrollback": false, "hidden": false, "text": "1.0.0 Admin", "at": 0, "viewurl": "#"}]
+    }
+}}
+<ul class="card sm-versions" data-region="versions">
+{{#rows}}
+    <li class="sm-version" data-region="version" data-id="{{id}}" data-at="{{at}}" data-text="{{text}}"{{#hidden}} hidden{{/hidden}}>
+        <div class="sm-version-main">
+            <input type="checkbox" id="compare-{{id}}" name="compare[]" value="{{id}}" class="form-check-input" data-region="version-check">
+            <label for="compare-{{id}}" class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}} {{version}}</label>
+            <span class="sm-version-number"><i class="fa-solid fa-code-branch sm-icon-gap" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}version, local_servicemanager{{/str}} </span>{{version}}</span>
+            {{#iscurrent}}<span class="sm-badge tone-success">{{#str}}current, local_servicemanager{{/str}}</span>{{/iscurrent}}{{^iscurrent}}<span></span>{{/iscurrent}}
+            <span class="sm-version-who">
+                <img src="{{userpicture}}" alt="" width="24" height="24" class="rounded-circle" loading="lazy">
+                <span class="sm-version-name">{{username}}</span>
+                <span class="sm-version-date">{{date}}</span>
+            </span>
+            <span class="sm-version-reason" title="{{reason}}">{{reason}}</span>
+            <div class="sm-group" role="group">
+                <button type="button" class="btn sm-pill icon-only compact" data-action="toggle-yaml" aria-expanded="false" title="{{#str}}view_yaml, local_servicemanager{{/str}}">
+                    <i class="fa-solid fa-code" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}view_yaml, local_servicemanager{{/str}}</span>
+                </button>
+                <a href="{{viewurl}}" class="btn sm-pill icon-only compact tone-primary" title="{{#str}}action_view, local_servicemanager{{/str}}">
+                    <i class="fa-solid fa-eye" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_view, local_servicemanager{{/str}}</span>
+                </a>
+                {{#canrollback}}
+                    <button type="button" class="btn sm-pill icon-only compact tone-warning" data-action="rollback" data-id="{{id}}" data-version="{{version}}" title="{{#str}}rollback, local_servicemanager{{/str}}">
+                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}rollback, local_servicemanager{{/str}}</span>
+                    </button>
+                {{/canrollback}}
+                {{^canrollback}}<span class="sm-slot" aria-hidden="true"></span>{{/canrollback}}
+            </div>
+        </div>
+        <div class="sm-version-yaml" data-region="yaml" hidden></div>
+    </li>
+{{/rows}}
+</ul>

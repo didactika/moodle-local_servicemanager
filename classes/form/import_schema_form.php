@@ -36,6 +36,7 @@ class import_schema_form extends \moodleform {
         $mform = $this->_form;
 
         // File upload.
+        // Some releases do not know the extensions of YAML, so the file is judged by its content: plain text.
         $mform->addElement(
             'filepicker',
             'importfile',
@@ -43,7 +44,7 @@ class import_schema_form extends \moodleform {
             null,
             [
                 'maxfiles' => 1,
-                'accepted_types' => ['.yaml', '.yml', '.zip'],
+                'accepted_types' => ['.yaml', '.yml', '.txt', '.zip'],
             ]
         );
         $mform->addRule('importfile', get_string('required'), 'required', null, 'client');

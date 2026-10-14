@@ -1,0 +1,99 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_servicemanager/import_result_page
+
+    What an import did, schema by schema.
+
+    Context variables required for this template:
+    * subtitle - A line that says how it went
+    * imported, skipped, failed, warnings - Totals
+    * items - The schemas of the import
+    * dashboardurl, againurl - Where the person goes next
+
+    Example context (json):
+    {
+        "subtitle": "Done",
+        "imported": 1,
+        "skipped": 0,
+        "failed": 0,
+        "failedtone": "secondary",
+        "warnings": 0,
+        "warningstone": "secondary",
+        "hasitems": false,
+        "items": [],
+        "dashboardurl": "#",
+        "againurl": "#"
+    }
+}}
+<div class="servicemanager-import-result{{#legacyicons}} sm-fa4{{/legacyicons}}">
+    <header class="sm-page-header">
+        <div class="sm-page-title">
+            <h2 class="sm-flush">{{#str}}import_result_title, local_servicemanager{{/str}}</h2>
+            <p class="sm-muted sm-flush">{{subtitle}}</p>
+        </div>
+        <div class="sm-actions-row">
+            <a href="{{dashboardurl}}" class="btn btn-primary"><i class="fa-solid fa-table-list sm-icon-gap" aria-hidden="true"></i>{{#str}}dashboard, local_servicemanager{{/str}}</a>
+            <a href="{{againurl}}" class="btn btn-outline-secondary"><i class="fa-solid fa-file-import sm-icon-gap" aria-hidden="true"></i>{{#str}}import_again, local_servicemanager{{/str}}</a>
+        </div>
+    </header>
+
+    <div class="sm-tiles sm-tiles-four" data-region="summary">
+        <div class="card sm-tile"><div class="card-body">
+            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_imported, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-text-success"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></span></div>
+            <div class="sm-tile-value sm-text-success">{{imported}}</div>
+        </div></div>
+        <div class="card sm-tile"><div class="card-body">
+            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_skipped, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-muted"><i class="fa-solid fa-forward" aria-hidden="true"></i></span></div>
+            <div class="sm-tile-value">{{skipped}}</div>
+        </div></div>
+        <div class="card sm-tile"><div class="card-body">
+            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_failed, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-text-{{failedtone}}"><i class="fa-solid fa-circle-xmark" aria-hidden="true"></i></span></div>
+            <div class="sm-tile-value sm-text-{{failedtone}}">{{failed}}</div>
+        </div></div>
+        <div class="card sm-tile"><div class="card-body">
+            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_warnings, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-text-{{warningstone}}"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span></div>
+            <div class="sm-tile-value sm-text-{{warningstone}}">{{warnings}}</div>
+        </div></div>
+    </div>
+
+    {{#hasitems}}
+        <div class="card">
+            <ul class="list-group list-group-flush" data-region="import-items">
+                {{#items}}
+                    <li class="list-group-item">
+                        <div class="sm-item">
+                            <span class="sm-text-{{tone}} sm-icon-gap"><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i></span>
+                            <div class="sm-grow">
+                                <div>
+                                    {{#viewurl}}<a href="{{viewurl}}" class="sm-strong">{{label}}</a>{{/viewurl}}{{^viewurl}}<strong>{{label}}</strong>{{/viewurl}}
+                                    {{#showid}}<span class="sm-id-chip compact sm-gap-left"><i class="fa-solid fa-fingerprint sm-icon-gap" aria-hidden="true"></i>{{id}}</span>{{/showid}}
+                                    <span class="sm-badge tone-{{tone}} sm-gap-left">{{statuslabel}}</span>
+                                </div>
+                                {{#hasmessages}}
+                                    <ul class="small sm-messages{{#failed}} sm-danger{{/failed}}{{^failed}} sm-muted{{/failed}}">
+                                        {{#messages}}<li>{{text}}</li>{{/messages}}
+                                    </ul>
+                                {{/hasmessages}}
+                            </div>
+                        </div>
+                    </li>
+                {{/items}}
+            </ul>
+        </div>
+    {{/hasitems}}
+</div>

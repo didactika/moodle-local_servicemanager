@@ -76,7 +76,7 @@ class yaml_parser {
 
         // Fallback to simple parser.
         try {
-            $data = (new simple_yaml($strict))->parse($content);
+            $data = (new simple_yaml($strict ? simple_yaml::STRICT : simple_yaml::LENIENT))->parse($content);
             return is_array($data) ? $data : null;
         } catch (\Exception $e) {
             throw new \moodle_exception('error_invalid_yaml', 'local_servicemanager', '', $e->getMessage());
@@ -122,7 +122,18 @@ class yaml_parser {
             return $errors;
         }
 
-        return array_merge($errors, $this->validate_definition($data['definition']));
+        return array_merge($errors, $this->validate_definition($data['definition']), $this->validate_role($data['role'] ?? null));
+    }
+
+    /**
+     * Check the role section, which is optional: it must be a map that only has the keys that mean something, and each of those
+     * must have the shape it needs.
+     *
+     * @param mixed $role The role section, or null when the schema has none.
+     * @return array Array of error strings (empty if valid)
+     */
+    protected function validate_role($role): array {
+        return (new role_section_validator())->errors($role);
     }
 
     /**
@@ -144,10 +155,6 @@ class yaml_parser {
 
         if (empty($meta['name'])) {
             $errors[] = get_string('error_missing_meta_name', 'local_servicemanager');
-        }
-
-        if (empty($meta['version'])) {
-            $errors[] = get_string('error_missing_meta_version', 'local_servicemanager');
         }
 
         return $errors;
@@ -175,94 +182,5 @@ class yaml_parser {
      */
     public function get_hash(string $content): string {
         return hash('sha256', $content);
-    }
-
-    /**
-     * Extract meta information from parsed YAML
-     *
-     * @param array $data Parsed YAML data
-     * @return array Meta information with defaults
-     */
-    public function extract_meta(array $data): array {
-        $meta = $data['meta'] ?? [];
-        return [
-            'id' => $meta['id'] ?? '',
-            'name' => $meta['name'] ?? '',
-            'version' => $meta['version'] ?? '1.0.0',
-            'maintainer' => $meta['maintainer'] ?? '',
-            'description' => $meta['description'] ?? '',
-        ];
-    }
-
-    /**
-     * Extract functions from parsed YAML
-     *
-     * @param array $data Parsed YAML data
-     * @return array Functions with name and critical flag
-     */
-    public function extract_functions(array $data): array {
-        $functions = $data['definition']['functions'] ?? [];
-        $result = [];
-
-        foreach ($functions as $func) {
-            if (is_string($func)) {
-                $result[] = [
-                    'name' => $func,
-                    'critical' => true,
-                ];
-            } else if (is_array($func) && isset($func['name'])) {
-                $result[] = [
-                    'name' => $func['name'],
-                    'critical' => $func['critical'] ?? true,
-                ];
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Extract extra capabilities from parsed YAML
-     *
-     * @param array $data Parsed YAML data
-     * @return array Extra capabilities
-     */
-    public function extract_extra_capabilities(array $data): array {
-        return $data['definition']['extra_capabilities'] ?? [];
-    }
-
-    /**
-     * Extract additional user emails from parsed YAML
-     *
-     * @param array $data Parsed YAML data
-     * @return array Email addresses
-     */
-    public function extract_additional_users(array $data): array {
-        return $data['definition']['additional_users'] ?? [];
-    }
-
-    /**
-     * Extract required plugins from parsed YAML
-     *
-     * @param array $data Parsed YAML data
-     * @return array Plugin names
-     */
-    public function extract_required_plugins(array $data): array {
-        return $data['requirements']['plugins'] ?? [];
-    }
-
-    /**
-     * Extract file transfer flags from the requirements section.
-     * Defaults to false for any flag not explicitly set.
-     *
-     * @param array $data Parsed YAML data
-     * @return array ['download_files' => bool, 'upload_files' => bool]
-     */
-    public function extract_service_settings(array $data): array {
-        $requirements = $data['requirements'] ?? [];
-        return [
-            'download_files' => !empty($requirements['download_files']),
-            'upload_files'   => !empty($requirements['upload_files']),
-        ];
     }
 }

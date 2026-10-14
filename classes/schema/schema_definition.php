@@ -16,6 +16,7 @@
 
 namespace local_servicemanager\schema;
 
+use local_servicemanager\automation\role_settings;
 use local_servicemanager\automation\service_settings;
 
 /**
@@ -46,6 +47,9 @@ class schema_definition {
     /** @var service_settings File transfer permissions. */
     protected $settings;
 
+    /** @var role_settings What the schema says about its role. */
+    protected $rolesettings;
+
     /**
      * Constructor
      *
@@ -54,35 +58,38 @@ class schema_definition {
      * @param array $extracapabilities Extra capabilities
      * @param array $additionalusers Additional user emails
      * @param service_settings $settings File transfer permissions
+     * @param role_settings|null $rolesettings What the schema says about its role; none when it says nothing
      */
     public function __construct(
         array $meta,
         array $functions,
         array $extracapabilities,
         array $additionalusers,
-        service_settings $settings
+        service_settings $settings,
+        ?role_settings $rolesettings = null
     ) {
         $this->meta = $meta;
         $this->functions = $functions;
         $this->extracapabilities = $extracapabilities;
         $this->additionalusers = $additionalusers;
         $this->settings = $settings;
+        $this->rolesettings = $rolesettings ?? new role_settings();
     }
 
     /**
      * Read a definition out of parsed YAML data.
      *
-     * @param yaml_parser $parser Parser used for the extraction
      * @param array $data Parsed YAML data
      * @return self
      */
-    public static function from_data(yaml_parser $parser, array $data): self {
+    public static function from_data(array $data): self {
         return new self(
-            $parser->extract_meta($data),
-            $parser->extract_functions($data),
-            $parser->extract_extra_capabilities($data),
-            $parser->extract_additional_users($data),
-            service_settings::from_array($parser->extract_service_settings($data))
+            schema_extractor::meta($data),
+            schema_extractor::functions($data),
+            schema_extractor::extra_capabilities($data),
+            schema_extractor::additional_users($data),
+            service_settings::from_array(schema_extractor::service_settings($data)),
+            schema_extractor::role_settings($data)
         );
     }
 
@@ -119,7 +126,7 @@ class schema_definition {
      * @return string
      */
     public function get_version(): string {
-        return (string) $this->meta['version'];
+        return (string) ($this->meta['version'] ?? '');
     }
 
     /**
@@ -156,6 +163,15 @@ class schema_definition {
      */
     public function get_additional_users(): array {
         return $this->additionalusers;
+    }
+
+    /**
+     * What the schema says about its role.
+     *
+     * @return role_settings
+     */
+    public function get_role_settings(): role_settings {
+        return $this->rolesettings;
     }
 
     /**

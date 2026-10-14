@@ -1,369 +1,3028 @@
-/* Web Service Manager styles */
-/* All styles scoped under .servicemanager-* classes for specificity */
+/* Generated from styles.scss. Edit the SCSS component sources and rebuild. */
+/* Moodle 4.0 and later cores disagree on decimal formatting; use the current leading-zero style. */
+/* stylelint-disable number-leading-zero */
 
-/* ===========================================
-   Dashboard Styles
-   =========================================== */
-.servicemanager-dashboard .badge-lg {
-    font-size: 0.9rem;
-    padding: 0.5em 0.8em;
+.servicemanager-dashboard,
+.servicemanager-detail,
+.servicemanager-history-page,
+.servicemanager-compare-page,
+.servicemanager-documentation,
+.servicemanager-import-page,
+.servicemanager-import-result,
+.sm-modal {
+    --sm-body-bg: var(--bs-body-bg, #fff);
+    --sm-body-color: var(--bs-body-color, #1d2125);
+    --sm-tertiary-bg: var(--bs-tertiary-bg, #f8f9fa);
+    --sm-secondary-color: var(--bs-secondary-color, #6a737b);
+    --sm-border-color: var(--bs-border-color, #dee2e6);
+    --sm-primary: var(--bs-primary, #0f6cbf);
+    --sm-primary-bg-subtle: var(--bs-primary-bg-subtle, #cfe2f3);
+    --sm-success: var(--bs-success, #357a32);
+    --sm-success-text-emphasis: var(--bs-success-text-emphasis, #1c3d1a);
+    --sm-warning: var(--bs-warning, #f0ad4e);
+    --sm-warning-text-emphasis: var(--bs-warning-text-emphasis, #664d03);
+    --sm-danger: var(--bs-danger, #ca3120);
+    --sm-danger-text-emphasis: var(--bs-danger-text-emphasis, #58151c);
+    --sm-info-text-emphasis: var(--bs-info-text-emphasis, #055160);
+    --sm-white: var(--bs-white, #fff);
+    --sm-font-monospace: var(--bs-font-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+    --sm-border-radius-sm: var(--bs-border-radius-sm, 0.2rem);
+    --sm-border-radius-lg: var(--bs-border-radius-lg, 0.5rem);
+    --sm-btn-border-radius: var(--bs-btn-border-radius, 0.25rem);
+    --sm-box-shadow-sm: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
+    --sm-box-shadow-lg: var(--bs-box-shadow-lg, 0 1rem 3rem rgba(0, 0, 0, 0.175));
 }
 
-.servicemanager-dashboard .table th {
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
+.servicemanager-dashboard .sm-icon-gap,
+.servicemanager-detail .sm-icon-gap,
+.servicemanager-history-page .sm-icon-gap,
+.servicemanager-compare-page .sm-icon-gap,
+.servicemanager-documentation .sm-icon-gap,
+.servicemanager-import-page .sm-icon-gap,
+.servicemanager-import-result .sm-icon-gap {
+    margin-inline-end: 0.35rem;
 }
 
-.servicemanager-dashboard .table code {
-    background-color: #e9ecef;
-    padding: 0.2em 0.4em;
-    border-radius: 0.25rem;
-    font-size: 0.875em;
-}
-
-.servicemanager-dashboard .badge-success {
-    background-color: #28a745;
-}
-
-.servicemanager-dashboard .badge-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.servicemanager-dashboard .badge-danger {
-    background-color: #dc3545;
-}
-
-/* Bulk selection styles */
-.servicemanager-dashboard .bulk-checkbox {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.servicemanager-dashboard .bulk-actions {
-    display: none;
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    background-color: #e9ecef;
-    border-radius: 0.25rem;
-}
-
-.servicemanager-dashboard .bulk-actions.show {
-    display: flex;
-    align-items: center;
+.servicemanager-dashboard .sm-badges-row,
+.servicemanager-dashboard .sm-actions-row,
+.servicemanager-detail .sm-badges-row,
+.servicemanager-detail .sm-actions-row,
+.servicemanager-history-page .sm-badges-row,
+.servicemanager-history-page .sm-actions-row,
+.servicemanager-compare-page .sm-badges-row,
+.servicemanager-compare-page .sm-actions-row,
+.servicemanager-documentation .sm-badges-row,
+.servicemanager-documentation .sm-actions-row,
+.servicemanager-import-page .sm-badges-row,
+.servicemanager-import-page .sm-actions-row,
+.servicemanager-import-result .sm-badges-row,
+.servicemanager-import-result .sm-actions-row {
     gap: 0.5rem;
-    flex-wrap: wrap;
 }
 
-.servicemanager-dashboard .bulk-actions .selected-count {
-    font-weight: 600;
-    margin-right: 1rem;
+.servicemanager-dashboard .sm-check-column,
+.servicemanager-detail .sm-check-column,
+.servicemanager-history-page .sm-check-column,
+.servicemanager-compare-page .sm-check-column,
+.servicemanager-documentation .sm-check-column,
+.servicemanager-import-page .sm-check-column,
+.servicemanager-import-result .sm-check-column {
+    width: 2.5rem;
 }
 
-.servicemanager-dashboard .bulk-checkbox-small {
-    transform: scale(1.3);
-    cursor: pointer;
-    vertical-align: middle;
+.servicemanager-dashboard .sm-half,
+.servicemanager-detail .sm-half,
+.servicemanager-history-page .sm-half,
+.servicemanager-compare-page .sm-half,
+.servicemanager-documentation .sm-half,
+.servicemanager-import-page .sm-half,
+.servicemanager-import-result .sm-half {
+    width: 50%;
 }
 
-/* ===========================================
-   Detail View Styles
-   =========================================== */
-.servicemanager-detail .badge-lg {
-    font-size: 1rem;
-    padding: 0.6em 1em;
+.servicemanager-dashboard .sm-auto-width,
+.servicemanager-detail .sm-auto-width,
+.servicemanager-history-page .sm-auto-width,
+.servicemanager-compare-page .sm-auto-width,
+.servicemanager-documentation .sm-auto-width,
+.servicemanager-import-page .sm-auto-width,
+.servicemanager-import-result .sm-auto-width {
+    width: auto;
 }
 
-.servicemanager-detail .font-monospace {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+@media (min-width: 768px) {
+
+    .servicemanager-dashboard .sm-divider,
+    .servicemanager-detail .sm-divider,
+    .servicemanager-history-page .sm-divider,
+    .servicemanager-compare-page .sm-divider,
+    .servicemanager-documentation .sm-divider,
+    .servicemanager-import-page .sm-divider,
+    .servicemanager-import-result .sm-divider {
+        border-inline-end: 1px solid var(--sm-border-color);
+    }
 }
 
-.servicemanager-detail .token-display {
-    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-    border: 2px solid #28a745;
-}
-
-.servicemanager-detail .token-display input {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.95rem;
-    background-color: #fff;
-}
-
-.servicemanager-detail .copy-token {
-    cursor: pointer;
-}
-
-.servicemanager-detail .badge-success {
-    background-color: #28a745;
-}
-
-.servicemanager-detail .badge-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.servicemanager-detail .badge-danger {
-    background-color: #dc3545;
-}
-
-.servicemanager-detail .table th {
-    font-weight: 600;
-    text-transform: uppercase;
+.servicemanager-dashboard .table th,
+.servicemanager-detail .table th,
+.servicemanager-history-page .table th,
+.servicemanager-compare-page .table th,
+.servicemanager-documentation .table th,
+.servicemanager-import-page .table th,
+.servicemanager-import-result .table th {
     font-size: 0.75rem;
+    font-weight: 600;
     letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
-.servicemanager-detail .table code {
-    background-color: #e9ecef;
+.servicemanager-dashboard .table code,
+.servicemanager-detail .table code,
+.servicemanager-history-page .table code,
+.servicemanager-compare-page .table code,
+.servicemanager-documentation .table code,
+.servicemanager-import-page .table code,
+.servicemanager-import-result .table code {
     padding: 0.2em 0.4em;
-    border-radius: 0.25rem;
+    border-radius: var(--sm-border-radius-sm);
+    background-color: var(--sm-tertiary-bg);
     font-size: 0.875em;
 }
 
-.servicemanager-detail .card {
-    border: none;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+.servicemanager-dashboard .sm-page-header,
+.servicemanager-detail .sm-page-header,
+.servicemanager-history-page .sm-page-header,
+.servicemanager-compare-page .sm-page-header,
+.servicemanager-documentation .sm-page-header,
+.servicemanager-import-page .sm-page-header,
+.servicemanager-import-result .sm-page-header {
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.servicemanager-dashboard .sm-page-title,
+.servicemanager-detail .sm-page-title,
+.servicemanager-history-page .sm-page-title,
+.servicemanager-compare-page .sm-page-title,
+.servicemanager-documentation .sm-page-title,
+.servicemanager-import-page .sm-page-title,
+.servicemanager-import-result .sm-page-title {
+    min-width: 0;
+}
+
+.servicemanager-dashboard .sm-tiles,
+.servicemanager-detail .sm-tiles,
+.servicemanager-history-page .sm-tiles,
+.servicemanager-compare-page .sm-tiles,
+.servicemanager-documentation .sm-tiles,
+.servicemanager-import-page .sm-tiles,
+.servicemanager-import-result .sm-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
     margin-bottom: 1.5rem;
 }
 
-.servicemanager-detail .card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+.servicemanager-dashboard .sm-tiles.sm-tiles-four,
+.servicemanager-detail .sm-tiles.sm-tiles-four,
+.servicemanager-history-page .sm-tiles.sm-tiles-four,
+.servicemanager-compare-page .sm-tiles.sm-tiles-four,
+.servicemanager-documentation .sm-tiles.sm-tiles-four,
+.servicemanager-import-page .sm-tiles.sm-tiles-four,
+.servicemanager-import-result .sm-tiles.sm-tiles-four {
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
 }
 
-.servicemanager-detail .text-success {
-    color: #28a745 !important; /* stylelint-disable-line declaration-no-important */
+.servicemanager-dashboard .sm-tile,
+.servicemanager-detail .sm-tile,
+.servicemanager-history-page .sm-tile,
+.servicemanager-compare-page .sm-tile,
+.servicemanager-documentation .sm-tile,
+.servicemanager-import-page .sm-tile,
+.servicemanager-import-result .sm-tile {
+    height: 100%;
+    box-shadow: var(--sm-box-shadow-sm);
 }
 
-.servicemanager-detail .text-danger {
-    color: #dc3545 !important; /* stylelint-disable-line declaration-no-important */
+.servicemanager-dashboard .sm-tile .sm-tile-label,
+.servicemanager-detail .sm-tile .sm-tile-label,
+.servicemanager-history-page .sm-tile .sm-tile-label,
+.servicemanager-compare-page .sm-tile .sm-tile-label,
+.servicemanager-documentation .sm-tile .sm-tile-label,
+.servicemanager-import-page .sm-tile .sm-tile-label,
+.servicemanager-import-result .sm-tile .sm-tile-label {
+    letter-spacing: 0.04em;
 }
 
-/* ===========================================
-   Form Styles
-   =========================================== */
-.servicemanager-form .yaml-editor {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    background-color: #f8f9fa;
-    border: 1px solid #ced4da;
+.servicemanager-dashboard .sm-tile .sm-tile-value,
+.servicemanager-detail .sm-tile .sm-tile-value,
+.servicemanager-history-page .sm-tile .sm-tile-value,
+.servicemanager-compare-page .sm-tile .sm-tile-value,
+.servicemanager-documentation .sm-tile .sm-tile-value,
+.servicemanager-import-page .sm-tile .sm-tile-value,
+.servicemanager-import-result .sm-tile .sm-tile-value {
+    margin: 0.25rem 0;
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
 }
 
-.servicemanager-form .form-control:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+.servicemanager-dashboard .sm-tile .sm-tile-icon,
+.servicemanager-detail .sm-tile .sm-tile-icon,
+.servicemanager-history-page .sm-tile .sm-tile-icon,
+.servicemanager-compare-page .sm-tile .sm-tile-icon,
+.servicemanager-documentation .sm-tile .sm-tile-icon,
+.servicemanager-import-page .sm-tile .sm-tile-icon,
+.servicemanager-import-result .sm-tile .sm-tile-icon {
+    font-size: 1.1rem;
 }
 
-/* ===========================================
-   History/Versioning Styles
-   =========================================== */
-.servicemanager-history .version-item {
-    padding: 1rem;
-    border-left: 3px solid #dee2e6;
-    margin-bottom: 0.5rem;
-    background-color: #f8f9fa;
+.servicemanager-dashboard .sm-tile.sm-tile-link:hover,
+.servicemanager-dashboard .sm-tile.sm-tile-link:focus-visible,
+.servicemanager-detail .sm-tile.sm-tile-link:hover,
+.servicemanager-detail .sm-tile.sm-tile-link:focus-visible,
+.servicemanager-history-page .sm-tile.sm-tile-link:hover,
+.servicemanager-history-page .sm-tile.sm-tile-link:focus-visible,
+.servicemanager-compare-page .sm-tile.sm-tile-link:hover,
+.servicemanager-compare-page .sm-tile.sm-tile-link:focus-visible,
+.servicemanager-documentation .sm-tile.sm-tile-link:hover,
+.servicemanager-documentation .sm-tile.sm-tile-link:focus-visible,
+.servicemanager-import-page .sm-tile.sm-tile-link:hover,
+.servicemanager-import-page .sm-tile.sm-tile-link:focus-visible,
+.servicemanager-import-result .sm-tile.sm-tile-link:hover,
+.servicemanager-import-result .sm-tile.sm-tile-link:focus-visible {
+    border-color: var(--sm-primary);
 }
 
-.servicemanager-history .version-item:hover {
-    background-color: #e9ecef;
+.servicemanager-dashboard .sm-tile.sm-tile-active,
+.servicemanager-detail .sm-tile.sm-tile-active,
+.servicemanager-history-page .sm-tile.sm-tile-active,
+.servicemanager-compare-page .sm-tile.sm-tile-active,
+.servicemanager-documentation .sm-tile.sm-tile-active,
+.servicemanager-import-page .sm-tile.sm-tile-active,
+.servicemanager-import-result .sm-tile.sm-tile-active {
+    border-color: var(--sm-primary);
+    box-shadow: 0 0 0 1px var(--sm-primary);
 }
 
-.servicemanager-history .version-item.current {
-    border-left-color: #28a745;
-}
-
-.servicemanager-history .version-meta {
-    font-size: 0.875rem;
-    color: #6c757d;
-}
-
-.servicemanager-history .version-diff {
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.8rem;
-    white-space: pre-wrap;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.servicemanager-history .diff-add {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.servicemanager-history .diff-remove {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* ===========================================
-   Import/Export Styles
-   =========================================== */
-.servicemanager-import .drop-zone {
-    border: 2px dashed #ced4da;
-    border-radius: 0.5rem;
-    padding: 3rem;
-    text-align: center;
-    background-color: #f8f9fa;
-    transition: all 0.2s ease;
-}
-
-.servicemanager-import .drop-zone:hover,
-.servicemanager-import .drop-zone.dragover {
-    border-color: #007bff;
-    background-color: #e7f1ff;
-}
-
-.servicemanager-import .drop-zone .drop-icon {
-    font-size: 3rem;
-    color: #6c757d;
+.servicemanager-dashboard .sm-toolbar,
+.servicemanager-detail .sm-toolbar,
+.servicemanager-history-page .sm-toolbar,
+.servicemanager-compare-page .sm-toolbar,
+.servicemanager-documentation .sm-toolbar,
+.servicemanager-import-page .sm-toolbar,
+.servicemanager-import-result .sm-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     margin-bottom: 1rem;
+    gap: 0.75rem;
 }
 
-.servicemanager-import .conflict-warning {
-    background-color: #fff3cd;
-    border: 1px solid #ffc107;
-    border-radius: 0.25rem;
+.servicemanager-dashboard .sm-toolbar .sm-search,
+.servicemanager-detail .sm-toolbar .sm-search,
+.servicemanager-history-page .sm-toolbar .sm-search,
+.servicemanager-compare-page .sm-toolbar .sm-search,
+.servicemanager-documentation .sm-toolbar .sm-search,
+.servicemanager-import-page .sm-toolbar .sm-search,
+.servicemanager-import-result .sm-toolbar .sm-search {
+    flex: 1 1 14rem;
+    max-width: 26rem;
+}
+
+.servicemanager-dashboard .sm-toolbar .sm-toolbar-actions,
+.servicemanager-detail .sm-toolbar .sm-toolbar-actions,
+.servicemanager-history-page .sm-toolbar .sm-toolbar-actions,
+.servicemanager-compare-page .sm-toolbar .sm-toolbar-actions,
+.servicemanager-documentation .sm-toolbar .sm-toolbar-actions,
+.servicemanager-import-page .sm-toolbar .sm-toolbar-actions,
+.servicemanager-import-result .sm-toolbar .sm-toolbar-actions {
+    margin-inline-start: auto;
+}
+
+.servicemanager-dashboard .dropdown,
+.servicemanager-dashboard .btn-group,
+.servicemanager-detail .dropdown,
+.servicemanager-detail .btn-group,
+.servicemanager-history-page .dropdown,
+.servicemanager-history-page .btn-group,
+.servicemanager-compare-page .dropdown,
+.servicemanager-compare-page .btn-group,
+.servicemanager-documentation .dropdown,
+.servicemanager-documentation .btn-group,
+.servicemanager-import-page .dropdown,
+.servicemanager-import-page .btn-group,
+.servicemanager-import-result .dropdown,
+.servicemanager-import-result .btn-group {
+    position: relative;
+}
+
+.servicemanager-dashboard .sm-filter-menu,
+.servicemanager-dashboard .sm-row-menu,
+.servicemanager-detail .sm-filter-menu,
+.servicemanager-detail .sm-row-menu,
+.servicemanager-history-page .sm-filter-menu,
+.servicemanager-history-page .sm-row-menu,
+.servicemanager-compare-page .sm-filter-menu,
+.servicemanager-compare-page .sm-row-menu,
+.servicemanager-documentation .sm-filter-menu,
+.servicemanager-documentation .sm-row-menu,
+.servicemanager-import-page .sm-filter-menu,
+.servicemanager-import-page .sm-row-menu,
+.servicemanager-import-result .sm-filter-menu,
+.servicemanager-import-result .sm-row-menu {
+    right: 0;
+    left: auto;
+    max-width: 20rem;
+}
+
+@media (max-width: 576px) {
+
+    .servicemanager-dashboard .sm-filter-menu,
+    .servicemanager-dashboard .sm-row-menu,
+    .servicemanager-detail .sm-filter-menu,
+    .servicemanager-detail .sm-row-menu,
+    .servicemanager-history-page .sm-filter-menu,
+    .servicemanager-history-page .sm-row-menu,
+    .servicemanager-compare-page .sm-filter-menu,
+    .servicemanager-compare-page .sm-row-menu,
+    .servicemanager-documentation .sm-filter-menu,
+    .servicemanager-documentation .sm-row-menu,
+    .servicemanager-import-page .sm-filter-menu,
+    .servicemanager-import-page .sm-row-menu,
+    .servicemanager-import-result .sm-filter-menu,
+    .servicemanager-import-result .sm-row-menu {
+        max-width: calc(100vw - 2rem);
+    }
+}
+
+.servicemanager-dashboard .sm-filter .icon,
+.servicemanager-dashboard .sm-filter-head .icon,
+.servicemanager-detail .sm-filter .icon,
+.servicemanager-detail .sm-filter-head .icon,
+.servicemanager-history-page .sm-filter .icon,
+.servicemanager-history-page .sm-filter-head .icon,
+.servicemanager-compare-page .sm-filter .icon,
+.servicemanager-compare-page .sm-filter-head .icon,
+.servicemanager-documentation .sm-filter .icon,
+.servicemanager-documentation .sm-filter-head .icon,
+.servicemanager-import-page .sm-filter .icon,
+.servicemanager-import-page .sm-filter-head .icon,
+.servicemanager-import-result .sm-filter .icon,
+.servicemanager-import-result .sm-filter-head .icon {
+    margin: 0;
+}
+
+.servicemanager-dashboard .sm-filter-menu,
+.servicemanager-detail .sm-filter-menu,
+.servicemanager-history-page .sm-filter-menu,
+.servicemanager-compare-page .sm-filter-menu,
+.servicemanager-documentation .sm-filter-menu,
+.servicemanager-import-page .sm-filter-menu,
+.servicemanager-import-result .sm-filter-menu {
+    width: 19rem;
     padding: 1rem;
-    margin-bottom: 1rem;
 }
 
-/* ===========================================
-   Responsive Adjustments
-   =========================================== */
-@media (max-width: 768px) {
-    .servicemanager-dashboard .btn-group-sm .btn {
-        padding: 0.25rem 0.4rem;
-    }
-
-    .servicemanager-dashboard .bulk-actions {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .servicemanager-detail .card-footer .btn {
-        margin-bottom: 0.5rem;
-        display: block;
-        width: 100%;
-    }
-
-    .servicemanager-detail .card-footer .float-right {
-        /* Overrides Bootstrap's `.float-right { float: right !important; }` so footer buttons stack on small screens. */
-        float: none !important; /* stylelint-disable-line declaration-no-important */
-    }
-
-    .servicemanager-history .version-item {
-        padding: 0.75rem;
-    }
-}
-
-/* ===========================================
-   Pagination Styles
-   =========================================== */
-.servicemanager-pagination .pagination {
-    margin-bottom: 0.5rem;
-}
-
-.servicemanager-pagination .page-item .page-link {
-    padding: 0.5rem 0.75rem;
-    min-width: 2.5rem;
-    text-align: center;
-}
-
-.servicemanager-pagination .page-item.active .page-link {
-    color: #fff;
-}
-
-/* ===========================================
-   Filter Dropdown Styles
-   =========================================== */
-.servicemanager-filters .dropdown-toggle::after {
-    margin-left: 0.5rem;
-}
-
-.servicemanager-filter-dropdown {
-    min-width: 280px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.servicemanager-filter-dropdown .form-group {
+.servicemanager-dashboard .sm-filter-menu .sm-filter-head,
+.servicemanager-detail .sm-filter-menu .sm-filter-head,
+.servicemanager-history-page .sm-filter-menu .sm-filter-head,
+.servicemanager-compare-page .sm-filter-menu .sm-filter-head,
+.servicemanager-documentation .sm-filter-menu .sm-filter-head,
+.servicemanager-import-page .sm-filter-menu .sm-filter-head,
+.servicemanager-import-result .sm-filter-menu .sm-filter-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 0.75rem;
 }
 
-.servicemanager-filter-dropdown .form-group:last-of-type {
-    margin-bottom: 0;
-}
-
-.servicemanager-filter-dropdown label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #495057;
-    margin-bottom: 0.25rem;
-}
-
-.servicemanager-filter-dropdown .form-control-sm {
-    font-size: 0.875rem;
-}
-
-/* Filter applied indicator */
-.btn-warning.dropdown-toggle {
-    background-color: #b8860b;
-    border-color: #b8860b;
-    color: #fff;
-}
-
-.btn-warning.dropdown-toggle:hover,
-.btn-warning.dropdown-toggle:focus {
-    background-color: #9a7209;
-    border-color: #9a7209;
-    color: #fff;
-}
-
-.btn-warning .badge-light {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #b8860b;
-    font-size: 0.7rem;
+.servicemanager-dashboard .sm-filter-menu .sm-filter-heading,
+.servicemanager-detail .sm-filter-menu .sm-filter-heading,
+.servicemanager-history-page .sm-filter-menu .sm-filter-heading,
+.servicemanager-compare-page .sm-filter-menu .sm-filter-heading,
+.servicemanager-documentation .sm-filter-menu .sm-filter-heading,
+.servicemanager-import-page .sm-filter-menu .sm-filter-heading,
+.servicemanager-import-result .sm-filter-menu .sm-filter-heading {
+    margin: 0;
+    font-size: 1rem;
     font-weight: 600;
 }
 
-/* ===========================================
-   Documentation Button Styles
-   =========================================== */
-.servicemanager-dashboard .btn-outline-info {
-    border-color: #17a2b8;
-    color: #17a2b8;
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn,
+.servicemanager-detail .sm-filter-menu .sm-iconbtn,
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn,
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn,
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn,
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn,
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: inherit;
+    transition: background-color 0.12s ease, color 0.12s ease;
 }
 
-.servicemanager-dashboard .btn-outline-info:hover {
-    background-color: #17a2b8;
-    color: #fff;
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-detail .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn:hover:not(:disabled),
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--sm-primary) 14%, var(--sm-body-bg));
+    color: var(--sm-primary);
 }
 
-/* ===========================================
-   Mobile Responsive for Filters
-   =========================================== */
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-detail .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn:focus-visible,
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn:focus-visible {
+    outline: 2px solid var(--sm-primary);
+    outline-offset: 1px;
+}
+
+.servicemanager-dashboard .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-detail .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-history-page .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-compare-page .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-documentation .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-import-page .sm-filter-menu .sm-iconbtn:disabled,
+.servicemanager-import-result .sm-filter-menu .sm-iconbtn:disabled {
+    opacity: 0.35;
+}
+
+.servicemanager-dashboard .sm-filter-menu .sm-filter-title,
+.servicemanager-detail .sm-filter-menu .sm-filter-title,
+.servicemanager-history-page .sm-filter-menu .sm-filter-title,
+.servicemanager-compare-page .sm-filter-menu .sm-filter-title,
+.servicemanager-documentation .sm-filter-menu .sm-filter-title,
+.servicemanager-import-page .sm-filter-menu .sm-filter-title,
+.servicemanager-import-result .sm-filter-menu .sm-filter-title {
+    margin-bottom: 0.4rem;
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.servicemanager-dashboard .sm-filter-menu .form-control,
+.servicemanager-detail .sm-filter-menu .form-control,
+.servicemanager-history-page .sm-filter-menu .form-control,
+.servicemanager-compare-page .sm-filter-menu .form-control,
+.servicemanager-documentation .sm-filter-menu .form-control,
+.servicemanager-import-page .sm-filter-menu .form-control,
+.servicemanager-import-result .sm-filter-menu .form-control {
+    width: 100%;
+}
+
+.servicemanager-dashboard .sm-chips,
+.servicemanager-detail .sm-chips,
+.servicemanager-history-page .sm-chips,
+.servicemanager-compare-page .sm-chips,
+.servicemanager-documentation .sm-chips,
+.servicemanager-import-page .sm-chips,
+.servicemanager-import-result .sm-chips {
+    display: flex;
+    margin-bottom: 1rem;
+    gap: 0.375rem;
+}
+
+.servicemanager-dashboard .sm-chip,
+.servicemanager-detail .sm-chip,
+.servicemanager-history-page .sm-chip,
+.servicemanager-compare-page .sm-chip,
+.servicemanager-documentation .sm-chip,
+.servicemanager-import-page .sm-chip,
+.servicemanager-import-result .sm-chip {
+    flex: 1 1 0;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 999px;
+    background-color: transparent;
+    color: var(--sm-body-color);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    transition: background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+}
+
+.servicemanager-dashboard .sm-chip:hover:not(:disabled),
+.servicemanager-detail .sm-chip:hover:not(:disabled),
+.servicemanager-history-page .sm-chip:hover:not(:disabled),
+.servicemanager-compare-page .sm-chip:hover:not(:disabled),
+.servicemanager-documentation .sm-chip:hover:not(:disabled),
+.servicemanager-import-page .sm-chip:hover:not(:disabled),
+.servicemanager-import-result .sm-chip:hover:not(:disabled) {
+    border-color: var(--sm-primary);
+    background-color: var(--sm-tertiary-bg);
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.16);
+    transform: translateY(-1px);
+}
+
+.servicemanager-dashboard .sm-chip.active,
+.servicemanager-detail .sm-chip.active,
+.servicemanager-history-page .sm-chip.active,
+.servicemanager-compare-page .sm-chip.active,
+.servicemanager-documentation .sm-chip.active,
+.servicemanager-import-page .sm-chip.active,
+.servicemanager-import-result .sm-chip.active {
+    border-color: var(--sm-primary);
+    background-color: var(--sm-primary-bg-subtle);
+    box-shadow: 0 0 0 2px var(--sm-primary-bg-subtle);
+}
+
+.servicemanager-dashboard .sm-chip:focus-visible,
+.servicemanager-detail .sm-chip:focus-visible,
+.servicemanager-history-page .sm-chip:focus-visible,
+.servicemanager-compare-page .sm-chip:focus-visible,
+.servicemanager-documentation .sm-chip:focus-visible,
+.servicemanager-import-page .sm-chip:focus-visible,
+.servicemanager-import-result .sm-chip:focus-visible {
+    outline: 2px solid var(--sm-primary);
+    outline-offset: 2px;
+}
+
+.servicemanager-dashboard .btn-group > .sm-action-menu > .btn,
+.servicemanager-detail .btn-group > .sm-action-menu > .btn,
+.servicemanager-history-page .btn-group > .sm-action-menu > .btn,
+.servicemanager-compare-page .btn-group > .sm-action-menu > .btn,
+.servicemanager-documentation .btn-group > .sm-action-menu > .btn,
+.servicemanager-import-page .btn-group > .sm-action-menu > .btn,
+.servicemanager-import-result .btn-group > .sm-action-menu > .btn {
+    border-top-right-radius: var(--sm-btn-border-radius, var(--sm-border-radius-sm));
+    border-bottom-right-radius: var(--sm-btn-border-radius, var(--sm-border-radius-sm));
+}
+
+.servicemanager-dashboard .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn,
+.servicemanager-detail .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn,
+.servicemanager-history-page .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn,
+.servicemanager-compare-page .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn,
+.servicemanager-documentation .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn,
+.servicemanager-import-page .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn,
+.servicemanager-import-result .btn-group > .btn-group.sm-action-menu:not(:first-child) > .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.servicemanager-dashboard .sm-row-menu,
+.servicemanager-detail .sm-row-menu,
+.servicemanager-history-page .sm-row-menu,
+.servicemanager-compare-page .sm-row-menu,
+.servicemanager-documentation .sm-row-menu,
+.servicemanager-import-page .sm-row-menu,
+.servicemanager-import-result .sm-row-menu {
+    min-width: 12rem;
+}
+
+.servicemanager-dashboard .sm-panel,
+.servicemanager-detail .sm-panel,
+.servicemanager-history-page .sm-panel,
+.servicemanager-compare-page .sm-panel,
+.servicemanager-documentation .sm-panel,
+.servicemanager-import-page .sm-panel,
+.servicemanager-import-result .sm-panel {
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--sm-border-color);
+    background-color: var(--sm-body-bg);
+    box-shadow: var(--sm-box-shadow-sm);
+}
+
+.servicemanager-dashboard .sm-panel .list-group-item,
+.servicemanager-dashboard .sm-panel .table,
+.servicemanager-detail .sm-panel .list-group-item,
+.servicemanager-detail .sm-panel .table,
+.servicemanager-history-page .sm-panel .list-group-item,
+.servicemanager-history-page .sm-panel .table,
+.servicemanager-compare-page .sm-panel .list-group-item,
+.servicemanager-compare-page .sm-panel .table,
+.servicemanager-documentation .sm-panel .list-group-item,
+.servicemanager-documentation .sm-panel .table,
+.servicemanager-import-page .sm-panel .list-group-item,
+.servicemanager-import-page .sm-panel .table,
+.servicemanager-import-result .sm-panel .list-group-item,
+.servicemanager-import-result .sm-panel .table {
+    background-color: transparent;
+}
+
+.servicemanager-dashboard .sm-panel .card-header,
+.servicemanager-detail .sm-panel .card-header,
+.servicemanager-history-page .sm-panel .card-header,
+.servicemanager-compare-page .sm-panel .card-header,
+.servicemanager-documentation .sm-panel .card-header,
+.servicemanager-import-page .sm-panel .card-header,
+.servicemanager-import-result .sm-panel .card-header {
+    padding: 0.75rem 1rem;
+    background-color: var(--sm-tertiary-bg);
+}
+
+.servicemanager-dashboard .sm-panel .sm-panel-title,
+.servicemanager-detail .sm-panel .sm-panel-title,
+.servicemanager-history-page .sm-panel .sm-panel-title,
+.servicemanager-compare-page .sm-panel .sm-panel-title,
+.servicemanager-documentation .sm-panel .sm-panel-title,
+.servicemanager-import-page .sm-panel .sm-panel-title,
+.servicemanager-import-result .sm-panel .sm-panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.servicemanager-dashboard .sm-facts,
+.servicemanager-detail .sm-facts,
+.servicemanager-history-page .sm-facts,
+.servicemanager-compare-page .sm-facts,
+.servicemanager-documentation .sm-facts,
+.servicemanager-import-page .sm-facts,
+.servicemanager-import-result .sm-facts {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.6rem 1rem;
+}
+
+.servicemanager-dashboard .sm-facts dt,
+.servicemanager-detail .sm-facts dt,
+.servicemanager-history-page .sm-facts dt,
+.servicemanager-compare-page .sm-facts dt,
+.servicemanager-documentation .sm-facts dt,
+.servicemanager-import-page .sm-facts dt,
+.servicemanager-import-result .sm-facts dt {
+    color: var(--sm-secondary-color);
+    font-weight: 500;
+}
+
+.servicemanager-dashboard .sm-facts dd,
+.servicemanager-detail .sm-facts dd,
+.servicemanager-history-page .sm-facts dd,
+.servicemanager-compare-page .sm-facts dd,
+.servicemanager-documentation .sm-facts dd,
+.servicemanager-import-page .sm-facts dd,
+.servicemanager-import-result .sm-facts dd {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.servicemanager-dashboard .sm-facts .sm-fact-pair,
+.servicemanager-detail .sm-facts .sm-fact-pair,
+.servicemanager-history-page .sm-facts .sm-fact-pair,
+.servicemanager-compare-page .sm-facts .sm-fact-pair,
+.servicemanager-documentation .sm-facts .sm-fact-pair,
+.servicemanager-import-page .sm-facts .sm-fact-pair,
+.servicemanager-import-result .sm-facts .sm-fact-pair {
+    display: contents;
+}
+
+.servicemanager-dashboard .sm-resource-icon,
+.servicemanager-detail .sm-resource-icon,
+.servicemanager-history-page .sm-resource-icon,
+.servicemanager-compare-page .sm-resource-icon,
+.servicemanager-documentation .sm-resource-icon,
+.servicemanager-import-page .sm-resource-icon,
+.servicemanager-import-result .sm-resource-icon {
+    width: 2rem;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.servicemanager-dashboard .sm-list,
+.servicemanager-detail .sm-list,
+.servicemanager-history-page .sm-list,
+.servicemanager-compare-page .sm-list,
+.servicemanager-documentation .sm-list,
+.servicemanager-import-page .sm-list,
+.servicemanager-import-result .sm-list {
+    box-shadow: var(--sm-box-shadow-sm);
+}
+
+.servicemanager-dashboard .sm-list thead,
+.servicemanager-detail .sm-list thead,
+.servicemanager-history-page .sm-list thead,
+.servicemanager-compare-page .sm-list thead,
+.servicemanager-documentation .sm-list thead,
+.servicemanager-import-page .sm-list thead,
+.servicemanager-import-result .sm-list thead {
+    background-color: var(--sm-tertiary-bg);
+}
+
+.servicemanager-dashboard .sm-dialog,
+.servicemanager-detail .sm-dialog,
+.servicemanager-history-page .sm-dialog,
+.servicemanager-compare-page .sm-dialog,
+.servicemanager-documentation .sm-dialog,
+.servicemanager-import-page .sm-dialog,
+.servicemanager-import-result .sm-dialog {
+    width: 28rem;
+    max-width: calc(100vw - 2rem);
+    padding: 0;
+    border: 1px solid var(--sm-border-color);
+    border-radius: var(--sm-border-radius-lg);
+    background-color: var(--sm-body-bg);
+    color: var(--sm-body-color);
+    box-shadow: var(--sm-box-shadow-lg);
+}
+
+.servicemanager-dashboard .sm-dialog::backdrop,
+.servicemanager-detail .sm-dialog::backdrop,
+.servicemanager-history-page .sm-dialog::backdrop,
+.servicemanager-compare-page .sm-dialog::backdrop,
+.servicemanager-documentation .sm-dialog::backdrop,
+.servicemanager-import-page .sm-dialog::backdrop,
+.servicemanager-import-result .sm-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.servicemanager-dashboard .sm-dialog .sm-dialog-body,
+.servicemanager-detail .sm-dialog .sm-dialog-body,
+.servicemanager-history-page .sm-dialog .sm-dialog-body,
+.servicemanager-compare-page .sm-dialog .sm-dialog-body,
+.servicemanager-documentation .sm-dialog .sm-dialog-body,
+.servicemanager-import-page .sm-dialog .sm-dialog-body,
+.servicemanager-import-result .sm-dialog .sm-dialog-body {
+    padding: 1.5rem;
+}
+
+.servicemanager-dashboard .sm-dialog .sm-caps-list,
+.servicemanager-detail .sm-dialog .sm-caps-list,
+.servicemanager-history-page .sm-dialog .sm-caps-list,
+.servicemanager-compare-page .sm-dialog .sm-caps-list,
+.servicemanager-documentation .sm-dialog .sm-caps-list,
+.servicemanager-import-page .sm-dialog .sm-caps-list,
+.servicemanager-import-result .sm-dialog .sm-caps-list {
+    max-height: 18rem;
+    overflow-y: auto;
+}
+
+.servicemanager-dashboard .sm-health,
+.servicemanager-detail .sm-health,
+.servicemanager-history-page .sm-health,
+.servicemanager-compare-page .sm-health,
+.servicemanager-documentation .sm-health,
+.servicemanager-import-page .sm-health,
+.servicemanager-import-result .sm-health {
+    margin-bottom: 1rem;
+    box-shadow: var(--sm-box-shadow-sm);
+}
+
+.servicemanager-dashboard .sm-health .card-body,
+.servicemanager-detail .sm-health .card-body,
+.servicemanager-history-page .sm-health .card-body,
+.servicemanager-compare-page .sm-health .card-body,
+.servicemanager-documentation .sm-health .card-body,
+.servicemanager-import-page .sm-health .card-body,
+.servicemanager-import-result .sm-health .card-body {
+    gap: 1rem 1.5rem;
+}
+
+.servicemanager-dashboard .sm-health .sm-health-total,
+.servicemanager-detail .sm-health .sm-health-total,
+.servicemanager-history-page .sm-health .sm-health-total,
+.servicemanager-compare-page .sm-health .sm-health-total,
+.servicemanager-documentation .sm-health .sm-health-total,
+.servicemanager-import-page .sm-health .sm-health-total,
+.servicemanager-import-result .sm-health .sm-health-total {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.servicemanager-dashboard .sm-health .sm-health-number,
+.servicemanager-detail .sm-health .sm-health-number,
+.servicemanager-history-page .sm-health .sm-health-number,
+.servicemanager-compare-page .sm-health .sm-health-number,
+.servicemanager-documentation .sm-health .sm-health-number,
+.servicemanager-import-page .sm-health .sm-health-number,
+.servicemanager-import-result .sm-health .sm-health-number {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.servicemanager-dashboard .sm-health .sm-health-bar,
+.servicemanager-detail .sm-health .sm-health-bar,
+.servicemanager-history-page .sm-health .sm-health-bar,
+.servicemanager-compare-page .sm-health .sm-health-bar,
+.servicemanager-documentation .sm-health .sm-health-bar,
+.servicemanager-import-page .sm-health .sm-health-bar,
+.servicemanager-import-result .sm-health .sm-health-bar {
+    display: flex;
+    flex: 1 1 8rem;
+    height: 0.6rem;
+    border-radius: 0.3rem;
+    background-color: var(--sm-tertiary-bg);
+    overflow: hidden;
+    gap: 2px;
+}
+
+.servicemanager-dashboard .sm-health .sm-health-part,
+.servicemanager-detail .sm-health .sm-health-part,
+.servicemanager-history-page .sm-health .sm-health-part,
+.servicemanager-compare-page .sm-health .sm-health-part,
+.servicemanager-documentation .sm-health .sm-health-part,
+.servicemanager-import-page .sm-health .sm-health-part,
+.servicemanager-import-result .sm-health .sm-health-part {
+    min-width: 0.4rem;
+}
+
+.servicemanager-dashboard .sm-health .sm-health-legend,
+.servicemanager-detail .sm-health .sm-health-legend,
+.servicemanager-history-page .sm-health .sm-health-legend,
+.servicemanager-compare-page .sm-health .sm-health-legend,
+.servicemanager-documentation .sm-health .sm-health-legend,
+.servicemanager-import-page .sm-health .sm-health-legend,
+.servicemanager-import-result .sm-health .sm-health-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.servicemanager-dashboard .sm-health .sm-health-chip,
+.servicemanager-detail .sm-health .sm-health-chip,
+.servicemanager-history-page .sm-health .sm-health-chip,
+.servicemanager-compare-page .sm-health .sm-health-chip,
+.servicemanager-documentation .sm-health .sm-health-chip,
+.servicemanager-import-page .sm-health .sm-health-chip,
+.servicemanager-import-result .sm-health .sm-health-chip {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    padding: 0.3rem 0.8rem;
+    gap: 0.4rem;
+}
+
+.servicemanager-dashboard .sm-health .sm-health-chip:disabled,
+.servicemanager-detail .sm-health .sm-health-chip:disabled,
+.servicemanager-history-page .sm-health .sm-health-chip:disabled,
+.servicemanager-compare-page .sm-health .sm-health-chip:disabled,
+.servicemanager-documentation .sm-health .sm-health-chip:disabled,
+.servicemanager-import-page .sm-health .sm-health-chip:disabled,
+.servicemanager-import-result .sm-health .sm-health-chip:disabled {
+    opacity: 0.55;
+}
+
+.servicemanager-dashboard .sm-protocol,
+.servicemanager-detail .sm-protocol,
+.servicemanager-history-page .sm-protocol,
+.servicemanager-compare-page .sm-protocol,
+.servicemanager-documentation .sm-protocol,
+.servicemanager-import-page .sm-protocol,
+.servicemanager-import-result .sm-protocol {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.servicemanager-dashboard .sm-protocol.on,
+.servicemanager-detail .sm-protocol.on,
+.servicemanager-history-page .sm-protocol.on,
+.servicemanager-compare-page .sm-protocol.on,
+.servicemanager-documentation .sm-protocol.on,
+.servicemanager-import-page .sm-protocol.on,
+.servicemanager-import-result .sm-protocol.on {
+    border-color: var(--sm-success);
+    background-color: color-mix(in srgb, var(--sm-success) 14%, var(--sm-body-bg));
+    color: var(--sm-success-text-emphasis);
+}
+
+.servicemanager-dashboard .sm-protocol.off,
+.servicemanager-detail .sm-protocol.off,
+.servicemanager-history-page .sm-protocol.off,
+.servicemanager-compare-page .sm-protocol.off,
+.servicemanager-documentation .sm-protocol.off,
+.servicemanager-import-page .sm-protocol.off,
+.servicemanager-import-result .sm-protocol.off {
+    color: var(--sm-secondary-color);
+    opacity: 0.8;
+}
+
+.servicemanager-dashboard .sm-floating,
+.servicemanager-detail .sm-floating,
+.servicemanager-history-page .sm-floating,
+.servicemanager-compare-page .sm-floating,
+.servicemanager-documentation .sm-floating,
+.servicemanager-import-page .sm-floating,
+.servicemanager-import-result .sm-floating {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    z-index: 1040;
+    display: flex;
+    align-items: center;
+    max-width: calc(100vw - 2rem);
+    padding: 0.5rem 0.6rem 0.5rem 1.25rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 1rem;
+    background-color: var(--sm-body-bg);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+    gap: 1rem;
+    transform: translateX(-50%);
+}
+
+.servicemanager-dashboard .sm-floating .sm-floating-count,
+.servicemanager-detail .sm-floating .sm-floating-count,
+.servicemanager-history-page .sm-floating .sm-floating-count,
+.servicemanager-compare-page .sm-floating .sm-floating-count,
+.servicemanager-documentation .sm-floating .sm-floating-count,
+.servicemanager-import-page .sm-floating .sm-floating-count,
+.servicemanager-import-result .sm-floating .sm-floating-count {
+    display: inline-flex;
+    align-items: center;
+    color: var(--sm-body-color);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.servicemanager-dashboard .sm-floating .sm-floating-clear,
+.servicemanager-detail .sm-floating .sm-floating-clear,
+.servicemanager-history-page .sm-floating .sm-floating-clear,
+.servicemanager-compare-page .sm-floating .sm-floating-clear,
+.servicemanager-documentation .sm-floating .sm-floating-clear,
+.servicemanager-import-page .sm-floating .sm-floating-clear,
+.servicemanager-import-result .sm-floating .sm-floating-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    color: var(--sm-secondary-color);
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.servicemanager-dashboard .sm-floating .sm-floating-clear:hover,
+.servicemanager-dashboard .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-detail .sm-floating .sm-floating-clear:hover,
+.servicemanager-detail .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-history-page .sm-floating .sm-floating-clear:hover,
+.servicemanager-history-page .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-compare-page .sm-floating .sm-floating-clear:hover,
+.servicemanager-compare-page .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-documentation .sm-floating .sm-floating-clear:hover,
+.servicemanager-documentation .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-import-page .sm-floating .sm-floating-clear:hover,
+.servicemanager-import-page .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-import-result .sm-floating .sm-floating-clear:hover,
+.servicemanager-import-result .sm-floating .sm-floating-clear:focus-visible {
+    background-color: color-mix(in srgb, var(--sm-primary) 14%, var(--sm-body-bg));
+    color: var(--sm-primary);
+}
+
+.servicemanager-dashboard .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-detail .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-history-page .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-compare-page .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-documentation .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-import-page .sm-floating .sm-floating-clear:focus-visible,
+.servicemanager-import-result .sm-floating .sm-floating-clear:focus-visible {
+    outline: 2px solid var(--sm-primary);
+    outline-offset: 1px;
+}
+
+.servicemanager-dashboard .sm-floating .sm-floating-actions,
+.servicemanager-detail .sm-floating .sm-floating-actions,
+.servicemanager-history-page .sm-floating .sm-floating-actions,
+.servicemanager-compare-page .sm-floating .sm-floating-actions,
+.servicemanager-documentation .sm-floating .sm-floating-actions,
+.servicemanager-import-page .sm-floating .sm-floating-actions,
+.servicemanager-import-result .sm-floating .sm-floating-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
 @media (max-width: 576px) {
-    .servicemanager-filter-dropdown {
-        min-width: 250px;
+
+    .servicemanager-dashboard .sm-floating,
+    .servicemanager-detail .sm-floating,
+    .servicemanager-history-page .sm-floating,
+    .servicemanager-compare-page .sm-floating,
+    .servicemanager-documentation .sm-floating,
+    .servicemanager-import-page .sm-floating,
+    .servicemanager-import-result .sm-floating {
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: var(--sm-border-radius-lg);
+    }
+}
+
+.servicemanager-dashboard .sm-pill,
+.servicemanager-detail .sm-pill,
+.servicemanager-history-page .sm-pill,
+.servicemanager-compare-page .sm-pill,
+.servicemanager-documentation .sm-pill,
+.servicemanager-import-page .sm-pill,
+.servicemanager-import-result .sm-pill {
+    --sm-tone: var(--sm-body-color);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid transparent;
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--sm-tone) 14%, var(--sm-body-bg));
+    color: var(--sm-tone);
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+}
+
+.servicemanager-dashboard .sm-pill.tone-primary,
+.servicemanager-detail .sm-pill.tone-primary,
+.servicemanager-history-page .sm-pill.tone-primary,
+.servicemanager-compare-page .sm-pill.tone-primary,
+.servicemanager-documentation .sm-pill.tone-primary,
+.servicemanager-import-page .sm-pill.tone-primary,
+.servicemanager-import-result .sm-pill.tone-primary {
+    --sm-tone: var(--sm-primary);
+}
+
+.servicemanager-dashboard .sm-pill.tone-success,
+.servicemanager-detail .sm-pill.tone-success,
+.servicemanager-history-page .sm-pill.tone-success,
+.servicemanager-compare-page .sm-pill.tone-success,
+.servicemanager-documentation .sm-pill.tone-success,
+.servicemanager-import-page .sm-pill.tone-success,
+.servicemanager-import-result .sm-pill.tone-success {
+    --sm-tone: var(--sm-success);
+}
+
+.servicemanager-dashboard .sm-pill.tone-warning,
+.servicemanager-detail .sm-pill.tone-warning,
+.servicemanager-history-page .sm-pill.tone-warning,
+.servicemanager-compare-page .sm-pill.tone-warning,
+.servicemanager-documentation .sm-pill.tone-warning,
+.servicemanager-import-page .sm-pill.tone-warning,
+.servicemanager-import-result .sm-pill.tone-warning {
+    --sm-tone: var(--sm-warning-text-emphasis);
+}
+
+.servicemanager-dashboard .sm-pill.tone-info,
+.servicemanager-detail .sm-pill.tone-info,
+.servicemanager-history-page .sm-pill.tone-info,
+.servicemanager-compare-page .sm-pill.tone-info,
+.servicemanager-documentation .sm-pill.tone-info,
+.servicemanager-import-page .sm-pill.tone-info,
+.servicemanager-import-result .sm-pill.tone-info {
+    --sm-tone: var(--sm-info-text-emphasis);
+}
+
+.servicemanager-dashboard .sm-pill.tone-danger,
+.servicemanager-detail .sm-pill.tone-danger,
+.servicemanager-history-page .sm-pill.tone-danger,
+.servicemanager-compare-page .sm-pill.tone-danger,
+.servicemanager-documentation .sm-pill.tone-danger,
+.servicemanager-import-page .sm-pill.tone-danger,
+.servicemanager-import-result .sm-pill.tone-danger {
+    --sm-tone: var(--sm-danger);
+}
+
+.servicemanager-dashboard .sm-pill:hover,
+.servicemanager-detail .sm-pill:hover,
+.servicemanager-history-page .sm-pill:hover,
+.servicemanager-compare-page .sm-pill:hover,
+.servicemanager-documentation .sm-pill:hover,
+.servicemanager-import-page .sm-pill:hover,
+.servicemanager-import-result .sm-pill:hover {
+    border-color: var(--sm-tone);
+    background-color: color-mix(in srgb, var(--sm-tone) 24%, var(--sm-body-bg));
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.16);
+    transform: translateY(-1px);
+}
+
+.servicemanager-dashboard .sm-pill:focus-visible,
+.servicemanager-detail .sm-pill:focus-visible,
+.servicemanager-history-page .sm-pill:focus-visible,
+.servicemanager-compare-page .sm-pill:focus-visible,
+.servicemanager-documentation .sm-pill:focus-visible,
+.servicemanager-import-page .sm-pill:focus-visible,
+.servicemanager-import-result .sm-pill:focus-visible {
+    outline: 2px solid var(--sm-tone);
+    outline-offset: 2px;
+}
+
+.servicemanager-dashboard .sm-pill:disabled,
+.servicemanager-dashboard .sm-pill.disabled,
+.servicemanager-detail .sm-pill:disabled,
+.servicemanager-detail .sm-pill.disabled,
+.servicemanager-history-page .sm-pill:disabled,
+.servicemanager-history-page .sm-pill.disabled,
+.servicemanager-compare-page .sm-pill:disabled,
+.servicemanager-compare-page .sm-pill.disabled,
+.servicemanager-documentation .sm-pill:disabled,
+.servicemanager-documentation .sm-pill.disabled,
+.servicemanager-import-page .sm-pill:disabled,
+.servicemanager-import-page .sm-pill.disabled,
+.servicemanager-import-result .sm-pill:disabled,
+.servicemanager-import-result .sm-pill.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.servicemanager-dashboard .sm-pill.compact:not(.icon-only),
+.servicemanager-detail .sm-pill.compact:not(.icon-only),
+.servicemanager-history-page .sm-pill.compact:not(.icon-only),
+.servicemanager-compare-page .sm-pill.compact:not(.icon-only),
+.servicemanager-documentation .sm-pill.compact:not(.icon-only),
+.servicemanager-import-page .sm-pill.compact:not(.icon-only),
+.servicemanager-import-result .sm-pill.compact:not(.icon-only) {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8125rem;
+}
+
+.servicemanager-dashboard .sm-pill.icon-only,
+.servicemanager-detail .sm-pill.icon-only,
+.servicemanager-history-page .sm-pill.icon-only,
+.servicemanager-compare-page .sm-pill.icon-only,
+.servicemanager-documentation .sm-pill.icon-only,
+.servicemanager-import-page .sm-pill.icon-only,
+.servicemanager-import-result .sm-pill.icon-only {
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.servicemanager-dashboard .sm-pill.icon-only.compact,
+.servicemanager-detail .sm-pill.icon-only.compact,
+.servicemanager-history-page .sm-pill.icon-only.compact,
+.servicemanager-compare-page .sm-pill.icon-only.compact,
+.servicemanager-documentation .sm-pill.icon-only.compact,
+.servicemanager-import-page .sm-pill.icon-only.compact,
+.servicemanager-import-result .sm-pill.icon-only.compact {
+    width: 2rem;
+    height: 2rem;
+}
+
+.servicemanager-dashboard .sm-pill.has-caret,
+.servicemanager-detail .sm-pill.has-caret,
+.servicemanager-history-page .sm-pill.has-caret,
+.servicemanager-compare-page .sm-pill.has-caret,
+.servicemanager-documentation .sm-pill.has-caret,
+.servicemanager-import-page .sm-pill.has-caret,
+.servicemanager-import-result .sm-pill.has-caret {
+    height: 2.25rem;
+    padding: 0 0.7rem;
+    gap: 0.35rem;
+}
+
+.servicemanager-dashboard .sm-pill.has-caret .sm-caret,
+.servicemanager-detail .sm-pill.has-caret .sm-caret,
+.servicemanager-history-page .sm-pill.has-caret .sm-caret,
+.servicemanager-compare-page .sm-pill.has-caret .sm-caret,
+.servicemanager-documentation .sm-pill.has-caret .sm-caret,
+.servicemanager-import-page .sm-pill.has-caret .sm-caret,
+.servicemanager-import-result .sm-pill.has-caret .sm-caret {
+    font-size: 0.65rem;
+}
+
+.servicemanager-dashboard .sm-pill.solid,
+.servicemanager-detail .sm-pill.solid,
+.servicemanager-history-page .sm-pill.solid,
+.servicemanager-compare-page .sm-pill.solid,
+.servicemanager-documentation .sm-pill.solid,
+.servicemanager-import-page .sm-pill.solid,
+.servicemanager-import-result .sm-pill.solid {
+    background-color: var(--sm-tone);
+    color: var(--sm-white);
+}
+
+.servicemanager-dashboard .sm-pill.solid:hover,
+.servicemanager-detail .sm-pill.solid:hover,
+.servicemanager-history-page .sm-pill.solid:hover,
+.servicemanager-compare-page .sm-pill.solid:hover,
+.servicemanager-documentation .sm-pill.solid:hover,
+.servicemanager-import-page .sm-pill.solid:hover,
+.servicemanager-import-result .sm-pill.solid:hover {
+    border-color: transparent;
+    background-color: color-mix(in srgb, var(--sm-tone) 85%, black);
+}
+
+.servicemanager-dashboard .sm-group,
+.servicemanager-detail .sm-group,
+.servicemanager-history-page .sm-group,
+.servicemanager-compare-page .sm-group,
+.servicemanager-documentation .sm-group,
+.servicemanager-import-page .sm-group,
+.servicemanager-import-result .sm-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.servicemanager-dashboard .sm-slot,
+.servicemanager-detail .sm-slot,
+.servicemanager-history-page .sm-slot,
+.servicemanager-compare-page .sm-slot,
+.servicemanager-documentation .sm-slot,
+.servicemanager-import-page .sm-slot,
+.servicemanager-import-result .sm-slot {
+    display: inline-block;
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+}
+
+.servicemanager-dashboard .sm-empty,
+.servicemanager-detail .sm-empty,
+.servicemanager-history-page .sm-empty,
+.servicemanager-compare-page .sm-empty,
+.servicemanager-documentation .sm-empty,
+.servicemanager-import-page .sm-empty,
+.servicemanager-import-result .sm-empty {
+    border-style: dashed;
+}
+
+.servicemanager-dashboard .sm-empty .sm-empty-icon,
+.servicemanager-detail .sm-empty .sm-empty-icon,
+.servicemanager-history-page .sm-empty .sm-empty-icon,
+.servicemanager-compare-page .sm-empty .sm-empty-icon,
+.servicemanager-documentation .sm-empty .sm-empty-icon,
+.servicemanager-import-page .sm-empty .sm-empty-icon,
+.servicemanager-import-result .sm-empty .sm-empty-icon {
+    font-size: 2.5rem;
+}
+
+.servicemanager-dashboard .sm-empty .sm-empty-text,
+.servicemanager-detail .sm-empty .sm-empty-text,
+.servicemanager-history-page .sm-empty .sm-empty-text,
+.servicemanager-compare-page .sm-empty .sm-empty-text,
+.servicemanager-documentation .sm-empty .sm-empty-text,
+.servicemanager-import-page .sm-empty .sm-empty-text,
+.servicemanager-import-result .sm-empty .sm-empty-text {
+    max-width: 32rem;
+}
+
+@media (max-width: 768px) {
+
+    .servicemanager-dashboard .sm-tile .sm-tile-value,
+    .servicemanager-detail .sm-tile .sm-tile-value,
+    .servicemanager-history-page .sm-tile .sm-tile-value,
+    .servicemanager-compare-page .sm-tile .sm-tile-value,
+    .servicemanager-documentation .sm-tile .sm-tile-value,
+    .servicemanager-import-page .sm-tile .sm-tile-value,
+    .servicemanager-import-result .sm-tile .sm-tile-value {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .servicemanager-dashboard .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+    }
+}
+
+.servicemanager-detail [data-region=new-token] {
+    border: 2px solid var(--sm-success);
+    background-color: color-mix(in srgb, var(--sm-success) 18%, var(--sm-body-bg));
+    color: var(--sm-body-color);
+}
+
+.servicemanager-detail [data-region=new-token] input {
+    font-size: 0.95rem;
+}
+
+.servicemanager-detail .sm-scroll {
+    max-height: 21.875rem;
+    overflow-y: auto;
+}
+
+.servicemanager-detail .sm-scroll thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--sm-body-bg);
+}
+
+.servicemanager-detail .sm-function {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.85rem 1rem;
+    gap: 0.9rem;
+}
+
+.servicemanager-detail .sm-function.missing {
+    background-color: color-mix(in srgb, var(--sm-danger) 8%, var(--sm-body-bg));
+}
+
+.servicemanager-detail .sm-function .sm-function-icon {
+    width: 1.5rem;
+    padding-top: 0.15rem;
+    font-size: 1.05rem;
+    text-align: center;
+}
+
+.servicemanager-detail .sm-function .sm-function-body {
+    min-width: 0;
+}
+
+.servicemanager-detail .sm-function .sm-function-caps {
+    white-space: nowrap;
+}
+
+.servicemanager-detail .sm-time-column {
+    width: 12.5rem;
+}
+
+.servicemanager-detail .sm-status-column {
+    width: 6.25rem;
+}
+
+.servicemanager-detail .sm-fresh-token {
+    margin-top: 0.6rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px dashed var(--sm-success);
+    border-radius: var(--sm-border-radius);
+    background-color: color-mix(in srgb, var(--sm-success) 8%, var(--sm-body-bg));
+}
+
+.servicemanager-detail .sm-fresh-token .sm-token-value {
+    display: inline-block;
+    max-width: calc(100% - 3.4rem);
+    overflow-wrap: anywhere;
+    color: var(--sm-body-color);
+    font-size: 0.8125rem;
+    vertical-align: middle;
+}
+
+.servicemanager-detail .sm-fresh-token .sm-pill.icon-only.compact {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-inline-start: 0.75rem;
+    font-size: 0.8rem;
+    vertical-align: middle;
+}
+
+.servicemanager-detail .sm-fact-wide {
+    grid-column: 1 / -1;
+}
+
+.servicemanager-detail dt.sm-fact-wide {
+    margin-bottom: -0.2rem;
+}
+
+.servicemanager-detail .sm-code-chips {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+}
+
+.servicemanager-detail .sm-code-chip {
+    display: inline-flex;
+    margin: 0;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 2rem;
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-body-color);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.servicemanager-detail .sm-code-chip .sm-code-chip-plugin {
+    color: var(--sm-secondary-color);
+}
+
+.servicemanager-detail .sm-role-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.25rem 1.5rem;
+}
+
+.servicemanager-detail .sm-role-label {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0.5rem;
+    color: var(--sm-secondary-color);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    gap: 0.5rem;
+}
+
+.servicemanager-detail .sm-role-count {
+    padding: 0 0.4rem;
+    border-radius: 2rem;
+    background-color: var(--sm-tertiary-bg);
+    font-size: 0.72rem;
+    letter-spacing: 0;
+}
+
+.servicemanager-detail .sm-role-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.servicemanager-detail .sm-role-chip {
+    --sm-chip-tone: var(--sm-secondary-color);
+    padding: 0.15rem 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--sm-chip-tone) 30%, var(--sm-body-bg));
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--sm-chip-tone) 10%, var(--sm-body-bg));
+    color: var(--sm-body-color);
+    font-size: 0.8rem;
+}
+
+.servicemanager-detail .sm-role-chip.tone-primary {
+    --sm-chip-tone: var(--sm-primary);
+}
+
+.servicemanager-detail .sm-role-chip.tone-warning {
+    --sm-chip-tone: var(--sm-warning-text-emphasis);
+}
+
+.servicemanager-detail .sm-role-chip.tone-danger {
+    --sm-chip-tone: var(--sm-danger);
+}
+
+.servicemanager-detail .sm-role-more {
+    padding: 0.15rem 0.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--sm-primary);
+    font-size: 0.8rem;
+}
+
+.servicemanager-detail .sm-role-more:hover {
+    text-decoration: underline;
+}
+
+.servicemanager-detail .sm-facts-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+}
+
+.servicemanager-detail .sm-facts-row .sm-fact {
+    min-width: 0;
+}
+
+.servicemanager-detail .sm-facts-row dt {
+    margin-bottom: 0.15rem;
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.servicemanager-detail .sm-facts-row dd {
+    margin: 0;
+}
+
+.servicemanager-detail .sm-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.servicemanager-detail .sm-code-chip {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.sm-dialog .sm-chip-all,
+.modal .sm-chip-all {
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.servicemanager-detail .sm-fn {
+    color: var(--sm-body-color);
+    font-size: 0.95rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.servicemanager-detail .sm-id-chip,
+.servicemanager-detail .sm-code-chip {
+    font-family: inherit;
+    font-size: 0.8rem;
+}
+
+.servicemanager-detail .sm-role-more {
+    padding: 0.15rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--sm-primary) 35%, var(--sm-body-bg));
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--sm-primary) 12%, var(--sm-body-bg));
+    color: var(--sm-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.servicemanager-detail .sm-role-more:hover {
+    border-color: var(--sm-primary);
+    background-color: color-mix(in srgb, var(--sm-primary) 22%, var(--sm-body-bg));
+    text-decoration: none;
+}
+
+.servicemanager-detail .sm-role-more:focus-visible {
+    outline: 2px solid var(--sm-primary);
+    outline-offset: 2px;
+}
+
+.servicemanager-detail .sm-role-count {
+    background-color: color-mix(in srgb, var(--sm-primary) 14%, var(--sm-body-bg));
+    color: var(--sm-primary);
+    font-weight: 700;
+}
+
+.servicemanager-detail .sm-caps-list,
+.sm-dialog .sm-caps-list,
+.modal .sm-caps-list {
+    margin: 0;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.servicemanager-detail .sm-caps-list .list-group-item,
+.sm-dialog .sm-caps-list .list-group-item,
+.modal .sm-caps-list .list-group-item {
+    padding: 0.7rem 1rem;
+    border-width: 0 0 1px;
+    border-color: var(--sm-border-color);
+    background-color: transparent;
+    color: var(--sm-body-color);
+    transition: background-color 0.1s ease;
+}
+
+.servicemanager-detail .sm-caps-list .list-group-item:last-child,
+.sm-dialog .sm-caps-list .list-group-item:last-child,
+.modal .sm-caps-list .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.servicemanager-detail .sm-caps-list .list-group-item:hover,
+.sm-dialog .sm-caps-list .list-group-item:hover,
+.modal .sm-caps-list .list-group-item:hover {
+    background-color: var(--sm-tertiary-bg);
+}
+
+.servicemanager-detail .sm-caps-list .sm-fn,
+.sm-dialog .sm-caps-list .sm-fn,
+.modal .sm-caps-list .sm-fn {
+    font-weight: 600;
+}
+
+.sm-modal-root,
+.sm-modal-root:focus,
+.sm-modal,
+.sm-modal:focus {
+    outline: 0;
+}
+
+.sm-modal .modal-content {
+    border: 1px solid var(--sm-border-color);
+    border-radius: 1rem;
+    box-shadow: var(--sm-box-shadow-lg);
+    outline: 0;
+    overflow: hidden;
+}
+
+.sm-modal .modal-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--sm-border-color);
+    background-color: var(--sm-tertiary-bg);
+}
+
+.sm-modal .modal-header .modal-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.sm-modal .modal-header .close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    color: var(--sm-secondary-color);
+    opacity: 1;
+    text-shadow: none;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.sm-modal .modal-header .close:hover {
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-body-color);
+}
+
+.sm-modal .modal-body {
+    padding: 1.25rem;
+}
+
+.sm-modal .modal-footer {
+    padding: 0.9rem 1.25rem;
+    border-top: 1px solid var(--sm-border-color);
+    background-color: var(--sm-tertiary-bg);
+}
+
+.sm-modal .sm-dialog-search {
+    position: sticky;
+    top: -1.25rem;
+    z-index: 1;
+    margin: -1.25rem -1.25rem 1rem;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--sm-border-color);
+    background-color: var(--sm-body-bg);
+}
+
+.servicemanager-history-page .sm-versions {
+    margin: 0 0 5rem;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+.servicemanager-history-page .sm-versions .sm-version {
+    border-bottom: 1px solid var(--sm-border-color);
+}
+
+.servicemanager-history-page .sm-versions .sm-version:last-child {
+    border-bottom: 0;
+}
+
+.servicemanager-history-page .sm-versions .sm-version.active-version {
+    background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+}
+
+.servicemanager-history-page .sm-versions .sm-version-main {
+    display: grid;
+    grid-template-columns: 1.5rem 7.5rem 5rem minmax(11rem, 15rem) minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    gap: 0.75rem;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-main > .form-check-input {
+    position: static;
+    margin: 0;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-number {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-who {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 0.5rem;
+    line-height: 1.2;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-name {
+    overflow: hidden;
+    font-size: 0.875rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-date {
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-reason {
+    overflow: hidden;
+    color: var(--sm-secondary-color);
+    font-size: 0.875rem;
+    font-style: italic;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.servicemanager-history-page .sm-versions .sm-version-yaml {
+    padding: 0 1rem 0.75rem 3.5rem;
+}
+
+.servicemanager-history-page .sm-yaml {
+    max-height: 14rem;
+    overflow: auto;
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-body-color);
+}
+
+.servicemanager-history-page .sm-compare .sm-compare-warning {
+    color: var(--sm-danger);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+
+    .servicemanager-history-page .sm-versions .sm-version-main {
+        grid-template-columns: 1.5rem auto auto minmax(0, 1fr) auto;
     }
 
-    .servicemanager-filters {
-        width: 100%;
+    .servicemanager-history-page .sm-versions .sm-version-reason {
+        grid-column: 2 / -1;
+        white-space: normal;
     }
+}
 
-    .servicemanager-filters .dropdown {
-        width: 100%;
-    }
+.servicemanager-compare-page .sm-changes {
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: var(--sm-border-radius-lg);
+    background-color: var(--sm-body-bg);
+    box-shadow: var(--sm-box-shadow-sm);
+}
 
-    .servicemanager-filters .dropdown-toggle {
-        width: 100%;
-        text-align: left;
+.servicemanager-compare-page .sm-changes .sm-changes-head {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    gap: 0.6rem;
+    list-style: none;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-head::-webkit-details-marker {
+    display: none;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-caret {
+    color: var(--sm-secondary-color);
+    font-size: 0.8rem;
+    transition: transform 0.15s ease;
+}
+
+.servicemanager-compare-page .sm-changes[open] .sm-changes-caret {
+    transform: rotate(90deg);
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    padding: 1rem;
+    border-top: 1px solid var(--sm-border-color);
+    gap: 1rem 1.5rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-area-title {
+    margin: 0 0 0.5rem;
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.servicemanager-compare-page .sm-changes .sm-changes-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    gap: 0.4rem;
+    list-style: none;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip {
+    --sm-tone: var(--sm-secondary-color);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--sm-tone) 30%, var(--sm-body-bg));
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--sm-tone) 10%, var(--sm-body-bg));
+    color: var(--sm-body-color);
+    font-size: 0.8125rem;
+    gap: 0.4rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip.tone-success {
+    --sm-tone: var(--sm-success);
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip.tone-danger {
+    --sm-tone: var(--sm-danger);
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-chip.tone-warning {
+    --sm-tone: var(--sm-warning-text-emphasis);
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-sign {
+    color: var(--sm-tone);
+    font-size: 0.7rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-name {
+    font-weight: 600;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-values {
+    display: inline-flex;
+    align-items: center;
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    gap: 0.35rem;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-from {
+    text-decoration: line-through;
+}
+
+.servicemanager-compare-page .sm-changes .sm-change-to {
+    color: var(--sm-body-color);
+    font-weight: 600;
+}
+
+.servicemanager-compare-page .sm-changenav {
+    padding-inline-start: 0.6rem;
+    gap: 0.5rem;
+}
+
+.servicemanager-compare-page .sm-changenav .sm-navbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 50%;
+    background-color: var(--sm-body-bg);
+    color: var(--sm-body-color);
+    transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.servicemanager-compare-page .sm-changenav .sm-navbtn:hover,
+.servicemanager-compare-page .sm-changenav .sm-navbtn:focus-visible {
+    border-color: var(--sm-primary);
+    background-color: color-mix(in srgb, var(--sm-primary) 10%, var(--sm-body-bg));
+    color: var(--sm-primary);
+}
+
+.servicemanager-compare-page .sm-changenav .sm-changenav-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 11rem;
+    text-align: center;
+    line-height: 1.25;
+}
+
+.servicemanager-compare-page .sm-changenav .sm-changenav-info small {
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+}
+
+.servicemanager-compare-page .sm-diff-card {
+    box-shadow: var(--sm-box-shadow-sm);
+}
+
+.servicemanager-compare-page .comparison-table {
+    --sm-removed: color-mix(in srgb, var(--sm-danger) 24%, var(--sm-body-bg));
+    --sm-added: color-mix(in srgb, var(--sm-success) 24%, var(--sm-body-bg));
+    --sm-changed: color-mix(in srgb, var(--sm-warning) 24%, var(--sm-body-bg));
+    --sm-empty: var(--sm-tertiary-bg);
+}
+
+.servicemanager-compare-page .comparison-table td {
+    vertical-align: top;
+}
+
+.servicemanager-compare-page .comparison-table .sm-line-no {
+    width: 3rem;
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-secondary-color);
+    font-family: var(--sm-font-monospace);
+    font-size: 0.75rem;
+    text-align: end;
+    user-select: none;
+}
+
+.servicemanager-compare-page .comparison-table .sm-sign {
+    width: 1.5rem;
+    font-family: var(--sm-font-monospace);
+    text-align: center;
+    user-select: none;
+}
+
+.servicemanager-compare-page .comparison-table .sm-diff {
+    color: var(--sm-body-color);
+    font-family: var(--sm-font-monospace);
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.servicemanager-compare-page .comparison-table .sm-diff.sm-diff-removed {
+    background-color: var(--sm-removed);
+}
+
+.servicemanager-compare-page .comparison-table .sm-diff.sm-diff-added {
+    background-color: var(--sm-added);
+}
+
+.servicemanager-compare-page .comparison-table .sm-diff.sm-diff-changed {
+    background-color: var(--sm-changed);
+}
+
+.servicemanager-compare-page .comparison-table .sm-diff.sm-diff-empty {
+    background-color: var(--sm-empty);
+}
+
+.servicemanager-compare-page .comparison-table .sm-folded td {
+    background-color: var(--sm-tertiary-bg);
+    text-align: center;
+}
+
+.servicemanager-documentation .sm-code {
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-body-color);
+    overflow-x: auto;
+}
+
+.servicemanager-import-result .list-group-item {
+    background-color: var(--sm-body-bg);
+}
+
+.servicemanager-dashboard [hidden][hidden],
+.servicemanager-detail [hidden][hidden],
+.servicemanager-history-page [hidden][hidden],
+.servicemanager-compare-page [hidden][hidden],
+.servicemanager-documentation [hidden][hidden],
+.servicemanager-import-page [hidden][hidden],
+.servicemanager-import-result [hidden][hidden] {
+    display: none;
+}
+
+.servicemanager-dashboard .sm-page-header,
+.servicemanager-detail .sm-page-header,
+.servicemanager-history-page .sm-page-header,
+.servicemanager-compare-page .sm-page-header,
+.servicemanager-documentation .sm-page-header,
+.servicemanager-import-page .sm-page-header,
+.servicemanager-import-result .sm-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 0.5rem;
+}
+
+.servicemanager-dashboard .sm-page-title,
+.servicemanager-detail .sm-page-title,
+.servicemanager-history-page .sm-page-title,
+.servicemanager-compare-page .sm-page-title,
+.servicemanager-documentation .sm-page-title,
+.servicemanager-import-page .sm-page-title,
+.servicemanager-import-result .sm-page-title {
+    margin: 0;
+}
+
+.servicemanager-dashboard .sm-muted,
+.servicemanager-detail .sm-muted,
+.servicemanager-history-page .sm-muted,
+.servicemanager-compare-page .sm-muted,
+.servicemanager-documentation .sm-muted,
+.servicemanager-import-page .sm-muted,
+.servicemanager-import-result .sm-muted {
+    color: var(--sm-secondary-color);
+}
+
+.servicemanager-dashboard .sm-center,
+.servicemanager-detail .sm-center,
+.servicemanager-history-page .sm-center,
+.servicemanager-compare-page .sm-center,
+.servicemanager-documentation .sm-center,
+.servicemanager-import-page .sm-center,
+.servicemanager-import-result .sm-center {
+    text-align: center;
+}
+
+.servicemanager-dashboard .sm-gap-left,
+.servicemanager-detail .sm-gap-left,
+.servicemanager-history-page .sm-gap-left,
+.servicemanager-compare-page .sm-gap-left,
+.servicemanager-documentation .sm-gap-left,
+.servicemanager-import-page .sm-gap-left,
+.servicemanager-import-result .sm-gap-left {
+    margin-inline-start: 0.5rem;
+}
+
+.servicemanager-dashboard .sm-danger,
+.servicemanager-detail .sm-danger,
+.servicemanager-history-page .sm-danger,
+.servicemanager-compare-page .sm-danger,
+.servicemanager-documentation .sm-danger,
+.servicemanager-import-page .sm-danger,
+.servicemanager-import-result .sm-danger {
+    color: var(--sm-danger);
+}
+
+.servicemanager-dashboard .sm-text-success,
+.servicemanager-detail .sm-text-success,
+.servicemanager-history-page .sm-text-success,
+.servicemanager-compare-page .sm-text-success,
+.servicemanager-documentation .sm-text-success,
+.servicemanager-import-page .sm-text-success,
+.servicemanager-import-result .sm-text-success {
+    color: var(--sm-success);
+}
+
+.servicemanager-dashboard .sm-text-warning,
+.servicemanager-detail .sm-text-warning,
+.servicemanager-history-page .sm-text-warning,
+.servicemanager-compare-page .sm-text-warning,
+.servicemanager-documentation .sm-text-warning,
+.servicemanager-import-page .sm-text-warning,
+.servicemanager-import-result .sm-text-warning {
+    color: var(--sm-warning-text-emphasis);
+}
+
+.servicemanager-dashboard .sm-text-danger,
+.servicemanager-detail .sm-text-danger,
+.servicemanager-history-page .sm-text-danger,
+.servicemanager-compare-page .sm-text-danger,
+.servicemanager-documentation .sm-text-danger,
+.servicemanager-import-page .sm-text-danger,
+.servicemanager-import-result .sm-text-danger {
+    color: var(--sm-danger);
+}
+
+.servicemanager-dashboard .sm-badges-row,
+.servicemanager-dashboard .sm-actions-row,
+.servicemanager-detail .sm-badges-row,
+.servicemanager-detail .sm-actions-row,
+.servicemanager-history-page .sm-badges-row,
+.servicemanager-history-page .sm-actions-row,
+.servicemanager-compare-page .sm-badges-row,
+.servicemanager-compare-page .sm-actions-row,
+.servicemanager-documentation .sm-badges-row,
+.servicemanager-documentation .sm-actions-row,
+.servicemanager-import-page .sm-badges-row,
+.servicemanager-import-page .sm-actions-row,
+.servicemanager-import-result .sm-badges-row,
+.servicemanager-import-result .sm-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.servicemanager-dashboard .sm-empty,
+.servicemanager-detail .sm-empty,
+.servicemanager-history-page .sm-empty,
+.servicemanager-compare-page .sm-empty,
+.servicemanager-documentation .sm-empty,
+.servicemanager-import-page .sm-empty,
+.servicemanager-import-result .sm-empty {
+    text-align: center;
+}
+
+.servicemanager-dashboard .sm-badge,
+.servicemanager-detail .sm-badge,
+.servicemanager-history-page .sm-badge,
+.servicemanager-compare-page .sm-badge,
+.servicemanager-documentation .sm-badge,
+.servicemanager-import-page .sm-badge,
+.servicemanager-import-result .sm-badge {
+    --sm-tone: var(--sm-secondary-color);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2rem;
+    background-color: color-mix(in srgb, var(--sm-tone) 16%, var(--sm-body-bg));
+    color: var(--sm-tone);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.servicemanager-dashboard .sm-badge.tone-success,
+.servicemanager-detail .sm-badge.tone-success,
+.servicemanager-history-page .sm-badge.tone-success,
+.servicemanager-compare-page .sm-badge.tone-success,
+.servicemanager-documentation .sm-badge.tone-success,
+.servicemanager-import-page .sm-badge.tone-success,
+.servicemanager-import-result .sm-badge.tone-success {
+    --sm-tone: var(--sm-success);
+}
+
+.servicemanager-dashboard .sm-badge.tone-warning,
+.servicemanager-detail .sm-badge.tone-warning,
+.servicemanager-history-page .sm-badge.tone-warning,
+.servicemanager-compare-page .sm-badge.tone-warning,
+.servicemanager-documentation .sm-badge.tone-warning,
+.servicemanager-import-page .sm-badge.tone-warning,
+.servicemanager-import-result .sm-badge.tone-warning {
+    --sm-tone: var(--sm-warning-text-emphasis);
+}
+
+.servicemanager-dashboard .sm-badge.tone-danger,
+.servicemanager-detail .sm-badge.tone-danger,
+.servicemanager-history-page .sm-badge.tone-danger,
+.servicemanager-compare-page .sm-badge.tone-danger,
+.servicemanager-documentation .sm-badge.tone-danger,
+.servicemanager-import-page .sm-badge.tone-danger,
+.servicemanager-import-result .sm-badge.tone-danger {
+    --sm-tone: var(--sm-danger);
+}
+
+.servicemanager-dashboard .sm-badge.tone-info,
+.servicemanager-detail .sm-badge.tone-info,
+.servicemanager-history-page .sm-badge.tone-info,
+.servicemanager-compare-page .sm-badge.tone-info,
+.servicemanager-documentation .sm-badge.tone-info,
+.servicemanager-import-page .sm-badge.tone-info,
+.servicemanager-import-result .sm-badge.tone-info {
+    --sm-tone: var(--sm-info-text-emphasis);
+}
+
+.servicemanager-dashboard .sm-count-badge,
+.servicemanager-detail .sm-count-badge,
+.servicemanager-history-page .sm-count-badge,
+.servicemanager-compare-page .sm-count-badge,
+.servicemanager-documentation .sm-count-badge,
+.servicemanager-import-page .sm-count-badge,
+.servicemanager-import-result .sm-count-badge {
+    display: inline-block;
+    min-width: 1.25rem;
+    margin-inline-start: 0.5rem;
+    padding: 0 0.4rem;
+    border-radius: 2rem;
+    background-color: var(--sm-primary);
+    color: var(--sm-white);
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.servicemanager-dashboard .sm-check-cell,
+.servicemanager-detail .sm-check-cell,
+.servicemanager-history-page .sm-check-cell,
+.servicemanager-compare-page .sm-check-cell,
+.servicemanager-documentation .sm-check-cell,
+.servicemanager-import-page .sm-check-cell,
+.servicemanager-import-result .sm-check-cell {
+    width: 2.5rem;
+}
+
+.servicemanager-dashboard .sm-actions-cell,
+.servicemanager-detail .sm-actions-cell,
+.servicemanager-history-page .sm-actions-cell,
+.servicemanager-compare-page .sm-actions-cell,
+.servicemanager-documentation .sm-actions-cell,
+.servicemanager-import-page .sm-actions-cell,
+.servicemanager-import-result .sm-actions-cell {
+    text-align: end;
+    white-space: nowrap;
+}
+
+.servicemanager-dashboard .sm-name,
+.servicemanager-detail .sm-name,
+.servicemanager-history-page .sm-name,
+.servicemanager-compare-page .sm-name,
+.servicemanager-documentation .sm-name,
+.servicemanager-import-page .sm-name,
+.servicemanager-import-result .sm-name {
+    font-weight: 700;
+}
+
+.servicemanager-dashboard .sm-field,
+.servicemanager-detail .sm-field,
+.servicemanager-history-page .sm-field,
+.servicemanager-compare-page .sm-field,
+.servicemanager-documentation .sm-field,
+.servicemanager-import-page .sm-field,
+.servicemanager-import-result .sm-field {
+    margin-bottom: 0.75rem;
+}
+
+.servicemanager-dashboard .sm-label,
+.servicemanager-detail .sm-label,
+.servicemanager-history-page .sm-label,
+.servicemanager-compare-page .sm-label,
+.servicemanager-documentation .sm-label,
+.servicemanager-import-page .sm-label,
+.servicemanager-import-result .sm-label {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.servicemanager-dashboard .sm-reset,
+.servicemanager-detail .sm-reset,
+.servicemanager-history-page .sm-reset,
+.servicemanager-compare-page .sm-reset,
+.servicemanager-documentation .sm-reset,
+.servicemanager-import-page .sm-reset,
+.servicemanager-import-result .sm-reset {
+    padding-inline: 0;
+}
+
+.servicemanager-dashboard .sm-health-body,
+.servicemanager-detail .sm-health-body,
+.servicemanager-history-page .sm-health-body,
+.servicemanager-compare-page .sm-health-body,
+.servicemanager-documentation .sm-health-body,
+.servicemanager-import-page .sm-health-body,
+.servicemanager-import-result .sm-health-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.servicemanager-dashboard .sm-health-part,
+.servicemanager-detail .sm-health-part,
+.servicemanager-history-page .sm-health-part,
+.servicemanager-compare-page .sm-health-part,
+.servicemanager-documentation .sm-health-part,
+.servicemanager-import-page .sm-health-part,
+.servicemanager-import-result .sm-health-part {
+    --sm-tone: var(--sm-secondary-color);
+    background-color: var(--sm-tone);
+}
+
+.servicemanager-dashboard .sm-health-part.tone-success,
+.servicemanager-detail .sm-health-part.tone-success,
+.servicemanager-history-page .sm-health-part.tone-success,
+.servicemanager-compare-page .sm-health-part.tone-success,
+.servicemanager-documentation .sm-health-part.tone-success,
+.servicemanager-import-page .sm-health-part.tone-success,
+.servicemanager-import-result .sm-health-part.tone-success {
+    --sm-tone: var(--sm-success);
+}
+
+.servicemanager-dashboard .sm-health-part.tone-warning,
+.servicemanager-detail .sm-health-part.tone-warning,
+.servicemanager-history-page .sm-health-part.tone-warning,
+.servicemanager-compare-page .sm-health-part.tone-warning,
+.servicemanager-documentation .sm-health-part.tone-warning,
+.servicemanager-import-page .sm-health-part.tone-warning,
+.servicemanager-import-result .sm-health-part.tone-warning {
+    --sm-tone: var(--sm-warning);
+}
+
+.servicemanager-dashboard .sm-health-part.tone-danger,
+.servicemanager-detail .sm-health-part.tone-danger,
+.servicemanager-history-page .sm-health-part.tone-danger,
+.servicemanager-compare-page .sm-health-part.tone-danger,
+.servicemanager-documentation .sm-health-part.tone-danger,
+.servicemanager-import-page .sm-health-part.tone-danger,
+.servicemanager-import-result .sm-health-part.tone-danger {
+    --sm-tone: var(--sm-danger);
+}
+
+.servicemanager-dashboard .sm-table-card,
+.servicemanager-detail .sm-table-card,
+.servicemanager-history-page .sm-table-card,
+.servicemanager-compare-page .sm-table-card,
+.servicemanager-documentation .sm-table-card,
+.servicemanager-import-page .sm-table-card,
+.servicemanager-import-result .sm-table-card {
+    overflow: hidden;
+}
+
+.servicemanager-dashboard .sm-table,
+.servicemanager-detail .sm-table,
+.servicemanager-history-page .sm-table,
+.servicemanager-compare-page .sm-table,
+.servicemanager-documentation .sm-table,
+.servicemanager-import-page .sm-table,
+.servicemanager-import-result .sm-table {
+    margin-bottom: 0;
+}
+
+.servicemanager-dashboard .sm-table th,
+.servicemanager-detail .sm-table th,
+.servicemanager-history-page .sm-table th,
+.servicemanager-compare-page .sm-table th,
+.servicemanager-documentation .sm-table th,
+.servicemanager-import-page .sm-table th,
+.servicemanager-import-result .sm-table th {
+    color: var(--sm-secondary-color);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+
+    .servicemanager-dashboard .sm-hide-small,
+    .servicemanager-detail .sm-hide-small,
+    .servicemanager-history-page .sm-hide-small,
+    .servicemanager-compare-page .sm-hide-small,
+    .servicemanager-documentation .sm-hide-small,
+    .servicemanager-import-page .sm-hide-small,
+    .servicemanager-import-result .sm-hide-small {
+        display: none;
     }
+}
+
+.servicemanager-dashboard .sm-pill.compact:not(.icon-only),
+.servicemanager-detail .sm-pill.compact:not(.icon-only),
+.servicemanager-history-page .sm-pill.compact:not(.icon-only),
+.servicemanager-compare-page .sm-pill.compact:not(.icon-only) {
+    padding: 0.25rem 0.65rem;
+    font-size: 0.8125rem;
+}
+
+.servicemanager-dashboard .sm-block,
+.servicemanager-detail .sm-block,
+.servicemanager-history-page .sm-block,
+.servicemanager-compare-page .sm-block,
+.servicemanager-documentation .sm-block,
+.servicemanager-import-page .sm-block,
+.servicemanager-import-result .sm-block {
+    margin-bottom: 1.5rem;
+}
+
+.servicemanager-dashboard .sm-block-small,
+.servicemanager-detail .sm-block-small,
+.servicemanager-history-page .sm-block-small,
+.servicemanager-compare-page .sm-block-small,
+.servicemanager-documentation .sm-block-small,
+.servicemanager-import-page .sm-block-small,
+.servicemanager-import-result .sm-block-small {
+    margin-bottom: 0.5rem;
+}
+
+.servicemanager-dashboard .sm-flush,
+.servicemanager-dashboard .sm-flush-table,
+.servicemanager-detail .sm-flush,
+.servicemanager-detail .sm-flush-table,
+.servicemanager-history-page .sm-flush,
+.servicemanager-history-page .sm-flush-table,
+.servicemanager-compare-page .sm-flush,
+.servicemanager-compare-page .sm-flush-table,
+.servicemanager-documentation .sm-flush,
+.servicemanager-documentation .sm-flush-table,
+.servicemanager-import-page .sm-flush,
+.servicemanager-import-page .sm-flush-table,
+.servicemanager-import-result .sm-flush,
+.servicemanager-import-result .sm-flush-table {
+    margin: 0;
+}
+
+.servicemanager-dashboard .sm-grow,
+.servicemanager-detail .sm-grow,
+.servicemanager-history-page .sm-grow,
+.servicemanager-compare-page .sm-grow,
+.servicemanager-documentation .sm-grow,
+.servicemanager-import-page .sm-grow,
+.servicemanager-import-result .sm-grow {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.servicemanager-dashboard .sm-item,
+.servicemanager-detail .sm-item,
+.servicemanager-history-page .sm-item,
+.servicemanager-compare-page .sm-item,
+.servicemanager-documentation .sm-item,
+.servicemanager-import-page .sm-item,
+.servicemanager-import-result .sm-item {
+    display: flex;
+    align-items: flex-start;
+}
+
+.servicemanager-dashboard .sm-italic,
+.servicemanager-detail .sm-italic,
+.servicemanager-history-page .sm-italic,
+.servicemanager-compare-page .sm-italic,
+.servicemanager-documentation .sm-italic,
+.servicemanager-import-page .sm-italic,
+.servicemanager-import-result .sm-italic {
+    font-style: italic;
+}
+
+.servicemanager-dashboard .sm-messages,
+.servicemanager-detail .sm-messages,
+.servicemanager-history-page .sm-messages,
+.servicemanager-compare-page .sm-messages,
+.servicemanager-documentation .sm-messages,
+.servicemanager-import-page .sm-messages,
+.servicemanager-import-result .sm-messages {
+    margin: 0.25rem 0 0;
+    padding-inline-start: 1.25rem;
+}
+
+.servicemanager-dashboard .sm-mono,
+.servicemanager-detail .sm-mono,
+.servicemanager-history-page .sm-mono,
+.servicemanager-compare-page .sm-mono,
+.servicemanager-documentation .sm-mono,
+.servicemanager-import-page .sm-mono,
+.servicemanager-import-result .sm-mono {
+    font-family: var(--sm-font-monospace);
+}
+
+.servicemanager-dashboard .sm-panel-head,
+.servicemanager-detail .sm-panel-head,
+.servicemanager-history-page .sm-panel-head,
+.servicemanager-compare-page .sm-panel-head,
+.servicemanager-documentation .sm-panel-head,
+.servicemanager-import-page .sm-panel-head,
+.servicemanager-import-result .sm-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.servicemanager-dashboard .sm-panel-title,
+.servicemanager-detail .sm-panel-title,
+.servicemanager-history-page .sm-panel-title,
+.servicemanager-compare-page .sm-panel-title,
+.servicemanager-documentation .sm-panel-title,
+.servicemanager-import-page .sm-panel-title,
+.servicemanager-import-result .sm-panel-title {
+    margin: 0;
+}
+
+.servicemanager-dashboard .sm-panel-tools,
+.servicemanager-detail .sm-panel-tools,
+.servicemanager-history-page .sm-panel-tools,
+.servicemanager-compare-page .sm-panel-tools,
+.servicemanager-documentation .sm-panel-tools,
+.servicemanager-import-page .sm-panel-tools,
+.servicemanager-import-result .sm-panel-tools {
+    padding: 1rem;
+    border-bottom: 1px solid var(--sm-border-color);
+}
+
+.servicemanager-dashboard .sm-push,
+.servicemanager-detail .sm-push,
+.servicemanager-history-page .sm-push,
+.servicemanager-compare-page .sm-push,
+.servicemanager-documentation .sm-push,
+.servicemanager-import-page .sm-push,
+.servicemanager-import-result .sm-push {
+    margin-inline-start: auto;
+}
+
+.servicemanager-dashboard .sm-section-title,
+.servicemanager-detail .sm-section-title,
+.servicemanager-history-page .sm-section-title,
+.servicemanager-compare-page .sm-section-title,
+.servicemanager-documentation .sm-section-title,
+.servicemanager-import-page .sm-section-title,
+.servicemanager-import-result .sm-section-title {
+    margin: 1.5rem 0 1rem;
+    color: var(--sm-primary);
+}
+
+.servicemanager-dashboard .sm-spread,
+.servicemanager-detail .sm-spread,
+.servicemanager-history-page .sm-spread,
+.servicemanager-compare-page .sm-spread,
+.servicemanager-documentation .sm-spread,
+.servicemanager-import-page .sm-spread,
+.servicemanager-import-result .sm-spread {
+    justify-content: space-between;
+}
+
+.servicemanager-dashboard .sm-strong,
+.servicemanager-detail .sm-strong,
+.servicemanager-history-page .sm-strong,
+.servicemanager-compare-page .sm-strong,
+.servicemanager-documentation .sm-strong,
+.servicemanager-import-page .sm-strong,
+.servicemanager-import-result .sm-strong {
+    font-weight: 700;
+}
+
+.servicemanager-dashboard .sm-switch,
+.servicemanager-detail .sm-switch,
+.servicemanager-history-page .sm-switch,
+.servicemanager-compare-page .sm-switch,
+.servicemanager-documentation .sm-switch,
+.servicemanager-import-page .sm-switch,
+.servicemanager-import-result .sm-switch {
+    display: flex;
+    align-items: center;
+}
+
+.servicemanager-dashboard .sm-tile-head,
+.servicemanager-detail .sm-tile-head,
+.servicemanager-history-page .sm-tile-head,
+.servicemanager-compare-page .sm-tile-head,
+.servicemanager-documentation .sm-tile-head,
+.servicemanager-import-page .sm-tile-head,
+.servicemanager-import-result .sm-tile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.servicemanager-dashboard .sm-upper,
+.servicemanager-detail .sm-upper,
+.servicemanager-history-page .sm-upper,
+.servicemanager-compare-page .sm-upper,
+.servicemanager-documentation .sm-upper,
+.servicemanager-import-page .sm-upper,
+.servicemanager-import-result .sm-upper {
+    text-transform: uppercase;
+}
+
+.servicemanager-dashboard .sm-yaml-holder,
+.servicemanager-detail .sm-yaml-holder,
+.servicemanager-history-page .sm-yaml-holder,
+.servicemanager-compare-page .sm-yaml-holder,
+.servicemanager-documentation .sm-yaml-holder,
+.servicemanager-import-page .sm-yaml-holder,
+.servicemanager-import-result .sm-yaml-holder {
+    margin-top: 0.5rem;
+}
+
+.servicemanager-dashboard .sm-resource,
+.servicemanager-detail .sm-resource,
+.servicemanager-history-page .sm-resource,
+.servicemanager-compare-page .sm-resource,
+.servicemanager-documentation .sm-resource,
+.servicemanager-import-page .sm-resource,
+.servicemanager-import-result .sm-resource {
+    display: flex;
+    align-items: center;
+}
+
+.servicemanager-compare-page .sm-switch .custom-control-input,
+.servicemanager-compare-page .sm-switch .form-check-input {
+    margin-inline-end: 0.4rem;
+}
+
+.servicemanager-dashboard .sm-empty .sm-actions-row,
+.servicemanager-history-page .sm-empty .sm-actions-row {
+    justify-content: center;
+}
+
+.servicemanager-dashboard .sm-empty .sm-empty-icon,
+.servicemanager-history-page .sm-empty .sm-empty-icon {
+    font-size: 2.5rem;
+}
+
+.servicemanager-dashboard .sm-empty .sm-empty-text,
+.servicemanager-history-page .sm-empty .sm-empty-text {
+    margin-bottom: 1rem;
+}
+
+.servicemanager-dashboard .sm-filter > .btn,
+.servicemanager-history-page .sm-filter > .btn {
+    position: relative;
+}
+
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary[aria-expanded=true],
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary[aria-expanded=true] {
+    border-color: var(--sm-primary);
+    background-color: var(--sm-body-bg);
+    color: var(--sm-primary);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--sm-primary) 25%, transparent);
+}
+
+.servicemanager-dashboard .sm-filter .sm-count-badge,
+.servicemanager-history-page .sm-filter .sm-count-badge {
+    position: absolute;
+    top: -0.45rem;
+    right: -0.45rem;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    margin: 0;
+    padding: 0 0.3rem;
+    border-radius: 1rem;
+    background-color: var(--sm-primary);
+    color: var(--sm-white);
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.15rem;
+    text-align: center;
+}
+
+.servicemanager-dashboard .sm-id-chip,
+.servicemanager-detail .sm-id-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.65rem;
+    border: 1px solid var(--sm-border-color);
+    border-radius: 2rem;
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-secondary-color);
+    font-family: inherit;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.servicemanager-dashboard .sm-id-chip.compact,
+.servicemanager-detail .sm-id-chip.compact {
+    padding: 0.05rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    --sm-border-strong: color-mix(in srgb, var(--sm-body-color) 42%, var(--sm-body-bg));
+}
+
+.servicemanager-dashboard .sm-search,
+.servicemanager-history-page .sm-search {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 2.25rem;
+    overflow: hidden;
+    border: 1px solid var(--sm-border-strong);
+    border-radius: 999px;
+    background-color: var(--sm-body-bg);
+    transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.servicemanager-dashboard .sm-search:has(input:not(:placeholder-shown)),
+.servicemanager-history-page .sm-search:has(input:not(:placeholder-shown)) {
+    border-color: var(--sm-primary);
+    background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+}
+
+.servicemanager-dashboard .sm-search:focus-within,
+.servicemanager-history-page .sm-search:focus-within {
+    border-color: var(--sm-primary);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--sm-primary) 25%, transparent);
+}
+
+.servicemanager-dashboard .sm-search .input-group-text,
+.servicemanager-history-page .sm-search .input-group-text {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 0.25rem 0 0.9rem;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--sm-secondary-color);
+}
+
+.servicemanager-dashboard .sm-search .form-control,
+.servicemanager-dashboard .sm-search > .form-control:not(:last-child),
+.servicemanager-history-page .sm-search .form-control,
+.servicemanager-history-page .sm-search > .form-control:not(:last-child) {
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0 0.75rem 0 0.5rem;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    font-size: 0.875rem;
+    font-weight: inherit;
+}
+
+.servicemanager-dashboard .sm-search .form-control:not(:placeholder-shown),
+.servicemanager-dashboard .sm-search > .form-control:not(:last-child):not(:placeholder-shown),
+.servicemanager-history-page .sm-search .form-control:not(:placeholder-shown),
+.servicemanager-history-page .sm-search > .form-control:not(:last-child):not(:placeholder-shown) {
+    color: var(--sm-primary);
+    font-weight: 600;
+}
+
+.servicemanager-dashboard .sm-search input[type=search]::-webkit-search-cancel-button,
+.servicemanager-dashboard .sm-search input[type=search]::-webkit-search-decoration,
+.servicemanager-history-page .sm-search input[type=search]::-webkit-search-cancel-button,
+.servicemanager-history-page .sm-search input[type=search]::-webkit-search-decoration {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.servicemanager-dashboard .sm-search .btn,
+.servicemanager-history-page .sm-search .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: 0 0.3rem 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--sm-secondary-color);
+}
+
+.servicemanager-dashboard .sm-search .btn:hover,
+.servicemanager-history-page .sm-search .btn:hover {
+    background-color: var(--sm-tertiary-bg);
+    color: var(--sm-primary);
+}
+
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary {
+    height: 2.25rem;
+    padding: 0 1rem;
+    border-color: var(--sm-border-strong);
+    border-radius: 999px;
+    background-color: var(--sm-body-bg);
+    color: inherit;
+    font-size: 0.875rem;
+}
+
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:hover,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-dashboard .sm-filter > .btn.btn-outline-secondary[aria-expanded=true],
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:hover,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary:focus-visible,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary.active,
+.servicemanager-history-page .sm-filter > .btn.btn-outline-secondary[aria-expanded=true] {
+    border-color: var(--sm-primary);
+    background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+    color: var(--sm-primary);
+}
+
+.sm-fa4 .fa-solid {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-rendering: auto;
+}
+
+.sm-fa4 .fa-angle-left::before {
+    content: "\f104";
+}
+
+.sm-fa4 .fa-angle-right::before {
+    content: "\f105";
+}
+
+.sm-fa4 .fa-angles-left::before {
+    content: "\f100";
+}
+
+.sm-fa4 .fa-arrow-down::before {
+    content: "\f063";
+}
+
+.sm-fa4 .fa-arrow-left::before {
+    content: "\f060";
+}
+
+.sm-fa4 .fa-arrow-right::before {
+    content: "\f061";
+}
+
+.sm-fa4 .fa-arrows-rotate::before {
+    content: "\f021";
+}
+
+.sm-fa4 .fa-bars::before {
+    content: "\f0c9";
+}
+
+.sm-fa4 .fa-book::before {
+    content: "\f02d";
+}
+
+.sm-fa4 .fa-book-open::before {
+    content: "\f02d";
+}
+
+.sm-fa4 .fa-check::before {
+    content: "\f00c";
+}
+
+.sm-fa4 .fa-chevron-down::before {
+    content: "\f078";
+}
+
+.sm-fa4 .fa-chevron-right::before {
+    content: "\f054";
+}
+
+.sm-fa4 .fa-circle-check::before {
+    content: "\f058";
+}
+
+.sm-fa4 .fa-circle-exclamation::before {
+    content: "\f06a";
+}
+
+.sm-fa4 .fa-circle-info::before {
+    content: "\f05a";
+}
+
+.sm-fa4 .fa-circle-minus::before {
+    content: "\f056";
+}
+
+.sm-fa4 .fa-circle-xmark::before {
+    content: "\f057";
+}
+
+.sm-fa4 .fa-clock::before {
+    content: "\f017";
+}
+
+.sm-fa4 .fa-clock-rotate-left::before {
+    content: "\f1da";
+}
+
+.sm-fa4 .fa-code::before {
+    content: "\f121";
+}
+
+.sm-fa4 .fa-code-compare::before {
+    content: "\f0ec";
+}
+
+.sm-fa4 .fa-copy::before {
+    content: "\f0c5";
+}
+
+.sm-fa4 .fa-download::before {
+    content: "\f019";
+}
+
+.sm-fa4 .fa-ellipsis::before {
+    content: "\f141";
+}
+
+.sm-fa4 .fa-eye::before {
+    content: "\f06e";
+}
+
+.sm-fa4 .fa-file-arrow-down::before {
+    content: "\f019";
+}
+
+.sm-fa4 .fa-file-import::before {
+    content: "\f093";
+}
+
+.sm-fa4 .fa-file-lines::before {
+    content: "\f0f6";
+}
+
+.sm-fa4 .fa-file-zipper::before {
+    content: "\f1c6";
+}
+
+.sm-fa4 .fa-filter-circle-xmark::before {
+    content: "\f0b0";
+}
+
+.sm-fa4 .fa-forward::before {
+    content: "\f04e";
+}
+
+.sm-fa4 .fa-gear::before {
+    content: "\f013";
+}
+
+.sm-fa4 .fa-heart-pulse::before {
+    content: "\f21e";
+}
+
+.sm-fa4 .fa-id-card::before {
+    content: "\f2c3";
+}
+
+.sm-fa4 .fa-key::before {
+    content: "\f084";
+}
+
+.sm-fa4 .fa-life-ring::before {
+    content: "\f1cd";
+}
+
+.sm-fa4 .fa-magnifying-glass::before {
+    content: "\f002";
+}
+
+.sm-fa4 .fa-pen::before {
+    content: "\f040";
+}
+
+.sm-fa4 .fa-pen-to-square::before {
+    content: "\f044";
+}
+
+.sm-fa4 .fa-plug::before {
+    content: "\f1e6";
+}
+
+.sm-fa4 .fa-plug-circle-check::before {
+    content: "\f1e6";
+}
+
+.sm-fa4 .fa-plug-circle-exclamation::before {
+    content: "\f1e6";
+}
+
+.sm-fa4 .fa-plug-circle-xmark::before {
+    content: "\f1e6";
+}
+
+.sm-fa4 .fa-plus::before {
+    content: "\f067";
+}
+
+.sm-fa4 .fa-puzzle-piece::before {
+    content: "\f12e";
+}
+
+.sm-fa4 .fa-rotate::before {
+    content: "\f021";
+}
+
+.sm-fa4 .fa-rotate-left::before {
+    content: "\f0e2";
+}
+
+.sm-fa4 .fa-server::before {
+    content: "\f233";
+}
+
+.sm-fa4 .fa-shield-halved::before {
+    content: "\f132";
+}
+
+.sm-fa4 .fa-sliders::before {
+    content: "\f1de";
+}
+
+.sm-fa4 .fa-spinner::before {
+    content: "\f110";
+}
+
+.sm-fa4 .fa-table-columns::before {
+    content: "\f0db";
+}
+
+.sm-fa4 .fa-table-list::before {
+    content: "\f00b";
+}
+
+.sm-fa4 .fa-toggle-off::before {
+    content: "\f204";
+}
+
+.sm-fa4 .fa-toggle-on::before {
+    content: "\f205";
+}
+
+.sm-fa4 .fa-trash::before {
+    content: "\f1f8";
+}
+
+.sm-fa4 .fa-triangle-exclamation::before {
+    content: "\f071";
+}
+
+.sm-fa4 .fa-upload::before {
+    content: "\f093";
+}
+
+.sm-fa4 .fa-user::before {
+    content: "\f007";
+}
+
+.sm-fa4 .fa-user-shield::before {
+    content: "\f21b";
+}
+
+.sm-fa4 .fa-xmark::before {
+    content: "\f00d";
+}
+
+.sm-fa4 .fa-fingerprint::before {
+    content: "\f2c1";
+}
+
+.sm-fa4 .fa-code-branch::before {
+    content: "\f126";
+}
+
+.sm-fa4 .fa-power-off::before {
+    content: "\f011";
+}
+
+.sm-fa4 .fa-chevron-up::before {
+    content: "\f077";
 }

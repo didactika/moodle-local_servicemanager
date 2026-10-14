@@ -48,11 +48,57 @@ class role_manager {
 
         // Create role with no archetype.
         $roleid = create_role($name, $shortname, $metadescription, '');
+        if (class_exists('core\\event\\role_created') && !$this->core_announces_new_roles()) {
+            $this->announce_new_role($roleid);
+        }
 
         // Set role context to system level only.
         set_role_contextlevels($roleid, [CONTEXT_SYSTEM]);
 
         return $roleid;
+    }
+
+    /**
+     * Whether create_role() of this Moodle triggers the role_created event itself.
+     *
+     * Releases that have the event class but do not trigger it from create_role() leave it to the role editor, so it would never
+     * exist for a role that a schema creates. Reading the function is how this is told, because no version number says it for
+     * every release in the range the plugin supports. Releases without the event class have nothing to trigger.
+     *
+     * @return bool True when core triggers the event.
+     */
+    private function core_announces_new_roles(): bool {
+        static $announces = null;
+        if ($announces === null) {
+            $function = new \ReflectionFunction('create_role');
+            $lines = file($function->getFileName());
+            $first = $function->getStartLine() - 1;
+            $source = implode('', array_slice($lines, $first, $function->getEndLine() - $first));
+            $announces = strpos($source, 'role_created') !== false;
+        }
+        return $announces;
+    }
+
+    /**
+     * Trigger the role_created event of a role that was just created, as Moodle does where create_role() does not.
+     *
+     * @param int $roleid Role ID
+     */
+    private function announce_new_role(int $roleid): void {
+        global $DB;
+
+        $role = $DB->get_record('role', ['id' => $roleid], '*', MUST_EXIST);
+        $event = \core\event\role_created::create([
+            'objectid' => $role->id,
+            'context' => \context_system::instance(),
+            'other' => [
+                'name' => $role->name,
+                'shortname' => $role->shortname,
+                'archetype' => $role->archetype,
+            ],
+        ]);
+        $event->add_record_snapshot('role', $role);
+        $event->trigger();
     }
 
     /**
@@ -111,6 +157,74 @@ class role_manager {
         foreach ($capabilities as $cap) {
             assign_capability($cap, CAP_ALLOW, $roleid, $systemcontext->id, true);
         }
+    }
+
+    /**
+     * Apply what a schema says about its role: where it can be assigned, the permissions it is given explicitly and the roles it
+     * may assign, override, switch to and see.
+     *
+     * Whatever the role had of these before is replaced, so a schema that no longer says something stops giving it.
+     *
+     * @param int $roleid Role ID
+     * @param role_settings $settings What the schema says
+     */
+    public function apply_settings(int $roleid, role_settings $settings): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/accesslib.php');
+
+        $this->reset_settings($roleid);
+
+        set_role_contextlevels($roleid, $settings->context_level_numbers());
+
+        $context = \context_system::instance();
+        $permissions = ['allow' => CAP_ALLOW, 'prevent' => CAP_PREVENT, 'prohibit' => CAP_PROHIBIT];
+        foreach ($permissions as $name => $value) {
+            foreach ($settings->capabilities($name) as $capability) {
+                assign_capability($capability, $value, $roleid, $context->id, true);
+            }
+        }
+
+        $setters = [
+            'allow_assign' => 'core_role_set_assign_allowed',
+            'allow_override' => 'core_role_set_override_allowed',
+            'allow_switch' => 'core_role_set_switch_allowed',
+            'allow_view' => 'core_role_set_view_allowed',
+        ];
+        foreach ($setters as $relation => $setter) {
+            foreach ($settings->roles($relation) as $shortname) {
+                $target = $this->role_id_by_shortname($shortname);
+                if ($target !== null) {
+                    $setter($roleid, $target);
+                }
+            }
+        }
+    }
+
+    /**
+     * Take away the roles that a role may assign, override, switch to and see, which are the part of its settings that is not a
+     * capability.
+     *
+     * @param int $roleid Role ID
+     */
+    public function reset_settings(int $roleid): void {
+        global $DB;
+
+        foreach (['role_allow_assign', 'role_allow_override', 'role_allow_switch', 'role_allow_view'] as $table) {
+            $DB->delete_records($table, ['roleid' => $roleid]);
+        }
+    }
+
+    /**
+     * The id of the role that has a short name.
+     *
+     * @param string $shortname Short name, such as student.
+     * @return int|null The id, or null when there is no such role.
+     */
+    private function role_id_by_shortname(string $shortname): ?int {
+        global $DB;
+
+        $id = $DB->get_field('role', 'id', ['shortname' => $shortname]);
+        return $id === false ? null : (int) $id;
     }
 
     /**

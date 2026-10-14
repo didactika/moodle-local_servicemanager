@@ -10,7 +10,7 @@ A service schema YAML file must contain the following sections:
 meta:
   id: "example.service"           # Required: Unique identifier (letters, numbers, dots only; max 50 chars)
   name: "Example Service"         # Required: Display name (must be unique across all schemas)
-  version: "1.0.0"               # Required: Version number (must increment on definition changes)
+  version: "1.0.0"               # Optional: set by the plugin when it is missing or already used
   maintainer: "Your Name"         # Optional: Maintainer info
   description: "Description"      # Optional: Service description
 
@@ -36,6 +36,25 @@ definition:
   additional_users:               # Optional: Additional users to authorize
     - admin@example.com
     - teacher@example.com
+
+role:                             # Optional section: what the role of the schema may do
+  context_levels:                 # Where the role can be assigned besides the whole site
+    - category
+    - course
+  permissions:                    # Capabilities that are not simply allowed
+    prevent:                      # Not given, although another role could give them
+      - moodle/user:delete
+    prohibit:                     # Never given, whatever else the role has
+      - moodle/site:config
+  allow_assign:                   # Roles it may give to other people
+    - student
+  allow_override:                 # Roles whose permissions it may override
+    - student
+  allow_switch:                   # Roles it may switch to
+    - student
+  allow_view:                     # Roles whose members it may see
+    - student
+    - editingteacher
 ```
 
 ## Field Reference
@@ -46,7 +65,7 @@ definition:
 |-------|:--------:|-------------|
 | `id` | ✅ | Unique identifier. Only letters, numbers, and dots (.) allowed. Max 50 characters. Example: `myapp.users` |
 | `name` | ✅ | Human-readable name for the service. Must be unique across all schemas. |
-| `version` | ✅ | Version string (semantic versioning recommended). Must be incremented when the definition (functions or capabilities) changes. Metadata-only edits (name, maintainer, description) do not require a version bump. |
+| `version` | ❌ | Version of the schema, such as `1.0.0`. A new schema without one starts at `1.0.0`. When the definition changes and the version is missing or not higher than every one the schema has had, it is saved with the highest one plus one in its last number (`1.0.0` becomes `1.0.1`). Changing only the name, the maintainer or the description keeps the version. |
 | `maintainer` | ❌ | Person or team responsible for the schema. |
 | `description` | ❌ | Brief description of the service's purpose. |
 
@@ -65,6 +84,23 @@ definition:
 | `functions` | ✅ | Array of web service function names to include in the service. |
 | `extra_capabilities` | ❌ | Additional Moodle capabilities to assign to the service role beyond those derived from the functions. `webservice/rest:use` and `webservice/soap:use` are always included automatically. |
 | `additional_users` | ❌ | Email addresses of existing Moodle users to also authorize for this service. If an email is not found, a warning is shown and creation continues. |
+
+### role (Optional)
+
+What the role that is created for the schema may do, besides the capabilities its functions need. Roles are named by their **short name** (`student`, `editingteacher`, `manager`), the way Moodle names them in code.
+
+| Field | Required | Description |
+|-------|:--------:|-------------|
+| `context_levels` | ❌ | Where the role can be assigned, besides the whole site, which it always can: `user`, `category`, `course`, `module` (an activity) or `block`. |
+| `permissions.allow` | ❌ | Capabilities the role is given. The same as `extra_capabilities`; use whichever reads better next to the other permissions. |
+| `permissions.prevent` | ❌ | Capabilities the role does not get, although another role it also has could give them. A place lower down may still allow them. |
+| `permissions.prohibit` | ❌ | Capabilities the role can never have, wherever it is and whatever else it is given. |
+| `allow_assign` | ❌ | Roles that the role may assign to other people (*Allow role assignments*). |
+| `allow_override` | ❌ | Roles whose permissions the role may override (*Allow role overrides*). |
+| `allow_switch` | ❌ | Roles the role may switch to (*Allow role switches*). |
+| `allow_view` | ❌ | Roles whose names and members the role may see (*Allow role to view*). |
+
+A role that does not exist is an error. A capability that does not exist is a warning, because it may belong to a plugin that is not installed yet. Whatever a version of the schema no longer says is taken away from the role, so the role is always exactly what the schema describes. A change in this section is a change of the definition, so it needs a new version.
 
 ## Function Formats
 
@@ -90,20 +126,18 @@ functions:
 
 When a schema is created or updated, the plugin automatically calculates the full set of required capabilities by reading the PHP declarations of each web service function in Moodle's codebase. These derived capabilities are merged with any `extra_capabilities` listed in the YAML. The final set is assigned to the schema's dedicated role. `webservice/rest:use` and `webservice/soap:use` are always included regardless of the functions defined.
 
-### Special case: `moodle/role:*` capabilities
+### The `moodle/role:*` capabilities
 
-A handful of capabilities are **not enough on their own** — granting them to the service role does not, by itself, let the service perform the action. Moodle gates them behind a second layer, the *role-allow matrices*, which say *which target roles* a role may act on:
+A handful of capabilities are **not enough on their own**: granting them does not let the service perform the action, because Moodle gates them behind a second layer, the *role-allow matrices*, which say *which target roles* a role may act on.
 
-| Capability | Also requires (matrix) | Configured in *Define roles* → tab |
-|------------|------------------------|------------------------------------|
-| `moodle/role:assign` | `role_allow_assign` | Allow role assignments |
-| `moodle/role:review` | `role_allow_view` | Allow role to view |
-| `moodle/role:override` | `role_allow_override` | Allow role overrides |
-| `moodle/role:switch` | `role_allow_switch` | Allow role switches |
+| Capability | Also requires (matrix) | Key of the `role` section |
+|------------|------------------------|-----------------------------|
+| `moodle/role:assign` | Allow role assignments | `allow_assign` |
+| `moodle/role:review` | Allow role to view | `allow_view` |
+| `moodle/role:override` | Allow role overrides | `allow_override` |
+| `moodle/role:switch` | Allow role switches | `allow_switch` |
 
-The service role this plugin creates has **no archetype**, so it starts with no entries in any of these matrices. For example, even with `moodle/role:assign` granted, a call to `core_role_assign_roles` runs `get_assignable_roles()` and throws `Can not assign roleid=X` until the matrix permits it.
-
-To make these work, after provisioning the schema go to **Site administration → Users → Permissions → Define roles**, open the relevant tab (e.g. *Allow role assignments*), and allow the service role (`ws_{id}`) to act on the specific target roles it needs. The plugin does not manage these matrices automatically.
+The service role has no archetype, so it starts with nothing in any matrix. The plugin fills them from the `role` section: with `moodle/role:assign` in `extra_capabilities` and `allow_assign: [student]`, a call to `core_role_assign_roles` can assign the student role and no other.
 
 ## Naming Conventions
 
@@ -131,7 +165,10 @@ The `{domain}` in the email is the site's domain with any leading subdomain stri
 | Schema name uniqueness | Each schema name must be unique (drives role and service names which have DB unique constraints) |
 | Critical functions | If a critical function is missing from the Moodle installation, the schema cannot be created |
 | Non-critical functions | Missing non-critical functions generate a warning but do not block creation |
-| Version increment | If the definition (functions or capabilities) changes, the version number must be incremented |
+| Version increment | If the definition (functions, capabilities or role) changes, the version number must be incremented |
+| Role section | Only `context_levels`, `permissions`, `allow_assign`, `allow_override`, `allow_switch` and `allow_view` are known; each must be a list of names |
+| Roles | Every role named in the section must exist (error) |
+| Capabilities in `permissions` | One that this Moodle does not know is a warning |
 
 ## Example Files
 

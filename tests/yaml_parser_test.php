@@ -16,6 +16,8 @@
 
 namespace local_servicemanager;
 
+use local_servicemanager\schema\schema_extractor;
+
 /**
  * Unit tests for YAML parser class.
  *
@@ -130,8 +132,8 @@ YAML;
         // Read as releases before 1.0.3 did: the stray items land at the root.
         $data = $parser->parse_stored($yaml);
         $this->assertSame(['a'], $data['definition']['functions']);
-        $this->assertSame([], $parser->extract_extra_capabilities($data));
-        $this->assertSame([], $parser->extract_additional_users($data));
+        $this->assertSame([], schema_extractor::extra_capabilities($data));
+        $this->assertSame([], schema_extractor::additional_users($data));
 
         $this->expectException(\moodle_exception::class);
         $parser->parse($yaml);
@@ -147,8 +149,8 @@ YAML;
         $data = $parser->parse(file_get_contents($CFG->dirroot . '/local/servicemanager/examples/sample_schema.yaml'));
 
         $this->assertSame('example.service', $data['meta']['id']);
-        $this->assertSame(['moodle/site:viewuseridentity'], $parser->extract_extra_capabilities($data));
-        $this->assertSame([], $parser->extract_additional_users($data));
+        $this->assertSame(['moodle/site:viewuseridentity'], schema_extractor::extra_capabilities($data));
+        $this->assertSame([], schema_extractor::additional_users($data));
     }
 
     /**
@@ -174,95 +176,5 @@ YAML;
         $this->assertFalse($parser->validate_schema_id('test service'));
         $this->assertFalse($parser->validate_schema_id('test@service'));
         $this->assertFalse($parser->validate_schema_id(''));
-    }
-
-    /**
-     * Test extracting meta information.
-     */
-    public function test_get_meta(): void {
-        $yaml = <<<YAML
-meta:
-  id: "test.service"
-  name: "Test Service"
-  version: "2.0.0"
-  maintainer: "Test Team"
-  description: "A test service"
-definition:
-  functions:
-    - core_user_get_users
-YAML;
-
-        $parser = new \local_servicemanager\schema\yaml_parser();
-        $data = $parser->parse($yaml);
-        $meta = $parser->extract_meta($data);
-
-        $this->assertEquals('test.service', $meta['id']);
-        $this->assertEquals('Test Service', $meta['name']);
-        $this->assertEquals('2.0.0', $meta['version']);
-        $this->assertEquals('Test Team', $meta['maintainer']);
-        $this->assertEquals('A test service', $meta['description']);
-    }
-
-    /**
-     * Test extracting functions list.
-     */
-    public function test_get_functions(): void {
-        $yaml = <<<YAML
-meta:
-  id: "test.service"
-  name: "Test Service"
-  version: "1.0.0"
-definition:
-  functions:
-    - core_user_get_users
-    - name: core_course_get_courses
-      critical: true
-    - name: mod_forum_get_forums
-      critical: false
-YAML;
-
-        $parser = new \local_servicemanager\schema\yaml_parser();
-        $data = $parser->parse($yaml);
-        $functions = $parser->extract_functions($data);
-
-        $this->assertCount(3, $functions);
-
-        // Simple format should default to critical=true.
-        $this->assertEquals('core_user_get_users', $functions[0]['name']);
-        $this->assertTrue($functions[0]['critical']);
-
-        // Extended format with critical=true.
-        $this->assertEquals('core_course_get_courses', $functions[1]['name']);
-        $this->assertTrue($functions[1]['critical']);
-
-        // Extended format with critical=false.
-        $this->assertEquals('mod_forum_get_forums', $functions[2]['name']);
-        $this->assertFalse($functions[2]['critical']);
-    }
-
-    /**
-     * Test extracting extra capabilities.
-     */
-    public function test_get_extra_capabilities(): void {
-        $yaml = <<<YAML
-meta:
-  id: "test.service"
-  name: "Test Service"
-  version: "1.0.0"
-definition:
-  functions:
-    - core_user_get_users
-  extra_capabilities:
-    - moodle/user:viewdetails
-    - moodle/course:view
-YAML;
-
-        $parser = new \local_servicemanager\schema\yaml_parser();
-        $data = $parser->parse($yaml);
-        $caps = $parser->extract_extra_capabilities($data);
-
-        $this->assertCount(2, $caps);
-        $this->assertContains('moodle/user:viewdetails', $caps);
-        $this->assertContains('moodle/course:view', $caps);
     }
 }

@@ -62,7 +62,7 @@ if ($form->is_cancelled()) {
 
         // If a token was generated, stash it so the view page can show it once.
         if (!empty($result['token'])) {
-            $tokencache = \core_cache\cache::make('local_servicemanager', 'newtoken');
+            $tokencache = \local_servicemanager\cache_provider::newtoken();
             $tokencache->set($result['id'], $result['token']);
         }
 

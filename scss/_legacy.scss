@@ -1,0 +1,483 @@
+// What the templates of this branch need that Bootstrap names differently from one release to the next, written once here so that the
+// same markup looks the same on Moodle 4.0 and on 5.2.
+
+.servicemanager-dashboard,
+.servicemanager-detail,
+.servicemanager-history-page,
+.servicemanager-compare-page,
+.servicemanager-documentation,
+.servicemanager-import-page,
+.servicemanager-import-result {
+    [hidden][hidden] {
+        display: none;
+    }
+
+    .sm-page-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        gap: 0.5rem;
+    }
+
+    .sm-page-title {
+        margin: 0;
+    }
+
+    .sm-muted {
+        color: var(--sm-secondary-color);
+    }
+
+    .sm-center {
+        text-align: center;
+    }
+
+    .sm-gap-left {
+        margin-inline-start: 0.5rem;
+    }
+
+    .sm-danger {
+        color: var(--sm-danger);
+    }
+
+    .sm-text-success {
+        color: var(--sm-success);
+    }
+
+    .sm-text-warning {
+        color: var(--sm-warning-text-emphasis);
+    }
+
+    .sm-text-danger {
+        color: var(--sm-danger);
+    }
+
+    .sm-badges-row,
+    .sm-actions-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .sm-empty {
+        text-align: center;
+    }
+
+    // A label with the colour of what it says.
+    .sm-badge {
+        --sm-tone: var(--sm-secondary-color);
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.55rem;
+        border-radius: 2rem;
+        background-color: color-mix(in srgb, var(--sm-tone) 16%, var(--sm-body-bg));
+        color: var(--sm-tone);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        white-space: nowrap;
+
+        &.tone-success {
+            --sm-tone: var(--sm-success);
+        }
+
+        &.tone-warning {
+            --sm-tone: var(--sm-warning-text-emphasis);
+        }
+
+        &.tone-danger {
+            --sm-tone: var(--sm-danger);
+        }
+
+        &.tone-info {
+            --sm-tone: var(--sm-info-text-emphasis);
+        }
+    }
+
+    .sm-count-badge {
+        display: inline-block;
+        min-width: 1.25rem;
+        margin-inline-start: 0.5rem;
+        padding: 0 0.4rem;
+        border-radius: 2rem;
+        background-color: var(--sm-primary);
+        color: var(--sm-white);
+        font-size: 0.75rem;
+        text-align: center;
+    }
+
+    .sm-check-cell {
+        width: 2.5rem;
+    }
+
+    .sm-actions-cell {
+        text-align: end;
+        white-space: nowrap;
+    }
+
+    .sm-name {
+        font-weight: 700;
+    }
+
+    .sm-field {
+        margin-bottom: 0.75rem;
+    }
+
+    .sm-label {
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .sm-reset {
+        padding-inline: 0;
+    }
+
+    .sm-health-body {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .sm-health-part {
+        --sm-tone: var(--sm-secondary-color);
+        background-color: var(--sm-tone);
+
+        &.tone-success {
+            --sm-tone: var(--sm-success);
+        }
+
+        &.tone-warning {
+            --sm-tone: var(--sm-warning);
+        }
+
+        &.tone-danger {
+            --sm-tone: var(--sm-danger);
+        }
+    }
+
+    .sm-table-card {
+        overflow: hidden;
+    }
+
+    .sm-table {
+        margin-bottom: 0;
+
+        & th {
+            color: var(--sm-secondary-color);
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sm-hide-small {
+            display: none;
+        }
+    }
+}
+
+.servicemanager-dashboard,
+.servicemanager-detail,
+.servicemanager-history-page,
+.servicemanager-compare-page {
+    .sm-pill.compact:not(.icon-only) {
+        padding: 0.25rem 0.65rem;
+        font-size: 0.8125rem;
+    }
+}
+
+// Spacing and text helpers that the templates use instead of the utilities of Bootstrap, whose names differ between 4 and 5.
+.servicemanager-dashboard,
+.servicemanager-detail,
+.servicemanager-history-page,
+.servicemanager-compare-page,
+.servicemanager-documentation,
+.servicemanager-import-page,
+.servicemanager-import-result {
+    .sm-block {
+        margin-bottom: 1.5rem;
+    }
+
+    .sm-block-small {
+        margin-bottom: 0.5rem;
+    }
+
+    .sm-flush,
+    .sm-flush-table {
+        margin: 0;
+    }
+
+    .sm-grow {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .sm-item {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .sm-italic {
+        font-style: italic;
+    }
+
+    .sm-messages {
+        margin: 0.25rem 0 0;
+        padding-inline-start: 1.25rem;
+    }
+
+    .sm-mono {
+        font-family: var(--sm-font-monospace);
+    }
+
+    .sm-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .sm-panel-title {
+        margin: 0;
+    }
+
+    .sm-panel-tools {
+        padding: 1rem;
+        border-bottom: 1px solid var(--sm-border-color);
+    }
+
+    .sm-push {
+        margin-inline-start: auto;
+    }
+
+    .sm-section-title {
+        margin: 1.5rem 0 1rem;
+        color: var(--sm-primary);
+    }
+
+    .sm-spread {
+        justify-content: space-between;
+    }
+
+    .sm-strong {
+        font-weight: 700;
+    }
+
+    .sm-switch {
+        display: flex;
+        align-items: center;
+    }
+
+    .sm-tile-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .sm-upper {
+        text-transform: uppercase;
+    }
+
+    .sm-yaml-holder {
+        margin-top: 0.5rem;
+    }
+
+    .sm-resource {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.servicemanager-compare-page {
+    .sm-switch .custom-control-input,
+    .sm-switch .form-check-input {
+        margin-inline-end: 0.4rem;
+    }
+}
+
+// The empty state is centred, with the buttons under the text, as on the 5.3 line.
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    .sm-empty {
+        .sm-actions-row {
+            justify-content: center;
+        }
+
+        .sm-empty-icon {
+            font-size: 2.5rem;
+        }
+
+        .sm-empty-text {
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    .sm-filter > .btn {
+        position: relative;
+    }
+
+    // The button of the filters wears the colour of the search box when it is on, open or has the focus: one colour for both.
+    .sm-filter > .btn.btn-outline-secondary {
+        &:focus,
+        &:focus-visible,
+        &.active,
+        &[aria-expanded='true'] {
+            border-color: var(--sm-primary);
+            background-color: var(--sm-body-bg);
+            color: var(--sm-primary);
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--sm-primary) 25%, transparent);
+        }
+    }
+
+    // The count of filters that are on sits on the corner of the button, so the button does not grow and the panel under it stays put.
+    .sm-filter .sm-count-badge {
+        position: absolute;
+        top: -0.45rem;
+        right: -0.45rem;
+        min-width: 1.15rem;
+        height: 1.15rem;
+        margin: 0;
+        padding: 0 0.3rem;
+        border-radius: 1rem;
+        background-color: var(--sm-primary);
+        color: var(--sm-white);
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.15rem;
+        text-align: center;
+    }
+}
+
+.servicemanager-dashboard,
+.servicemanager-detail {
+    // The identifier of a schema or of what it created: a small neutral label in monospace, not code in the colour of code.
+    .sm-id-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.15rem 0.65rem;
+        border: 1px solid var(--sm-border-color);
+        border-radius: 2rem;
+        background-color: var(--sm-tertiary-bg);
+        color: var(--sm-secondary-color);
+        font-family: inherit;
+        font-size: 0.82rem;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+
+        &.compact {
+            padding: 0.05rem 0.5rem;
+            font-size: 0.75rem;
+        }
+    }
+}
+
+// The search box and the button of the filters are pills: one rounded outline, the icon inside the field and the cross at its end. The
+// search takes the tint of the accent colour while it has text, and the button does the same while it has filters on or is open.
+.servicemanager-dashboard,
+.servicemanager-history-page {
+    --sm-border-strong: color-mix(in srgb, var(--sm-body-color) 42%, var(--sm-body-bg));
+
+    .sm-search {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        height: 2.25rem;
+        overflow: hidden;
+        border: 1px solid var(--sm-border-strong);
+        border-radius: 999px;
+        background-color: var(--sm-body-bg);
+        transition: border-color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+
+        &:has(input:not(:placeholder-shown)) {
+            border-color: var(--sm-primary);
+            background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+        }
+
+        &:focus-within {
+            border-color: var(--sm-primary);
+            box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--sm-primary) 25%, transparent);
+        }
+
+        & .input-group-text {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0 0.25rem 0 0.9rem;
+            border: 0;
+            border-radius: 0;
+            background-color: transparent;
+            color: var(--sm-secondary-color);
+        }
+
+        & .form-control,
+        > .form-control:not(:last-child) {
+            flex: 1 1 auto;
+            width: 1%;
+            min-width: 0;
+            height: 100%;
+            margin: 0;
+            padding: 0 0.75rem 0 0.5rem;
+            border: 0;
+            border-radius: 0;
+            background-color: transparent;
+            box-shadow: none;
+            font-size: 0.875rem;
+            font-weight: inherit;
+
+            &:not(:placeholder-shown) {
+                color: var(--sm-primary);
+                font-weight: 600;
+            }
+        }
+
+        // The browser draws a cross of its own in a search field; the button of the box is the one cross.
+        & input[type='search']::-webkit-search-cancel-button,
+        & input[type='search']::-webkit-search-decoration {
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        & .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            margin: 0 0.3rem 0 0;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background-color: transparent;
+            color: var(--sm-secondary-color);
+
+            &:hover {
+                background-color: var(--sm-tertiary-bg);
+                color: var(--sm-primary);
+            }
+        }
+    }
+
+    .sm-filter > .btn.btn-outline-secondary {
+        height: 2.25rem;
+        padding: 0 1rem;
+        border-color: var(--sm-border-strong);
+        border-radius: 999px;
+        background-color: var(--sm-body-bg);
+        color: inherit;
+        font-size: 0.875rem;
+
+        &:hover,
+        &:focus,
+        &:focus-visible,
+        &.active,
+        &[aria-expanded='true'] {
+            border-color: var(--sm-primary);
+            background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
+            color: var(--sm-primary);
+        }
+    }
+}

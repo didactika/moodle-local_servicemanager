@@ -1,58 +1,184 @@
 {{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
     @template local_servicemanager/compare_page
 
-    Side-by-side comparison of two schema versions.
+    The comparison of two versions of a schema.
 
     Context variables required for this template:
-    * backurl - URL back to the history page
-    * pagetitle - Heading describing the two versions being compared
-    * v1 - First version { version, date }
-    * v2 - Second version { version, date }
-    * lines - Array of diff rows { class1, content1, class2, content2 }
+    * backurl - Where Back leads
+    * first, second - The versions
+    * identical, added, removed, changed - What differs, with the labels that say it
+    * areas - What changed, said in terms of the schema
+    * split, unified - The rows of each layout
 
     Example context (json):
     {
-        "backurl": "https://example.com/local/servicemanager/pages/history.php?id=1",
-        "pagetitle": "Comparing version 1.0.0 with 1.0.1",
-        "v1": { "version": "1.0.0", "date": "1 January 2026" },
-        "v2": { "version": "1.0.1", "date": "2 January 2026" },
-        "lines": [
-            { "class1": "diff-context", "content1": "meta:", "class2": "diff-context", "content2": "meta:" },
-            { "class1": "diff-removed", "content1": "  version: 1.0.0", "class2": "diff-added", "content2": "  version: 1.0.1" }
-        ]
+        "backurl": "#",
+        "first": {"version": "1.0.0", "date": "today", "user": "Admin", "viewurl": "#"},
+        "second": {"version": "1.1.0", "date": "today", "user": "Admin", "viewurl": "#"},
+        "identical": false,
+        "added": 1,
+        "removed": 0,
+        "changed": 0,
+        "addedlabel": "1 added",
+        "removedlabel": "0 removed",
+        "changedlabel": "0 changed",
+        "areas": [],
+        "hasareas": false,
+        "hasstarts": true,
+        "changescount": 0,
+        "split": [{"index": 0, "leftno": 1, "leftkind": "same", "lefttext": "a", "rightno": 1, "rightkind": "same", "righttext": "a"}],
+        "unified": [{"index": 0, "leftno": 1, "rightno": 1, "sign": " ", "kind": "same", "text": "a"}]
     }
 }}
-<div class="servicemanager-compare-page">
-    <div class="mb-3">
-        <a href="{{backurl}}" class="btn btn-secondary">
-            <i class="fa fa-arrow-left mr-2"></i>{{#str}}back, local_servicemanager{{/str}}
-        </a>
+<div class="servicemanager-compare-page{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-compare">
+    <div class="sm-block">
+        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
+    </div>
+    <header class="sm-page-header">
+        <div class="sm-page-title">
+            <h2 class="sm-flush">{{#str}}compare_versions, local_servicemanager{{/str}}</h2>
+            <p class="sm-muted sm-flush">
+                <a href="{{first.viewurl}}">{{#str}}version, local_servicemanager{{/str}} {{first.version}}</a>
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                <a href="{{second.viewurl}}">{{#str}}version, local_servicemanager{{/str}} {{second.version}}</a>
+                · {{second.user}}, {{second.date}}
+            </p>
+        </div>
+    </header>
+
+    <div class="sm-badges-row sm-block" data-region="diff-counts">
+        {{#identical}}<span class="sm-badge tone-secondary">{{#str}}compare_no_changes, local_servicemanager{{/str}}</span>{{/identical}}
+        {{^identical}}
+            {{#added}}<span class="sm-badge tone-success">{{addedlabel}}</span>{{/added}}
+            {{#removed}}<span class="sm-badge tone-danger">{{removedlabel}}</span>{{/removed}}
+            {{#changed}}<span class="sm-badge tone-warning">{{changedlabel}}</span>{{/changed}}
+        {{/identical}}
     </div>
 
-    <h3>{{pagetitle}}</h3>
+    {{#hasareas}}
+        <details class="sm-changes sm-block" data-region="change-summary" open>
+            <summary class="sm-changes-head">
+                <i class="fa-solid fa-chevron-right sm-changes-caret" aria-hidden="true"></i>
+                <h5 class="sm-changes-title">{{#str}}compare_changes_title, local_servicemanager{{/str}}</h5>
+                <span class="sm-count-badge">{{changescount}}</span>
+            </summary>
+            <div class="sm-changes-body">
+                {{#areas}}
+                    <section class="sm-changes-area">
+                        <h6 class="sm-changes-area-title"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{title}}</h6>
+                        <ul class="sm-changes-list">
+                            {{#items}}
+                                <li class="sm-change-chip tone-{{tone}}">
+                                    <i class="fa-solid fa-{{icon}} sm-change-sign" aria-hidden="true"></i>
+                                    <span class="sr-only visually-hidden">{{kindlabel}}: </span>
+                                    <span class="sm-change-name">{{label}}</span>
+                                    {{#iskindchanged}}
+                                        <span class="sm-change-values">
+                                            <span class="sm-change-from">{{from}}</span>
+                                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                            <span class="sm-change-to">{{to}}</span>
+                                        </span>
+                                    {{/iskindchanged}}
+                                </li>
+                            {{/items}}
+                        </ul>
+                    </section>
+                {{/areas}}
+            </div>
+        </details>
+    {{/hasareas}}
 
-    <div class="comparison-container mt-4">
-        <table class="table table-bordered table-sm comparison-table">
-            <thead>
-                <tr>
-                    <th style="width: 50%;">
-                        {{#str}}version, local_servicemanager{{/str}} {{v1.version}} 
-                        <small class="text-muted d-block">{{v1.date}}</small>
-                    </th>
-                    <th style="width: 50%;">
-                        {{#str}}version, local_servicemanager{{/str}} {{v2.version}}
-                        <small class="text-muted d-block">{{v2.date}}</small>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#lines}}
-                <tr>
-                    <td class="{{class1}}" style="white-space: pre-wrap; font-family: monospace;">{{content1}}</td>
-                    <td class="{{class2}}" style="white-space: pre-wrap; font-family: monospace;">{{content2}}</td>
-                </tr>
-                {{/lines}}
-            </tbody>
-        </table>
+    <div class="sm-actions-row sm-spread sm-block" data-region="diff-tools">
+        <div class="sm-group" role="group" aria-label="{{#str}}compare_view, local_servicemanager{{/str}}">
+            <button type="button" class="btn sm-pill active" data-view="split" aria-pressed="true">
+                <i class="fa-solid fa-table-columns sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_view_split, local_servicemanager{{/str}}
+            </button>
+            <button type="button" class="btn sm-pill" data-view="unified" aria-pressed="false">
+                <i class="fa-solid fa-bars sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_view_unified, local_servicemanager{{/str}}
+            </button>
+        </div>
+        <div class="sm-actions-row">
+            <div class="custom-control custom-switch form-check form-switch sm-switch">
+                <input class="custom-control-input form-check-input" type="checkbox" role="switch" id="only-changes" checked>
+                <label class="custom-control-label form-check-label" for="only-changes">{{#str}}compare_only_changes, local_servicemanager{{/str}}</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card sm-diff-card">
+        <div class="table-responsive">
+            <table class="table table-sm comparison-table sm-diff-split" data-region="diff-split">
+                <thead>
+                    <tr>
+                        <th colspan="2">{{#str}}version, local_servicemanager{{/str}} {{first.version}} <small class="sm-muted">{{first.date}}</small></th>
+                        <th colspan="2">{{#str}}version, local_servicemanager{{/str}} {{second.version}} <small class="sm-muted">{{second.date}}</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#split}}
+                        {{#opensfold}}<tr class="sm-folded" data-region="fold" data-from="{{index}}"><td colspan="4"><button type="button" class="btn btn-sm btn-link" data-action="open-fold"><i class="fa-solid fa-ellipsis sm-icon-gap" aria-hidden="true"></i>{{foldlabel}}</button></td></tr>{{/opensfold}}
+                        <tr id="diff-row-{{index}}" data-row="{{index}}"{{#folded}} data-fold="{{foldfrom}}"{{/folded}}>
+                            <td class="sm-line-no" aria-hidden="true">{{leftno}}</td>
+                            <td class="sm-diff sm-diff-{{leftkind}}">{{lefttext}}</td>
+                            <td class="sm-line-no" aria-hidden="true">{{rightno}}</td>
+                            <td class="sm-diff sm-diff-{{rightkind}}">{{righttext}}</td>
+                        </tr>
+                    {{/split}}
+                </tbody>
+            </table>
+            <table class="table table-sm sm-diff-unified" data-region="diff-unified" hidden>
+                <thead>
+                    <tr>
+                        <th colspan="4">{{#str}}version, local_servicemanager{{/str}} {{first.version}} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> {{#str}}version, local_servicemanager{{/str}} {{second.version}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#unified}}
+                        {{#opensfold}}<tr class="sm-folded" data-region="fold" data-from="{{index}}"><td colspan="4"><button type="button" class="btn btn-sm btn-link" data-action="open-fold"><i class="fa-solid fa-ellipsis sm-icon-gap" aria-hidden="true"></i>{{foldlabel}}</button></td></tr>{{/opensfold}}
+                        <tr data-row="{{index}}"{{#folded}} data-fold="{{foldfrom}}"{{/folded}}>
+                            <td class="sm-line-no" aria-hidden="true">{{leftno}}</td>
+                            <td class="sm-line-no" aria-hidden="true">{{rightno}}</td>
+                            <td class="sm-sign">{{sign}}</td>
+                            <td class="sm-diff sm-diff-{{kind}}">{{text}}</td>
+                        </tr>
+                    {{/unified}}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+{{#hasstarts}}
+    <div class="sm-floating sm-changenav" role="status" data-region="change-navigator">
+        <button type="button" class="sm-navbtn" data-action="prev-change" title="{{#str}}compare_prev_change, local_servicemanager{{/str}}">
+            <i class="fa-solid fa-chevron-up" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_prev_change, local_servicemanager{{/str}}</span>
+        </button>
+        <span class="sm-changenav-info">
+            <strong data-region="change-title"></strong>
+            <small data-region="change-detail"></small>
+        </span>
+        <button type="button" class="sm-navbtn" data-action="next-change" title="{{#str}}compare_next_change, local_servicemanager{{/str}}">
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_next_change, local_servicemanager{{/str}}</span>
+        </button>
+    </div>
+{{/hasstarts}}
+{{#js}}
+require(['local_servicemanager/compare'], function(compare) {
+    compare.init();
+});
+{{/js}}

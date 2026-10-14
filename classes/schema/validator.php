@@ -17,6 +17,7 @@
 namespace local_servicemanager\schema;
 
 use local_servicemanager\automation\capability_calculator;
+use local_servicemanager\automation\role_settings;
 
 /**
  * Validator for service schema definitions
@@ -56,17 +57,20 @@ class validator {
             return ['errors' => $structureerrors, 'warnings' => []];
         }
 
-        $functions = $this->check_functions($this->parser->extract_functions($data));
+        $functions = $this->check_functions(schema_extractor::functions($data));
+        $role = $this->check_role_settings(schema_extractor::role_settings($data));
 
         return [
             'errors' => array_merge(
-                $this->check_uniqueness($this->parser->extract_meta($data), $excludeschemaid),
-                $functions['errors']
+                $this->check_uniqueness(schema_extractor::meta($data), $excludeschemaid),
+                $functions['errors'],
+                $role['errors']
             ),
             'warnings' => array_merge(
-                $this->check_required_plugins($this->parser->extract_required_plugins($data)),
+                $this->check_required_plugins(schema_extractor::required_plugins($data)),
                 $functions['warnings'],
-                $this->check_additional_users($this->parser->extract_additional_users($data))
+                $role['warnings'],
+                $this->check_additional_users(schema_extractor::additional_users($data))
             ),
         ];
     }
@@ -154,6 +158,33 @@ class validator {
             }
         }
 
+        return ['errors' => $errors, 'warnings' => $warnings];
+    }
+
+    /**
+     * Check what the schema says about its role.
+     *
+     * A role that does not exist is an error, because the relation cannot be made. A capability that does not exist is a warning,
+     * since it may belong to a plugin that is not installed yet.
+     *
+     * @param role_settings $settings What the schema says about its role
+     * @return array ['errors' => [], 'warnings' => []]
+     */
+    protected function check_role_settings(role_settings $settings): array {
+        global $DB;
+
+        $errors = [];
+        $warnings = [];
+        foreach ($settings->all_roles() as $shortname) {
+            if (!$DB->record_exists('role', ['shortname' => $shortname])) {
+                $errors[] = get_string('error_role_not_found', 'local_servicemanager', $shortname);
+            }
+        }
+        foreach ($settings->all_capabilities() as $capability) {
+            if (!$this->capcalc->capability_exists($capability)) {
+                $warnings[] = get_string('warning_capability_not_found', 'local_servicemanager', $capability);
+            }
+        }
         return ['errors' => $errors, 'warnings' => $warnings];
     }
 
