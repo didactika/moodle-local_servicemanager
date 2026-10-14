@@ -38,7 +38,7 @@ The interface is written in AMD modules and Mustache templates, drawn with the c
 
 ## Installation
 
-**Requirements:** Moodle 4.0 to 5.2, PHP 7.4 or newer (the one that your Moodle needs) and the database requirements of the selected Moodle release. The PHP YAML extension is recommended; a parser is included when it is missing. Moodle 5.3 has a line of its own (`main`, `MOODLE_503_STABLE`) with the same features and an interface written in React and TypeScript.
+**Requirements:** Moodle 4.0 to 5.2, PHP 7.4 or newer (the one that your Moodle needs) and the database requirements of the selected Moodle release. The PHP YAML extension is recommended; a parser is included when it is missing. Moodle 5.3 has a line of its own (`main`) with the same features and an interface written in React and TypeScript.
 
 **From a release:** download the matching release ZIP (`-m400`), open **Site administration → Plugins → Install plugins**, upload the package and follow the prompts.
 
