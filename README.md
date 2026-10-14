@@ -56,7 +56,7 @@ The plugin directory is `local/servicemanager`, or `public/local/servicemanager`
 
 | Branch | Moodle | Interface | Release |
 |--------|--------|-----------|---------|
-| `main`, `MOODLE_503_STABLE` | 5.3 | React and TypeScript (ESM) | `X.Y.Z-m503` |
+| `main` | 5.3 | React and TypeScript (ESM) | `X.Y.Z-m503` |
 | `MOODLE_400_STABLE` | 4.0 to 5.2 | AMD modules and Mustache templates | `X.Y.Z-m400` |
 
 A release is named after the delivery and the lowest Moodle version of the line, so `1.1.0-m400` and `1.1.0-m503` carry the same functions for different Moodle versions. The latest release is always the one of `main`.
