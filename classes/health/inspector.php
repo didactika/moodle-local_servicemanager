@@ -21,6 +21,7 @@ use local_servicemanager\automation\user_manager;
 use local_servicemanager\automation\service_manager;
 use local_servicemanager\automation\token_manager;
 use local_servicemanager\automation\capability_calculator;
+use local_servicemanager\schema\schema_extractor;
 
 /**
  * Works out whether a schema is still in working order.
@@ -75,7 +76,7 @@ class inspector {
     public function inspect(\stdClass $schema): array {
         try {
             $yamldata = $this->parser->parse_stored($schema->yaml_content);
-            $functions = $this->parser->extract_functions($yamldata);
+            $functions = schema_extractor::functions($yamldata);
         } catch (\Exception $e) {
             return [
                 'status' => 'critical',

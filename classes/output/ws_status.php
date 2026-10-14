@@ -45,36 +45,13 @@ class ws_status {
         global $CFG;
 
         $enabled = !empty($CFG->enablewebservices);
-        $active = ($enabled && !empty($CFG->webserviceprotocols))
-            ? array_map('trim', explode(',', $CFG->webserviceprotocols))
-            : [];
-
+        $active = self::active_protocols($enabled);
         $protocols = [];
-        foreach (\core_plugin_manager::instance()->get_plugins_of_type('webservice') as $key => $plugin) {
+        foreach (array_keys(\core_plugin_manager::instance()->get_plugins_of_type('webservice')) as $key) {
             $protocols[] = ['name' => strtoupper($key), 'enabled' => in_array($key, $active)];
         }
-
-        if (!$enabled) {
-            $level = 'disabled';
-        } else if (count($active) === 0) {
-            $level = 'warning';
-        } else {
-            $level = 'operational';
-        }
-
-        $fix = ['url' => '', 'label' => ''];
-        if ($canmanage && $level === 'disabled') {
-            $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
-            $fix = [
-                'url' => $subsystems->out(false),
-                'label' => get_string('ws_enable_services', 'local_servicemanager'),
-            ];
-        } else if ($canmanage && $level === 'warning') {
-            $fix = [
-                'url' => self::settings_url('webserviceprotocols'),
-                'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
-            ];
-        }
+        $level = self::level($enabled, count($active));
+        $fix = self::fix($level, $canmanage);
 
         return [
             'enabled' => $enabled,
@@ -85,6 +62,56 @@ class ws_status {
             'fixUrl' => $fix['url'],
             'fixLabel' => $fix['label'],
             'protocolsUrl' => $canmanage ? self::settings_url('webserviceprotocols') : '',
+        ];
+    }
+
+    /**
+     * The protocols that are turned on, when the web services are.
+     *
+     * @param bool $enabled Whether the web services are turned on.
+     * @return string[] Names of the protocols.
+     */
+    private static function active_protocols(bool $enabled): array {
+        global $CFG;
+
+        if (!$enabled || empty($CFG->webserviceprotocols)) {
+            return [];
+        }
+        return array_map('trim', explode(',', $CFG->webserviceprotocols));
+    }
+
+    /**
+     * How the web services are: off, on without a protocol, or working.
+     *
+     * @param bool $enabled Whether the web services are turned on.
+     * @param int $active How many protocols are turned on.
+     * @return string The level.
+     */
+    private static function level(bool $enabled, int $active): string {
+        if (!$enabled) {
+            return 'disabled';
+        }
+        return $active === 0 ? 'warning' : 'operational';
+    }
+
+    /**
+     * Where to turn on what is off, for a person who can.
+     *
+     * @param string $level How the web services are.
+     * @param bool $canmanage Whether the person can open the settings of the web services.
+     * @return string[] The address and the text of the button, empty when nothing is to be turned on.
+     */
+    private static function fix(string $level, bool $canmanage): array {
+        if (!$canmanage || $level === 'operational') {
+            return ['url' => '', 'label' => ''];
+        }
+        if ($level === 'disabled') {
+            $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
+            return ['url' => $subsystems->out(false), 'label' => get_string('ws_enable_services', 'local_servicemanager')];
+        }
+        return [
+            'url' => self::settings_url('webserviceprotocols'),
+            'label' => get_string('ws_enable_protocols', 'local_servicemanager'),
         ];
     }
 }

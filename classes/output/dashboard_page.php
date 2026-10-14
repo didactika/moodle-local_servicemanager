@@ -56,6 +56,7 @@ class dashboard_page implements react_component_renderable, \renderable {
      */
     #[\Override]
     public function get_react_component_props(\renderer_base $renderer): \stdClass {
+        unset($renderer);
         global $DB;
 
         $context = \context_system::instance();

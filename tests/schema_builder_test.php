@@ -19,6 +19,7 @@ namespace local_servicemanager;
 use local_servicemanager\schema\schema_builder;
 use local_servicemanager\schema\validator;
 use local_servicemanager\schema\yaml_parser;
+use local_servicemanager\schema\schema_extractor;
 
 /**
  * Tests for the YAML that the guided form writes.
@@ -73,16 +74,16 @@ final class schema_builder_test extends \advanced_testcase {
         $parser = new yaml_parser();
         $data = $parser->parse($yaml);
         $this->assertNotNull($data);
-        $meta = $parser->extract_meta($data);
+        $meta = schema_extractor::meta($data);
         $this->assertSame('crm.sync', $meta['id']);
         $this->assertSame('Reads "users" from \\ Moodle', $meta['description']);
 
-        $functions = $parser->extract_functions($data);
+        $functions = schema_extractor::functions($data);
         $this->assertSame(['core_webservice_get_site_info', 'core_user_get_users'], array_column($functions, 'name'));
         $this->assertSame([true, false], array_column($functions, 'critical'));
-        $this->assertSame(['mod_forum'], $parser->extract_required_plugins($data));
-        $this->assertSame(['moodle/user:viewdetails'], $parser->extract_extra_capabilities($data));
-        $this->assertSame(['ops@example.com'], $parser->extract_additional_users($data));
+        $this->assertSame(['mod_forum'], schema_extractor::required_plugins($data));
+        $this->assertSame(['moodle/user:viewdetails'], schema_extractor::extra_capabilities($data));
+        $this->assertSame(['ops@example.com'], schema_extractor::additional_users($data));
     }
 
     /**
@@ -101,7 +102,7 @@ final class schema_builder_test extends \advanced_testcase {
             'allow_view' => ['student', 'editingteacher'],
         ];
         $parser = new yaml_parser();
-        $settings = $parser->extract_role_settings($parser->parse($builder->to_yaml($fields)));
+        $settings = schema_extractor::role_settings($parser->parse($builder->to_yaml($fields)));
 
         $this->assertSame(['system', 'course'], $settings->context_levels());
         $this->assertSame(['moodle/site:config'], $settings->capabilities('prohibit'));

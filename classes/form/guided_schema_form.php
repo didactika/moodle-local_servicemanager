@@ -20,6 +20,7 @@ use local_servicemanager\automation\role_settings;
 use local_servicemanager\schema\schema_builder;
 use local_servicemanager\schema\validator;
 use local_servicemanager\schema\yaml_parser;
+use local_servicemanager\schema\schema_extractor;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -53,11 +54,62 @@ class guided_schema_form extends \moodleform {
      * Form definition.
      */
     protected function definition() {
-        global $DB;
-
         $mform = $this->_form;
         $editing = !empty($this->_customdata['schema']);
 
+        $this->add_identity($mform, $editing);
+        $this->add_functions($mform);
+        $this->add_access($mform);
+        $this->add_role($mform);
+        if (!$editing) {
+            $mform->addElement('header', 'tokenheader', get_string('guided_token', 'local_servicemanager'));
+            $mform->setExpanded('tokenheader', true);
+            $mform->addElement('advcheckbox', 'generatetoken', get_string('generatetoken', 'local_servicemanager'), get_string(
+                'generatetoken_desc',
+                'local_servicemanager'
+            ));
+            $mform->setDefault('generatetoken', 1);
+        }
+        $this->add_buttons($mform, $editing);
+    }
+
+    /**
+     * The options of a field that searches while the person types.
+     *
+     * @param bool $free Whether what is typed is accepted when the search does not have it.
+     * @param string $none What the field says while it has nothing.
+     * @return array The options.
+     */
+    private function search_options(bool $free, string $none): array {
+        return [
+            'multiple' => true,
+            'ajax' => 'local_servicemanager/suggest',
+            'tags' => $free,
+            'noselectionstring' => get_string($none, 'local_servicemanager'),
+        ];
+    }
+
+    /**
+     * A field of several values that searches while the person types, with its help.
+     *
+     * @param \MoodleQuickForm $mform The form.
+     * @param string $field Name of the field.
+     * @param string $label What it is called.
+     * @param string $help The string of its help.
+     * @param array $options The options of the search.
+     */
+    private function add_search_field(\MoodleQuickForm $mform, string $field, string $label, string $help, array $options): void {
+        $mform->addElement('autocomplete', $field, $label, $this->options($field), $options);
+        $mform->addHelpButton($field, $help, 'local_servicemanager');
+    }
+
+    /**
+     * The part of the form that says what the schema is.
+     *
+     * @param \MoodleQuickForm $mform The form.
+     * @param bool $editing Whether a schema is being changed, whose id is then fixed.
+     */
+    private function add_identity(\MoodleQuickForm $mform, bool $editing): void {
         $mform->addElement('header', 'identityheader', get_string('guided_identity', 'local_servicemanager'));
         $mform->setExpanded('identityheader', true);
 
@@ -89,74 +141,74 @@ class guided_schema_form extends \moodleform {
 
         $mform->addElement('textarea', 'description', get_string('description'), ['rows' => 3, 'cols' => 60]);
         $mform->setType('description', PARAM_TEXT);
+    }
 
+    /**
+     * The part of the form that says which functions the schema has.
+     *
+     * @param \MoodleQuickForm $mform The form.
+     */
+    private function add_functions(\MoodleQuickForm $mform): void {
         $mform->addElement('header', 'functionsheader', get_string('guided_functions', 'local_servicemanager'));
         $mform->setExpanded('functionsheader', true);
 
-        $suggest = 'local_servicemanager/suggest';
-        $choice = [
-            'multiple' => true,
-            'ajax' => $suggest,
-            'tags' => false,
-            'noselectionstring' => get_string('guided_no_functions', 'local_servicemanager'),
-        ];
-        $mform->addElement(
-            'autocomplete',
+        $choice = $this->search_options(false, 'guided_no_functions');
+        $this->add_search_field(
+            $mform,
             'functions',
             get_string('guided_required_functions', 'local_servicemanager'),
-            $this->options('functions'),
+            'guided_required_functions',
             $choice
         );
-        $mform->addHelpButton('functions', 'guided_required_functions', 'local_servicemanager');
-
-        $mform->addElement(
-            'autocomplete',
+        $this->add_search_field(
+            $mform,
             'optionalfunctions',
             get_string('guided_optional_functions', 'local_servicemanager'),
-            $this->options('optionalfunctions'),
+            'guided_optional_functions',
             $choice
         );
-        $mform->addHelpButton('optionalfunctions', 'guided_optional_functions', 'local_servicemanager');
+    }
 
+    /**
+     * The part of the form that says what whoever calls the service needs and may do.
+     *
+     * @param \MoodleQuickForm $mform The form.
+     */
+    private function add_access(\MoodleQuickForm $mform): void {
         $mform->addElement('header', 'accessheader', get_string('guided_access', 'local_servicemanager'));
         $mform->setExpanded('accessheader', false);
 
-        $free = [
-            'multiple' => true,
-            'ajax' => $suggest,
-            'tags' => true,
-            'noselectionstring' => get_string('guided_none', 'local_servicemanager'),
-        ];
-        $mform->addElement(
-            'autocomplete',
+        $free = $this->search_options(true, 'guided_none');
+        $this->add_search_field(
+            $mform,
             'extracapabilities',
             get_string('extra_capabilities', 'local_servicemanager'),
-            $this->options('extracapabilities'),
+            'guided_extracapabilities',
             $free
         );
-        $mform->addHelpButton('extracapabilities', 'guided_extracapabilities', 'local_servicemanager');
-        $mform->addElement(
-            'autocomplete',
+        $this->add_search_field(
+            $mform,
             'additionalusers',
             get_string('guided_additional_users', 'local_servicemanager'),
-            $this->options('additionalusers'),
+            'guided_additional_users',
             $free
         );
-        $mform->addHelpButton('additionalusers', 'guided_additional_users', 'local_servicemanager');
-        $mform->addElement(
-            'autocomplete',
-            'plugins',
-            get_string('req_plugins', 'local_servicemanager'),
-            $this->options('plugins'),
-            $free
-        );
-        $mform->addHelpButton('plugins', 'guided_plugins', 'local_servicemanager');
+        $this->add_search_field($mform, 'plugins', get_string('req_plugins', 'local_servicemanager'), 'guided_plugins', $free);
 
         $mform->addElement('advcheckbox', 'downloadfiles', get_string('req_file_access', 'local_servicemanager'), get_string(
             'req_download_files',
             'local_servicemanager'
         ));
         $mform->addElement('advcheckbox', 'uploadfiles', '', get_string('req_upload_files', 'local_servicemanager'));
+    }
+
+    /**
+     * The part of the form that says what the role of the schema is and what it may do with other roles.
+     *
+     * @param \MoodleQuickForm $mform The form.
+     */
+    private function add_role(\MoodleQuickForm $mform): void {
+        global $DB;
 
         $mform->addElement('header', 'roleheader', get_string('guided_role', 'local_servicemanager'));
         $mform->setExpanded('roleheader', false);
@@ -167,18 +219,18 @@ class guided_schema_form extends \moodleform {
                 $levels[$level] = get_string('role_level_' . $level, 'local_servicemanager');
             }
         }
+        $none = get_string('guided_none', 'local_servicemanager');
         $mform->addElement(
             'autocomplete',
             'contextlevels',
             get_string('role_context_levels', 'local_servicemanager'),
             $levels,
-            ['multiple' => true, 'noselectionstring' => get_string('guided_none', 'local_servicemanager')]
+            ['multiple' => true, 'noselectionstring' => $none]
         );
         $mform->addHelpButton('contextlevels', 'guided_contextlevels', 'local_servicemanager');
 
-        $roles = $DB->get_records('role', null, 'sortorder', 'shortname, name');
         $rolechoices = [];
-        foreach ($roles as $role) {
+        foreach ($DB->get_records('role', null, 'sortorder', 'shortname, name') as $role) {
             $rolechoices[$role->shortname] = role_get_name($role, null, ROLENAME_ORIGINAL) . ' (' . $role->shortname . ')';
         }
         foreach (role_settings::RELATIONS as $relation) {
@@ -187,31 +239,29 @@ class guided_schema_form extends \moodleform {
                 $relation,
                 get_string('role_' . $relation, 'local_servicemanager'),
                 $rolechoices,
-                ['multiple' => true, 'noselectionstring' => get_string('guided_none', 'local_servicemanager')]
+                ['multiple' => true, 'noselectionstring' => $none]
             );
             $mform->addHelpButton($relation, 'guided_' . $relation, 'local_servicemanager');
         }
+        $free = $this->search_options(true, 'guided_none');
         foreach (['prevent', 'prohibit'] as $permission) {
-            $mform->addElement(
-                'autocomplete',
+            $this->add_search_field(
+                $mform,
                 $permission,
                 get_string('role_permission_' . $permission, 'local_servicemanager'),
-                $this->options($permission),
+                'guided_' . $permission,
                 $free
             );
-            $mform->addHelpButton($permission, 'guided_' . $permission, 'local_servicemanager');
         }
+    }
 
-        if (!$editing) {
-            $mform->addElement('header', 'tokenheader', get_string('guided_token', 'local_servicemanager'));
-            $mform->setExpanded('tokenheader', true);
-            $mform->addElement('advcheckbox', 'generatetoken', get_string('generatetoken', 'local_servicemanager'), get_string(
-                'generatetoken_desc',
-                'local_servicemanager'
-            ));
-            $mform->setDefault('generatetoken', 1);
-        }
-
+    /**
+     * The buttons that end the form.
+     *
+     * @param \MoodleQuickForm $mform The form.
+     * @param bool $editing Whether a schema is being changed.
+     */
+    private function add_buttons(\MoodleQuickForm $mform, bool $editing): void {
         $buttons = [
             $mform->createElement(
                 'submit',
@@ -237,13 +287,13 @@ class guided_schema_form extends \moodleform {
     public static function values_from_yaml(string $yaml): array {
         $parser = new yaml_parser();
         $data = $parser->parse_stored($yaml);
-        $meta = $parser->extract_meta($data);
-        $role = $parser->extract_role_settings($data);
-        $service = $parser->extract_service_settings($data);
+        $meta = schema_extractor::meta($data);
+        $role = schema_extractor::role_settings($data);
+        $service = schema_extractor::service_settings($data);
 
         $required = [];
         $optional = [];
-        foreach ($parser->extract_functions($data) as $function) {
+        foreach (schema_extractor::functions($data) as $function) {
             if ($function['critical']) {
                 $required[] = $function['name'];
             } else {
@@ -258,12 +308,12 @@ class guided_schema_form extends \moodleform {
             'description' => $meta['description'],
             'functions' => $required,
             'optionalfunctions' => $optional,
-            'plugins' => array_values($parser->extract_required_plugins($data)),
+            'plugins' => array_values(schema_extractor::required_plugins($data)),
             'extracapabilities' => array_values(array_unique(array_merge(
-                $parser->extract_extra_capabilities($data),
+                schema_extractor::extra_capabilities($data),
                 $role->capabilities('allow')
             ))),
-            'additionalusers' => array_values($parser->extract_additional_users($data)),
+            'additionalusers' => array_values(schema_extractor::additional_users($data)),
             'downloadfiles' => (int) $service['download_files'],
             'uploadfiles' => (int) $service['upload_files'],
             'contextlevels' => array_values(array_diff($role->context_levels(), ['system'])),
@@ -325,36 +375,13 @@ class guided_schema_form extends \moodleform {
      * @return array Errors by field.
      */
     public function validation($data, $files) {
-        global $DB;
-
         $errors = parent::validation($data, $files);
         $fields = self::fields($data);
         $schema = $this->_customdata['schema'] ?? null;
         $ownid = $schema ? (int) $schema->id : 0;
 
-        if ($schema && $fields['id'] !== $schema->schema_id) {
-            $errors['schemaid'] = get_string('error_id_change_forbidden', 'local_servicemanager');
-        } else if ($fields['id'] !== '' && !(new yaml_parser())->validate_schema_id($fields['id'])) {
-            $errors['schemaid'] = get_string('error_invalid_schema_id', 'local_servicemanager', $fields['id']);
-        } else if (
-            $fields['id'] !== ''
-            && $DB->record_exists_select('local_servicemanager_schemas', 'schema_id = ? AND id <> ?', [$fields['id'], $ownid])
-        ) {
-            $errors['schemaid'] = get_string('error_schema_id_exists', 'local_servicemanager', $fields['id']);
-        }
-        if (
-            $fields['name'] !== ''
-            && $DB->record_exists_select('local_servicemanager_schemas', 'name = ? AND id <> ?', [$fields['name'], $ownid])
-        ) {
-            $errors['name'] = get_string('error_schema_name_exists', 'local_servicemanager', $fields['name']);
-        }
-        if (!$fields['functions'] && !$fields['optionalfunctions']) {
-            $errors['functions'] = get_string('guided_needs_function', 'local_servicemanager');
-        }
-        $both = array_intersect($fields['functions'], $fields['optionalfunctions']);
-        if ($both) {
-            $errors['optionalfunctions'] = get_string('error_duplicate_function', 'local_servicemanager', reset($both));
-        }
+        $errors += $this->identity_errors($fields, $schema, $ownid);
+        $errors += $this->function_errors($fields);
 
         // What the form cannot tell at one field is told by the validator that every schema goes through.
         if (!$errors && !empty($fields['id'])) {
@@ -362,6 +389,54 @@ class guided_schema_form extends \moodleform {
             if (!empty($result['errors'])) {
                 $errors['functions'] = implode('<br>', array_map('s', $result['errors']));
             }
+        }
+        return $errors;
+    }
+
+    /**
+     * What is wrong with the id and the name of the schema.
+     *
+     * @param array $fields The fields of the form.
+     * @param \stdClass|null $schema The schema that is being changed, or null for a new one.
+     * @param int $ownid Id in the database of that schema, or zero.
+     * @return array Errors by field.
+     */
+    private function identity_errors(array $fields, ?\stdClass $schema, int $ownid): array {
+        global $DB;
+
+        $errors = [];
+        $id = $fields['id'];
+        if ($schema && $id !== $schema->schema_id) {
+            $errors['schemaid'] = get_string('error_id_change_forbidden', 'local_servicemanager');
+        } else if ($id !== '' && !(new yaml_parser())->validate_schema_id($id)) {
+            $errors['schemaid'] = get_string('error_invalid_schema_id', 'local_servicemanager', $id);
+        } else if (
+            $id !== ''
+            && $DB->record_exists_select('local_servicemanager_schemas', 'schema_id = ? AND id <> ?', [$id, $ownid])
+        ) {
+            $errors['schemaid'] = get_string('error_schema_id_exists', 'local_servicemanager', $id);
+        }
+        $name = $fields['name'];
+        if ($name !== '' && $DB->record_exists_select('local_servicemanager_schemas', 'name = ? AND id <> ?', [$name, $ownid])) {
+            $errors['name'] = get_string('error_schema_name_exists', 'local_servicemanager', $name);
+        }
+        return $errors;
+    }
+
+    /**
+     * What is wrong with the functions: there are none, or one is both required and optional.
+     *
+     * @param array $fields The fields of the form.
+     * @return array Errors by field.
+     */
+    private function function_errors(array $fields): array {
+        $errors = [];
+        if (!$fields['functions'] && !$fields['optionalfunctions']) {
+            $errors['functions'] = get_string('guided_needs_function', 'local_servicemanager');
+        }
+        $both = array_intersect($fields['functions'], $fields['optionalfunctions']);
+        if ($both) {
+            $errors['optionalfunctions'] = get_string('error_duplicate_function', 'local_servicemanager', reset($both));
         }
         return $errors;
     }

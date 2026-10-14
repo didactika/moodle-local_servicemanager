@@ -48,7 +48,7 @@ class service_settings {
     }
 
     /**
-     * Build from the array yaml_parser::extract_service_settings() returns.
+     * Build from the array schema_extractor::service_settings() returns.
      *
      * @param array $settings ['download_files' => bool, 'upload_files' => bool]
      * @return self

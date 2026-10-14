@@ -16,6 +16,8 @@
 
 namespace local_servicemanager;
 
+use local_servicemanager\schema\schema_extractor;
+
 /**
  * Unit tests for schema validator class.
  *
@@ -219,9 +221,8 @@ YAML;
             return;
         }
 
-        $parser = new \local_servicemanager\schema\yaml_parser();
-        $this->assertSame($expected, $parser->extract_extra_capabilities($result['data']));
-        $this->assertSame([], $parser->extract_additional_users($result['data']));
+        $this->assertSame($expected, schema_extractor::extra_capabilities($result['data']));
+        $this->assertSame([], schema_extractor::additional_users($result['data']));
     }
 
     /**

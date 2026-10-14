@@ -57,20 +57,20 @@ class validator {
             return ['errors' => $structureerrors, 'warnings' => []];
         }
 
-        $functions = $this->check_functions($this->parser->extract_functions($data));
-        $role = $this->check_role_settings($this->parser->extract_role_settings($data));
+        $functions = $this->check_functions(schema_extractor::functions($data));
+        $role = $this->check_role_settings(schema_extractor::role_settings($data));
 
         return [
             'errors' => array_merge(
-                $this->check_uniqueness($this->parser->extract_meta($data), $excludeschemaid),
+                $this->check_uniqueness(schema_extractor::meta($data), $excludeschemaid),
                 $functions['errors'],
                 $role['errors']
             ),
             'warnings' => array_merge(
-                $this->check_required_plugins($this->parser->extract_required_plugins($data)),
+                $this->check_required_plugins(schema_extractor::required_plugins($data)),
                 $functions['warnings'],
                 $role['warnings'],
-                $this->check_additional_users($this->parser->extract_additional_users($data))
+                $this->check_additional_users(schema_extractor::additional_users($data))
             ),
         ];
     }
