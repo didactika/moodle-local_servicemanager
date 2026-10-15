@@ -271,4 +271,37 @@ YAML;
         $this->getSession()->visit($this->locate_path('/local/servicemanager/pages/health.php?id=' . $id));
     }
 
+    /**
+     * Check that leaving the page would warn that what is in its form is not saved.
+     *
+     * Moodle does not show that warning on a test site, so this looks at the mark that its change checker puts on a form that
+     * has changes, which is what the warning depends on.
+     *
+     * @Then leaving the page should warn about unsaved changes
+     */
+    public function leaving_the_page_should_warn_about_unsaved_changes() {
+        if (!$this->page_has_unsaved_form()) {
+            throw new Exception('Leaving the page would not warn about unsaved changes');
+        }
+    }
+
+    /**
+     * Check that leaving the page would not warn, as nothing in its form would be lost.
+     *
+     * @Then leaving the page should not warn about unsaved changes
+     */
+    public function leaving_the_page_should_not_warn_about_unsaved_changes() {
+        if ($this->page_has_unsaved_form()) {
+            throw new Exception('Leaving the page would warn about unsaved changes');
+        }
+    }
+
+    /**
+     * Whether a form of the page is marked as having changes that are not saved.
+     *
+     * @return bool
+     */
+    private function page_has_unsaved_form(): bool {
+        return (bool) $this->evaluate_script("return document.querySelector('form[data-form-dirty=\"true\"]') !== null;");
+    }
 }
