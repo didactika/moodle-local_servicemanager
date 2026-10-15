@@ -17,6 +17,7 @@
 namespace local_servicemanager\output;
 
 use core\output\react_component_renderable;
+use local_servicemanager\schema\manager;
 use local_servicemanager\schema\yaml_parser;
 use local_servicemanager\schema\schema_extractor;
 
@@ -133,7 +134,8 @@ class schema_page implements react_component_renderable, \renderable {
                 'maintainer' => (string) $schema->maintainer,
                 'status' => $schema->status,
                 'statusLabel' => get_string('status_' . $schema->status, 'local_servicemanager'),
-                'enabled' => (bool) $schema->enabled,
+                // Whether the service can be called, which Moodle decides, and not what the plugin stored.
+                'enabled' => (new manager())->is_enabled($schema),
                 'created' => userdate($schema->timecreated),
                 'modified' => userdate($schema->timemodified),
                 'hasToken' => !empty($schema->tokenid),

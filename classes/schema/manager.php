@@ -202,6 +202,56 @@ class manager {
     }
 
     /**
+     * The state that the web service of each schema has in Moodle, which is what decides whether it can be called.
+     *
+     * @param int|null $id Id of one schema record, or null for all of them.
+     * @return bool[] Whether each service is enabled, by the id of its schema record; a schema whose service no longer exists
+     *     is not there.
+     */
+    public function service_states(?int $id = null): array {
+        global $DB;
+
+        $sql = "SELECT s.id, es.enabled
+                  FROM {local_servicemanager_schemas} s
+                  JOIN {external_services} es ON es.id = s.serviceid";
+        $params = [];
+        if ($id !== null) {
+            $sql .= " WHERE s.id = :id";
+            $params['id'] = $id;
+        }
+        return array_map('boolval', $DB->get_records_sql_menu($sql, $params));
+    }
+
+    /**
+     * Whether a schema is enabled: the state of its web service in Moodle, or the one the schema stored when the service is
+     * gone.
+     *
+     * @param \stdClass $schema Schema record
+     * @return bool
+     */
+    public function is_enabled(\stdClass $schema): bool {
+        return $this->service_states((int) $schema->id)[$schema->id] ?? (bool) $schema->enabled;
+    }
+
+    /**
+     * Take the state that the web service of a schema was given in Moodle, when it differs from the one the schema stored.
+     *
+     * Moodle decides whether a service can be called, so its state is the one that counts: a service enabled or disabled in the
+     * administration of Moodle enables or disables the schema, with its user, as doing it in the plugin does.
+     *
+     * @param \stdClass $schema Schema record
+     * @return bool True when the schema took the state of its service.
+     */
+    public function adopt_service_state(\stdClass $schema): bool {
+        $enabled = $this->is_enabled($schema);
+        if ($enabled === (bool) $schema->enabled) {
+            return false;
+        }
+        $this->set_enabled((int) $schema->id, $enabled);
+        return true;
+    }
+
+    /**
      * Provision a schema and store it.
      *
      * If storing fails the provisioned objects are removed again, so a schema

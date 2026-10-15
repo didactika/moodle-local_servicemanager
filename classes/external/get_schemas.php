@@ -21,6 +21,7 @@ use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
 use core_external\external_single_structure;
 use core_external\external_value;
+use local_servicemanager\schema\manager;
 
 /**
  * External web service function: get all service schemas.
@@ -54,6 +55,7 @@ class get_schemas extends external_api {
         require_capability('local/servicemanager:view', $context);
 
         $schemas = $DB->get_records('local_servicemanager_schemas');
+        $states = (new manager())->service_states();
         $result = [];
 
         foreach ($schemas as $schema) {
@@ -62,7 +64,7 @@ class get_schemas extends external_api {
                 'schemaid' => $schema->schema_id,
                 'name' => $schema->name,
                 'version' => $schema->version,
-                'enabled' => $schema->enabled,
+                'enabled' => $states[$schema->id] ?? (bool) $schema->enabled,
                 'timecreated' => $schema->timecreated,
                 'timemodified' => $schema->timemodified,
             ];
