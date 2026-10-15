@@ -23,7 +23,8 @@
     * ishistory, canmanage, sesskey - What the page is and what the person may do
     * backurl, backlabel - Where Back leads
     * schema - What the schema is
-    * functions, resources, access, role, logs - The panels
+    * functions, resources, access, role - The panels
+    * health - A summary of the health checks: the latest one, the count of each status and where all of them are
     * urls - Where the actions lead
 
     Example context (json):
@@ -42,8 +43,13 @@
         "resources": [],
         "access": {"showfiles": true, "files": [], "hasplugins": false, "plugins": [], "hascapabilities": false, "capabilities": []},
         "role": {"visible": false, "rows": []},
-        "haslogs": false,
-        "logs": [],
+        "health": {
+            "hasany": true,
+            "latest": {"time": "15/10/26, 21:43", "statuslabel": "Warning", "tone": "warning", "messages": [{"text": "Service: disabled"}]},
+            "counts": [{"label": "Healthy", "count": 9, "tone": "success"}, {"label": "Warning", "count": 1, "tone": "warning"}],
+            "total": 10,
+            "url": "#"
+        },
         "urls": {"edit": "#", "delete": "#", "history": "#", "regenerate": "#", "export": "#", "bulk": "#"},
         "schemarowid": 1
     }
@@ -206,29 +212,27 @@
                 </section>
             {{/hasresources}}
 
-            {{#haslogs}}
+            {{#health.hasany}}
                 <section class="card sm-panel" data-region="health">
                     <header class="card-header sm-panel-head">
-                        <h3 class="sm-panel-title"><span class="sm-panel-icon sm-muted"><i class="fa-solid fa-heart-pulse sm-icon-gap" aria-hidden="true"></i></span>{{#str}}healthcheck_task, local_servicemanager{{/str}}<span class="sm-count-badge">{{logscount}}</span></h3>
-                        <select class="custom-select form-select form-select-sm sm-auto-width" id="healthlog-status-filter" aria-label="{{#str}}status, moodle{{/str}}">
-                            <option value="">{{#str}}all, moodle{{/str}}</option>
-                            <option value="healthy">{{#str}}status_healthy, local_servicemanager{{/str}}</option>
-                            <option value="warning">{{#str}}status_warning, local_servicemanager{{/str}}</option>
-                            <option value="critical">{{#str}}status_critical, local_servicemanager{{/str}}</option>
-                        </select>
+                        <h3 class="sm-panel-title"><span class="sm-panel-icon sm-muted"><i class="fa-solid fa-heart-pulse sm-icon-gap" aria-hidden="true"></i></span>{{#str}}healthcheck_task, local_servicemanager{{/str}}<span class="sm-count-badge">{{health.total}}</span></h3>
+                        <a class="btn sm-pill compact tone-primary" href="{{health.url}}">{{#str}}health_view_all, local_servicemanager{{/str}}<i class="fa-solid fa-arrow-right sm-gap-left" aria-hidden="true"></i></a>
                     </header>
-                    <div class="sm-scroll">
-                        <table class="table table-sm sm-flush-table" id="healthlog-table">
-                            <thead><tr><th class="sm-time-column">{{#str}}time, moodle{{/str}}</th><th class="sm-status-column">{{#str}}status, moodle{{/str}}</th><th>{{#str}}message, moodle{{/str}}</th></tr></thead>
-                            <tbody>
-                                {{#logs}}
-                                    <tr data-status="{{status}}"><td>{{time}}</td><td><span class="sm-badge tone-{{tone}}">{{status}}</span></td><td>{{message}}</td></tr>
-                                {{/logs}}
-                            </tbody>
-                        </table>
+                    <div class="card-body">
+                        {{#health.latest}}
+                            <div class="sm-health-latest">
+                                <span class="sm-muted small sm-upper">{{#str}}health_latest, local_servicemanager{{/str}}</span>
+                                <span class="sm-badge tone-{{tone}}">{{statuslabel}}</span>
+                                <span class="sm-muted">{{time}}</span>
+                            </div>
+                            <ul class="sm-health-messages">{{#messages}}<li>{{text}}</li>{{/messages}}</ul>
+                        {{/health.latest}}
+                        <div class="sm-health-counts">
+                            {{#health.counts}}<span class="sm-badge tone-{{tone}}">{{label}}<span class="sm-gap-left">{{count}}</span></span>{{/health.counts}}
+                        </div>
                     </div>
                 </section>
-            {{/haslogs}}
+            {{/health.hasany}}
         </div>
 
         <div class="col-lg-4">

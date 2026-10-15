@@ -234,4 +234,41 @@ YAML;
         }
     }
 
+    /**
+     * Give a schema health checks whose status goes healthy, warning, critical, from the newest one back, a day apart.
+     *
+     * @Given the schema :schemaid has :count health checks
+     * @param string $schemaid Id of the schema.
+     * @param int $count How many checks.
+     */
+    public function the_schema_has_health_checks($schemaid, $count) {
+        global $DB;
+
+        $id = $DB->get_field('local_servicemanager_schemas', 'id', ['schema_id' => $schemaid], MUST_EXIST);
+        $statuses = ['healthy', 'warning', 'critical'];
+        for ($i = 0; $i < (int) $count; $i++) {
+            $status = $statuses[$i % 3];
+            $DB->insert_record('local_servicemanager_logs', (object) [
+                'schemaid' => $id,
+                'status' => $status,
+                'message' => $status === 'healthy' ? 'All checks passed' : 'Service: disabled; Token: expired',
+                'details' => '{}',
+                'timecreated' => time() - $i * DAYSECS,
+            ]);
+        }
+    }
+
+    /**
+     * Open the health checks of a schema.
+     *
+     * @Given I am on the health checks page of the schema :schemaid
+     * @param string $schemaid Id of the schema.
+     */
+    public function i_am_on_the_health_checks_page_of_the_schema($schemaid) {
+        global $DB;
+
+        $id = $DB->get_field('local_servicemanager_schemas', 'id', ['schema_id' => $schemaid], MUST_EXIST);
+        $this->getSession()->visit($this->locate_path('/local/servicemanager/pages/health.php?id=' . $id));
+    }
+
 }

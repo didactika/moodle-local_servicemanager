@@ -7,7 +7,8 @@
 .servicemanager-compare-page,
 .servicemanager-documentation,
 .servicemanager-import-page,
-.servicemanager-import-result {
+.servicemanager-import-result,
+.servicemanager-health-page {
     [hidden][hidden] {
         display: none;
     }
@@ -195,7 +196,8 @@
 .servicemanager-compare-page,
 .servicemanager-documentation,
 .servicemanager-import-page,
-.servicemanager-import-result {
+.servicemanager-import-result,
+.servicemanager-health-page {
     .sm-block {
         margin-bottom: 1.5rem;
     }
