@@ -58,8 +58,7 @@ class manager {
         );
 
         $htmlbody = $OUTPUT->render_from_template('local_servicemanager/email_health_report', $context);
-        $subject = 'Campus ' . $site->shortname . ': '
-            . get_string('healthcheck_report_subject', 'local_servicemanager');
+        $subject = $site->shortname . ': ' . get_string('healthcheck_report_subject', 'local_servicemanager');
 
         $this->deliver($recipients, $subject, strip_tags($htmlbody), $htmlbody);
     }
