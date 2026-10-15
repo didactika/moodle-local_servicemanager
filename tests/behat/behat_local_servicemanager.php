@@ -219,4 +219,19 @@ YAML;
             "definition:\n  functions:\n    - core_webservice_get_site_info\n  extra_capabilities:\n{$list}\n";
         (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
     }
+
+    /**
+     * Check that the bar that goes through the changes of a comparison floats over the page, which only its styles make it do.
+     *
+     * @Then the change navigator should float
+     */
+    public function the_change_navigator_should_float() {
+        $position = $this->evaluate_script(
+            "return window.getComputedStyle(document.querySelector('[data-region=\"change-navigator\"]')).position;"
+        );
+        if ($position !== 'fixed') {
+            throw new Exception("The change navigator is not floating: its position is '{$position}'");
+        }
+    }
+
 }

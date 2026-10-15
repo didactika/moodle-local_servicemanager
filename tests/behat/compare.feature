@@ -39,6 +39,20 @@ Feature: Schema versions
     And I should see "meta:" in the ".comparison-table" "css_element"
 
   @javascript
+  Scenario: The arrows go through the changes of the comparison
+    Given I am on the history page of the schema "test.service"
+    And I click on "Choose version 1.0.0" "checkbox"
+    And I click on "Choose version 1.1.0" "checkbox"
+    And I press "Compare Versions"
+    Then the change navigator should float
+    And I should see "2 changes" in the "[data-region='change-navigator']" "css_element"
+    When I click on "Previous change" "button" in the "[data-region='change-navigator']" "css_element"
+    Then I should see "Change 2 of 2" in the "[data-region='change-navigator']" "css_element"
+    When I click on "Next change" "button" in the "[data-region='change-navigator']" "css_element"
+    Then I should see "Change 1 of 2" in the "[data-region='change-navigator']" "css_element"
+    And I should see "Line 4" in the "[data-region='change-navigator']" "css_element"
+
+  @javascript
   Scenario: The comparison is available only when two versions are chosen
     Given I am on the history page of the schema "test.service"
     Then "Compare Versions" "button" should not be visible
