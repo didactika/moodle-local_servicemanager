@@ -392,6 +392,7 @@ $string['schema_not_found'] = 'Schema not found. It may have been deleted.';
 $string['schema_reference'] = 'YAML Schema Reference';
 $string['schema_requirements'] = 'Requirements';
 $string['schema_status'] = 'Status';
+$string['schema_unchanged'] = 'Nothing was changed in schema "{$a}", so it was kept as it was.';
 $string['schema_updated_success'] = 'Schema "{$a}" was updated successfully.';
 $string['schema_version'] = 'Version';
 $string['schemanotfound_error'] = 'The requested schema was not found.';

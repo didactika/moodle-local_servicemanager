@@ -336,7 +336,33 @@ class manager {
         } catch (\moodle_exception $e) {
             return true;
         }
-        return !is_array($data) || $this->content_changed($existing, $data);
+        // Only a YAML that has the structure of a schema can be compared; the validation tells what is wrong with another.
+        return !is_array($data) || $this->parser->validate_structure($data) || $this->content_changed($existing, $data);
+    }
+
+    /**
+     * Whether a YAML says what a schema has stored, however it is written: the same identity and the same content. Comments,
+     * the order of the lists and the way each entry is written do not count.
+     *
+     * The guided form writes the YAML again from its fields, so saving it untouched gives a text that differs from the stored
+     * one and says the same.
+     *
+     * @param \stdClass $existing Stored schema record
+     * @param string $yamlcontent YAML content
+     * @return bool True when saving it would change nothing.
+     */
+    public function says_the_same(\stdClass $existing, string $yamlcontent): bool {
+        try {
+            $data = $this->parser->parse($yamlcontent);
+            $stored = $this->parser->parse_stored($existing->yaml_content) ?? [];
+        } catch (\moodle_exception $e) {
+            return false;
+        }
+        if (!is_array($data) || $this->parser->validate_structure($data)) {
+            return false;
+        }
+        return schema_extractor::identity($data) === schema_extractor::identity($stored)
+            && !$this->content_changed($existing, $data);
     }
 
     /**
@@ -363,24 +389,19 @@ class manager {
     }
 
     /**
-     * Whether anything outside the meta section differs from what is stored.
+     * Whether what the schema does, anything outside the meta section, differs from what is stored.
      *
-     * Serialising both sides compares the whole nested structure in one step.
+     * Both sides are compared in the form of schema_extractor::content(), so the same schema written another way, as the
+     * guided form writes it, is not a change.
      *
      * @param \stdClass $existing Stored schema record
-     * @param array $data Newly parsed YAML data
+     * @param array $data Newly parsed YAML data, with the structure of a schema
      * @return bool
      */
     protected function content_changed(\stdClass $existing, array $data): bool {
-        $olddata = $this->parser->parse_stored($existing->yaml_content);
+        $olddata = $this->parser->parse_stored($existing->yaml_content) ?? [];
 
-        $new = $data;
-        unset($new['meta']);
-
-        $old = $olddata;
-        unset($old['meta']);
-
-        return serialize($new) !== serialize($old);
+        return schema_extractor::content($data) !== schema_extractor::content($olddata);
     }
 
     /**

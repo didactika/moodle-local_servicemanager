@@ -73,4 +73,90 @@ final class guided_schema_form_test extends \advanced_testcase {
 
         $this->assertEqualsCanonicalizing(['moodle/user:viewdetails', 'moodle/course:view'], $values['extracapabilities']);
     }
+
+    /**
+     * A schema written by hand, with comments, functions written as maps and empty lists.
+     *
+     * @return string The YAML.
+     */
+    private function hand_written_yaml(): string {
+        return <<<YAML
+# A schema written by hand.
+meta:
+  id: "hand.written"   # The id.
+  name: "Hand written"
+  version: "1.0.0"
+  description: "Reads   the users"
+
+requirements:
+  plugins: []
+  download_files: false
+  upload_files: false
+
+definition:
+  functions:
+    - name: "core_webservice_get_site_info"
+      critical: true
+    - core_user_get_users
+    - name: core_course_get_courses
+      critical: false
+  extra_capabilities:
+    - "moodle/user:viewdetails"
+  additional_users: []
+
+role:
+  context_levels:
+    - course
+  permissions:
+    allow:
+      - moodle/course:view
+  allow_view:
+    - student
+YAML;
+    }
+
+    /**
+     * Saving the form of a schema untouched says what is stored, so it is neither a change nor a new version.
+     */
+    public function test_saving_the_form_untouched_is_not_a_change(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $manager = new \local_servicemanager\schema\manager();
+        $id = $manager->create_schema($this->hand_written_yaml())['id'];
+        $stored = $manager->get_schema($id);
+        $versions = $DB->count_records('local_servicemanager_history', ['schemaid' => $id]);
+
+        $yaml = guided_schema_form::yaml(guided_schema_form::values_from_yaml($stored->yaml_content));
+        $this->assertNotSame($stored->yaml_content, $yaml);
+        $this->assertTrue($manager->says_the_same($stored, $yaml));
+
+        $result = $manager->update_schema($id, $yaml);
+
+        $this->assertSame('1.0.0', $result['version']);
+        $this->assertFalse($result['adjusted']);
+        $this->assertSame('1.0.0', $manager->get_schema($id)->version);
+        $this->assertSame($versions, $DB->count_records('local_servicemanager_history', ['schemaid' => $id]));
+    }
+
+    /**
+     * A change made in the form is still a change, and a change of the name says something else too.
+     */
+    public function test_a_change_made_in_the_form_is_a_new_version(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $manager = new \local_servicemanager\schema\manager();
+        $id = $manager->create_schema($this->hand_written_yaml())['id'];
+        $stored = $manager->get_schema($id);
+        $values = guided_schema_form::values_from_yaml($stored->yaml_content);
+
+        $renamed = guided_schema_form::yaml(['name' => 'Renamed'] + $values);
+        $this->assertFalse($manager->says_the_same($stored, $renamed));
+
+        $values['optionalfunctions'] = [];
+        $yaml = guided_schema_form::yaml($values);
+        $this->assertFalse($manager->says_the_same($stored, $yaml));
+
+        $this->assertSame('1.0.1', $manager->update_schema($id, $yaml)['version']);
+    }
 }

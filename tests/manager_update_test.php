@@ -354,6 +354,7 @@ YAML;
             . "definition:\n  functions:\n    - core_webservice_get_site_info\n  extra_capabilities:\n- \"aaaa\"\n";
         $DB->set_field('local_servicemanager_schemas', 'yaml_content', $legacyyaml, ['id' => $id]);
 
+        // The stray item of the legacy YAML gave the role nothing, so the update changes the functions to be a change.
         $updateyaml = <<<YAML
 meta:
   id: "test.service"
@@ -362,6 +363,7 @@ meta:
 definition:
   functions:
     - core_webservice_get_site_info
+    - core_user_get_users
   extra_capabilities:
 YAML;
         $manager->update_schema($id, $updateyaml);

@@ -100,6 +100,12 @@ if ($mode === 'yaml' && ($data = $yaml->get_data())) {
     $generatetoken = !empty($data->generatetoken);
 }
 
+// The guided form writes the YAML again from its fields; when it says what is stored, the stored YAML, comments included, stays.
+if ($content !== null && $editing && $mode === 'guided' && $manager->says_the_same($schema, $content)) {
+    \core\notification::info(get_string('schema_unchanged', 'local_servicemanager', $schema->name));
+    redirect($cancelurl);
+}
+
 if ($content !== null) {
     try {
         if ($editing) {

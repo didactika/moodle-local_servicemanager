@@ -128,4 +128,81 @@ class schema_extractor {
             'upload_files'   => !empty($requirements['upload_files']),
         ];
     }
+
+    /**
+     * What a schema does, everything but its meta section, in one form for every way of writing it, so two schemas that do the
+     * same compare equal: the order of the lists, repeated items, a function written as a name or as a map, and a list that is
+     * empty or missing do not count. A capability allowed in the role section is given as an extra capability is, so both are
+     * one list.
+     *
+     * The data must have the structure of a schema (yaml_parser::validate_structure()); a value that is not text is left out.
+     *
+     * @param array $data Parsed YAML data
+     * @return array The content.
+     */
+    public static function content(array $data): array {
+        $functions = [];
+        foreach (self::functions($data) as $function) {
+            if (is_scalar($function['name'])) {
+                $functions[trim((string) $function['name'])] = (bool) $function['critical'];
+            }
+        }
+        ksort($functions);
+
+        $role = self::role_settings($data);
+        $permissions = [];
+        foreach (['prevent', 'prohibit'] as $permission) {
+            $permissions[$permission] = self::sorted($role->capabilities($permission));
+        }
+        $relations = [];
+        foreach (role_settings::RELATIONS as $relation) {
+            $relations[$relation] = self::sorted($role->roles($relation));
+        }
+
+        return [
+            'functions' => $functions,
+            'extra_capabilities' => self::sorted(array_merge(
+                (array) self::extra_capabilities($data),
+                $role->capabilities('allow')
+            )),
+            'additional_users' => self::sorted((array) self::additional_users($data)),
+            'plugins' => self::sorted((array) self::required_plugins($data)),
+            'files' => self::service_settings($data),
+            'context_levels' => self::sorted($role->context_levels()),
+            'permissions' => $permissions,
+            'relations' => $relations,
+        ];
+    }
+
+    /**
+     * The identity of a schema, its meta section, in one form for every way of writing it: each value is text and a run of
+     * spaces or line breaks is one space.
+     *
+     * @param array $data Parsed YAML data
+     * @return array The identity, by field.
+     */
+    public static function identity(array $data): array {
+        return array_map(
+            static fn($value): string => is_scalar($value) ? trim(preg_replace('/\s+/', ' ', (string) $value)) : serialize($value),
+            self::meta($data)
+        );
+    }
+
+    /**
+     * The texts of a list, trimmed, without repeats and in order.
+     *
+     * @param array $values The list.
+     * @return string[] The texts.
+     */
+    private static function sorted(array $values): array {
+        $texts = [];
+        foreach ($values as $value) {
+            if (is_scalar($value)) {
+                $texts[] = trim((string) $value);
+            }
+        }
+        $texts = array_values(array_unique($texts));
+        sort($texts);
+        return $texts;
+    }
 }
