@@ -16,6 +16,8 @@
 
 namespace local_servicemanager\output;
 
+use local_servicemanager\schema\manager;
+
 /**
  * The dashboard: the schemas, the state of the web services of the site and the tools to filter and act on them.
  *
@@ -58,8 +60,11 @@ class dashboard_page implements \renderable, \templatable {
 
         $status = $this->web_service_status($canmanage);
         $count = $status['healthy'] + $status['warning'] + $status['critical'];
+        // What is shown is whether each service can be called, which Moodle decides, and not what the plugin stored.
+        $states = (new manager())->service_states();
         $rows = [];
         foreach (array_values($records) as $index => $record) {
+            $record->enabled = $states[$record->id] ?? (bool) $record->enabled;
             $rows[] = $this->schema_row($record, $index >= self::PERPAGE_OPTIONS[0], $canmanage);
         }
 

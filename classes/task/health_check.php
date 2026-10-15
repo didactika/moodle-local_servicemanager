@@ -54,6 +54,11 @@ class health_check extends \core\task\scheduled_task {
         $healthyschemas = [];
 
         foreach ($schemas as $schema) {
+            // A service enabled or disabled in Moodle without an event, by a script or in the database, is taken here.
+            if ($schemamanager->adopt_service_state($schema)) {
+                $schema = $schemamanager->get_schema($schema->id);
+                mtrace("Schema {$schema->name} took the state of its web service: " . ($schema->enabled ? 'enabled' : 'disabled'));
+            }
             if (!$schema->enabled) {
                 continue;
             }
