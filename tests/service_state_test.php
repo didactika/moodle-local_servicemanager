@@ -150,4 +150,51 @@ final class service_state_test extends \advanced_testcase {
         $this->assertEquals(1, $DB->get_field('user', 'suspended', ['id' => $schema->userid]));
     }
 
+    /**
+     * With the health checks turned off the task checks nothing, logs nothing and mails nothing, and the state of a schema is
+     * still taken from its service, which is not a check.
+     */
+    public function test_the_health_check_turned_off_checks_nothing(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $schema = $this->create_schema();
+        $other = (new manager())->get_schema((new manager())->create_schema(
+            "meta:\n  id: \"state.other\"\n  name: \"Other\"\n  version: \"1.0.0\"\n" .
+            "definition:\n  functions:\n    - core_webservice_get_site_info\n    - name: core_fake_function_that_does_not_exist\n      critical: false\n"
+        )['id']);
+        $DB->set_field('local_servicemanager_schemas', 'status', 'healthy', ['id' => $other->id]);
+        $DB->set_field('external_services', 'enabled', 0, ['id' => $schema->serviceid]);
+        set_config('healthcheck_enabled', 0, 'local_servicemanager');
+        set_config('notification_level', 'all', 'local_servicemanager');
+        $sink = $this->redirectEmails();
+
+        $this->expectOutputRegex('/health check is turned off/');
+        (new task\health_check())->execute();
+        $mails = $sink->get_messages();
+        $sink->close();
+
+        $this->assertSame(0, $DB->count_records('local_servicemanager_logs'));
+        $this->assertSame([], $mails);
+        $this->assertSame('healthy', $DB->get_field('local_servicemanager_schemas', 'status', ['id' => $other->id]));
+        $this->assertEquals(0, $DB->get_field('local_servicemanager_schemas', 'enabled', ['id' => $schema->id]));
+    }
+
+    /**
+     * With the setting on, or never saved, which is its default, the task checks every enabled schema and logs it.
+     */
+    public function test_the_health_check_runs_by_default(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $schema = $this->create_schema();
+        unset_config('healthcheck_enabled', 'local_servicemanager');
+        $sink = $this->redirectEmails();
+
+        $this->expectOutputRegex('/Health Check completed/');
+        (new task\health_check())->execute();
+        $sink->close();
+
+        $this->assertSame(1, $DB->count_records('local_servicemanager_logs', ['schemaid' => $schema->id]));
+    }
 }

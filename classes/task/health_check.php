@@ -47,18 +47,28 @@ class health_check extends \core\task\scheduled_task {
      */
     public function execute(): void {
         $schemamanager = new manager();
-        $inspector = new inspector();
         $schemas = $schemamanager->get_all_schemas();
 
+        // A service enabled or disabled in Moodle without an event, by a script or in the database, is taken here. That is the
+        // state of the schema and not a check, so it is done with the checks turned off too.
+        foreach ($schemas as $id => $schema) {
+            if ($schemamanager->adopt_service_state($schema)) {
+                $schemas[$id] = $schemamanager->get_schema($schema->id);
+                mtrace("Schema {$schema->name} took the state of its web service: " .
+                    ($schemas[$id]->enabled ? 'enabled' : 'disabled'));
+            }
+        }
+
+        if (!self::checks_enabled()) {
+            mtrace('Service Schema health check is turned off in the settings of the plugin: nothing was checked.');
+            return;
+        }
+
+        $inspector = new inspector();
         $issues = [];
         $healthyschemas = [];
 
         foreach ($schemas as $schema) {
-            // A service enabled or disabled in Moodle without an event, by a script or in the database, is taken here.
-            if ($schemamanager->adopt_service_state($schema)) {
-                $schema = $schemamanager->get_schema($schema->id);
-                mtrace("Schema {$schema->name} took the state of its web service: " . ($schema->enabled ? 'enabled' : 'disabled'));
-            }
             if (!$schema->enabled) {
                 continue;
             }
@@ -79,6 +89,16 @@ class health_check extends \core\task\scheduled_task {
 
         mtrace('Service Schema Health Check completed. Checked ' . count($schemas) .
             ' schemas, found ' . count($issues) . ' with issues.');
+    }
+
+    /**
+     * Whether the health checks are turned on. They are when the setting was never saved, as that is its default.
+     *
+     * @return bool
+     */
+    private static function checks_enabled(): bool {
+        $enabled = get_config('local_servicemanager', 'healthcheck_enabled');
+        return $enabled === false || !empty($enabled);
     }
 
     /**
