@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- The requirements of local_servicemanager that Moodle checks besides its own. -->
+<COMPATIBILITY_MATRIX>
+  <PLUGIN name="local_servicemanager">
+    <PHP version="7.4.0" level="required" />
+  </PLUGIN>
+</COMPATIBILITY_MATRIX>
