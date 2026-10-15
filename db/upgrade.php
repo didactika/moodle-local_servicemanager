@@ -31,7 +31,9 @@
  * @return bool
  */
 function xmldb_local_servicemanager_upgrade($oldversion) {
-    global $DB;
+    global $CFG, $DB;
+
+    require_once($CFG->dirroot . '/local/servicemanager/db/upgradelib.php');
 
     // Re-tag provisioned services to the sentinel component so they survive upgrades
     // (external_update_descriptions() deletes services tagged with the plugin's own
@@ -47,6 +49,13 @@ function xmldb_local_servicemanager_upgrade($oldversion) {
         $DB->execute($sql, ['sentinel' => 'local_servicemanager_managed']);
 
         upgrade_plugin_savepoint(true, 2026071000, 'local', 'servicemanager');
+    }
+
+    // Managing schemas is for site administrators only: the manager roles lose what their archetype gave them.
+    if ($oldversion < 2026101500) {
+        local_servicemanager_upgrade_manage_for_admins_only();
+
+        upgrade_plugin_savepoint(true, 2026101500, 'local', 'servicemanager');
     }
 
     return true;

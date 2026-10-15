@@ -27,13 +27,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
+    // A schema makes a role with whatever capabilities it says and a token to use it, and the guided form looks up the users
+    // of the site, so only site administrators have it unless one gives it to a role on purpose.
     'local/servicemanager:manage' => [
-        'riskbitmask' => RISK_CONFIG,
+        'riskbitmask' => RISK_CONFIG | RISK_PERSONAL,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => [
-            'manager' => CAP_ALLOW,
-        ],
+        'archetypes' => [],
     ],
     'local/servicemanager:view' => [
         'captype' => 'read',
