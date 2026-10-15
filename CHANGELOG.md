@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The state of a schema is the one its web service has in Moodle. The dashboard, the page of a schema and the functions `local_servicemanager_get_schema` and `local_servicemanager_get_schemas` show it, and a service enabled or disabled in the administration of Moodle enables or disables its schema and its user, as the plugin does. The daily health check takes a state that was changed without an event.
+- `local/servicemanager:manage` is for site administrators only: the manager archetype no longer has it, the upgrade takes it from the manager roles, and it carries `RISK_PERSONAL` besides `RISK_CONFIG`, since the guided form looks up the users of the site.
+- PHP 7.4 is required, declared in `environment.xml`.
+- The health checks of a schema have a page of their own, narrowed to one status and read a page at a time, with the date in one line, the status in words and each finding apart. The page of the schema sums them up: the latest check, the count of each status and a link to all of them.
+
+### Fixed
+
+- Saving the guided form of a schema without changing anything no longer makes a new version: what a schema does is compared whatever way it is written, and when nothing changed the stored YAML, comments included, is kept.
+- A schema indented by four spaces and without a version is created; the version is written with the indentation of the meta section.
+- A `role` section no longer needs PHP 8.1 to be validated.
+- The YAML that the guided form writes for review, and a form that comes back with errors or is refused, warn before the page is left, as a form with changes does: what they hold is not saved. Reviewing a schema that is edited without changing it does not warn.
+- The setting "Enable health check" turns the health checks off: they ran whatever it said. With it off the task checks, logs and mails nothing, and still takes the state of each web service.
+- The daily health report is titled with the short name of the site and an English subject; it had a Spanish one and the word "Campus" in front.
+- The bar that goes through the changes of a comparison floats at the bottom of the page and its arrows work: it was drawn outside the page, so its styles and its script did not reach it. Going up before choosing a change goes to the last one.
+
 ## [1.1.0-m400] - 2026-10-11
 
 The release is named after the delivery and the line (`-m` and the lowest Moodle version), and the version of the line is the date it was created and a counter,.
