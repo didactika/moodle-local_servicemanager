@@ -34,18 +34,19 @@ const Compare = /* @__PURE__ */ __name((props) => {
   const runs = useMemo(() => changeRuns(rows), [rows]);
   const identical = counts.added + counts.removed + counts.changed === 0;
   const move = /* @__PURE__ */ __name((step) => {
-    const target = (position + step + runs.length) % runs.length;
+    const first2 = step > 0 ? 0 : runs.length - 1;
+    const target = position < 0 ? first2 : (position + step + runs.length) % runs.length;
     setPosition(target);
     document.getElementById(`diff-row-${runs[target].start}`)?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, "move");
   return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-compare-page", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: props.backUrl, label: text("back") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 44,
+      lineNumber: 46,
       columnNumber: 35
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 44,
+      lineNumber: 46,
       columnNumber: 13
     }),
     /* @__PURE__ */ jsxDEV(
@@ -59,13 +60,13 @@ const Compare = /* @__PURE__ */ __name((props) => {
             first.version
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-            lineNumber: 49,
+            lineNumber: 51,
             columnNumber: 21
           }),
           " ",
           /* @__PURE__ */ jsxDEV(Icon, { name: "arrow-right" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-            lineNumber: 49,
+            lineNumber: 51,
             columnNumber: 83
           }),
           " ",
@@ -75,7 +76,7 @@ const Compare = /* @__PURE__ */ __name((props) => {
             second.version
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-            lineNumber: 50,
+            lineNumber: 52,
             columnNumber: 21
           }),
           " \xB7 ",
@@ -84,7 +85,7 @@ const Compare = /* @__PURE__ */ __name((props) => {
           second.date
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-          lineNumber: 48,
+          lineNumber: 50,
           columnNumber: 27
         })
       },
@@ -92,42 +93,42 @@ const Compare = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 46,
+        lineNumber: 48,
         columnNumber: 13
       }
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center mb-3 sm-badges-row", "data-region": "diff-counts", children: identical ? /* @__PURE__ */ jsxDEV("span", { className: "sm-badge", children: text("compare_no_changes") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 57,
+      lineNumber: 59,
       columnNumber: 23
     }) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
       counts.added > 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-success", children: text("compare_added", counts.added) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 59,
+        lineNumber: 61,
         columnNumber: 46
       }),
       counts.removed > 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-danger", children: text("compare_removed", counts.removed) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 60,
+        lineNumber: 62,
         columnNumber: 48
       }),
       counts.changed > 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-warning", children: text("compare_changed", counts.changed) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 61,
+        lineNumber: 63,
         columnNumber: 48
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 58,
+      lineNumber: 60,
       columnNumber: 23
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 55,
+      lineNumber: 57,
       columnNumber: 13
     }),
     changes.length > 0 && /* @__PURE__ */ jsxDEV(ChangeSummary, { changes, text }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 65,
+      lineNumber: 67,
       columnNumber: 36
     }),
     /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center justify-content-between mb-3 sm-actions-row", "data-region": "diff-tools", children: [
@@ -135,30 +136,30 @@ const Compare = /* @__PURE__ */ __name((props) => {
         /* @__PURE__ */ jsxDEV("button", { type: "button", className: `btn btn-outline-secondary${view === "split" ? " active" : ""}`, "aria-pressed": view === "split", onClick: () => setView("split"), children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "table-columns", gap: true }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-            lineNumber: 70,
+            lineNumber: 72,
             columnNumber: 25
           }),
           text("compare_view_split")
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-          lineNumber: 69,
+          lineNumber: 71,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV("button", { type: "button", className: `btn btn-outline-secondary${view === "unified" ? " active" : ""}`, "aria-pressed": view === "unified", onClick: () => setView("unified"), children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "bars", gap: true }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-            lineNumber: 73,
+            lineNumber: 75,
             columnNumber: 25
           }),
           text("compare_view_unified")
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-          lineNumber: 72,
+          lineNumber: 74,
           columnNumber: 21
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 68,
+        lineNumber: 70,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center sm-actions-row", children: /* @__PURE__ */ jsxDEV("div", { className: "form-check form-switch mb-0", children: [
@@ -176,27 +177,27 @@ const Compare = /* @__PURE__ */ __name((props) => {
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-            lineNumber: 78,
+            lineNumber: 80,
             columnNumber: 25
           }
         ),
         /* @__PURE__ */ jsxDEV("label", { className: "form-check-label", htmlFor: "only-changes", children: text("compare_only_changes") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-          lineNumber: 86,
+          lineNumber: 88,
           columnNumber: 25
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 77,
+        lineNumber: 79,
         columnNumber: 21
       }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 76,
+        lineNumber: 78,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 67,
+      lineNumber: 69,
       columnNumber: 13
     }),
     /* @__PURE__ */ jsxDEV(
@@ -215,22 +216,22 @@ const Compare = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-        lineNumber: 91,
+        lineNumber: 93,
         columnNumber: 13
       }
     ),
     runs.length > 0 && /* @__PURE__ */ jsxDEV(ChangeNavigator, { runs, position, onMove: move, text }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-      lineNumber: 102,
+      lineNumber: 104,
       columnNumber: 33
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-    lineNumber: 43,
+    lineNumber: 45,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
-    lineNumber: 42,
+    lineNumber: 44,
     columnNumber: 12
   });
 }, "Compare");

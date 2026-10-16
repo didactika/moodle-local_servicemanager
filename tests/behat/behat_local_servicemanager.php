@@ -221,6 +221,20 @@ YAML;
     }
 
     /**
+     * Check that the bar that goes through the changes of a comparison floats over the page, which only its styles make it do.
+     *
+     * @Then the change navigator should float
+     */
+    public function the_change_navigator_should_float() {
+        $position = $this->evaluate_script(
+            "return window.getComputedStyle(document.querySelector('[data-region=\"change-navigator\"]')).position;"
+        );
+        if ($position !== 'fixed') {
+            throw new Exception("The change navigator is not floating: its position is '{$position}'");
+        }
+    }
+
+    /**
      * Give a schema health checks whose status goes healthy, warning, critical, from the newest one back, a day apart.
      *
      * @Given the schema :schemaid has :count health checks
