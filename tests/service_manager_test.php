@@ -143,4 +143,26 @@ final class service_manager_test extends \advanced_testcase {
         // Service should no longer exist.
         $this->assertFalse($manager->service_exists($serviceid));
     }
+
+    /**
+     * The additional users are found by their address, a deleted account is passed over, and an address nobody has is a
+     * warning.
+     */
+    public function test_additional_users_are_found_by_their_address(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $generator = $this->getDataGenerator();
+        $deleted = $generator->create_user(['email' => 'ops@example.com']);
+        $DB->set_field('user', 'deleted', 1, ['id' => $deleted->id]);
+        $active = $generator->create_user(['email' => 'ops@example.com']);
+        $manager = new \local_servicemanager\automation\service_manager();
+        $serviceid = $manager->create_external_service('test.service', 'Test Service', service_settings::none());
+
+        $warnings = $manager->authorize_additional_users($serviceid, ['ops@example.com', 'nobody@example.com']);
+
+        $authorised = $DB->get_fieldset_select('external_services_users', 'userid', 'externalserviceid = ?', [$serviceid]);
+        $this->assertSame([(int) $active->id], array_map('intval', $authorised));
+        $this->assertCount(1, $warnings);
+        $this->assertStringContainsString('nobody@example.com', $warnings[0]);
+    }
 }
