@@ -45,4 +45,32 @@ final class notification_manager_test extends \advanced_testcase {
         $this->assertCount(1, $messages);
         $this->assertSame(get_site()->shortname . ': Web service schema health report', $messages[0]->subject);
     }
+
+    /**
+     * Every configured address gets the report once, whether its account is active, suspended, deleted or there is none.
+     */
+    public function test_every_configured_address_gets_the_report_once(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $generator = $this->getDataGenerator();
+        $generator->create_user(['email' => 'suspended@example.com', 'suspended' => 1]);
+        $deleted = $generator->create_user(['email' => 'gone@example.com']);
+        $DB->set_field('user', 'deleted', 1, ['id' => $deleted->id]);
+        $generator->create_user(['email' => 'ops@example.com']);
+        $generator->create_user(['email' => 'ops@example.com']);
+        set_config(
+            'notification_emails',
+            'suspended@example.com, gone@example.com, ops@example.com, outside@example.com',
+            'local_servicemanager'
+        );
+        set_config('notify_admins', 0, 'local_servicemanager');
+        $sink = $this->redirectEmails();
+
+        (new manager())->send_daily_report([]);
+
+        $recipients = array_column($sink->get_messages(), 'to');
+        $sink->close();
+        sort($recipients);
+        $this->assertSame(['gone@example.com', 'ops@example.com', 'outside@example.com', 'suspended@example.com'], $recipients);
+    }
 }

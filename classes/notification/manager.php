@@ -337,8 +337,11 @@ class manager {
         $user = new \stdClass();
         $user->id = self::EXTERNAL_RECIPIENT_ID;
         $user->email = $email;
-        $user->firstname = 'External';
-        $user->lastname = 'Recipient';
+        // Every name field is there, as the mail functions ask for them; the address is the name the mail shows.
+        foreach (\core_user\fields::get_name_fields() as $field) {
+            $user->$field = '';
+        }
+        $user->firstname = $email;
         $user->mailformat = 1;
         $user->mnethostid = $CFG->mnet_localhost_id ?? 1;
 
