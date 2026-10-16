@@ -137,14 +137,7 @@ class health_check extends \core\task\scheduled_task {
         $record->details = json_encode($result['details']);
         $record->timecreated = time();
 
+        // How long it is kept is for the log cleanup and its settings to say.
         $DB->insert_record('local_servicemanager_logs', $record);
-
-        // Clean old logs (keep last 30 days).
-        $cutoff = time() - (30 * 24 * 60 * 60);
-        $DB->delete_records_select(
-            'local_servicemanager_logs',
-            'schemaid = :schemaid AND timecreated < :cutoff',
-            ['schemaid' => $schemaid, 'cutoff' => $cutoff]
-        );
     }
 }
