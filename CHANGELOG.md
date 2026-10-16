@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The state of a schema is the one its web service has in Moodle. The dashboard, the page of a schema and the functions `local_servicemanager_get_schema` and `local_servicemanager_get_schemas` show it, and a service enabled or disabled in the administration of Moodle enables or disables its schema and its user, as the plugin does. The daily health check takes a state that was changed without an event.
 - `local/servicemanager:manage` is for site administrators only: the manager archetype no longer has it, the upgrade takes it from the manager roles, and it carries `RISK_PERSONAL` besides `RISK_CONFIG`, since the guided form looks up the users of the site.
 - PHP 7.4 is required, declared in `environment.xml`.
+- The users of a list of addresses are read with `get_records_list()`, and the paginated history, its count and the check of a list of capabilities, which nothing called, are gone.
 - The health checks of a schema have a page of their own, narrowed to one status and read a page at a time, with the date in one line, the status in words and each finding apart. The page of the schema sums them up: the latest check, the count of each status and a link to all of them.
 
 ### Fixed
@@ -22,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The YAML that the guided form writes for review, and a form that comes back with errors or is refused, warn before the page is left, as a form with changes does: what they hold is not saved. Reviewing a schema that is edited without changing it does not warn.
 - The setting "Enable health check" turns the health checks off: they ran whatever it said. With it off the task checks, logs and mails nothing, and still takes the state of each web service.
 - The daily health report is titled with the short name of the site and an English subject; it had a Spanish one and the word "Campus" in front.
+- What a health check found is said with the strings of the plugin, so it can be translated: it was English written in the code, on the pages of the plugin and in the mailed report. An address in the notification setting without an active account is mailed with every name field, under its own address, instead of an English stand-in that raised a debugging message.
+- A schema that does not exist is told with the string of the plugin when it is updated, its token is made again or its versions are compared; Moodle showed the identifier of a string instead.
+- The functions that create, update and delete a schema answer with the strings of the plugin, and deleting a schema that does not exist says so instead of that it was deleted.
+- The whole site is named among the places where the role can be assigned; it showed "system" untranslated.
+- The search of the suggestions and the schema id and version of the guided form are read as text, not as raw input.
 - The bar that goes through the changes of a comparison floats at the bottom of the page and its arrows work: it was drawn outside the page, so its styles and its script did not reach it. Going up before choosing a change goes to the last one.
 
 ## [1.1.0-m400] - 2026-10-11
