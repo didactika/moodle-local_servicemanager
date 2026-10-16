@@ -312,7 +312,7 @@ class manager {
 
         $existing = $this->get_schema($id);
         if (!$existing) {
-            throw new \moodle_exception('Schema not found');
+            throw new \moodle_exception('schema_not_found', 'local_servicemanager');
         }
 
         $declared = $this->declared_version($yamlcontent);
