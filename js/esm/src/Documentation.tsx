@@ -48,7 +48,7 @@ const ROLE: Field[] = [
 const NAMING: Array<{resource: string; pattern: string; example: string}> = [
     {resource: 'doc_naming_username', pattern: 'ws.{id}', example: 'ws.example.service'},
     {resource: 'doc_naming_displayname', pattern: 'User Webservice {name}', example: 'User Webservice Example Service'},
-    {resource: 'doc_naming_email', pattern: 'ws.{id}@devnull.{domain}', example: 'ws.example.service@devnull.campus.edu'},
+    {resource: 'doc_naming_email', pattern: 'ws.{id}@devnull.{domain}', example: 'ws.example.service@devnull.example.com'},
     {resource: 'doc_naming_role', pattern: 'ws_{id}', example: 'ws_example_service'},
     {resource: 'doc_naming_service', pattern: 'ws_{id}', example: 'ws_example_service'},
     {resource: 'doc_naming_token', pattern: 'Token - {name}', example: 'Token - Example Service'},
