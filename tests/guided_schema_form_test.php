@@ -159,4 +159,26 @@ YAML;
 
         $this->assertSame('1.0.1', $manager->update_schema($id, $yaml)['version']);
     }
+
+    /**
+     * The id and the version are read as text and trimmed, so markup or spaces around them do not make the schema invalid.
+     */
+    public function test_the_id_and_the_version_are_read_as_text(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        guided_schema_form::mock_submit([
+            'schemaid' => ' <b>crm.sync</b> ',
+            'name' => 'CRM sync',
+            'version' => ' <i>2.0.0</i> ',
+            'functions' => ['core_webservice_get_site_info'],
+            'submitbutton' => 1,
+        ]);
+
+        $data = (new guided_schema_form(null, ['schema' => null, 'values' => []]))->get_data();
+
+        $this->assertNotNull($data);
+        $fields = guided_schema_form::fields($data);
+        $this->assertSame('crm.sync', $fields['id']);
+        $this->assertSame('2.0.0', $fields['version']);
+    }
 }
