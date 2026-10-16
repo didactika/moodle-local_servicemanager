@@ -44,7 +44,7 @@ class get_suggestions extends external_api {
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
             'kind' => new external_value(PARAM_ALPHA, 'What is suggested: function, capability, plugin or user'),
-            'query' => new external_value(PARAM_RAW, 'What the person has typed', VALUE_DEFAULT, ''),
+            'query' => new external_value(PARAM_TEXT, 'What the person has typed', VALUE_DEFAULT, ''),
         ]);
     }
 
