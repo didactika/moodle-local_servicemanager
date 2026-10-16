@@ -18,9 +18,9 @@ import EmptyState from './components/common/EmptyState';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
+import HealthFindings from './components/schema/HealthFindings';
 import {createText} from './engine/text';
 import {pageUrl, pageWindow} from './lib/paging';
-import {statusLook} from './lib/status';
 import type {HealthChecksProps} from './types';
 
 const HealthChecks = (props: HealthChecksProps) => {
@@ -65,7 +65,7 @@ const HealthChecks = (props: HealthChecksProps) => {
 
                 <div className="card sm-panel mb-3">
                     {rows.length > 0 && <div className="table-responsive">
-                        <table className="table table-sm align-middle mb-0 sm-health-table" data-region="health-table">
+                        <table className="table mb-0 sm-health-table" data-region="health-table">
                             <thead>
                                 <tr>
                                     <th className="sm-time-column">{text('core_time')}</th>
@@ -74,16 +74,21 @@ const HealthChecks = (props: HealthChecksProps) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {rows.map((row, index) => <tr key={index} data-status={row.status}>
-                                    <td className="sm-time-column">{row.time}</td>
-                                    <td>
-                                        <span className={`sm-badge tone-${statusLook(row.status).tone}`}>{row.statusLabel}</span>
+                                {rows.map((row, index) => <tr
+                                    key={index}
+                                    className={`sm-health-row tone-${row.tone}`}
+                                    data-status={row.status}
+                                >
+                                    <td className="sm-time-column">
+                                        <span className="sm-health-time">{row.time}</span>
+                                        <span className="sm-health-ago">{row.ago}</span>
                                     </td>
-                                    <td>
-                                        <ul className="sm-health-messages">
-                                            {row.messages.map((message, at) => <li key={at}>{message}</li>)}
-                                        </ul>
+                                    <td className="sm-status-column">
+                                        <span className={`sm-badge tone-${row.tone}`}>
+                                            <Icon name={row.icon} gap />{row.statusLabel}
+                                        </span>
                                     </td>
+                                    <td><HealthFindings check={row} /></td>
                                 </tr>)}
                             </tbody>
                         </table>

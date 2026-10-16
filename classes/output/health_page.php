@@ -40,6 +40,9 @@ class health_page implements react_component_renderable, \renderable {
     /** @var string[] The colour of each status a check can have. */
     public const TONES = ['healthy' => 'success', 'warning' => 'warning', 'critical' => 'danger'];
 
+    /** @var string[] The icon of each status a check can have. */
+    public const ICONS = ['healthy' => 'circle-check', 'warning' => 'triangle-exclamation', 'critical' => 'circle-xmark'];
+
     /** @var \stdClass The schema record. */
     private \stdClass $schema;
 
@@ -193,7 +196,7 @@ class health_page implements react_component_renderable, \renderable {
     }
 
     /**
-     * One check as the pages show it: when, its status in words, and each thing it found apart.
+     * One check as the pages show it: when, and how long ago, its status in words, colour and icon, and each thing it found apart.
      *
      * @param \stdClass $log The log record.
      * @return array The row.
@@ -203,10 +206,27 @@ class health_page implements react_component_renderable, \renderable {
         $messages = array_filter(array_map('trim', explode('; ', (string) $log->message)), 'strlen');
         return [
             'time' => userdate($log->timecreated, get_string('strftimedatetimeshort', 'core_langconfig')),
+            'ago' => get_string('ago', 'message', format_time(max(0, time() - (int) $log->timecreated))),
             'status' => $log->status,
             'statusLabel' => $known ? get_string('status_' . $log->status, 'local_servicemanager') : $log->status,
-            'messages' => array_values($messages),
+            'tone' => $known ? self::TONES[$log->status] : 'secondary',
+            'icon' => $known ? self::ICONS[$log->status] : 'circle-info',
+            'findings' => array_map([self::class, 'finding'], array_values($messages)),
         ];
+    }
+
+    /**
+     * One thing a check found, with the part that names what it is about apart, so it can stand out: "Token:" of "Token:
+     * expired". The two parts together are the text as it was found.
+     *
+     * @param string $message What the check found.
+     * @return array The label, which is empty when the text names nothing, and the rest of the text.
+     */
+    private static function finding(string $message): array {
+        if (preg_match('/^([^:]{1,40}:)\s+(.+)$/u', $message, $parts)) {
+            return ['label' => $parts[1], 'text' => $parts[2]];
+        }
+        return ['label' => '', 'text' => $message];
     }
 
     /**

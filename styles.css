@@ -2499,17 +2499,56 @@
     width: auto;
 }
 
+.servicemanager-health-page .sm-health-table th {
+    color: var(--bs-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background-color: var(--bs-tertiary-bg);
+}
+
 .servicemanager-health-page .sm-health-table td {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
     vertical-align: top;
 }
 
+.servicemanager-health-page .sm-health-table th:first-child,
+.servicemanager-health-page .sm-health-table td:first-child {
+    padding-inline-start: 1rem;
+}
+
+.servicemanager-health-page .sm-health-table .sm-health-row {
+    transition: background-color 0.12s ease;
+}
+
+.servicemanager-health-page .sm-health-table .sm-health-row:hover {
+    background-color: var(--bs-tertiary-bg);
+}
+
+.servicemanager-health-page .sm-health-table .sm-health-row > td:first-child {
+    box-shadow: inset 3px 0 0 var(--sm-tone);
+}
+
 .servicemanager-health-page .sm-health-table .sm-time-column {
-    width: 10rem;
+    width: 11rem;
     white-space: nowrap;
 }
 
 .servicemanager-health-page .sm-health-table .sm-status-column {
-    width: 7rem;
+    width: 8rem;
+}
+
+.servicemanager-health-page .sm-health-time {
+    display: block;
+    font-weight: 500;
+}
+
+.servicemanager-health-page .sm-health-ago {
+    display: block;
+    color: var(--bs-secondary-color);
+    font-size: 0.8125rem;
 }
 
 .servicemanager-health-page .sm-pager {
@@ -2520,15 +2559,65 @@
     gap: 1rem;
 }
 
-.servicemanager-detail .sm-health-messages,
-.servicemanager-health-page .sm-health-messages {
-    margin: 0;
-    padding-inline-start: 1.1rem;
+.servicemanager-detail .sm-health-row,
+.servicemanager-detail .sm-health-findings,
+.servicemanager-health-page .sm-health-row,
+.servicemanager-health-page .sm-health-findings {
+    --sm-tone: var(--bs-secondary-color);
 }
 
-.servicemanager-detail .sm-health-messages > li + li,
-.servicemanager-health-page .sm-health-messages > li + li {
-    margin-top: 0.15rem;
+.servicemanager-detail .sm-health-row.tone-success,
+.servicemanager-detail .sm-health-findings.tone-success,
+.servicemanager-health-page .sm-health-row.tone-success,
+.servicemanager-health-page .sm-health-findings.tone-success {
+    --sm-tone: var(--bs-success);
+}
+
+.servicemanager-detail .sm-health-row.tone-warning,
+.servicemanager-detail .sm-health-findings.tone-warning,
+.servicemanager-health-page .sm-health-row.tone-warning,
+.servicemanager-health-page .sm-health-findings.tone-warning {
+    --sm-tone: var(--bs-warning);
+}
+
+.servicemanager-detail .sm-health-row.tone-danger,
+.servicemanager-detail .sm-health-findings.tone-danger,
+.servicemanager-health-page .sm-health-row.tone-danger,
+.servicemanager-health-page .sm-health-findings.tone-danger {
+    --sm-tone: var(--bs-danger);
+}
+
+.servicemanager-detail .sm-health-findings,
+.servicemanager-health-page .sm-health-findings {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.servicemanager-detail .sm-health-findings > li,
+.servicemanager-health-page .sm-health-findings > li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.servicemanager-detail .sm-health-findings > li + li,
+.servicemanager-health-page .sm-health-findings > li + li {
+    margin-top: 0.3rem;
+}
+
+.servicemanager-detail .sm-health-findings > li > .fa-solid,
+.servicemanager-health-page .sm-health-findings > li > .fa-solid {
+    flex: none;
+    width: 1rem;
+    color: var(--sm-tone);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.servicemanager-detail .sm-health-findings strong,
+.servicemanager-health-page .sm-health-findings strong {
+    font-weight: 600;
 }
 
 .servicemanager-detail .sm-health-latest {

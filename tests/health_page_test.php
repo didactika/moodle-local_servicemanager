@@ -135,7 +135,12 @@ final class health_page_test extends \advanced_testcase {
 
         $context = $this->export(new health_page($schema, 'warning'));
 
-        $this->assertSame(['Check 1: Service disabled', 'Token: expired'], $context['rows'][0]['messages']);
+        $this->assertSame(
+            [['label' => 'Check 1:', 'text' => 'Service disabled'], ['label' => 'Token:', 'text' => 'expired']],
+            $context['rows'][0]['findings']
+        );
+        $this->assertSame('triangle-exclamation', $context['rows'][0]['icon']);
+        $this->assertStringEndsWith(' ago', $context['rows'][0]['ago']);
     }
 
     /**

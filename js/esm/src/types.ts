@@ -130,12 +130,21 @@ export interface SchemaDetailProps {
     };
 }
 
-/** One health check: when it ran, its status and each thing it found. */
+/** One thing a health check found: what it is about, such as "Token:", which is empty when it names nothing, and the rest. */
+export interface HealthFinding {
+    label: string;
+    text: string;
+}
+
+/** One health check: when it ran and how long ago, its status in words, colour and icon, and each thing it found. */
 export interface HealthCheck {
     time: string;
+    ago: string;
     status: string;
     statusLabel: string;
-    messages: string[];
+    tone: string;
+    icon: string;
+    findings: HealthFinding[];
 }
 
 /** The health checks of a schema summed up for its page: the latest one, the count of each status and where all of them are. */

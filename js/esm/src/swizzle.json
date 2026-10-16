@@ -219,6 +219,10 @@
     "eject": "risky",
     "wrap": "risky"
   },
+  "components/schema/HealthFindings": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
   "components/schema/HealthPanel": {
     "eject": "risky",
     "wrap": "risky"

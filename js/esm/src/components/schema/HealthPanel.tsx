@@ -14,6 +14,7 @@ import {statusLook} from '../../lib/status';
 import type {HealthSummary, Text} from '../../types';
 import Icon from '../common/Icon';
 import Panel from '../common/Panel';
+import HealthFindings from './HealthFindings';
 
 interface HealthPanelProps {
     health: HealthSummary;
@@ -32,12 +33,12 @@ const HealthPanel = ({health, text}: HealthPanelProps) => <Panel
     {health.latest && <>
         <div className="sm-health-latest">
             <span className="text-body-secondary small text-uppercase">{text('health_latest')}</span>
-            <span className={`sm-badge tone-${statusLook(health.latest.status).tone}`}>{health.latest.statusLabel}</span>
-            <span className="text-body-secondary">{health.latest.time}</span>
+            <span className={`sm-badge tone-${health.latest.tone}`}>
+                <Icon name={health.latest.icon} gap />{health.latest.statusLabel}
+            </span>
+            <span className="text-body-secondary">{health.latest.time} · {health.latest.ago}</span>
         </div>
-        <ul className="sm-health-messages">
-            {health.latest.messages.map((message, index) => <li key={index}>{message}</li>)}
-        </ul>
+        <HealthFindings check={health.latest} />
     </>}
     <div className="sm-health-counts">
         {(health.counts ?? []).map((count) => <span key={count.status} className={`sm-badge tone-${statusLook(count.status).tone}`}>

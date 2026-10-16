@@ -16,6 +16,7 @@ import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
 import { statusLook } from "../../lib/status";
 import Icon from "../common/Icon";
 import Panel from "../common/Panel";
+import HealthFindings from "./HealthFindings";
 const HealthPanel = /* @__PURE__ */ __name(({ health, text }) => /* @__PURE__ */ jsxDEV(
   Panel,
   {
@@ -27,12 +28,12 @@ const HealthPanel = /* @__PURE__ */ __name(({ health, text }) => /* @__PURE__ */
       text("health_view_all"),
       /* @__PURE__ */ jsxDEV(Icon, { name: "arrow-right", className: "ms-2" }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-        lineNumber: 29,
+        lineNumber: 30,
         columnNumber: 34
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-      lineNumber: 28,
+      lineNumber: 29,
       columnNumber: 14
     }),
     children: [
@@ -40,52 +41,59 @@ const HealthPanel = /* @__PURE__ */ __name(({ health, text }) => /* @__PURE__ */
         /* @__PURE__ */ jsxDEV("div", { className: "sm-health-latest", children: [
           /* @__PURE__ */ jsxDEV("span", { className: "text-body-secondary small text-uppercase", children: text("health_latest") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-            lineNumber: 34,
-            columnNumber: 13
-          }),
-          /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${statusLook(health.latest.status).tone}`, children: health.latest.statusLabel }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
             lineNumber: 35,
             columnNumber: 13
           }),
-          /* @__PURE__ */ jsxDEV("span", { className: "text-body-secondary", children: health.latest.time }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${health.latest.tone}`, children: [
+            /* @__PURE__ */ jsxDEV(Icon, { name: health.latest.icon, gap: true }, void 0, false, {
+              fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
+              lineNumber: 37,
+              columnNumber: 17
+            }),
+            health.latest.statusLabel
+          ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
             lineNumber: 36,
+            columnNumber: 13
+          }),
+          /* @__PURE__ */ jsxDEV("span", { className: "text-body-secondary", children: [
+            health.latest.time,
+            " \xB7 ",
+            health.latest.ago
+          ] }, void 0, true, {
+            fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
+            lineNumber: 39,
             columnNumber: 13
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-          lineNumber: 33,
+          lineNumber: 34,
           columnNumber: 9
         }),
-        /* @__PURE__ */ jsxDEV("ul", { className: "sm-health-messages", children: health.latest.messages.map((message, index) => /* @__PURE__ */ jsxDEV("li", { children: message }, index, false, {
+        /* @__PURE__ */ jsxDEV(HealthFindings, { check: health.latest }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-          lineNumber: 39,
-          columnNumber: 61
-        })) }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-          lineNumber: 38,
+          lineNumber: 41,
           columnNumber: 9
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-        lineNumber: 32,
+        lineNumber: 33,
         columnNumber: 23
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "sm-health-counts", children: (health.counts ?? []).map((count) => /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${statusLook(count.status).tone}`, children: [
         count.label,
         /* @__PURE__ */ jsxDEV("span", { className: "ms-2", children: count.count }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-          lineNumber: 44,
+          lineNumber: 45,
           columnNumber: 26
         })
       ] }, count.status, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-        lineNumber: 43,
+        lineNumber: 44,
         columnNumber: 47
       })) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-        lineNumber: 42,
+        lineNumber: 43,
         columnNumber: 5
       })
     ]
@@ -94,7 +102,7 @@ const HealthPanel = /* @__PURE__ */ __name(({ health, text }) => /* @__PURE__ */
   true,
   {
     fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
-    lineNumber: 23,
+    lineNumber: 24,
     columnNumber: 59
   }
 ), "HealthPanel");
