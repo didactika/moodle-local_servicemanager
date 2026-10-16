@@ -384,6 +384,7 @@ $string['role_level_block'] = 'A block';
 $string['role_level_category'] = 'A category';
 $string['role_level_course'] = 'A course';
 $string['role_level_module'] = 'An activity';
+$string['role_level_system'] = 'The whole site';
 $string['role_level_user'] = 'A user';
 $string['role_panel_title'] = 'Role';
 $string['role_permission_allow'] = 'Allowed';
