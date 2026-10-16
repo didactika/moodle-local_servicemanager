@@ -162,7 +162,8 @@ final class service_state_test extends \advanced_testcase {
         $schema = $this->create_schema();
         $other = (new manager())->get_schema((new manager())->create_schema(
             "meta:\n  id: \"state.other\"\n  name: \"Other\"\n  version: \"1.0.0\"\n" .
-            "definition:\n  functions:\n    - core_webservice_get_site_info\n    - name: core_fake_function_that_does_not_exist\n      critical: false\n"
+            "definition:\n  functions:\n    - core_webservice_get_site_info\n" .
+            "    - name: core_fake_function_that_does_not_exist\n      critical: false\n"
         )['id']);
         $DB->set_field('local_servicemanager_schemas', 'status', 'healthy', ['id' => $other->id]);
         $DB->set_field('external_services', 'enabled', 0, ['id' => $schema->serviceid]);

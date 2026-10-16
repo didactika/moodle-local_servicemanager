@@ -74,7 +74,8 @@ final class external_crud_test extends \advanced_testcase {
             'ws_schema_updated' => 'Esquema actualizado',
             'ws_schema_deleted' => 'Esquema borrado',
         ]);
-        $updated = update_schema::execute($created['id'], $this->yaml("    - core_webservice_get_site_info\n    - core_user_get_users\n"));
+        $functions = "    - core_webservice_get_site_info\n    - core_user_get_users\n";
+        $updated = update_schema::execute($created['id'], $this->yaml($functions));
         $deleted = delete_schema::execute($created['id']);
 
         $this->assertSame('Esquema actualizado', $updated['message']);
