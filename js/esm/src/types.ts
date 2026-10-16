@@ -122,11 +122,42 @@ export interface SchemaDetailProps {
     extraCapabilities: string[];
     /** What the schema says about its role; only the parts it says something about. */
     role: RoleSection;
-    healthLogs: Array<{time: string; status: string; message: string}>;
+    /** A summary of the health checks; they have a page of their own. */
+    health: HealthSummary;
     urls: {
         dashboard: string; back: string; edit: string; delete: string; history: string; regenerate: string;
         export: string; bulkAction: string;
     };
+}
+
+/** One health check: when it ran, its status and each thing it found. */
+export interface HealthCheck {
+    time: string;
+    status: string;
+    statusLabel: string;
+    messages: string[];
+}
+
+/** The health checks of a schema summed up for its page: the latest one, the count of each status and where all of them are. */
+export interface HealthSummary {
+    hasAny: boolean;
+    latest?: HealthCheck | null;
+    counts?: Array<{status: string; label: string; count: number}>;
+    total?: number;
+    url?: string;
+}
+
+/** Properties of the page of the health checks of a schema, which the server narrows to one status and reads a page at a time. */
+export interface HealthChecksProps {
+    strings: Record<string, string>;
+    schemaName: string;
+    hasAny: boolean;
+    rows: HealthCheck[];
+    filters: Array<{status: string; label: string; count: number; tone: string; active: boolean; url: string}>;
+    showing: string;
+    paging: {page: number; perpage: number; total: number; options: number[]};
+    /** The page and the size of page are added to the last two, as page= and perpage=. */
+    urls: {back: string; page: string; perpage: string};
 }
 
 /** What a schema says about the role that is created for it. */

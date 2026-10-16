@@ -11,6 +11,10 @@
     "eject": "risky",
     "wrap": "risky"
   },
+  "HealthChecks": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
   "History": {
     "eject": "risky",
     "wrap": "risky"

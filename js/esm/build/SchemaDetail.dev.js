@@ -143,10 +143,10 @@ const SchemaDetail = /* @__PURE__ */ __name((props) => {
           lineNumber: 92,
           columnNumber: 38
         }),
-        props.healthLogs.length > 0 && /* @__PURE__ */ jsxDEV(HealthPanel, { logs: props.healthLogs, text }, void 0, false, {
+        props.health.hasAny && /* @__PURE__ */ jsxDEV(HealthPanel, { health: props.health, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
           lineNumber: 93,
-          columnNumber: 53
+          columnNumber: 45
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",

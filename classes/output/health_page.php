@@ -1,0 +1,251 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+namespace local_servicemanager\output;
+
+use core\output\react_component_renderable;
+
+/**
+ * The results of the health checks of a schema on a page of their own: narrowed to one status and shown a page at a time, read
+ * from the database a page at a time too.
+ *
+ * The page is drawn by the React component local_servicemanager/HealthChecks. The page of the schema shows a summary of the
+ * checks, which this class also gives.
+ *
+ * @package    local_servicemanager
+ * @author     Eduardo Estrada <me@e2rd0.com>
+ * @copyright  2026 Didactika.org
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class health_page implements react_component_renderable, \renderable {
+    /** @var int[] The sizes of page that can be chosen. */
+    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+
+    /** @var int The size of page when none is chosen. */
+    public const PERPAGE_DEFAULT = 25;
+
+    /** @var string[] The colour of each status a check can have. */
+    public const TONES = ['healthy' => 'success', 'warning' => 'warning', 'critical' => 'danger'];
+
+    /** @var \stdClass The schema record. */
+    private \stdClass $schema;
+
+    /** @var string The status the checks are narrowed to, or nothing for all of them. */
+    private string $status;
+
+    /** @var int The page, from 0. */
+    private int $page;
+
+    /** @var int How many checks a page has. */
+    private int $perpage;
+
+    /**
+     * Create the page.
+     *
+     * @param \stdClass $schema The schema record.
+     * @param string $status The status to narrow the checks to; anything that is not a status shows all of them.
+     * @param int $page The page, from 0.
+     * @param int $perpage How many checks a page has; a size that cannot be chosen gives the default one.
+     */
+    public function __construct(\stdClass $schema, string $status = '', int $page = 0, int $perpage = self::PERPAGE_DEFAULT) {
+        $this->schema = $schema;
+        $this->status = isset(self::TONES[$status]) ? $status : '';
+        $this->page = max(0, $page);
+        $this->perpage = in_array($perpage, self::PERPAGE_OPTIONS, true) ? $perpage : self::PERPAGE_DEFAULT;
+    }
+
+    /**
+     * The React component that draws the page.
+     *
+     * @return string
+     */
+    #[\Override]
+    public function get_react_component_name(): string {
+        return 'local_servicemanager/HealthChecks';
+    }
+
+    /**
+     * What the page shows and the places it links to.
+     *
+     * @param \renderer_base $renderer The renderer, which is not needed.
+     * @return \stdClass The props of the component.
+     */
+    #[\Override]
+    public function get_react_component_props(\renderer_base $renderer): \stdClass {
+        unset($renderer);
+        global $DB;
+
+        $id = (int) $this->schema->id;
+        $counts = self::counts($id);
+        $all = $DB->count_records('local_servicemanager_logs', ['schemaid' => $id]);
+        $total = $this->status === '' ? $all : $counts[$this->status];
+        // A page after the last one, as an old link may ask for, shows the last one.
+        $page = min($this->page, max(0, (int) ceil($total / $this->perpage) - 1));
+
+        $conditions = ['schemaid' => $id] + ($this->status === '' ? [] : ['status' => $this->status]);
+        $records = $DB->get_records(
+            'local_servicemanager_logs',
+            $conditions,
+            'timecreated DESC, id DESC',
+            'id, status, message, timecreated',
+            $page * $this->perpage,
+            $this->perpage
+        );
+        $rows = array_map([self::class, 'row'], array_values($records));
+
+        return (object) [
+            'strings' => page_text::strings(),
+            'schemaName' => $this->schema->name,
+            'hasAny' => $all > 0,
+            'rows' => $rows,
+            'filters' => $this->filters($counts, $all),
+            'showing' => get_string('health_showing', 'local_servicemanager', (object) [
+                'from' => $rows ? $page * $this->perpage + 1 : 0,
+                'to' => $page * $this->perpage + count($rows),
+                'total' => $total,
+            ]),
+            'paging' => [
+                'page' => $page,
+                'perpage' => $this->perpage,
+                'total' => $total,
+                'options' => self::PERPAGE_OPTIONS,
+            ],
+            'urls' => [
+                'back' => (new \moodle_url('/local/servicemanager/pages/view.php', ['id' => $id]))->out(false),
+                // The page and the size of page are added to these by the component.
+                'page' => $this->url(['status' => $this->status, 'perpage' => $this->perpage])->out(false),
+                'perpage' => $this->url(['status' => $this->status])->out(false),
+            ],
+        ];
+    }
+
+    /**
+     * A summary of the checks of a schema for its page: the latest one, how many of each status there are and where all of them
+     * are.
+     *
+     * @param \stdClass $schema The schema record.
+     * @return array The summary; hasAny is false when the schema was never checked.
+     */
+    public static function summary(\stdClass $schema): array {
+        global $DB;
+
+        $id = (int) $schema->id;
+        $latest = $DB->get_records(
+            'local_servicemanager_logs',
+            ['schemaid' => $id],
+            'timecreated DESC, id DESC',
+            'id, status, message, timecreated',
+            0,
+            1
+        );
+        $counts = [];
+        foreach (self::counts($id) as $status => $count) {
+            if ($count > 0) {
+                $counts[] = [
+                    'status' => $status,
+                    'label' => get_string('status_' . $status, 'local_servicemanager'),
+                    'count' => $count,
+                ];
+            }
+        }
+        return [
+            'hasAny' => !empty($latest),
+            'latest' => $latest ? self::row(reset($latest)) : null,
+            'counts' => $counts,
+            'total' => $DB->count_records('local_servicemanager_logs', ['schemaid' => $id]),
+            'url' => (new \moodle_url('/local/servicemanager/pages/health.php', ['id' => $id]))->out(false),
+        ];
+    }
+
+    /**
+     * How many checks of each status a schema has.
+     *
+     * @param int $schemaid Id of the schema record.
+     * @return int[] The count of each status, by status.
+     */
+    public static function counts(int $schemaid): array {
+        global $DB;
+
+        $counts = array_fill_keys(array_keys(self::TONES), 0);
+        $sql = "SELECT status, COUNT(1)
+                  FROM {local_servicemanager_logs}
+                 WHERE schemaid = :schemaid
+              GROUP BY status";
+        foreach ($DB->get_records_sql_menu($sql, ['schemaid' => $schemaid]) as $status => $count) {
+            if (isset($counts[$status])) {
+                $counts[$status] = (int) $count;
+            }
+        }
+        return $counts;
+    }
+
+    /**
+     * One check as the pages show it: when, its status in words, and each thing it found apart.
+     *
+     * @param \stdClass $log The log record.
+     * @return array The row.
+     */
+    private static function row(\stdClass $log): array {
+        $known = isset(self::TONES[$log->status]);
+        $messages = array_filter(array_map('trim', explode('; ', (string) $log->message)), 'strlen');
+        return [
+            'time' => userdate($log->timecreated, get_string('strftimedatetimeshort', 'core_langconfig')),
+            'status' => $log->status,
+            'statusLabel' => $known ? get_string('status_' . $log->status, 'local_servicemanager') : $log->status,
+            'messages' => array_values($messages),
+        ];
+    }
+
+    /**
+     * The choices of status, each with how many checks it has and the address that narrows the list to it.
+     *
+     * @param int[] $counts The count of each status.
+     * @param int $all How many checks there are.
+     * @return array The choices, all of them first.
+     */
+    private function filters(array $counts, int $all): array {
+        $filters = [[
+            'status' => '',
+            'label' => get_string('all', 'moodle'),
+            'count' => $all,
+            'tone' => 'primary',
+            'active' => $this->status === '',
+            'url' => $this->url(['perpage' => $this->perpage])->out(false),
+        ]];
+        foreach ($counts as $status => $count) {
+            $filters[] = [
+                'status' => $status,
+                'label' => get_string('status_' . $status, 'local_servicemanager'),
+                'count' => $count,
+                'tone' => self::TONES[$status],
+                'active' => $this->status === $status,
+                'url' => $this->url(['status' => $status, 'perpage' => $this->perpage])->out(false),
+            ];
+        }
+        return $filters;
+    }
+
+    /**
+     * The address of the page with some parameters; an empty status is left out.
+     *
+     * @param array $params The parameters besides the id of the schema.
+     * @return \moodle_url The address.
+     */
+    private function url(array $params = []): \moodle_url {
+        $params = array_filter($params, static fn($value): bool => $value !== '' && $value !== null);
+        return new \moodle_url('/local/servicemanager/pages/health.php', ['id' => (int) $this->schema->id] + $params);
+    }
+}
