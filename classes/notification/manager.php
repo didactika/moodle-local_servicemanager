@@ -17,7 +17,7 @@
 namespace local_servicemanager\notification;
 
 /**
- * Notification manager for health alerts
+ * Mails the report of the health checks.
  *
  * @package    local_servicemanager
  * @author     Eduardo Estrada <me@e2rd0.com>
@@ -61,32 +61,6 @@ class manager {
         $subject = $site->shortname . ': ' . get_string('healthcheck_report_subject', 'local_servicemanager');
 
         $this->deliver($recipients, $subject, strip_tags($htmlbody), $htmlbody);
-    }
-
-    /**
-     * Send critical alert for a specific schema
-     *
-     * @param \stdClass $schema Schema record
-     * @param string $message Alert message
-     */
-    public function send_critical_alert(\stdClass $schema, string $message): void {
-        global $CFG;
-
-        $recipients = $this->get_notification_recipients();
-        if (empty($recipients)) {
-            return;
-        }
-
-        $subject = get_string('alert_critical_subject', 'local_servicemanager', $schema->name);
-        $body = get_string('alert_critical_body', 'local_servicemanager', (object) [
-            'name' => $schema->name,
-            'message' => $message,
-        ]);
-        $htmlbody = nl2br(s($body)) . '<br><br><a href="' . $CFG->wwwroot
-            . '/local/servicemanager/pages/view.php?id=' . $schema->id . '">'
-            . get_string('view_schema', 'local_servicemanager') . '</a>';
-
-        $this->deliver($recipients, $subject, $body, $htmlbody);
     }
 
     /**
