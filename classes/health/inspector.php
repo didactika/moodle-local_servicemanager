@@ -80,7 +80,7 @@ class inspector {
         } catch (\Exception $e) {
             return [
                 'status' => 'critical',
-                'message' => 'Failed to parse YAML: ' . $e->getMessage(),
+                'message' => get_string('health_msg_yaml_invalid', 'local_servicemanager', $e->getMessage()),
                 'details' => [],
             ];
         }
@@ -157,7 +157,7 @@ class inspector {
     protected function check_user(\stdClass $schema): array {
         if (!$schema->userid) {
             return [
-                'details' => ['valid' => false, 'error' => 'No user ID'],
+                'details' => ['valid' => false, 'error' => get_string('health_msg_user_none', 'local_servicemanager')],
                 'status' => 'critical',
             ];
         }
@@ -179,7 +179,7 @@ class inspector {
     protected function check_service(\stdClass $schema): array {
         if (!$schema->serviceid) {
             return [
-                'details' => ['exists' => false, 'error' => 'No service ID'],
+                'details' => ['exists' => false, 'error' => get_string('health_msg_service_none', 'local_servicemanager')],
                 'status' => 'critical',
             ];
         }
@@ -203,7 +203,7 @@ class inspector {
     protected function check_token(\stdClass $schema): array {
         if (!$schema->tokenid) {
             return [
-                'details' => ['exists' => false, 'info' => 'No token generated'],
+                'details' => ['exists' => false, 'info' => get_string('no_token', 'local_servicemanager')],
                 'status' => self::LEVELS[0],
             ];
         }
@@ -259,7 +259,7 @@ class inspector {
      */
     protected function check_user_valid(int $userid): array {
         if (!$this->usermanager->user_exists($userid)) {
-            return ['valid' => false, 'error' => 'User deleted'];
+            return ['valid' => false, 'error' => get_string('health_msg_user_deleted', 'local_servicemanager')];
         }
 
         return [
@@ -277,7 +277,7 @@ class inspector {
      */
     protected function check_service_valid(int $serviceid): array {
         if (!$this->servicemanager->service_exists($serviceid)) {
-            return ['exists' => false, 'error' => 'Service deleted'];
+            return ['exists' => false, 'error' => get_string('health_msg_service_deleted', 'local_servicemanager')];
         }
 
         return [
@@ -294,7 +294,7 @@ class inspector {
      */
     protected function check_token_valid(int $tokenid): array {
         if (!$this->tokenmanager->token_exists($tokenid)) {
-            return ['exists' => false, 'error' => 'Token deleted'];
+            return ['exists' => false, 'error' => get_string('health_msg_token_deleted', 'local_servicemanager')];
         }
 
         return [
