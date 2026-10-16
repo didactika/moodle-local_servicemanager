@@ -35,10 +35,6 @@ $string['action_generate_token'] = 'Generate Token';
 $string['action_regenerate_token'] = 'Regenerate Token';
 $string['action_view'] = 'View';
 $string['actions'] = 'Actions';
-$string['alert_critical_body'] = 'Critical issue detected with schema "{$a->name}":
-
-{$a->message}';
-$string['alert_critical_subject'] = '[CRITICAL] Service schema: {$a}';
 $string['area_capability'] = 'Extra capabilities';
 $string['area_field'] = 'Details';
 $string['area_files'] = 'File access';
@@ -332,7 +328,6 @@ $string['issues'] = 'Issues Detected';
 $string['list_truncated'] = 'Showing the first {$a} schemas of the site.';
 $string['loading'] = 'Loading…';
 $string['manage_schemas'] = 'Manage Schemas';
-$string['messageprovider:healthalert'] = 'Service schema health alerts';
 $string['modified'] = 'Modified';
 $string['new_schema'] = 'New schema';
 $string['no_file_uploaded'] = 'No file was uploaded.';
