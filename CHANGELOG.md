@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1-m400] - 2026-10-16
+
 ### Changed
 
 - The state of a schema is the one its web service has in Moodle. The dashboard, the page of a schema and the functions `local_servicemanager_get_schema` and `local_servicemanager_get_schemas` show it, and a service enabled or disabled in the administration of Moodle enables or disables its schema and its user, as the plugin does. The daily health check takes a state that was changed without an event.
