@@ -119,7 +119,7 @@ class guided_schema_form extends \moodleform {
             get_string('schema_id', 'local_servicemanager'),
             ['size' => 40, 'maxlength' => 50] + ($editing ? ['readonly' => 'readonly'] : [])
         );
-        $mform->setType('schemaid', PARAM_RAW_TRIMMED);
+        $mform->setType('schemaid', PARAM_TEXT);
         $mform->addRule('schemaid', null, 'required', null, 'client');
         $mform->addHelpButton('schemaid', 'guided_schemaid', 'local_servicemanager');
 
@@ -133,7 +133,7 @@ class guided_schema_form extends \moodleform {
             get_string('schema_version', 'local_servicemanager'),
             ['size' => 12, 'maxlength' => 50]
         );
-        $mform->setType('version', PARAM_RAW_TRIMMED);
+        $mform->setType('version', PARAM_TEXT);
         $mform->addHelpButton('version', 'guided_version', 'local_servicemanager');
 
         $mform->addElement('text', 'maintainer', get_string('schema_maintainer', 'local_servicemanager'), ['size' => 40]);
@@ -335,9 +335,9 @@ class guided_schema_form extends \moodleform {
     public static function fields($data): array {
         $data = (array) $data;
         return [
-            'id' => $data['schemaid'] ?? '',
+            'id' => trim((string) ($data['schemaid'] ?? '')),
             'name' => $data['name'] ?? '',
-            'version' => $data['version'] ?? '',
+            'version' => trim((string) ($data['version'] ?? '')),
             'maintainer' => $data['maintainer'] ?? '',
             'description' => $data['description'] ?? '',
             'functions' => (array) ($data['functions'] ?? []),

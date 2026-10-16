@@ -16,6 +16,7 @@
 
 namespace local_servicemanager\output;
 
+use local_servicemanager\schema\manager;
 use local_servicemanager\schema\yaml_parser;
 use local_servicemanager\schema\schema_extractor;
 
@@ -99,24 +100,13 @@ class schema_page implements \renderable, \templatable {
      * @return array The context.
      */
     private function schema_context(): array {
-        global $DB;
-
         $schema = $this->schema;
         $id = (int) $schema->id;
         $parser = new yaml_parser();
         $data = $parser->parse_stored($schema->yaml_content);
         $canmanage = has_capability('local/servicemanager:manage', \context_system::instance());
-
-        $logs = [];
-        $records = $DB->get_records('local_servicemanager_logs', ['schemaid' => $id], 'timecreated DESC', '*', 0, 100);
-        foreach ($records as $log) {
-            $logs[] = [
-                'time' => userdate($log->timecreated),
-                'status' => $log->status,
-                'tone' => $this->look($log->status)['tone'],
-                'message' => $log->message,
-            ];
-        }
+        // Whether the service can be called, which Moodle decides, and not what the plugin stored.
+        $enabled = (new manager())->is_enabled($schema);
 
         $service = schema_panels::service($schema);
         $params = ['id' => $id];
@@ -144,7 +134,7 @@ class schema_page implements \renderable, \templatable {
                 'maintainer' => (string) $schema->maintainer,
                 'status' => $schema->status,
                 'statuslabel' => get_string('status_' . $schema->status, 'local_servicemanager'),
-                'enabled' => (bool) $schema->enabled,
+                'enabled' => $enabled,
                 'created' => userdate($schema->timecreated),
                 'modified' => userdate($schema->timemodified),
             ]),
@@ -156,7 +146,7 @@ class schema_page implements \renderable, \templatable {
                 'tone' => !empty($schema->tokenid) ? 'success' : 'secondary',
                 'label' => get_string(!empty($schema->tokenid) ? 'token_active' : 'token_none', 'local_servicemanager'),
             ],
-            'toggle' => $this->toggle_button((bool) $schema->enabled),
+            'toggle' => $this->toggle_button($enabled),
             'hasfunctions' => !empty($functions),
             'functions' => $functions,
             'functionstitle' => get_string(count($functions) === 1 ? 'tile_function' : 'functions', 'local_servicemanager'),
@@ -172,9 +162,8 @@ class schema_page implements \renderable, \templatable {
                 array_values(schema_extractor::extra_capabilities($data))
             ),
             'role' => schema_panels::role_panel(schema_extractor::role_settings($data)->to_array()),
-            'haslogs' => !empty($logs),
-            'logs' => $logs,
-            'logscount' => count($logs),
+            // The checks have a page of their own; this one sums them up.
+            'health' => health_page::summary($schema),
             'urls' => [
                 'edit' => $this->url('create.php', $params),
                 'delete' => $this->url('delete.php', $params),
@@ -236,9 +225,7 @@ class schema_page implements \renderable, \templatable {
             'resources' => [],
             'access' => schema_panels::access(null, [], array_values(schema_extractor::extra_capabilities($data))),
             'role' => schema_panels::role_panel(schema_extractor::role_settings($data)->to_array()),
-            'haslogs' => false,
-            'logs' => [],
-            'logscount' => 0,
+            'health' => ['hasany' => false],
             'urls' => [],
         ];
     }

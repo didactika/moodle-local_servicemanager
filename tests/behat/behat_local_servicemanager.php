@@ -219,4 +219,89 @@ YAML;
             "definition:\n  functions:\n    - core_webservice_get_site_info\n  extra_capabilities:\n{$list}\n";
         (new \local_servicemanager\schema\manager())->update_schema($record->id, $yaml);
     }
+
+    /**
+     * Check that the bar that goes through the changes of a comparison floats over the page, which only its styles make it do.
+     *
+     * @Then the change navigator should float
+     */
+    public function the_change_navigator_should_float() {
+        $position = $this->evaluate_script(
+            "return window.getComputedStyle(document.querySelector('[data-region=\"change-navigator\"]')).position;"
+        );
+        if ($position !== 'fixed') {
+            throw new Exception("The change navigator is not floating: its position is '{$position}'");
+        }
+    }
+
+    /**
+     * Give a schema health checks whose status goes healthy, warning, critical, from the newest one back, a day apart.
+     *
+     * @Given the schema :schemaid has :count health checks
+     * @param string $schemaid Id of the schema.
+     * @param int $count How many checks.
+     */
+    public function the_schema_has_health_checks($schemaid, $count) {
+        global $DB;
+
+        $id = $DB->get_field('local_servicemanager_schemas', 'id', ['schema_id' => $schemaid], MUST_EXIST);
+        $statuses = ['healthy', 'warning', 'critical'];
+        for ($i = 0; $i < (int) $count; $i++) {
+            $status = $statuses[$i % 3];
+            $DB->insert_record('local_servicemanager_logs', (object) [
+                'schemaid' => $id,
+                'status' => $status,
+                'message' => $status === 'healthy' ? 'All checks passed' : 'Service: disabled; Token: expired',
+                'details' => '{}',
+                'timecreated' => time() - $i * DAYSECS,
+            ]);
+        }
+    }
+
+    /**
+     * Open the health checks of a schema.
+     *
+     * @Given I am on the health checks page of the schema :schemaid
+     * @param string $schemaid Id of the schema.
+     */
+    public function i_am_on_the_health_checks_page_of_the_schema($schemaid) {
+        global $DB;
+
+        $id = $DB->get_field('local_servicemanager_schemas', 'id', ['schema_id' => $schemaid], MUST_EXIST);
+        $this->getSession()->visit($this->locate_path('/local/servicemanager/pages/health.php?id=' . $id));
+    }
+
+    /**
+     * Check that leaving the page would warn that what is in its form is not saved.
+     *
+     * Moodle does not show that warning on a test site, so this looks at the mark that its change checker puts on a form that
+     * has changes, which is what the warning depends on.
+     *
+     * @Then leaving the page should warn about unsaved changes
+     */
+    public function leaving_the_page_should_warn_about_unsaved_changes() {
+        if (!$this->page_has_unsaved_form()) {
+            throw new Exception('Leaving the page would not warn about unsaved changes');
+        }
+    }
+
+    /**
+     * Check that leaving the page would not warn, as nothing in its form would be lost.
+     *
+     * @Then leaving the page should not warn about unsaved changes
+     */
+    public function leaving_the_page_should_not_warn_about_unsaved_changes() {
+        if ($this->page_has_unsaved_form()) {
+            throw new Exception('Leaving the page would warn about unsaved changes');
+        }
+    }
+
+    /**
+     * Whether a form of the page is marked as having changes that are not saved.
+     *
+     * @return bool
+     */
+    private function page_has_unsaved_form(): bool {
+        return (bool) $this->evaluate_script("return document.querySelector('form[data-form-dirty=\"true\"]') !== null;");
+    }
 }

@@ -127,8 +127,9 @@ class ws_status {
             return ['url' => '', 'label' => ''];
         }
         if ($level === 'disabled') {
-            $subsystems = new \moodle_url('/admin/settings.php', ['section' => 'optionalsubsystems'], 'admin-enablewebservices');
-            return ['url' => $subsystems->out(false), 'label' => get_string('ws_enable_services', 'local_servicemanager')];
+            // The search of the administration shows the setting alone, wherever the release keeps it.
+            $search = new \moodle_url('/admin/search.php', ['query' => 'enablewebservices']);
+            return ['url' => $search->out(false), 'label' => get_string('ws_enable_services', 'local_servicemanager')];
         }
         return [
             'url' => self::settings_url('webserviceprotocols'),

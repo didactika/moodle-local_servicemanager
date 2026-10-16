@@ -91,3 +91,5 @@ Feature: Schema dashboard
     Given I have uploaded a schema with id "test.service"
     And I reload the page
     Then I should see "Enable web services" in the "[data-region='ws-status']" "css_element"
+    When I click on "Enable web services" "link" in the "[data-region='ws-status']" "css_element"
+    Then "#admin-enablewebservices" "css_element" should exist

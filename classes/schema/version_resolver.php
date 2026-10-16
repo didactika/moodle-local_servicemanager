@@ -153,6 +153,8 @@ class version_resolver {
     /**
      * The YAML with the version of its meta section set, added when it has none.
      *
+     * The line is written with the indentation of the entries of meta, so a schema indented by four spaces stays valid.
+     *
      * @param string $yaml The YAML.
      * @param string $version The version to write.
      * @return string The YAML.
@@ -160,6 +162,7 @@ class version_resolver {
     public function with_version(string $yaml, string $version): string {
         $lines = preg_split('/\R/', $yaml);
         $metaat = null;
+        $indent = null;
         foreach ($lines as $index => $line) {
             if ($metaat === null) {
                 if (preg_match('/^meta:\s*(#.*)?$/', $line)) {
@@ -167,18 +170,23 @@ class version_resolver {
                 }
                 continue;
             }
-            if (trim($line) !== '' && !preg_match('/^\s/', $line)) {
+            if (trim($line) === '' || preg_match('/^\s*#/', $line)) {
+                continue;
+            }
+            if (!preg_match('/^(\s+)\S/', $line, $match)) {
                 break;
             }
-            if (preg_match('/^(\s+)version:/', $line, $match)) {
-                $lines[$index] = $match[1] . 'version: "' . $version . '"';
+            // The entries of meta are the lines at the indentation of the first one; deeper lines belong to one of them.
+            $indent = $indent ?? $match[1];
+            if ($match[1] === $indent && preg_match('/^\s+version:/', $line)) {
+                $lines[$index] = $indent . 'version: "' . $version . '"';
                 return implode("\n", $lines);
             }
         }
         if ($metaat === null) {
             return $yaml;
         }
-        array_splice($lines, $metaat + 1, 0, ['  version: "' . $version . '"']);
+        array_splice($lines, $metaat + 1, 0, [($indent ?? '  ') . 'version: "' . $version . '"']);
         return implode("\n", $lines);
     }
 }

@@ -1,0 +1,126 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_servicemanager/health_page
+
+    The results of the health checks of a schema, narrowed to one status and a page at a time.
+
+    Context variables required for this template:
+    * backurl - Where Back leads
+    * schemaname - The name of the schema
+    * hasany - Whether the schema was ever checked
+    * filters - The statuses, each with its count, its address and whether it is the one shown
+    * hasrows, rows - The checks of the page: when and how long ago, the status in words, colour and icon, and what each found
+    * showing - Which checks of how many the page shows
+    * pagingbar, perpageselect - The paging bar and the choice of the size of page, as HTML
+
+    Example context (json):
+    {
+        "backurl": "#",
+        "schemaname": "Test Service",
+        "hasany": true,
+        "filters": [
+            {"label": "All", "count": 2, "tone": "primary", "active": true, "url": "#"},
+            {"label": "Healthy", "count": 1, "tone": "success", "active": false, "url": "#"},
+            {"label": "Warning", "count": 1, "tone": "warning", "active": false, "url": "#"},
+            {"label": "Critical", "count": 0, "tone": "danger", "active": false, "url": "#"}
+        ],
+        "hasrows": true,
+        "rows": [
+            {"time": "15/10/26, 21:43", "ago": "2 hours ago", "status": "healthy", "statuslabel": "Healthy", "tone": "success", "icon": "circle-check", "findings": [{"label": "", "text": "All checks passed"}]},
+            {"time": "14/10/26, 21:43", "ago": "1 day ago", "status": "warning", "statuslabel": "Warning", "tone": "warning", "icon": "triangle-exclamation", "findings": [{"label": "Service:", "text": "disabled"}, {"label": "Token:", "text": "expired"}]}
+        ],
+        "showing": "Showing 1 to 2 of 2",
+        "pagingbar": "",
+        "perpageselect": ""
+    }
+}}
+<div class="servicemanager-health-page{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-health">
+    <div class="sm-block">
+        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
+    </div>
+    <header class="sm-page-header">
+        <div class="sm-page-title">
+            <h2 class="sm-flush">{{#str}}health_checks, local_servicemanager{{/str}}</h2>
+            <p class="sm-muted sm-flush">{{schemaname}}</p>
+        </div>
+    </header>
+
+    {{^hasany}}
+        <div class="card sm-empty" data-region="empty-state">
+            <div class="card-body text-center py-5">
+                <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i></div>
+                <p class="sm-muted mx-auto sm-empty-text">{{#str}}health_none, local_servicemanager{{/str}}</p>
+            </div>
+        </div>
+    {{/hasany}}
+
+    {{#hasany}}
+        <div class="sm-toolbar sm-spread">
+            <nav class="sm-group sm-health-filters" aria-label="{{#str}}status, moodle{{/str}}" data-region="health-filters">
+                {{#filters}}
+                    <a class="btn sm-pill compact tone-{{tone}}{{#active}} active{{/active}}" href="{{url}}"{{#active}} aria-current="true"{{/active}}>{{label}}<span class="sm-count-badge">{{count}}</span></a>
+                {{/filters}}
+            </nav>
+            <div class="sm-perpage">{{{perpageselect}}}</div>
+        </div>
+
+        <div class="card sm-panel sm-block">
+            {{#hasrows}}
+                <div class="table-responsive">
+                    <table class="table sm-flush-table sm-health-table" data-region="health-table">
+                        <thead>
+                            <tr>
+                                <th class="sm-time-column">{{#str}}time, moodle{{/str}}</th>
+                                <th class="sm-status-column">{{#str}}status, moodle{{/str}}</th>
+                                <th>{{#str}}message, moodle{{/str}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#rows}}
+                                <tr class="sm-health-row tone-{{tone}}" data-status="{{status}}">
+                                    <td class="sm-time-column">
+                                        <span class="sm-health-time">{{time}}</span>
+                                        <span class="sm-health-ago">{{ago}}</span>
+                                    </td>
+                                    <td class="sm-status-column">
+                                        <span class="sm-badge tone-{{tone}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{statuslabel}}</span>
+                                    </td>
+                                    <td>
+                                        <ul class="sm-health-findings tone-{{tone}}">
+                                            {{#findings}}
+                                                <li><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i><span>{{#label}}<strong>{{label}}</strong> {{/label}}{{text}}</span></li>
+                                            {{/findings}}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {{/rows}}
+                        </tbody>
+                    </table>
+                </div>
+            {{/hasrows}}
+            {{^hasrows}}
+                <div class="card-body sm-muted">{{#str}}health_none_with_status, local_servicemanager{{/str}}</div>
+            {{/hasrows}}
+        </div>
+
+        <div class="sm-pager">
+            <span class="sm-muted" data-region="health-showing">{{showing}}</span>
+            {{{pagingbar}}}
+        </div>
+    {{/hasany}}
+</div>

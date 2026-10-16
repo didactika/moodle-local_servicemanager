@@ -41,12 +41,14 @@ const KINDS = {
 /**
  * Ask for the suggestions of what was typed.
  *
+ * Suggestions are a help, so when they cannot be had, as for something typed that is not text, the field shows none
+ * instead of an error.
+ *
  * @param {String} selector Selector of the field.
  * @param {String} query What was typed.
  * @param {Function} success Called with the answer.
- * @param {Function} failure Called with the error.
  */
-export const transport = (selector, query, success, failure) => {
+export const transport = (selector, query, success) => {
     const field = selector.replace(/^#id_/, '');
     const kind = KINDS[field];
     if (!kind) {
@@ -56,7 +58,7 @@ export const transport = (selector, query, success, failure) => {
     Ajax.call([{
         methodname: 'local_servicemanager_get_suggestions',
         args: {kind, query: query || ''}
-    }])[0].then(success).catch(failure);
+    }])[0].then(success).catch(() => success([]));
 };
 
 /**

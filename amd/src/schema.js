@@ -14,8 +14,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The page of a schema: searches its functions, shows the capabilities of one in a dialogue, filters its health checks, enables or
- * disables it and makes its token, all without leaving the page.
+ * The page of a schema: searches its functions, shows the capabilities of one in a dialogue, enables or disables it and makes its
+ * token, all without leaving the page.
  *
  * @module     local_servicemanager/schema
  * @copyright  2026 Didactika.org
@@ -74,15 +74,6 @@ export const init = () => {
                 shown += match ? 1 : 0;
             });
             empty.hidden = shown !== 0;
-        });
-    }
-
-    const filter = root.querySelector('#healthlog-status-filter');
-    if (filter) {
-        filter.addEventListener('change', () => {
-            root.querySelectorAll('#healthlog-table tbody tr').forEach((row) => {
-                row.hidden = filter.value !== '' && row.dataset.status !== filter.value;
-            });
         });
     }
 

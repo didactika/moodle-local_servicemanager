@@ -100,7 +100,7 @@ What the role that is created for the schema may do, besides the capabilities it
 | `allow_switch` | ❌ | Roles the role may switch to (*Allow role switches*). |
 | `allow_view` | ❌ | Roles whose names and members the role may see (*Allow role to view*). |
 
-A role that does not exist is an error. A capability that does not exist is a warning, because it may belong to a plugin that is not installed yet. Whatever a version of the schema no longer says is taken away from the role, so the role is always exactly what the schema describes. A change in this section is a change of the definition, so it needs a new version.
+A role that does not exist is an error. A capability that does not exist is a warning, because it may belong to a plugin that is not installed yet. Whatever a version of the schema no longer says is taken away from the role, so the role is always exactly what the schema describes. A change in this section is a change of the definition, so the schema is saved with a new version.
 
 ## Function Formats
 
@@ -147,13 +147,13 @@ When a schema is created, the following resources are automatically provisioned:
 |----------|---------|---------|
 | Username | `ws.{id}` | `ws.example.service` |
 | Display name | `User Webservice {name}` | `User Webservice Example Service` |
-| Email | `ws.{id}@devnull.{domain}` | `ws.example.service@devnull.campus.edu` |
+| Email | `ws.{id}@devnull.{domain}` | `ws.example.service@devnull.example.com` |
 | Role display name | `Role for {name}` | `Role for Example Service` |
 | Role shortname | `ws_{id}` (dots → underscores) | `ws_example_service` |
 | Service shortname | `ws_{id}` | `ws_example_service` |
 | Token name | `Token - {name}` | `Token - Example Service` |
 
-The `{domain}` in the email is the site's domain with any leading subdomain stripped (e.g. `campus.example.com` → `example.com`).
+The `{domain}` in the email is the site's domain with any leading subdomain stripped (e.g. `moodle.example.com` → `example.com`).
 
 ## Validation Rules
 
@@ -165,7 +165,7 @@ The `{domain}` in the email is the site's domain with any leading subdomain stri
 | Schema name uniqueness | Each schema name must be unique (drives role and service names which have DB unique constraints) |
 | Critical functions | If a critical function is missing from the Moodle installation, the schema cannot be created |
 | Non-critical functions | Missing non-critical functions generate a warning but do not block creation |
-| Version increment | If the definition (functions, capabilities or role) changes, the version number must be incremented |
+| Version | If the definition (functions, capabilities or role) changes without a version higher than every one the schema has had, it is saved with the next one; a change of the name, the maintainer or the description keeps the version |
 | Role section | Only `context_levels`, `permissions`, `allow_assign`, `allow_override`, `allow_switch` and `allow_view` are known; each must be a list of names |
 | Roles | Every role named in the section must exist (error) |
 | Capabilities in `permissions` | One that this Moodle does not know is a warning |

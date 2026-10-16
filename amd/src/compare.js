@@ -122,7 +122,12 @@ export const init = () => {
         if (list.length === 0) {
             return;
         }
-        position = (position + step + list.length) % list.length;
+        // Before any change was chosen, down goes to the first one and up to the last one.
+        if (position < 0) {
+            position = step > 0 ? 0 : list.length - 1;
+        } else {
+            position = (position + step + list.length) % list.length;
+        }
         list[position].row.scrollIntoView({block: 'center', behavior: 'smooth'});
         showPosition();
     };

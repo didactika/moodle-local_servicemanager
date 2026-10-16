@@ -1,0 +1,173 @@
+// The results of the health checks of a schema: the page of their own, and the summary on the page of the schema.
+
+.servicemanager-health-page {
+    // The statuses to narrow the list to; the one that is shown stands out from the others.
+    .sm-health-filters {
+        flex-wrap: wrap;
+
+        & .sm-pill.active {
+            border-color: var(--sm-tone);
+            background-color: color-mix(in srgb, var(--sm-tone) 24%, var(--sm-body-bg));
+        }
+
+        // The count wears the colour of its status.
+        & .sm-count-badge {
+            margin-inline-start: 0.4rem;
+            background-color: var(--sm-tone);
+            color: var(--sm-white);
+        }
+    }
+
+    // The choice of the size of page, on one line with its label.
+    .sm-perpage {
+        & form,
+        & .singleselect {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            gap: 0.5rem;
+        }
+
+        & label {
+            margin: 0;
+        }
+    }
+
+    // The checks, newest first: a stripe of the colour of its status at the start of each row, so the ones that went wrong are
+    // seen at a glance.
+    .sm-health-table {
+        & th {
+            color: var(--sm-secondary-color);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background-color: var(--sm-tertiary-bg);
+        }
+
+        & td {
+            padding-top: 0.7rem;
+            padding-bottom: 0.7rem;
+            vertical-align: top;
+        }
+
+        & th:first-child,
+        & td:first-child {
+            padding-inline-start: 1rem;
+        }
+
+        .sm-health-row {
+            transition: background-color 0.12s ease;
+
+            &:hover {
+                background-color: var(--sm-tertiary-bg);
+            }
+
+            & > td:first-child {
+                box-shadow: inset 3px 0 0 var(--sm-tone);
+            }
+        }
+
+        .sm-time-column {
+            width: 11rem;
+            white-space: nowrap;
+        }
+
+        .sm-status-column {
+            width: 8rem;
+        }
+    }
+
+    // When a check was made, and how long ago, under it and quieter.
+    .sm-health-time {
+        display: block;
+        font-weight: 500;
+    }
+
+    .sm-health-ago {
+        display: block;
+        color: var(--sm-secondary-color);
+        font-size: 0.8125rem;
+    }
+
+    // Which checks the page shows, and the paging bar beside it.
+    .sm-pager {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        & .pagination {
+            margin: 0;
+        }
+    }
+}
+
+.servicemanager-detail,
+.servicemanager-health-page {
+    // The colour of a status, which the stripe of a row and the icons of what a check found take.
+    .sm-health-row,
+    .sm-health-findings {
+        --sm-tone: var(--sm-secondary-color);
+
+        &.tone-success {
+            --sm-tone: var(--sm-success);
+        }
+
+        &.tone-warning {
+            --sm-tone: var(--sm-warning);
+        }
+
+        &.tone-danger {
+            --sm-tone: var(--sm-danger);
+        }
+    }
+
+    // What a check found, one thing under another, each with the icon of the status and what it is about in bold.
+    .sm-health-findings {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        & > li {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        & > li + li {
+            margin-top: 0.3rem;
+        }
+
+        & > li > .fa-solid {
+            flex: none;
+            width: 1rem;
+            color: var(--sm-tone);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        & strong {
+            font-weight: 600;
+        }
+    }
+}
+
+.servicemanager-detail {
+    // The latest check of the schema: its status and when, and what it found.
+    .sm-health-latest {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .sm-health-counts {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0.75rem;
+        gap: 0.4rem;
+    }
+}

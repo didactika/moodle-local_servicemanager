@@ -45,7 +45,7 @@ class status_summary {
         ]);
 
         if (empty($messages)) {
-            return 'All checks passed';
+            return get_string('health_msg_all_passed', 'local_servicemanager');
         }
 
         return implode('; ', $messages);
@@ -62,7 +62,7 @@ class status_summary {
             return null;
         }
 
-        return 'Missing functions: ' . implode(', ', $details['functions']['missing']);
+        return get_string('health_msg_functions_missing', 'local_servicemanager', implode(', ', $details['functions']['missing']));
     }
 
     /**
@@ -73,11 +73,11 @@ class status_summary {
      */
     protected static function user_message(array $details): ?string {
         if (isset($details['user']) && !$details['user']['valid']) {
-            return 'User issue: ' . ($details['user']['error'] ?? 'unknown');
+            return get_string('health_msg_user_issue', 'local_servicemanager', self::error($details['user']));
         }
 
         if (!empty($details['user']['suspended'])) {
-            return 'User is suspended';
+            return get_string('health_msg_user_suspended', 'local_servicemanager');
         }
 
         return null;
@@ -91,11 +91,11 @@ class status_summary {
      */
     protected static function service_message(array $details): ?string {
         if (isset($details['service']) && !$details['service']['exists']) {
-            return 'Service issue: ' . ($details['service']['error'] ?? 'unknown');
+            return get_string('health_msg_service_issue', 'local_servicemanager', self::error($details['service']));
         }
 
         if (isset($details['service']['enabled']) && !$details['service']['enabled']) {
-            return 'Service is disabled';
+            return get_string('health_msg_service_disabled', 'local_servicemanager');
         }
 
         return null;
@@ -109,13 +109,23 @@ class status_summary {
      */
     protected static function token_message(array $details): ?string {
         if (isset($details['token']) && !$details['token']['exists'] && isset($details['token']['error'])) {
-            return 'Token issue: ' . $details['token']['error'];
+            return get_string('health_msg_token_issue', 'local_servicemanager', self::error($details['token']));
         }
 
         if (isset($details['token']['valid']) && !$details['token']['valid']) {
-            return 'Token expired';
+            return get_string('health_msg_token_expired', 'local_servicemanager');
         }
 
         return null;
+    }
+
+    /**
+     * What went wrong with one part, as the inspector said it, or that it is not known.
+     *
+     * @param array $part The details of the part.
+     * @return string
+     */
+    protected static function error(array $part): string {
+        return (string) ($part['error'] ?? get_string('health_msg_unknown', 'local_servicemanager'));
     }
 }

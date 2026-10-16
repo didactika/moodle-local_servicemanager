@@ -68,6 +68,52 @@ final class version_resolver_test extends \advanced_testcase {
     }
 
     /**
+     * The version is written with the indentation the meta section has, so a schema indented by four spaces stays valid.
+     */
+    public function test_with_version_follows_the_indentation_of_meta(): void {
+        $resolver = new version_resolver();
+        $yaml = "meta:\n    # The identity of the schema.\n    id: \"ver.test\"\n    name: \"Version test\"\n" .
+            "definition:\n    functions:\n        - core_webservice_get_site_info\n";
+
+        $added = $resolver->with_version($yaml, '1.0.0');
+        $replaced = $resolver->with_version($added, '1.0.1');
+
+        $this->assertStringContainsString("meta:\n    version: \"1.0.0\"\n", $added);
+        $this->assertSame('1.0.0', (new \local_servicemanager\schema\yaml_parser())->parse($added)['meta']['version']);
+        $this->assertStringContainsString("meta:\n    version: \"1.0.1\"\n", $replaced);
+        $this->assertSame(1, substr_count($replaced, 'version:'));
+    }
+
+    /**
+     * Only a version that is an entry of meta is replaced, not one that is deeper inside another entry.
+     */
+    public function test_with_version_leaves_deeper_keys_alone(): void {
+        $resolver = new version_resolver();
+        $yaml = "meta:\n  id: \"ver.test\"\n  name: \"Version test\"\n  maintainer:\n    version: \"keep\"\n" .
+            "definition:\n  functions:\n    - core_webservice_get_site_info\n";
+
+        $result = $resolver->with_version($yaml, '1.0.0');
+
+        $this->assertStringContainsString("    version: \"keep\"\n", $result);
+        $this->assertStringContainsString("meta:\n  version: \"1.0.0\"\n", $result);
+    }
+
+    /**
+     * A new schema indented by four spaces and without a version is created at the first version.
+     */
+    public function test_a_new_schema_indented_by_four_spaces_is_created(): void {
+        global $DB;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $yaml = "meta:\n    id: \"ver.four\"\n    name: \"Four spaces\"\n" .
+            "definition:\n    functions:\n        - core_webservice_get_site_info\n";
+
+        $id = (new manager())->create_schema($yaml)['id'];
+
+        $this->assertSame('1.0.0', $DB->get_field('local_servicemanager_schemas', 'version', ['id' => $id]));
+    }
+
+    /**
      * A new schema without a version starts at 1.0.0, and one that has it keeps it.
      */
     public function test_a_new_schema_starts_at_the_first_version(): void {

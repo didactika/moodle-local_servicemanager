@@ -48,6 +48,24 @@ Feature: Schema creation
     And the text of the field "YAML Content" matches "/core_webservice_get_site_info/"
 
   @javascript
+  Scenario: The YAML that the guided form wrote warns before the page is left, since it is not saved
+    Then leaving the page should not warn about unsaved changes
+    When I set the field "Schema ID" to "crm.sync"
+    And I set the field "Name" to "CRM sync"
+    And I search for "core_webservice_get_site_info" in the field "Required functions" and choose the first suggestion
+    And I press "Review as YAML"
+    Then I should see "YAML editor"
+    And leaving the page should warn about unsaved changes
+
+  @javascript
+  Scenario: A form that comes back with errors warns before the page is left, since what it has is not saved
+    When I set the field "Schema ID" to "crm.sync"
+    And I set the field "Name" to "CRM sync"
+    And I press "Create schema"
+    Then I should see "Choose at least one function."
+    And leaving the page should warn about unsaved changes
+
+  @javascript
   Scenario: Create a schema by writing its YAML
     When I follow "YAML editor"
     And I set the field "YAML Content" to multiline:

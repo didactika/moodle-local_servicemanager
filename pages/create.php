@@ -80,7 +80,10 @@ if ($editing) {
 // What the person filled in at the guided form goes to the editor as YAML, so they can keep working on it there.
 if ($mode === 'guided' && ($data = $guided->get_data()) && !empty($data->reviewbutton)) {
     $mode = 'yaml';
-    $yaml->set_data(['yamlcontent' => guided_schema_form::yaml($data), 'generatetoken' => (int) !empty($data->generatetoken)]);
+    $reviewed = guided_schema_form::yaml($data);
+    $yaml->set_data(['yamlcontent' => $reviewed, 'generatetoken' => (int) !empty($data->generatetoken)]);
+    // That YAML is saved nowhere yet, so leaving the page warns as it does for a change, unless it says what is stored.
+    $yaml->set_initial_dirty_state(!$editing || !$manager->says_the_same($schema, $reviewed));
     $PAGE->set_url(new moodle_url('/local/servicemanager/pages/create.php', $idparams + ['mode' => 'yaml']));
     $guided = null;
 }
@@ -98,6 +101,12 @@ if ($mode === 'yaml' && ($data = $yaml->get_data())) {
 } else if ($mode === 'guided' && $guided !== null && ($data = $guided->get_data())) {
     $content = guided_schema_form::yaml($data);
     $generatetoken = !empty($data->generatetoken);
+}
+
+// The guided form writes the YAML again from its fields; when it says what is stored, the stored YAML, comments included, stays.
+if ($content !== null && $editing && $mode === 'guided' && $manager->says_the_same($schema, $content)) {
+    \core\notification::info(get_string('schema_unchanged', 'local_servicemanager', $schema->name));
+    redirect($cancelurl);
 }
 
 if ($content !== null) {
@@ -139,6 +148,11 @@ foreach (['guided', 'yaml'] as $name) {
         new moodle_url('/local/servicemanager/pages/create.php', $idparams + ['mode' => $name]),
         get_string('create_mode_' . $name, 'local_servicemanager')
     );
+}
+
+// A form that comes back, with errors or refused, holds what was filled in and is not saved: leaving it warns as well.
+if ($form->is_submitted()) {
+    $form->set_initial_dirty_state(true);
 }
 
 echo $OUTPUT->header();

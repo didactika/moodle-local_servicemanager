@@ -38,7 +38,7 @@ class role_section_validator {
         if ($role === null) {
             return [];
         }
-        if (!is_array($role) || ($role && array_is_list($role))) {
+        if (!is_array($role) || ($role && self::is_list($role))) {
             return [get_string('error_role_section', 'local_servicemanager')];
         }
 
@@ -107,7 +107,7 @@ class role_section_validator {
         if ($permissions === null) {
             return [];
         }
-        if (!is_array($permissions) || array_is_list($permissions)) {
+        if (!is_array($permissions) || self::is_list($permissions)) {
             return [get_string('error_role_permissions', 'local_servicemanager')];
         }
         $errors = [];
@@ -119,6 +119,16 @@ class role_section_validator {
             }
         }
         return $errors;
+    }
+
+    /**
+     * Whether an array is a list, with the keys 0, 1, 2 and so on in order, as array_is_list() of PHP 8.1 tells.
+     *
+     * @param array $value The array.
+     * @return bool True when it is a list; an empty array is one.
+     */
+    private static function is_list(array $value): bool {
+        return $value === [] || array_keys($value) === range(0, count($value) - 1);
     }
 
     /**

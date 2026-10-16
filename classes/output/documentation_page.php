@@ -109,7 +109,7 @@ YAML;
     private const NAMING = [
         ['doc_naming_username', 'ws.{id}', 'ws.example.service'],
         ['doc_naming_displayname', 'User Webservice {name}', 'User Webservice Example Service'],
-        ['doc_naming_email', 'ws.{id}@devnull.{domain}', 'ws.example.service@devnull.campus.edu'],
+        ['doc_naming_email', 'ws.{id}@devnull.{domain}', 'ws.example.service@devnull.example.com'],
         ['doc_naming_role', 'ws_{id}', 'ws_example_service'],
         ['doc_naming_service', 'ws_{id}', 'ws_example_service'],
         ['doc_naming_token', 'Token - {name}', 'Token - Example Service'],

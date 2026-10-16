@@ -64,12 +64,13 @@ class delete_schema extends external_api {
         self::validate_context($context);
         require_capability('local/servicemanager:manage', $context);
 
-        $manager = new manager();
-        $manager->delete_schema($id);
+        if (!(new manager())->delete_schema($id)) {
+            throw new \moodle_exception('schema_not_found', 'local_servicemanager');
+        }
 
         return [
             'status' => 'success',
-            'message' => 'Schema deleted successfully',
+            'message' => get_string('ws_schema_deleted', 'local_servicemanager'),
         ];
     }
 

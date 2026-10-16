@@ -17,7 +17,7 @@
 namespace local_servicemanager\notification;
 
 /**
- * Notification manager for health alerts
+ * Mails the report of the health checks.
  *
  * @package    local_servicemanager
  * @author     Eduardo Estrada <me@e2rd0.com>
@@ -58,36 +58,9 @@ class manager {
         );
 
         $htmlbody = $OUTPUT->render_from_template('local_servicemanager/email_health_report', $context);
-        $subject = 'Campus ' . $site->shortname . ': '
-            . get_string('healthcheck_report_subject', 'local_servicemanager');
+        $subject = $site->shortname . ': ' . get_string('healthcheck_report_subject', 'local_servicemanager');
 
         $this->deliver($recipients, $subject, strip_tags($htmlbody), $htmlbody);
-    }
-
-    /**
-     * Send critical alert for a specific schema
-     *
-     * @param \stdClass $schema Schema record
-     * @param string $message Alert message
-     */
-    public function send_critical_alert(\stdClass $schema, string $message): void {
-        global $CFG;
-
-        $recipients = $this->get_notification_recipients();
-        if (empty($recipients)) {
-            return;
-        }
-
-        $subject = get_string('alert_critical_subject', 'local_servicemanager', $schema->name);
-        $body = get_string('alert_critical_body', 'local_servicemanager', (object) [
-            'name' => $schema->name,
-            'message' => $message,
-        ]);
-        $htmlbody = nl2br(s($body)) . '<br><br><a href="' . $CFG->wwwroot
-            . '/local/servicemanager/pages/view.php?id=' . $schema->id . '">'
-            . get_string('view_schema', 'local_servicemanager') . '</a>';
-
-        $this->deliver($recipients, $subject, $body, $htmlbody);
     }
 
     /**
@@ -275,18 +248,11 @@ class manager {
         // The users that have those addresses are read once; when several have the same address the first is the one.
         $users = [];
         foreach (array_chunk(array_values($emails), 100) as $chunk) {
-            [$insql, $params] = $DB->get_in_or_equal($chunk, SQL_PARAMS_NAMED);
-            $found = $DB->get_records_select(
-                'user',
-                "email $insql AND deleted = 0 AND suspended = 0",
-                $params,
-                'id',
-                '*',
-                0,
-                count($chunk) * 10
-            );
+            $found = $DB->get_records_list('user', 'email', $chunk, 'id', '*', 0, count($chunk) * 10);
             foreach ($found as $candidate) {
-                $users[$candidate->email] = $users[$candidate->email] ?? $candidate;
+                if (!$candidate->deleted && !$candidate->suspended) {
+                    $users[$candidate->email] = $users[$candidate->email] ?? $candidate;
+                }
             }
         }
 
@@ -338,8 +304,11 @@ class manager {
         $user = new \stdClass();
         $user->id = self::EXTERNAL_RECIPIENT_ID;
         $user->email = $email;
-        $user->firstname = 'External';
-        $user->lastname = 'Recipient';
+        // Every name field is there, as the mail functions ask for them; the address is the name the mail shows.
+        foreach (\core_user\fields::get_name_fields() as $field) {
+            $user->$field = '';
+        }
+        $user->firstname = $email;
         $user->mailformat = 1;
         $user->mnethostid = $CFG->mnet_localhost_id ?? 1;
 

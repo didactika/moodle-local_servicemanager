@@ -162,21 +162,21 @@
             </table>
         </div>
     </div>
+    {{#hasstarts}}
+        <div class="sm-floating sm-changenav" role="status" data-region="change-navigator">
+            <button type="button" class="sm-navbtn" data-action="prev-change" title="{{#str}}compare_prev_change, local_servicemanager{{/str}}">
+                <i class="fa-solid fa-chevron-up" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_prev_change, local_servicemanager{{/str}}</span>
+            </button>
+            <span class="sm-changenav-info">
+                <strong data-region="change-title"></strong>
+                <small data-region="change-detail"></small>
+            </span>
+            <button type="button" class="sm-navbtn" data-action="next-change" title="{{#str}}compare_next_change, local_servicemanager{{/str}}">
+                <i class="fa-solid fa-chevron-down" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_next_change, local_servicemanager{{/str}}</span>
+            </button>
+        </div>
+    {{/hasstarts}}
 </div>
-{{#hasstarts}}
-    <div class="sm-floating sm-changenav" role="status" data-region="change-navigator">
-        <button type="button" class="sm-navbtn" data-action="prev-change" title="{{#str}}compare_prev_change, local_servicemanager{{/str}}">
-            <i class="fa-solid fa-chevron-up" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_prev_change, local_servicemanager{{/str}}</span>
-        </button>
-        <span class="sm-changenav-info">
-            <strong data-region="change-title"></strong>
-            <small data-region="change-detail"></small>
-        </span>
-        <button type="button" class="sm-navbtn" data-action="next-change" title="{{#str}}compare_next_change, local_servicemanager{{/str}}">
-            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_next_change, local_servicemanager{{/str}}</span>
-        </button>
-    </div>
-{{/hasstarts}}
 {{#js}}
 require(['local_servicemanager/compare'], function(compare) {
     compare.init();
