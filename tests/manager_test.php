@@ -204,10 +204,11 @@ YAML;
         $this->setAdminUser();
         $expected = get_string('schema_not_found', 'local_servicemanager');
 
-        foreach ([
+        $calls = [
             fn() => (new \local_servicemanager\schema\manager())->update_schema(-1, $this->get_valid_yaml()),
             fn() => (new \local_servicemanager\automation\token_manager())->regenerate_token(-1),
-        ] as $call) {
+        ];
+        foreach ($calls as $call) {
             try {
                 $call();
                 $this->fail('No exception was thrown');
