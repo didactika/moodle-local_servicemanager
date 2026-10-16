@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The functions that create, update and delete a schema answer with the strings of the plugin, and deleting a schema that does not exist says so instead of that it was deleted.
 - The whole site is named among the places where the role can be assigned; it showed "system" untranslated.
 - The search of the suggestions and the schema id and version of the guided form are read as text, not as raw input.
+- The button that turns the web services on opens the search of the administration for the setting (`admin/search.php?query=enablewebservices`).
 - The bar that goes through the changes of a comparison floats at the bottom of the page and its arrows work: it was drawn outside the page, so its styles and its script did not reach it. Going up before choosing a change goes to the last one.
 
 ## [1.1.0-m400] - 2026-10-11
