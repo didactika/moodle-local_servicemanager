@@ -31,7 +31,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The whole site is named among the places where the role can be assigned; it showed "system" untranslated.
 - The search of the suggestions and the schema id and version of the guided form are read as text, not as raw input.
 - The button that turns the web services on opens the search of the administration for the setting (`admin/search.php?query=enablewebservices`).
+- The health checks are kept as long as the settings of the log cleanup say; the health check also deleted the ones older than thirty days, whatever they said.
 - The bar that goes through the changes of a comparison floats at the bottom of the page and its arrows work: it was drawn outside the page, so its styles and its script did not reach it. Going up before choosing a change goes to the last one.
+
+### Removed
+
+- The message provider "Service schema health alerts", which showed in the notification preferences and was never sent, with the function that would have sent an alert.
+- `CHANGES.md`, which had stopped at 1.0.3; `CHANGELOG.md` is the history of the plugin.
 
 ## [1.1.0-m400] - 2026-10-11
 
