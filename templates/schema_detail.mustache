@@ -45,7 +45,7 @@
         "role": {"visible": false, "rows": []},
         "health": {
             "hasany": true,
-            "latest": {"time": "15/10/26, 21:43", "statuslabel": "Warning", "tone": "warning", "messages": [{"text": "Service: disabled"}]},
+            "latest": {"time": "15/10/26, 21:43", "ago": "2 hours ago", "statuslabel": "Warning", "tone": "warning", "icon": "triangle-exclamation", "findings": [{"label": "Service:", "text": "disabled"}]},
             "counts": [{"label": "Healthy", "count": 9, "tone": "success"}, {"label": "Warning", "count": 1, "tone": "warning"}],
             "total": 10,
             "url": "#"
@@ -222,10 +222,14 @@
                         {{#health.latest}}
                             <div class="sm-health-latest">
                                 <span class="sm-muted small sm-upper">{{#str}}health_latest, local_servicemanager{{/str}}</span>
-                                <span class="sm-badge tone-{{tone}}">{{statuslabel}}</span>
-                                <span class="sm-muted">{{time}}</span>
+                                <span class="sm-badge tone-{{tone}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{statuslabel}}</span>
+                                <span class="sm-muted">{{time}} · {{ago}}</span>
                             </div>
-                            <ul class="sm-health-messages">{{#messages}}<li>{{text}}</li>{{/messages}}</ul>
+                            <ul class="sm-health-findings tone-{{tone}}">
+                                {{#findings}}
+                                    <li><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i><span>{{#label}}<strong>{{label}}</strong> {{/label}}{{text}}</span></li>
+                                {{/findings}}
+                            </ul>
                         {{/health.latest}}
                         <div class="sm-health-counts">
                             {{#health.counts}}<span class="sm-badge tone-{{tone}}">{{label}}<span class="sm-gap-left">{{count}}</span></span>{{/health.counts}}

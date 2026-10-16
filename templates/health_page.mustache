@@ -24,7 +24,7 @@
     * schemaname - The name of the schema
     * hasany - Whether the schema was ever checked
     * filters - The statuses, each with its count, its address and whether it is the one shown
-    * hasrows, rows - The checks of the page: when, the status in words and colour, and what each found
+    * hasrows, rows - The checks of the page: when and how long ago, the status in words, colour and icon, and what each found
     * showing - Which checks of how many the page shows
     * pagingbar, perpageselect - The paging bar and the choice of the size of page, as HTML
 
@@ -41,8 +41,8 @@
         ],
         "hasrows": true,
         "rows": [
-            {"time": "15/10/26, 21:43", "status": "healthy", "statuslabel": "Healthy", "tone": "success", "messages": [{"text": "All checks passed"}]},
-            {"time": "14/10/26, 21:43", "status": "warning", "statuslabel": "Warning", "tone": "warning", "messages": [{"text": "Service: disabled"}, {"text": "Token: expired"}]}
+            {"time": "15/10/26, 21:43", "ago": "2 hours ago", "status": "healthy", "statuslabel": "Healthy", "tone": "success", "icon": "circle-check", "findings": [{"label": "", "text": "All checks passed"}]},
+            {"time": "14/10/26, 21:43", "ago": "1 day ago", "status": "warning", "statuslabel": "Warning", "tone": "warning", "icon": "triangle-exclamation", "findings": [{"label": "Service:", "text": "disabled"}, {"label": "Token:", "text": "expired"}]}
         ],
         "showing": "Showing 1 to 2 of 2",
         "pagingbar": "",
@@ -82,7 +82,7 @@
         <div class="card sm-panel sm-block">
             {{#hasrows}}
                 <div class="table-responsive">
-                    <table class="table table-sm sm-flush-table sm-health-table" data-region="health-table">
+                    <table class="table sm-flush-table sm-health-table" data-region="health-table">
                         <thead>
                             <tr>
                                 <th class="sm-time-column">{{#str}}time, moodle{{/str}}</th>
@@ -92,10 +92,21 @@
                         </thead>
                         <tbody>
                             {{#rows}}
-                                <tr data-status="{{status}}">
-                                    <td class="sm-time-column">{{time}}</td>
-                                    <td><span class="sm-badge tone-{{tone}}">{{statuslabel}}</span></td>
-                                    <td><ul class="sm-health-messages">{{#messages}}<li>{{text}}</li>{{/messages}}</ul></td>
+                                <tr class="sm-health-row tone-{{tone}}" data-status="{{status}}">
+                                    <td class="sm-time-column">
+                                        <span class="sm-health-time">{{time}}</span>
+                                        <span class="sm-health-ago">{{ago}}</span>
+                                    </td>
+                                    <td class="sm-status-column">
+                                        <span class="sm-badge tone-{{tone}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{statuslabel}}</span>
+                                    </td>
+                                    <td>
+                                        <ul class="sm-health-findings tone-{{tone}}">
+                                            {{#findings}}
+                                                <li><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i><span>{{#label}}<strong>{{label}}</strong> {{/label}}{{text}}</span></li>
+                                            {{/findings}}
+                                        </ul>
+                                    </td>
                                 </tr>
                             {{/rows}}
                         </tbody>

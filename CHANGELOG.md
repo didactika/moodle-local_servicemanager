@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `local/servicemanager:manage` is for site administrators only: the manager archetype no longer has it, the upgrade takes it from the manager roles, and it carries `RISK_PERSONAL` besides `RISK_CONFIG`, since the guided form looks up the users of the site.
 - PHP 7.4 is required, declared in `environment.xml`.
 - The users of a list of addresses are read with `get_records_list()`, and the paginated history, its count and the check of a list of capabilities, which nothing called, are gone.
-- The health checks of a schema have a page of their own, narrowed to one status and read a page at a time, with the date in one line, the status in words and each finding apart. The page of the schema sums them up: the latest check, the count of each status and a link to all of them.
+- The health checks of a schema have a page of their own, narrowed to one status and read a page at a time: each row has a stripe of the colour of its status, when it was made and how long ago, the status with its icon, and each finding apart with what it is about in bold. The page of the schema sums them up: the latest check, the count of each status and a link to all of them.
 
 ### Fixed
 
