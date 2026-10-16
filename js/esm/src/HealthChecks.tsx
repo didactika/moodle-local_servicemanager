@@ -55,7 +55,13 @@ const HealthChecks = (props: HealthChecksProps) => {
                             className="form-select form-select-sm"
                             value={paging.perpage}
                             onChange={(event) => {
-                                window.location.href = urls.perpage + '&perpage=' + event.target.value;
+                                // The size comes from the props, by the option chosen, and not from the text of the page.
+                                const size = paging.options[event.target.selectedIndex];
+                                if (size !== undefined) {
+                                    const target = new URL(urls.perpage, window.location.href);
+                                    target.searchParams.set('perpage', String(size));
+                                    window.location.assign(target.toString());
+                                }
                             }}
                         >
                             {paging.options.map((size) => <option key={size} value={size}>{size}</option>)}

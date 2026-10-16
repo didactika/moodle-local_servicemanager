@@ -24,6 +24,13 @@ Feature: Health checks of a schema
     When I click on "2" "link" in the ".pagination" "css_element"
     Then I should see "Showing 26 to 30 of 30" in the "[data-region='health-showing']" "css_element"
 
+  @javascript
+  Scenario: The size of the page can be chosen
+    Given I am on the health checks page of the schema "test.service"
+    When I set the field "Per page" to "10"
+    Then I should see "Showing 1 to 10 of 30" in the "[data-region='health-showing']" "css_element"
+    And the field "Per page" matches value "10"
+
   Scenario: The checks are narrowed to one status
     Given I am on the health checks page of the schema "test.service"
     When I click on "Warning" "link" in the "[data-region='health-filters']" "css_element"
