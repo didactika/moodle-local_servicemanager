@@ -17,6 +17,7 @@
 namespace local_servicemanager\output;
 
 use core\output\react_component_renderable;
+use local_servicemanager\schema\manager;
 use local_servicemanager\schema\yaml_parser;
 use local_servicemanager\schema\schema_extractor;
 
@@ -103,18 +104,10 @@ class schema_page implements react_component_renderable, \renderable {
      * @return \stdClass Properties of the component.
      */
     private function schema_props(): \stdClass {
-        global $DB;
-
         $schema = $this->schema;
         $id = (int) $schema->id;
         $parser = new yaml_parser();
         $data = $parser->parse_stored($schema->yaml_content);
-
-        $logs = [];
-        $records = $DB->get_records('local_servicemanager_logs', ['schemaid' => $id], 'timecreated DESC', '*', 0, 100);
-        foreach ($records as $log) {
-            $logs[] = ['time' => userdate($log->timecreated), 'status' => $log->status, 'message' => $log->message];
-        }
 
         $service = $this->service($schema);
         $params = ['id' => $id];
@@ -133,7 +126,8 @@ class schema_page implements react_component_renderable, \renderable {
                 'maintainer' => (string) $schema->maintainer,
                 'status' => $schema->status,
                 'statusLabel' => get_string('status_' . $schema->status, 'local_servicemanager'),
-                'enabled' => (bool) $schema->enabled,
+                // Whether the service can be called, which Moodle decides, and not what the plugin stored.
+                'enabled' => (new manager())->is_enabled($schema),
                 'created' => userdate($schema->timecreated),
                 'modified' => userdate($schema->timemodified),
                 'hasToken' => !empty($schema->tokenid),
@@ -153,7 +147,8 @@ class schema_page implements react_component_renderable, \renderable {
             ],
             'extraCapabilities' => array_values(schema_extractor::extra_capabilities($data)),
             'role' => schema_extractor::role_settings($data)->to_array(),
-            'healthLogs' => $logs,
+            // The checks have a page of their own; this one sums them up.
+            'health' => health_page::summary($schema),
             'urls' => [
                 'dashboard' => $this->url('dashboard.php'),
                 'back' => $this->url('dashboard.php'),
@@ -204,7 +199,7 @@ class schema_page implements react_component_renderable, \renderable {
             'requirements' => ['downloadFiles' => false, 'uploadFiles' => false, 'plugins' => []],
             'extraCapabilities' => array_values(schema_extractor::extra_capabilities($data)),
             'role' => schema_extractor::role_settings($data)->to_array(),
-            'healthLogs' => [],
+            'health' => ['hasAny' => false],
             'urls' => [
                 'dashboard' => $this->url('dashboard.php'),
                 'back' => $this->url('history.php', ['id' => $history->schemaid]),

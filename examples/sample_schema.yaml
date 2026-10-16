@@ -10,8 +10,10 @@ meta:
   # Display name for the service. Must be unique across all schemas.
   name: "Example Service"
 
-  # Version number. Must be incremented when functions or capabilities change.
-  # Metadata-only edits (name, maintainer, description) do not require a version bump.
+  # Version number (optional). A new schema without one starts at 1.0.0.
+  # When the definition changes and the version is missing or not higher than every one the schema has had,
+  # the plugin saves it with the next one (1.0.0 becomes 1.0.1) and says so.
+  # Changing only the name, the maintainer or the description keeps the version.
   version: "1.0.0"
 
   # Maintainer information (optional)

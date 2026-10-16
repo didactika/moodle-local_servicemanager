@@ -74,7 +74,7 @@ class token_manager {
 
         $schema = $DB->get_record('local_servicemanager_schemas', ['id' => $schemaid]);
         if (!$schema) {
-            throw new \moodle_exception('Schema not found');
+            throw new \moodle_exception('schema_not_found', 'local_servicemanager');
         }
 
         // Delete old token.

@@ -11,6 +11,10 @@
     "eject": "risky",
     "wrap": "risky"
   },
+  "HealthChecks": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
   "History": {
     "eject": "risky",
     "wrap": "risky"
@@ -212,6 +216,10 @@
     "wrap": "risky"
   },
   "components/schema/HealthLogsCard": {
+    "eject": "risky",
+    "wrap": "risky"
+  },
+  "components/schema/HealthFindings": {
     "eject": "risky",
     "wrap": "risky"
   },

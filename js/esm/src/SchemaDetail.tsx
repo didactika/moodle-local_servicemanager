@@ -90,7 +90,7 @@ const SchemaDetail = (props: SchemaDetailProps) => {
                     <DetailsPanel schema={current} urls={urls} canManage={canManage} isHistory={isHistory} busy={busy} onToggle={toggle} text={text} />
                     {props.functions.length > 0 && <FunctionsPanel functions={props.functions} text={text} />}
                     {hasResources && <ResourcesPanel resources={resources} text={text} />}
-                    {props.healthLogs.length > 0 && <HealthPanel logs={props.healthLogs} text={text} />}
+                    {props.health.hasAny && <HealthPanel health={props.health} text={text} />}
                 </div>
                 <div className="col-lg-4">
                     <AccessPanel

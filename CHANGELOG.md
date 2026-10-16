@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1-m503] - 2026-10-16
+
+### Changed
+
+- The state of a schema is the one its web service has in Moodle. The dashboard, the page of a schema and the functions `local_servicemanager_get_schema` and `local_servicemanager_get_schemas` show it, and a service enabled or disabled in the administration of Moodle enables or disables its schema and its user, as the plugin does. The daily health check takes a state that was changed without an event.
+- `local/servicemanager:manage` is for site administrators only: the manager archetype no longer has it, the upgrade takes it from the manager roles, and it carries `RISK_PERSONAL` besides `RISK_CONFIG`, since the guided form looks up the users of the site.
+- The users of a list of addresses are read with `get_records_list()`, and the paginated history, its count and the check of a list of capabilities, which nothing called, are gone.
+- The health checks of a schema have a page of their own, narrowed to one status and read a page at a time: each row has a stripe of the colour of its status, when it was made and how long ago, the status with its icon, and each finding apart with what it is about in bold. The page of the schema sums them up: the latest check, the count of each status and a link to all of them.
+
+### Fixed
+
+- Saving the guided form of a schema without changing anything no longer makes a new version: what a schema does is compared whatever way it is written, and when nothing changed the stored YAML, comments included, is kept.
+- A schema indented by four spaces and without a version is created; the version is written with the indentation of the meta section.
+- The YAML that the guided form writes for review, and a form that comes back with errors or is refused, warn before the page is left, as a form with changes does: what they hold is not saved. Reviewing a schema that is edited without changing it does not warn.
+- The setting "Enable health check" turns the health checks off: they ran whatever it said. With it off the task checks, logs and mails nothing, and still takes the state of each web service.
+- The daily health report is titled with the short name of the site and an English subject; it had a Spanish one and the word "Campus" in front.
+- What a health check found is said with the strings of the plugin, so it can be translated: it was English written in the code, on the pages of the plugin and in the mailed report. An address in the notification setting without an active account is mailed with every name field, under its own address, instead of an English stand-in that raised a debugging message.
+- A schema that does not exist is told with the string of the plugin when it is updated, its token is made again or its versions are compared; Moodle showed the identifier of a string instead.
+- The functions that create, update and delete a schema answer with the strings of the plugin, and deleting a schema that does not exist says so instead of that it was deleted.
+- The whole site is named among the places where the role can be assigned; it showed "system" untranslated.
+- The search of the suggestions and the schema id and version of the guided form are read as text, not as raw input.
+- The button that turns the web services on opens the search of the administration for the setting (`admin/search.php?query=enablewebservices`).
+- The health checks are kept as long as the settings of the log cleanup say; the health check also deleted the ones older than thirty days, whatever they said.
+- Going up from the bar of a comparison before choosing a change goes to the last change; it went to the one before it.
+
+### Removed
+
+- The message provider "Service schema health alerts", which showed in the notification preferences and was never sent, with the function that would have sent an alert.
+- `CHANGES.md`, which had stopped at 1.0.3; `CHANGELOG.md` is the history of the plugin.
+
 ## [1.1.0-m503] - 2026-10-14
 
 The release is named after the delivery and the line (`-m` and the lowest Moodle version), and the version of the line is the date it was created and a counter.

@@ -111,23 +111,4 @@ class capability_calculator {
         global $DB;
         return $DB->record_exists('capabilities', ['name' => $capability]);
     }
-
-    /**
-     * Get all capabilities that exist from a list
-     *
-     * @param array $capabilities Capability names to check
-     * @return array Existing capability names
-     */
-    public function filter_existing_capabilities(array $capabilities): array {
-        global $DB;
-
-        if (empty($capabilities)) {
-            return [];
-        }
-
-        [$insql, $params] = $DB->get_in_or_equal($capabilities, SQL_PARAMS_NAMED);
-        $records = $DB->get_records_select('capabilities', "name $insql", $params);
-
-        return array_column($records, 'name');
-    }
 }

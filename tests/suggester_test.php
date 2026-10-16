@@ -89,4 +89,18 @@ final class suggester_test extends \advanced_testcase {
 
         $this->assertSame([], (new suggester())->suggest('colour', 'red'));
     }
+
+    /**
+     * What is typed is text: markup in it is refused as a parameter that is not, instead of being searched for as it came.
+     */
+    public function test_what_is_typed_must_be_text(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $suggestions = \local_servicemanager\external\get_suggestions::execute('function', 'core_webservice_get_site');
+        $this->assertContains('core_webservice_get_site_info', array_column($suggestions, 'value'));
+
+        $this->expectException(\invalid_parameter_exception::class);
+        \local_servicemanager\external\get_suggestions::execute('function', '<b>core_webservice_get_site_info</b>');
+    }
 }

@@ -76,7 +76,7 @@ class create_schema extends external_api {
         return [
             'id' => $result['id'],
             'status' => 'success',
-            'message' => 'Schema created successfully',
+            'message' => get_string('ws_schema_created', 'local_servicemanager'),
             'token' => $result['token'] ?? '',
         ];
     }

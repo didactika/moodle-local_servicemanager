@@ -92,3 +92,11 @@ Feature: Schema editing
     And I press "Cancel"
     Then I should see "Test Service"
     And I should not see "Guided form"
+
+  @javascript
+  Scenario: Reviewing a schema as YAML without changing it does not warn before the page is left
+    Given I navigate to "Server > Web Service Manager > Dashboard" in site administration
+    When I click on "Edit" "link" in the "test.service" "table_row"
+    And I press "Review as YAML"
+    Then I should see "YAML editor"
+    And leaving the page should not warn about unsaved changes

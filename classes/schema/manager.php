@@ -202,6 +202,56 @@ class manager {
     }
 
     /**
+     * The state that the web service of each schema has in Moodle, which is what decides whether it can be called.
+     *
+     * @param int|null $id Id of one schema record, or null for all of them.
+     * @return bool[] Whether each service is enabled, by the id of its schema record; a schema whose service no longer exists
+     *     is not there.
+     */
+    public function service_states(?int $id = null): array {
+        global $DB;
+
+        $sql = "SELECT s.id, es.enabled
+                  FROM {local_servicemanager_schemas} s
+                  JOIN {external_services} es ON es.id = s.serviceid";
+        $params = [];
+        if ($id !== null) {
+            $sql .= " WHERE s.id = :id";
+            $params['id'] = $id;
+        }
+        return array_map('boolval', $DB->get_records_sql_menu($sql, $params));
+    }
+
+    /**
+     * Whether a schema is enabled: the state of its web service in Moodle, or the one the schema stored when the service is
+     * gone.
+     *
+     * @param \stdClass $schema Schema record
+     * @return bool
+     */
+    public function is_enabled(\stdClass $schema): bool {
+        return $this->service_states((int) $schema->id)[$schema->id] ?? (bool) $schema->enabled;
+    }
+
+    /**
+     * Take the state that the web service of a schema was given in Moodle, when it differs from the one the schema stored.
+     *
+     * Moodle decides whether a service can be called, so its state is the one that counts: a service enabled or disabled in the
+     * administration of Moodle enables or disables the schema, with its user, as doing it in the plugin does.
+     *
+     * @param \stdClass $schema Schema record
+     * @return bool True when the schema took the state of its service.
+     */
+    public function adopt_service_state(\stdClass $schema): bool {
+        $enabled = $this->is_enabled($schema);
+        if ($enabled === (bool) $schema->enabled) {
+            return false;
+        }
+        $this->set_enabled((int) $schema->id, $enabled);
+        return true;
+    }
+
+    /**
      * Provision a schema and store it.
      *
      * If storing fails the provisioned objects are removed again, so a schema
@@ -262,7 +312,7 @@ class manager {
 
         $existing = $this->get_schema($id);
         if (!$existing) {
-            throw new \moodle_exception('Schema not found');
+            throw new \moodle_exception('schema_not_found', 'local_servicemanager');
         }
 
         $declared = $this->declared_version($yamlcontent);
@@ -336,7 +386,33 @@ class manager {
         } catch (\moodle_exception $e) {
             return true;
         }
-        return !is_array($data) || $this->content_changed($existing, $data);
+        // Only a YAML that has the structure of a schema can be compared; the validation tells what is wrong with another.
+        return !is_array($data) || $this->parser->validate_structure($data) || $this->content_changed($existing, $data);
+    }
+
+    /**
+     * Whether a YAML says what a schema has stored, however it is written: the same identity and the same content. Comments,
+     * the order of the lists and the way each entry is written do not count.
+     *
+     * The guided form writes the YAML again from its fields, so saving it untouched gives a text that differs from the stored
+     * one and says the same.
+     *
+     * @param \stdClass $existing Stored schema record
+     * @param string $yamlcontent YAML content
+     * @return bool True when saving it would change nothing.
+     */
+    public function says_the_same(\stdClass $existing, string $yamlcontent): bool {
+        try {
+            $data = $this->parser->parse($yamlcontent);
+            $stored = $this->parser->parse_stored($existing->yaml_content) ?? [];
+        } catch (\moodle_exception $e) {
+            return false;
+        }
+        if (!is_array($data) || $this->parser->validate_structure($data)) {
+            return false;
+        }
+        return schema_extractor::identity($data) === schema_extractor::identity($stored)
+            && !$this->content_changed($existing, $data);
     }
 
     /**
@@ -363,24 +439,19 @@ class manager {
     }
 
     /**
-     * Whether anything outside the meta section differs from what is stored.
+     * Whether what the schema does, anything outside the meta section, differs from what is stored.
      *
-     * Serialising both sides compares the whole nested structure in one step.
+     * Both sides are compared in the form of schema_extractor::content(), so the same schema written another way, as the
+     * guided form writes it, is not a change.
      *
      * @param \stdClass $existing Stored schema record
-     * @param array $data Newly parsed YAML data
+     * @param array $data Newly parsed YAML data, with the structure of a schema
      * @return bool
      */
     protected function content_changed(\stdClass $existing, array $data): bool {
-        $olddata = $this->parser->parse_stored($existing->yaml_content);
+        $olddata = $this->parser->parse_stored($existing->yaml_content) ?? [];
 
-        $new = $data;
-        unset($new['meta']);
-
-        $old = $olddata;
-        unset($old['meta']);
-
-        return serialize($new) !== serialize($old);
+        return schema_extractor::content($data) !== schema_extractor::content($olddata);
     }
 
     /**

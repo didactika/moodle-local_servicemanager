@@ -17,6 +17,7 @@
 namespace local_servicemanager\output;
 
 use core\output\react_component_renderable;
+use local_servicemanager\schema\manager;
 
 /**
  * The dashboard: the schemas, the state of the web services of the site and the tools to filter and act on them.
@@ -70,6 +71,11 @@ class dashboard_page implements react_component_renderable, \renderable {
             0,
             self::MAX_SCHEMAS
         );
+        // What is shown is whether each service can be called, which Moodle decides, and not what the plugin stored.
+        $states = (new manager())->service_states();
+        foreach ($records as $record) {
+            $record->enabled = $states[$record->id] ?? (bool) $record->enabled;
+        }
 
         return (object) [
             'strings' => page_text::strings(),

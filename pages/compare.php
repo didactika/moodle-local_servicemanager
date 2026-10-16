@@ -50,7 +50,7 @@ $historymanager = new \local_servicemanager\schema\history_manager();
 
 $schema = $manager->get_schema($id);
 if (!$schema) {
-    throw new \moodle_exception('error_schema_not_found', 'local_servicemanager');
+    throw new \moodle_exception('schema_not_found', 'local_servicemanager');
 }
 
 $urlparams = ['id' => $id, 'v1' => $v1, 'v2' => $v2];

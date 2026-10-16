@@ -20,6 +20,7 @@ use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
+use local_servicemanager\schema\manager;
 
 /**
  * External web service function: get a single service schema by ID.
@@ -66,7 +67,7 @@ class get_schema extends external_api {
             'version' => $schema->version,
             'description' => $schema->description ?? '',
             'yaml_content' => $schema->yaml_content,
-            'enabled' => $schema->enabled,
+            'enabled' => (new manager())->is_enabled($schema),
             'timecreated' => $schema->timecreated,
             'timemodified' => $schema->timemodified,
         ];

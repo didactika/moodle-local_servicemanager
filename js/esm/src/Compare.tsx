@@ -34,7 +34,9 @@ const Compare = (props: CompareProps) => {
     const identical = counts.added + counts.removed + counts.changed === 0;
 
     const move = (step: 1 | -1) => {
-        const target = (position + step + runs.length) % runs.length;
+        // Before any change was chosen, down goes to the first one and up to the last one.
+        const first = step > 0 ? 0 : runs.length - 1;
+        const target = position < 0 ? first : (position + step + runs.length) % runs.length;
         setPosition(target);
         document.getElementById(`diff-row-${runs[target].start}`)?.scrollIntoView({block: 'center', behavior: 'smooth'});
     };

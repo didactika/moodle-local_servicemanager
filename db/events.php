@@ -15,22 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Message definitions for local_servicemanager
+ * Event observers of the Web Service Manager.
  *
  * @package    local_servicemanager
  * @author     Eduardo Estrada <me@e2rd0.com>
- * @author     Hector Arrechea
  * @copyright  2026 Didactika.org
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$messageproviders = [
-    'healthalert' => [
-        'defaults' => [
-            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-            'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ],
+$observers = [
+    // A schema takes the state that its web service is given in the administration of Moodle.
+    [
+        'eventname' => '\core\event\webservice_service_updated',
+        'callback' => '\local_servicemanager\observer::webservice_service_updated',
     ],
 ];

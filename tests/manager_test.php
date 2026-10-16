@@ -194,4 +194,29 @@ YAML;
         $schema = $DB->get_record('local_servicemanager_schemas', ['id' => $result['id']]);
         $this->assertEquals(1, $schema->enabled);
     }
+
+    /**
+     * A schema that does not exist is told with the string of the plugin that says so, when it is updated and when its token
+     * is made again.
+     */
+    public function test_a_schema_that_does_not_exist_is_told_with_a_string(): void {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $expected = get_string('schema_not_found', 'local_servicemanager');
+
+        $calls = [
+            fn() => (new \local_servicemanager\schema\manager())->update_schema(-1, $this->get_valid_yaml()),
+            fn() => (new \local_servicemanager\automation\token_manager())->regenerate_token(-1),
+        ];
+        foreach ($calls as $call) {
+            try {
+                $call();
+                $this->fail('No exception was thrown');
+            } catch (\moodle_exception $e) {
+                $this->assertSame('schema_not_found', $e->errorcode);
+                $this->assertSame('local_servicemanager', $e->module);
+                $this->assertSame($expected, $e->getMessage());
+            }
+        }
+    }
 }

@@ -209,7 +209,7 @@ class validator {
     /**
      * Check if a plugin exists
      *
-     * @param string $pluginname Plugin name (e.g., 'local_campustools')
+     * @param string $pluginname Plugin name (e.g., 'local_mytools')
      * @return bool
      */
     protected function plugin_exists(string $pluginname): bool {
