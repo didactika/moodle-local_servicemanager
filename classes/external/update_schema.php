@@ -73,7 +73,7 @@ class update_schema extends external_api {
 
         return [
             'status' => 'success',
-            'message' => 'Schema updated successfully',
+            'message' => get_string('ws_schema_updated', 'local_servicemanager'),
         ];
     }
 
