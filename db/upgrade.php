@@ -52,10 +52,10 @@ function xmldb_local_servicemanager_upgrade($oldversion) {
     }
 
     // Managing schemas is for site administrators only: the manager roles lose what their archetype gave them.
-    if ($oldversion < 2026101500) {
+    if ($oldversion < 2026101401) {
         local_servicemanager_upgrade_manage_for_admins_only();
 
-        upgrade_plugin_savepoint(true, 2026101500, 'local', 'servicemanager');
+        upgrade_plugin_savepoint(true, 2026101401, 'local', 'servicemanager');
     }
 
     return true;
