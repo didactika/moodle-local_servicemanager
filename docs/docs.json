@@ -1,0 +1,11 @@
+{
+  "kind": "plugin",
+  "slug": "local-servicemanager",
+  "title": { "en": "Service manager", "es": "Gestor de servicios" },
+  "summary": {
+    "en": "Provisions and manages web services from version-controlled YAML schemas: it creates the service user, role, capabilities, external service and token.",
+    "es": "Aprovisiona y gestiona servicios web a partir de esquemas YAML versionados: crea el usuario del servicio, el rol, las capacidades, el servicio externo y el token."
+  },
+  "directory": { "published": "auto", "url": null },
+  "translations": { "source": "l10n" }
+}
