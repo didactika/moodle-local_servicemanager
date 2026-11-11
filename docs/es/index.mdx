@@ -1,0 +1,41 @@
+---
+title: Gestor de servicios
+summary: Aprovisiona y gestiona servicios web de Moodle a partir de esquemas YAML versionados.
+order: 1
+---
+
+Web Service Manager (`local_servicemanager`) configura servicios web de Moodle a partir de un único archivo YAML. Usted escribe lo que necesita un servicio, las funciones que llama y, si lo desea, lo que puede hacer su rol, y el plugin crea el usuario del servicio, el rol, las capacidades, el servicio externo y el token, y los mantiene al día con el archivo cada vez que lo cambia.
+
+<Screenshot src="asset:dashboard.webp" alt="El panel, con la salud de los esquemas y la lista de esquemas" caption="El panel: el estado de los servicios web, la salud de cada esquema y las acciones de la lista." url="/local/servicemanager/index.php" />
+
+Cada esquema es una sala cerrada para un consumidor: su propio usuario, su propio rol, su propio servicio y su propio token. Un token filtrado, o un consumidor que se comporta mal, solo alcanza lo que su esquema declara. Deshabilitar o eliminar el esquema cierra la sala.
+
+## Encuentre su camino
+
+Elija la ruta que corresponde a lo que quiere hacer. Cada una lista las páginas que debe leer, en orden, con la utilidad de cada una.
+
+<div class="d-paths">
+<Path title="Configuro mi primer servicio" icon="rocket-launch-rounded" time="15 min" goal="Instale el plugin, active los servicios web y cree un servicio con su token." pages={['getting-started/installation', 'getting-started/quick-start', 'guides/dashboard', 'guides/create-a-schema']} />
+<Path title="Gestiono servicios a diario" icon="manage-accounts-rounded" time="30 min" goal="Cambie esquemas, siga sus versiones y muévalos entre sitios." pages={['guides/edit-a-schema', 'guides/schema-page', 'guides/versions-and-comparison', 'guides/import-and-export', 'guides/troubleshooting']} />
+<Path title="Lo automatizo" icon="code-rounded" time="30 min" goal="Escriba el YAML a mano y cree esquemas desde un script o una canalización." pages={['concepts/how-it-works', 'reference/yaml', 'reference/webservices', 'reference/settings']} />
+</div>
+
+## Cómo está organizada esta documentación
+
+<FeatureGrid>
+  <Feature icon="rocket-launch-rounded" title="Primeros pasos" href="page:getting-started/installation">Instale el plugin y cree un primer servicio.</Feature>
+  <Feature icon="lightbulb-rounded" title="Conceptos" href="page:concepts/how-it-works">Cómo un esquema se convierte en un servicio y qué se crea.</Feature>
+  <Feature icon="task-alt-rounded" title="Guías" href="page:guides/dashboard">Una tarea por página, con las pantallas que verá.</Feature>
+  <Feature icon="menu-book-rounded" title="Referencia" href="page:reference/yaml">Cada campo de un esquema, cada ajuste y cada servicio web.</Feature>
+</FeatureGrid>
+
+## Qué hace
+
+<FeatureGrid>
+  <Feature icon="description-rounded" title="Un archivo, un servicio">El usuario, el rol, las capacidades, el servicio y el token salen de un esquema YAML, y el plugin lee de Moodle las capacidades que necesita cada función.</Feature>
+  <Feature icon="history-rounded" title="Versiones y retroceso">Cada cambio de la definición se conserva, se puede comparar línea a línea y se puede deshacer.</Feature>
+  <Feature icon="monitor-heart-rounded" title="Comprobaciones de salud">Una tarea programada comprueba que lo que creó cada esquema sigue ahí y funciona, y avisa por correo.</Feature>
+  <Feature icon="swap-horiz-rounded" title="Importar y exportar">Mueva esquemas entre sitios y entornos como archivos o como un único archivo comprimido.</Feature>
+  <Feature icon="api-rounded" title="Servicios web propios">Cree y actualice esquemas desde scripts y canalizaciones, sin la interfaz.</Feature>
+  <Feature icon="dark-mode-rounded" title="Sigue el tema">En Moodle 5.3 las páginas siguen el modo de color del sitio, también el oscuro.</Feature>
+</FeatureGrid>

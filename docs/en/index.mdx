@@ -1,0 +1,41 @@
+---
+title: Service manager
+summary: Provisions and manages Moodle web services from version-controlled YAML schemas.
+order: 1
+---
+
+Web Service Manager (`local_servicemanager`) sets up Moodle web services from one YAML file. You write what a service needs, the functions it calls and, if you want, what its role may do, and the plugin creates the service user, the role, the capabilities, the external service and the token, and keeps them in line with the file every time you change it.
+
+<Screenshot src="asset:dashboard.webp" alt="The dashboard, with the health of the schemas and the list of schemas" caption="The dashboard: the state of the web services, the health of every schema and the actions of the list." url="/local/servicemanager/index.php" />
+
+Each schema is a closed room for one consumer: its own user, its own role, its own service and its own token. A token that is leaked, or a consumer that misbehaves, can reach only what its schema declares. Disabling or deleting the schema closes the room.
+
+## Find your way
+
+Pick the route that matches what you want to do. Each one lists the pages to read, in order.
+
+<div class="d-paths">
+<Path title="I set up my first service" icon="rocket-launch-rounded" time="15 min" goal="Install the plugin, turn the web services on and create a service with its token." pages={['getting-started/installation', 'getting-started/quick-start', 'guides/dashboard', 'guides/create-a-schema']} />
+<Path title="I manage services every day" icon="manage-accounts-rounded" time="30 min" goal="Change schemas, follow their versions and move them between sites." pages={['guides/edit-a-schema', 'guides/schema-page', 'guides/versions-and-comparison', 'guides/import-and-export', 'guides/troubleshooting']} />
+<Path title="I automate it" icon="code-rounded" time="30 min" goal="Write the YAML by hand and create schemas from a script or a pipeline." pages={['concepts/how-it-works', 'reference/yaml', 'reference/webservices', 'reference/settings']} />
+</div>
+
+## How this documentation is organised
+
+<FeatureGrid>
+  <Feature icon="rocket-launch-rounded" title="Getting started" href="page:getting-started/installation">Install the plugin and create a first service.</Feature>
+  <Feature icon="lightbulb-rounded" title="Concepts" href="page:concepts/how-it-works">How a schema becomes a service, and what is created.</Feature>
+  <Feature icon="task-alt-rounded" title="Guides" href="page:guides/dashboard">One task per page, with the screens you will see.</Feature>
+  <Feature icon="menu-book-rounded" title="Reference" href="page:reference/yaml">Every field of a schema, every setting and every web service.</Feature>
+</FeatureGrid>
+
+## What it does
+
+<FeatureGrid>
+  <Feature icon="description-rounded" title="One file, one service">The user, the role, the capabilities, the service and the token come from a YAML schema, and the plugin reads the capabilities each function needs from Moodle.</Feature>
+  <Feature icon="history-rounded" title="Versions and rollback">Every change of the definition is kept, can be compared line by line and can be rolled back.</Feature>
+  <Feature icon="monitor-heart-rounded" title="Health checks">A scheduled task checks that what each schema created is still there and works, and reports by email.</Feature>
+  <Feature icon="swap-horiz-rounded" title="Import and export">Move schemas between sites and environments as files or as one archive.</Feature>
+  <Feature icon="api-rounded" title="Web services of its own">Create and update schemas from scripts and pipelines, without the interface.</Feature>
+  <Feature icon="dark-mode-rounded" title="Follows the theme">On Moodle 5.3 the pages follow the colour mode of the site, including the dark one.</Feature>
+</FeatureGrid>
