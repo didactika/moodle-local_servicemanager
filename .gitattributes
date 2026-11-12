@@ -10,3 +10,9 @@
 amd/build/** linguist-generated=true
 /docs export-ignore
 /rup.config.json export-ignore
+
+# Translations: they are kept in the repository, but they are not part of the release package, so a change in them never needs a new version.
+/lang/es export-ignore
+/lang/fr export-ignore
+/lang/it export-ignore
+/lang/pt export-ignore
