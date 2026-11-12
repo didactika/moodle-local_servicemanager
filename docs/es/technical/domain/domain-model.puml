@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+hide empty members
+hide circle
+skinparam linetype polyline
+skinparam nodesep 60
+skinparam ranksep 70
+top to bottom direction
+
+package "Level 1 - Core" <<level1>> {
+  class Schema {
+    schema_id
+    name
+    version
+    enabled
+    status
+  }
+}
+
+package "Level 2 - Structural" <<level2>> {
+  class SchemaVersion {
+    version
+    change_reason
+  }
+  class ServiceUser
+  class ServiceRole
+  class ExternalService
+  class Token
+}
+
+package "Level 3 - Detail" <<level3>> {
+  class WebServiceFunction {
+    critical
+  }
+  class Capability
+  class RoleSettings
+  class HealthLog
+}
+
+package "Level 4 - Support" <<level4>> {
+  class SiteSettings
+}
+
+Schema "1" o-down- "1..*" SchemaVersion : keeps
+Schema "1" -down- "1" ServiceUser : provisions
+Schema "1" -down- "1" ServiceRole : provisions
+Schema "1" -down- "1" ExternalService : provisions
+Schema "1" -down- "0..1" Token : issues
+Schema "1" o-down- "0..*" HealthLog : is checked in
+ServiceRole "1" -down- "0..*" Capability : holds
+ServiceRole "1" -down- "0..1" RoleSettings : follows
+ExternalService "1" -down- "1..*" WebServiceFunction : offers
+SiteSettings ..> HealthLog : bounds
+SiteSettings ..> SchemaVersion : bounds
+
+@enduml

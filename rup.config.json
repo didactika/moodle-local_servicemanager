@@ -1,0 +1,62 @@
+{
+  "project": "local_servicemanager",
+  "outDir": "docs/en/technical",
+  "docLanguage": "en",
+  "codeRoot": "classes",
+  "paths": {
+    "domain": "domain",
+    "requirements": "requirements",
+    "analysis": "analysis",
+    "design": "design",
+    "implementation": "implementation",
+    "quality": "quality"
+  },
+  "useCaseDir": "use-cases",
+  "plantuml": {
+    "url": "http://127.0.0.1:8085",
+    "timeoutMs": 30000
+  },
+  "diagrams": {
+    "language": "plantuml",
+    "outputs": [
+      "svg"
+    ]
+  },
+  "theme": {
+    "preset": "default",
+    "colors": {
+      "background": "#FFFFFF",
+      "text": "#0F172A",
+      "line": "#475569",
+      "border": "#00555A",
+      "primary": "#E6F6F4",
+      "secondary": "#F1F5F9",
+      "accent": "#0F766E",
+      "note": "#FDF3DC",
+      "levels": [
+        "#A7DDD5",
+        "#C8EEE9",
+        "#E6F6F4",
+        "#F4FBFA"
+      ]
+    },
+    "font": "IBM Plex Sans",
+    "fontSize": 14,
+    "roundCorner": 8
+  },
+  "ids": {
+    "requirement": "RF",
+    "nonFunctional": "RNF",
+    "useCase": "UC",
+    "rule": "RN",
+    "decision": "DEC",
+    "test": "TC"
+  },
+  "targetStack": {
+    "language": "PHP",
+    "framework": "Moodle local plugin",
+    "persistence": "Moodle XMLDB",
+    "testing": "PHPUnit, Behat"
+  },
+  "traceTag": "@rup"
+}

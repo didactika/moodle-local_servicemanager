@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+skinparam responseMessageBelowArrow true
+
+actor "Maintainer" as actor
+participant "update_schema" as service
+participant "schema manager" as manager
+participant "version_resolver" as resolver
+participant "validator" as validator
+participant "version_policy" as policy
+participant "provisioner" as provisioner
+database "schemas and history" as table
+
+actor -> service : id, yaml
+service -> manager : update_schema(id, yaml)
+manager -> resolver : resolve(yaml, existing, content changed)
+resolver --> manager : yaml with the next version
+manager -> validator : validate(yaml, excluding itself)
+manager -> manager : the ID must be the same
+manager -> policy : check_update(existing, version, content changed)
+manager -> table : record the version in the history
+manager -> provisioner : reconcile(existing, definition)
+provisioner --> manager : warnings
+manager -> table : update schema
+manager --> actor : result and the version used
+
+@enduml

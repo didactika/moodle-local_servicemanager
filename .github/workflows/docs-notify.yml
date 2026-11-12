@@ -1,0 +1,16 @@
+name: Docs notify
+
+# When the documentation of this plugin changes on a branch that is a line (main or MOODLE_*_STABLE), tell the portal docs.didactika.org
+# to build again.
+on:
+  push:
+    branches: [main, 'MOODLE_*_STABLE']
+    paths: ['docs/**', 'version.php']
+
+# The caller grants nothing by default; the reusable workflow asks for what it needs with the token of the organisation secret.
+permissions: {}
+
+jobs:
+  notify:
+    uses: didactika/.github/.github/workflows/docs-notify.yml@main
+    secrets: inherit

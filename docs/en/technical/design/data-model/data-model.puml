@@ -1,0 +1,57 @@
+@startuml
+!theme plain
+hide circle
+skinparam linetype polyline
+top to bottom direction
+
+entity "local_servicemanager_schemas" as schemas {
+  * id : int <<PK>>
+  --
+  schema_id : char(100)
+  name : char(255)
+  description : text
+  version : char(50)
+  maintainer : char(255)
+  yaml_content : text
+  yaml_hash : char(64)
+  enabled : int(1)
+  status : char(20)
+  userid : int
+  roleid : int
+  serviceid : int
+  tokenid : int
+  timecreated : int
+  timemodified : int
+}
+
+entity "local_servicemanager_history" as history {
+  * id : int <<PK>>
+  --
+  * schemaid : int <<FK>>
+  version : char(50)
+  yaml_content : text
+  yaml_hash : char(64)
+  change_reason : char(255)
+  changedby : int
+  timecreated : int
+}
+
+entity "local_servicemanager_logs" as logs {
+  * id : int <<PK>>
+  --
+  * schemaid : int <<FK>>
+  status : char(20)
+  message : text
+  details : text
+  timecreated : int
+}
+
+schemas ||--o{ history : schemaid
+schemas ||--o{ logs : schemaid
+
+note bottom of schemas
+  userid, roleid, serviceid and tokenid point at the user, the role,
+  the external service and the token of Moodle that the schema created.
+end note
+
+@enduml

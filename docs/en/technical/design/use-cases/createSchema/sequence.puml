@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+skinparam responseMessageBelowArrow true
+
+actor "Maintainer" as actor
+participant "create_schema" as service
+participant "schema manager" as manager
+participant "version_resolver" as resolver
+participant "validator" as validator
+participant "provisioner" as provisioner
+database "local_servicemanager_schemas" as table
+
+actor -> service : yaml
+service -> manager : create_schema_with_token(yaml)
+manager -> resolver : resolve(yaml, none)
+resolver --> manager : yaml with a version
+manager -> validator : validate(yaml)
+alt not valid
+  validator --> manager : errors
+  manager --> actor : errors, at their fields
+else valid
+  manager -> provisioner : provision(definition, token)
+  provisioner -> provisioner : user, role and capabilities, service and functions, token
+  alt provisioning fails
+    provisioner -> provisioner : discard(what was created)
+    provisioner --> manager : error
+  else
+    provisioner --> manager : ids, token, warnings
+    manager -> table : insert schema
+    manager -> manager : record the first version
+    manager --> actor : schema page, token once
+  end
+end
+
+@enduml
