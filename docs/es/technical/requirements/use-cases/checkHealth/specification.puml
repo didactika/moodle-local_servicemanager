@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+hide empty description
+
+state "checkHealth" as checkHealth {
+  state " " as Adopting
+  state " " as Inspecting
+  state " " as Recording
+  state " " as Reporting
+
+  [*] --> Adopting : Moodle runs the scheduled task
+  Adopting --> Inspecting : System takes the state of a web service changed outside the plugin
+  Inspecting --> Recording : System checks functions, user, service and token of each enabled schema
+  Recording --> Reporting : System keeps the worst status of each schema and its log
+  Reporting --> [*] : System sends the report to the people set in the settings
+
+  note on link
+    System: inspects, records, reports
+  end note
+}
+
+@enduml

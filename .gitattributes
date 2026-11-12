@@ -9,3 +9,4 @@
 * text=auto eol=lf
 amd/build/** linguist-generated=true
 /docs export-ignore
+/rup.config.json export-ignore

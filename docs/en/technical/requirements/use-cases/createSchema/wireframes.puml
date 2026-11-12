@@ -1,0 +1,17 @@
+@startsalt
+{
+  {* Dashboard | Settings }
+  ==
+  New schema
+  --
+  {/ <b>Guided form | YAML editor }
+  {
+    Schema ID | "crm.sync            "
+    Name | "CRM synchronisation  "
+    Version | "                    "
+    Required functions | "core_user_get_users"
+    [X] Generate token automatically
+  }
+  [ Create schema ] | [ Cancel ]
+}
+@endsalt

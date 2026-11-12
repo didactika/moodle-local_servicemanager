@@ -1,0 +1,39 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+top to bottom direction
+
+package "Moodle core" {
+  component "External services and tokens" as ws
+  component "Roles and capabilities" as roles
+  component "Users" as users
+  component "Scheduled tasks" as tasks
+  component "Messaging" as messaging
+  database "Database" as db
+}
+
+package "local_servicemanager" {
+  component "Pages and AMD / React screens" as screens
+  component "Web services of the plugin" as own
+  component "schema manager" as manager
+  component "provisioner" as provisioner
+  component "automation managers" as automation
+  component "history manager" as history
+  component "health inspector and tasks" as health
+}
+
+screens --> own : AJAX
+own --> manager
+manager --> provisioner
+manager --> history
+provisioner --> automation
+automation --> ws
+automation --> roles
+automation --> users
+manager --> db : schemas
+history --> db : history
+health --> db : logs
+health --> tasks : scheduled by
+health --> messaging : daily report
+
+@enduml

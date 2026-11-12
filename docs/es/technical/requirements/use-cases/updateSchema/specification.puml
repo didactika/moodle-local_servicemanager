@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+hide empty description
+
+state "updateSchema" as updateSchema {
+  state " " as Form
+  state " " as Versioning
+  state " " as Checking
+  state " " as Reconciling
+  state " " as Saved
+
+  [*] --> Form : Maintainer presses Edit
+  Form --> Versioning : Maintainer saves the changes
+  Versioning --> Checking : System works out the next version if the definition changed
+  Checking --> Form : System reports an error, or that the ID cannot change
+  Checking --> Reconciling : System accepts the schema and keeps the version in the history
+  Reconciling --> Saved : System brings the user, role, service and functions in line
+  Saved --> [*] : System shows the schema page and the version it used
+
+  note on link
+    Maintainer: saves
+    System: versions, validates, reconciles
+  end note
+}
+
+@enduml
