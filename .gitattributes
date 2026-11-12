@@ -8,3 +8,4 @@
 # Line endings are LF everywhere, and the built AMD modules are generated code.
 * text=auto eol=lf
 amd/build/** linguist-generated=true
+/docs export-ignore
