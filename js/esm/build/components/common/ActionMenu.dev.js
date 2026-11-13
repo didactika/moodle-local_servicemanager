@@ -48,12 +48,12 @@ const ActionMenu = /* @__PURE__ */ __name(({ label, actions, size = "sm", tone =
       columnNumber: 15
     });
   }, "item");
-  return /* @__PURE__ */ jsxDEV("div", { className: "dropdown sm-action-menu", ref: menu.ref, children: [
+  return /* @__PURE__ */ jsxDEV("div", { className: "dropdown", ref: menu.ref, children: [
     /* @__PURE__ */ jsxDEV(
       "button",
       {
         type: "button",
-        className: `btn sm-pill ${caret ? "has-caret" : `icon-only${size === "sm" ? " compact" : ""}`}${toneClass(tone)}`,
+        className: caret ? `btn btn-outline-secondary dropdown-toggle${size === "sm" ? " btn-sm" : ""}` : `btn btn-link btn-icon${size === "sm" ? " btn-sm" : ""}${toneClass(tone)}`,
         "aria-haspopup": "true",
         "aria-expanded": menu.open,
         title: label,
@@ -64,15 +64,10 @@ const ActionMenu = /* @__PURE__ */ __name(({ label, actions, size = "sm", tone =
             lineNumber: 68,
             columnNumber: 13
           }),
-          caret && /* @__PURE__ */ jsxDEV(Icon, { name: "chevron-down", className: "sm-caret" }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/common/ActionMenu.tsx",
-            lineNumber: 68,
-            columnNumber: 43
-          }),
           /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: label }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/ActionMenu.tsx",
             lineNumber: 68,
-            columnNumber: 93
+            columnNumber: 33
           })
         ]
       },
@@ -84,7 +79,7 @@ const ActionMenu = /* @__PURE__ */ __name(({ label, actions, size = "sm", tone =
         columnNumber: 9
       }
     ),
-    /* @__PURE__ */ jsxDEV("ul", { className: `dropdown-menu dropdown-menu-end sm-row-menu${menu.open ? " show" : ""}`, children: [
+    /* @__PURE__ */ jsxDEV("ul", { className: `dropdown-menu dropdown-menu-end${menu.open ? " show" : ""}`, children: [
       common.map((action) => /* @__PURE__ */ jsxDEV("li", { children: item(action) }, action.label, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/ActionMenu.tsx",
         lineNumber: 71,

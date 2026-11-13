@@ -17,9 +17,9 @@ interface HealthFindingsProps {
     check: HealthCheck;
 }
 
-const HealthFindings = ({check}: HealthFindingsProps) => <ul className={`sm-health-findings tone-${check.tone}`}>
-    {check.findings.map((finding, index) => <li key={index}>
-        <Icon name={check.icon} />
+const HealthFindings = ({check}: HealthFindingsProps) => <ul className="list-unstyled d-grid gap-1 mb-0">
+    {check.findings.map((finding, index) => <li key={index} className="d-flex gap-2">
+        <span className={`text-${check.tone}`}><Icon name={check.icon} /></span>
         <span>{finding.label && <><strong>{finding.label}</strong>{' '}</>}{finding.text}</span>
     </li>)}
 </ul>;

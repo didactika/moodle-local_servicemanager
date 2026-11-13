@@ -39,7 +39,7 @@ const Compare = /* @__PURE__ */ __name((props) => {
     setPosition(target);
     document.getElementById(`diff-row-${runs[target].start}`)?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, "move");
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-compare-page", children: [
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-compare-page d-grid gap-3", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: props.backUrl, label: text("back") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
       lineNumber: 46,
@@ -97,22 +97,22 @@ const Compare = /* @__PURE__ */ __name((props) => {
         columnNumber: 13
       }
     ),
-    /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center mb-3 sm-badges-row", "data-region": "diff-counts", children: identical ? /* @__PURE__ */ jsxDEV("span", { className: "sm-badge", children: text("compare_no_changes") }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center mb-3 gap-2", "data-region": "diff-counts", children: identical ? /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: text("compare_no_changes") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
       lineNumber: 59,
       columnNumber: 23
     }) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      counts.added > 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-success", children: text("compare_added", counts.added) }, void 0, false, {
+      counts.added > 0 && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-success", children: text("compare_added", counts.added) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
         lineNumber: 61,
         columnNumber: 46
       }),
-      counts.removed > 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-danger", children: text("compare_removed", counts.removed) }, void 0, false, {
+      counts.removed > 0 && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-danger", children: text("compare_removed", counts.removed) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
         lineNumber: 62,
         columnNumber: 48
       }),
-      counts.changed > 0 && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-warning", children: text("compare_changed", counts.changed) }, void 0, false, {
+      counts.changed > 0 && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-warning", children: text("compare_changed", counts.changed) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Compare.tsx",
         lineNumber: 63,
         columnNumber: 48
@@ -131,7 +131,7 @@ const Compare = /* @__PURE__ */ __name((props) => {
       lineNumber: 67,
       columnNumber: 36
     }),
-    /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center justify-content-between mb-3 sm-actions-row", "data-region": "diff-tools", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2", "data-region": "diff-tools", children: [
       /* @__PURE__ */ jsxDEV("div", { className: "btn-group", role: "group", "aria-label": text("compare_view"), children: [
         /* @__PURE__ */ jsxDEV("button", { type: "button", className: `btn btn-outline-secondary${view === "split" ? " active" : ""}`, "aria-pressed": view === "split", onClick: () => setView("split"), children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "table-columns", gap: true }, void 0, false, {
@@ -162,7 +162,7 @@ const Compare = /* @__PURE__ */ __name((props) => {
         lineNumber: 70,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center sm-actions-row", children: /* @__PURE__ */ jsxDEV("div", { className: "form-check form-switch mb-0", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center gap-2", children: /* @__PURE__ */ jsxDEV("div", { className: "form-check form-switch mb-0", children: [
         /* @__PURE__ */ jsxDEV(
           "input",
           {

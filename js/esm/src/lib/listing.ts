@@ -15,7 +15,7 @@
 /** What a person asked of a list. */
 export interface ListState {
     query: string;
-    /** A status, or an empty text for all of them. */
+    /** The statuses chosen, separated by commas, or an empty text for all of them. */
     status: string;
     /** First day of the range, as a date field writes it. */
     from: string;
@@ -47,11 +47,13 @@ export const parseState = (search: string, perpage: number, options: number[]): 
     const params = new URLSearchParams(search);
     const asked = Number(params.get('perpage'));
     const page = Number(params.get('page'));
+    // A period written the wrong way round in the address is read the right way round.
+    const [from, to] = [params.get('from') ?? '', params.get('to') ?? ''].sort((a, b) => (a && b ? a.localeCompare(b) : 0));
     return {
         query: params.get('q') ?? '',
         status: params.get('status') ?? '',
-        from: params.get('from') ?? '',
-        to: params.get('to') ?? '',
+        from,
+        to,
         perpage: params.has('perpage') && options.includes(asked) ? asked : perpage,
         page: Number.isInteger(page) && page > 0 ? page : 0,
     };
@@ -111,7 +113,8 @@ const dayTime = (day: string, end: boolean): number | null => {
  * @returns True when the row is shown.
  */
 export const matches = (row: Findable, state: ListState): boolean => {
-    if (state.status && row.status !== state.status) {
+    // The status may name several, separated by commas: the row is shown when it has any of them.
+    if (state.status && !state.status.split(',').includes(row.status ?? '')) {
         return false;
     }
     const from = dayTime(state.from, false);

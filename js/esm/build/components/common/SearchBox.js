@@ -1,4 +1,4 @@
-import r from"./Icon";import{jsx as a,jsxs as i}from"react/jsx-runtime";/**
+import n from"./Icon";import{jsx as r,jsxs as c}from"react/jsx-runtime";/**
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
@@ -8,4 +8,4 @@ import r from"./Icon";import{jsx as a,jsxs as i}from"react/jsx-runtime";/**
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */const c=({value:s,onChange:e,placeholder:t,clearLabel:o,id:l="sm-search"})=>i("div",{className:"input-group sm-search",children:[a("span",{className:"input-group-text",children:a(r,{name:"magnifying-glass"})}),a("input",{type:"search",id:l,name:"q",value:s,className:"form-control",placeholder:t,"aria-label":t,autoComplete:"off",onChange:n=>e(n.target.value),onKeyDown:n=>{n.key==="Escape"&&e("")}}),s!==""&&i("button",{type:"button",className:"btn btn-outline-secondary",onClick:()=>e(""),title:o,children:[a(r,{name:"xmark"}),a("span",{className:"visually-hidden",children:o})]})]});var m=c;export{m as default};
+ */const t=({value:l,onChange:a,placeholder:o,clearLabel:s,id:i="lsm-search"})=>c("div",{className:"dd-searchbox",role:"search",children:[r(n,{name:"magnifying-glass"}),r("input",{type:"search",id:i,name:"q",value:l,className:"form-control",placeholder:o,"aria-label":o,title:s,autoComplete:"off",onChange:e=>a(e.target.value),onKeyDown:e=>{e.key==="Escape"&&a("")}})]});var d=t;export{d as default};

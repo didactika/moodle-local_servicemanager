@@ -19,7 +19,7 @@ import { useMemo } from "react";
 import BackLink from "./components/common/BackLink";
 import EmptyState from "./components/common/EmptyState";
 import ErrorBoundary from "./components/common/ErrorBoundary";
-import Icon from "./components/common/Icon";
+import { Empty, TableBox } from "./ds/ui";
 import PageHeader from "./components/common/PageHeader";
 import HealthFindings from "./components/schema/HealthFindings";
 import { createText } from "./engine/text";
@@ -28,11 +28,11 @@ import Pager from "./components/common/Pager";
 const HealthChecks = /* @__PURE__ */ __name((props) => {
   const { rows, filters, paging, urls } = props;
   const text = useMemo(() => createText(props.strings), [props.strings]);
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-health-page", "data-region": "servicemanager-health", children: [
-    /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: urls.back, label: text("back") }, void 0, false, {
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-health-page d-grid gap-3", "data-region": "servicemanager-health", children: [
+    /* @__PURE__ */ jsxDEV("div", { children: /* @__PURE__ */ jsxDEV(BackLink, { href: urls.back, label: text("back") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
       lineNumber: 33,
-      columnNumber: 35
+      columnNumber: 18
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
       lineNumber: 33,
@@ -48,184 +48,156 @@ const HealthChecks = /* @__PURE__ */ __name((props) => {
       lineNumber: 36,
       columnNumber: 31
     }),
-    props.hasAny && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center justify-content-between mb-3 sm-actions-row", children: /* @__PURE__ */ jsxDEV(
-        "nav",
+    props.hasAny && /* @__PURE__ */ jsxDEV(Fragment, { children: /* @__PURE__ */ jsxDEV("div", { className: "card", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "table-toolbar", children: /* @__PURE__ */ jsxDEV("nav", { className: "dd-chips", "aria-label": text("core_status"), "data-region": "health-filters", children: filters.map((filter) => /* @__PURE__ */ jsxDEV(
+        "a",
         {
-          className: "d-flex align-items-center sm-health-filters",
-          "aria-label": text("core_status"),
-          "data-region": "health-filters",
-          children: filters.map((filter) => /* @__PURE__ */ jsxDEV(
-            "a",
-            {
-              href: filter.url,
-              className: `btn sm-pill compact tone-${filter.tone}${filter.active ? " active" : ""}`,
-              "aria-current": filter.active ? "true" : void 0,
-              children: [
-                filter.label,
-                /* @__PURE__ */ jsxDEV("span", { className: "sm-count-badge", children: filter.count }, void 0, false, {
-                  fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                  lineNumber: 47,
-                  columnNumber: 40
-                })
-              ]
-            },
-            filter.status || "all",
-            true,
-            {
+          href: filter.url,
+          className: "dd-chip",
+          "aria-pressed": filter.active,
+          "aria-current": filter.active ? "true" : void 0,
+          children: [
+            filter.label,
+            " ",
+            /* @__PURE__ */ jsxDEV("span", { className: "dd-chip-count", children: filter.count }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-              lineNumber: 42,
-              columnNumber: 50
+              lineNumber: 44,
+              columnNumber: 48
+            })
+          ]
+        },
+        filter.status || "all",
+        true,
+        {
+          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+          lineNumber: 42,
+          columnNumber: 54
+        }
+      )) }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+        lineNumber: 41,
+        columnNumber: 25
+      }) }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+        lineNumber: 40,
+        columnNumber: 21
+      }),
+      /* @__PURE__ */ jsxDEV(TableBox, { busy: false, empty: rows.length === 0 && /* @__PURE__ */ jsxDEV(Empty, { icon: "a/search", message: text("health_none_with_status"), text }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+        lineNumber: 48,
+        columnNumber: 72
+      }), children: /* @__PURE__ */ jsxDEV("table", { className: "table", "data-region": "health-table", children: [
+        /* @__PURE__ */ jsxDEV("caption", { className: "visually-hidden", children: text("health_checks") }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+          lineNumber: 50,
+          columnNumber: 29
+        }),
+        /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
+          /* @__PURE__ */ jsxDEV("th", { scope: "col", children: text("core_time") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 53,
+            columnNumber: 37
+          }),
+          /* @__PURE__ */ jsxDEV("th", { scope: "col", children: text("core_status") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 54,
+            columnNumber: 37
+          }),
+          /* @__PURE__ */ jsxDEV("th", { scope: "col", children: text("core_message") }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 55,
+            columnNumber: 37
+          })
+        ] }, void 0, true, {
+          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+          lineNumber: 52,
+          columnNumber: 33
+        }) }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+          lineNumber: 51,
+          columnNumber: 29
+        }),
+        /* @__PURE__ */ jsxDEV("tbody", { children: rows.map((row, index) => /* @__PURE__ */ jsxDEV("tr", { "data-status": row.status, children: [
+          /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: "d-flex flex-column", children: [
+            row.time,
+            /* @__PURE__ */ jsxDEV("small", { className: "text-muted", children: row.ago }, void 0, false, {
+              fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+              lineNumber: 63,
+              columnNumber: 45
+            })
+          ] }, void 0, true, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 61,
+            columnNumber: 41
+          }) }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 60,
+            columnNumber: 37
+          }),
+          /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft badge-dot rounded-pill text-bg-${row.tone}`, children: row.statusLabel }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 67,
+            columnNumber: 41
+          }) }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 66,
+            columnNumber: 37
+          }),
+          /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV(HealthFindings, { check: row }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 69,
+            columnNumber: 41
+          }) }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+            lineNumber: 69,
+            columnNumber: 37
+          })
+        ] }, index, true, {
+          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+          lineNumber: 59,
+          columnNumber: 59
+        })) }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+          lineNumber: 58,
+          columnNumber: 29
+        })
+      ] }, void 0, true, {
+        fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+        lineNumber: 49,
+        columnNumber: 25
+      }) }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+        lineNumber: 48,
+        columnNumber: 21
+      }),
+      /* @__PURE__ */ jsxDEV(
+        Pager,
+        {
+          page: paging.page,
+          perpage: paging.perpage,
+          total: paging.total,
+          text,
+          onChange: ({ page, perpage }) => {
+            const target = new URL(perpage === void 0 ? pageUrl(urls.page, page ?? 0) : urls.perpage, window.location.href);
+            if (perpage !== void 0) {
+              target.searchParams.set("perpage", String(perpage));
             }
-          ))
+            window.location.assign(target.toString());
+          }
         },
         void 0,
         false,
         {
           fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-          lineNumber: 40,
+          lineNumber: 74,
           columnNumber: 21
         }
-      ) }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-        lineNumber: 39,
-        columnNumber: 17
-      }),
-      /* @__PURE__ */ jsxDEV("div", { className: "card sm-list", children: [
-        rows.length > 0 && /* @__PURE__ */ jsxDEV("div", { className: "table-responsive", "data-region": "tablewrap", children: /* @__PURE__ */ jsxDEV("table", { className: "table mb-0 sm-health-table", "data-region": "health-table", children: [
-          /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
-            /* @__PURE__ */ jsxDEV("th", { className: "sm-time-column", children: text("core_time") }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-              lineNumber: 56,
-              columnNumber: 37
-            }),
-            /* @__PURE__ */ jsxDEV("th", { className: "sm-status-column", children: text("core_status") }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-              lineNumber: 57,
-              columnNumber: 37
-            }),
-            /* @__PURE__ */ jsxDEV("th", { children: text("core_message") }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-              lineNumber: 58,
-              columnNumber: 37
-            })
-          ] }, void 0, true, {
-            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-            lineNumber: 55,
-            columnNumber: 33
-          }) }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-            lineNumber: 54,
-            columnNumber: 29
-          }),
-          /* @__PURE__ */ jsxDEV("tbody", { children: rows.map((row, index) => /* @__PURE__ */ jsxDEV(
-            "tr",
-            {
-              className: `sm-health-row tone-${row.tone}`,
-              "data-status": row.status,
-              children: [
-                /* @__PURE__ */ jsxDEV("td", { className: "sm-time-column", children: [
-                  /* @__PURE__ */ jsxDEV("span", { className: "sm-health-time", children: row.time }, void 0, false, {
-                    fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                    lineNumber: 68,
-                    columnNumber: 41
-                  }),
-                  /* @__PURE__ */ jsxDEV("span", { className: "sm-health-ago", children: row.ago }, void 0, false, {
-                    fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                    lineNumber: 69,
-                    columnNumber: 41
-                  })
-                ] }, void 0, true, {
-                  fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                  lineNumber: 67,
-                  columnNumber: 37
-                }),
-                /* @__PURE__ */ jsxDEV("td", { className: "sm-status-column", children: /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${row.tone}`, children: [
-                  /* @__PURE__ */ jsxDEV(Icon, { name: row.icon, gap: true }, void 0, false, {
-                    fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                    lineNumber: 73,
-                    columnNumber: 45
-                  }),
-                  row.statusLabel
-                ] }, void 0, true, {
-                  fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                  lineNumber: 72,
-                  columnNumber: 41
-                }) }, void 0, false, {
-                  fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                  lineNumber: 71,
-                  columnNumber: 37
-                }),
-                /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV(HealthFindings, { check: row }, void 0, false, {
-                  fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                  lineNumber: 76,
-                  columnNumber: 41
-                }) }, void 0, false, {
-                  fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-                  lineNumber: 76,
-                  columnNumber: 37
-                })
-              ]
-            },
-            index,
-            true,
-            {
-              fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-              lineNumber: 62,
-              columnNumber: 59
-            }
-          )) }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-            lineNumber: 61,
-            columnNumber: 29
-          })
-        ] }, void 0, true, {
-          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-          lineNumber: 53,
-          columnNumber: 25
-        }) }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-          lineNumber: 52,
-          columnNumber: 41
-        }),
-        rows.length === 0 && /* @__PURE__ */ jsxDEV("div", { "data-region": "tablewrap", children: /* @__PURE__ */ jsxDEV(EmptyState, { bare: true, icon: "filter-circle-xmark", title: text("empty_filtered_title"), text: text("health_none_with_status") }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-          lineNumber: 82,
-          columnNumber: 25
-        }) }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-          lineNumber: 81,
-          columnNumber: 43
-        }),
-        /* @__PURE__ */ jsxDEV(
-          Pager,
-          {
-            page: paging.page,
-            perpage: paging.perpage,
-            total: paging.total,
-            text,
-            onChange: ({ page, perpage }) => {
-              const target = new URL(perpage === void 0 ? pageUrl(urls.page, page ?? 0) : urls.perpage, window.location.href);
-              if (perpage !== void 0) {
-                target.searchParams.set("perpage", String(perpage));
-              }
-              window.location.assign(target.toString());
-            }
-          },
-          void 0,
-          false,
-          {
-            fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-            lineNumber: 84,
-            columnNumber: 21
-          }
-        )
-      ] }, void 0, true, {
-        fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
-        lineNumber: 51,
-        columnNumber: 17
-      })
+      )
     ] }, void 0, true, {
+      fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
+      lineNumber: 39,
+      columnNumber: 17
+    }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/HealthChecks.tsx",
       lineNumber: 38,
       columnNumber: 30

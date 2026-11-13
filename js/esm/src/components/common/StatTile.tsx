@@ -2,9 +2,8 @@
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * A figure with its label: how many schemas there are, how many are healthy, whether the web services work.
- *
- * It is a link when the figure leads somewhere, such as the list of the schemas that it counts.
+ * A figure of a page in a card: what it counts, the number in the colour of its state, and a line that explains it; it
+ * opens a page when it has an address.
  *
  * @module     local_servicemanager/components/common/StatTile
  * @copyright  2026 Didactika.org
@@ -17,30 +16,27 @@ import Icon from './Icon';
 interface StatTileProps {
     label: string;
     value: ReactNode;
-    /** Bootstrap colour of the figure and of its icon. */
     tone?: 'success' | 'warning' | 'danger' | 'secondary' | 'primary';
     icon?: string;
-    /** What goes under the figure. */
     hint?: ReactNode;
     href?: string;
+    /** The page that the tile opens is the one shown. */
     active?: boolean;
 }
 
 const StatTile = ({label, value, tone = 'secondary', icon, hint, href, active = false}: StatTileProps) => {
-    const body = <>
-        <div className="d-flex align-items-center justify-content-between">
-            <span className="text-body-secondary small text-uppercase sm-tile-label">{label}</span>
-            {icon && <span className={`sm-tile-icon text-${tone}`}><Icon name={icon} /></span>}
+    const body = <div className="card-body">
+        <div className="d-flex align-items-center justify-content-between gap-2">
+            <span className="small text-muted text-uppercase fw-semibold">{label}</span>
+            {icon && <span className={`text-${tone}`}><Icon name={icon} /></span>}
         </div>
-        <div className={`sm-tile-value text-${tone === 'secondary' ? 'body' : tone}`}>{value}</div>
-        {hint && <div className="text-body-secondary small">{hint}</div>}
-    </>;
-    const classes = `card sm-tile${active ? ' sm-tile-active' : ''}`;
+        <div className={`fs-4 fw-bold text-${tone === 'secondary' ? 'body' : tone}`}>{value}</div>
+        {hint && <div className="small text-muted">{hint}</div>}
+    </div>;
+    const classes = `card h-100${active ? ' border-primary' : ''}`;
     return href
-        ? <a href={href} className={`${classes} text-decoration-none sm-tile-link`} aria-current={active ? 'true' : undefined}>
-            <div className="card-body">{body}</div>
-        </a>
-        : <div className={classes}><div className="card-body">{body}</div></div>;
+        ? <a href={href} className={`${classes} text-decoration-none text-reset`} aria-current={active ? 'true' : undefined}>{body}</a>
+        : <div className={classes}>{body}</div>;
 };
 
 export default StatTile;

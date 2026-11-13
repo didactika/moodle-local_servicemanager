@@ -13,12 +13,8 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import Icon from "./Icon";
-const SearchBox = /* @__PURE__ */ __name(({ value, onChange, placeholder, clearLabel, id = "sm-search" }) => /* @__PURE__ */ jsxDEV("div", { className: "input-group sm-search", children: [
-  /* @__PURE__ */ jsxDEV("span", { className: "input-group-text", children: /* @__PURE__ */ jsxDEV(Icon, { name: "magnifying-glass" }, void 0, false, {
-    fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
-    lineNumber: 23,
-    columnNumber: 40
-  }) }, void 0, false, {
+const SearchBox = /* @__PURE__ */ __name(({ value, onChange, placeholder, clearLabel, id = "lsm-search" }) => /* @__PURE__ */ jsxDEV("div", { className: "dd-searchbox", role: "search", children: [
+  /* @__PURE__ */ jsxDEV(Icon, { name: "magnifying-glass" }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
     lineNumber: 23,
     columnNumber: 5
@@ -33,6 +29,7 @@ const SearchBox = /* @__PURE__ */ __name(({ value, onChange, placeholder, clearL
       className: "form-control",
       placeholder,
       "aria-label": placeholder,
+      title: clearLabel,
       autoComplete: "off",
       onChange: (event) => onChange(event.target.value),
       onKeyDown: (event) => {
@@ -48,27 +45,11 @@ const SearchBox = /* @__PURE__ */ __name(({ value, onChange, placeholder, clearL
       lineNumber: 24,
       columnNumber: 5
     }
-  ),
-  value !== "" && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary", onClick: () => onChange(""), title: clearLabel, children: [
-    /* @__PURE__ */ jsxDEV(Icon, { name: "xmark" }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
-      lineNumber: 41,
-      columnNumber: 9
-    }),
-    /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: clearLabel }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
-      lineNumber: 41,
-      columnNumber: 30
-    })
-  ] }, void 0, true, {
-    fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
-    lineNumber: 40,
-    columnNumber: 22
-  })
+  )
 ] }, void 0, true, {
   fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
   lineNumber: 22,
-  columnNumber: 101
+  columnNumber: 102
 }), "SearchBox");
 var SearchBox_default = SearchBox;
 export {

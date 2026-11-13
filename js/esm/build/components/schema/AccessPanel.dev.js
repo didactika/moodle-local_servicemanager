@@ -19,7 +19,7 @@ import IconButton from "../common/IconButton";
 import Panel from "../common/Panel";
 const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeToken, text }) => {
   const { requirements, extraCapabilities, schema, isHistory, canManage } = props;
-  const file = /* @__PURE__ */ __name((on, icon, label, title) => /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${on ? "success" : "secondary"}`, title, children: [
+  const file = /* @__PURE__ */ __name((on, icon, label, title) => /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${on ? "success" : "secondary"}`, title, children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: icon, gap: true }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
       lineNumber: 31,
@@ -31,7 +31,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
     lineNumber: 30,
     columnNumber: 79
   }), "file");
-  return /* @__PURE__ */ jsxDEV(Panel, { title: text("guided_access"), icon: "shield-halved", region: "access", children: /* @__PURE__ */ jsxDEV("dl", { className: "sm-facts mb-0", children: [
+  return /* @__PURE__ */ jsxDEV(Panel, { title: text("guided_access"), icon: "shield-halved", region: "access", children: /* @__PURE__ */ jsxDEV("dl", { className: "dd-dl mb-0", children: [
     !isHistory && /* @__PURE__ */ jsxDEV(Fragment, { children: [
       /* @__PURE__ */ jsxDEV("dt", { children: text("tile_token") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
@@ -39,7 +39,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("dd", { children: [
-        /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${schema.hasToken ? "success" : "secondary"}`, children: text(schema.hasToken ? "token_active" : "token_none") }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${schema.hasToken ? "success" : "secondary"}`, children: text(schema.hasToken ? "token_active" : "token_none") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
           lineNumber: 39,
           columnNumber: 21
@@ -64,8 +64,8 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
           lineNumber: 40,
           columnNumber: 35
         }),
-        freshToken && /* @__PURE__ */ jsxDEV("div", { className: "sm-fresh-token", "data-region": "fresh-token", children: [
-          /* @__PURE__ */ jsxDEV("code", { className: "sm-token-value", children: freshToken }, void 0, false, {
+        freshToken && /* @__PURE__ */ jsxDEV("div", { className: "alert alert-success mb-0 d-grid gap-2", "data-region": "fresh-token", children: [
+          /* @__PURE__ */ jsxDEV("code", { className: "font-monospace text-break", children: freshToken }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
             lineNumber: 49,
             columnNumber: 25
@@ -95,7 +95,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
         lineNumber: 54,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dd", { className: "d-flex flex-wrap sm-badges-row", children: [
+      /* @__PURE__ */ jsxDEV("dd", { className: "d-flex flex-wrap gap-2", children: [
         file(requirements.downloadFiles, "download", text("req_download_files"), text(requirements.downloadFiles ? "req_download_files_enabled" : "req_download_files_disabled")),
         file(requirements.uploadFiles, "upload", text("req_upload_files"), text(requirements.uploadFiles ? "req_upload_files_enabled" : "req_upload_files_disabled"))
       ] }, void 0, true, {
@@ -124,7 +124,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
           lineNumber: 64,
           columnNumber: 25
         }),
-        /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: plugin.name }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("span", { className: "font-monospace small", children: plugin.name }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
           lineNumber: 67,
           columnNumber: 25
@@ -149,12 +149,12 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
       columnNumber: 49
     }),
     extraCapabilities.length > 0 && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      /* @__PURE__ */ jsxDEV("dt", { className: "sm-fact-wide", children: text("extra_capabilities") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dt", { children: text("extra_capabilities") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
         lineNumber: 73,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dd", { className: "sm-fact-wide", children: /* @__PURE__ */ jsxDEV(
+      /* @__PURE__ */ jsxDEV("dd", { children: /* @__PURE__ */ jsxDEV(
         ChipList,
         {
           title: text("extra_capabilities"),
@@ -162,8 +162,8 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
           text,
           chip: (capability) => {
             const [plugin, name] = capability.split(":");
-            return /* @__PURE__ */ jsxDEV("code", { className: "sm-code-chip", title: capability, children: [
-              /* @__PURE__ */ jsxDEV("span", { className: "sm-code-chip-plugin", children: plugin }, void 0, false, {
+            return /* @__PURE__ */ jsxDEV("code", { className: "badge badge-outline rounded-pill text-bg-secondary font-monospace fw-normal", title: capability, children: [
+              /* @__PURE__ */ jsxDEV("span", { className: "text-muted", children: plugin }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
                 lineNumber: 82,
                 columnNumber: 33
@@ -174,7 +174,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
               ] }, void 0, true, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
                 lineNumber: 82,
-                columnNumber: 109
+                columnNumber: 100
               })
             ] }, capability, true, {
               fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",

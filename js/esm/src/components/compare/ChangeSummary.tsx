@@ -57,29 +57,29 @@ const label = (text: Text, change: Change): string => {
 
 const KIND_SIGN = {added: 'plus', removed: 'minus', changed: 'pen'} as const;
 
-const ChangeSummary = ({changes, text}: ChangeSummaryProps) => <details className="sm-changes" data-region="change-summary" open>
-    <summary className="sm-changes-head">
-        <Icon name="chevron-right" className="sm-changes-caret" />
-        <h5 className="sm-changes-title">{text('compare_changes_title')}</h5>
-        <span className="sm-count-badge">{changes.length}</span>
+const ChangeSummary = ({changes, text}: ChangeSummaryProps) => <details className="card" data-region="change-summary" open>
+    <summary className="card-header d-flex align-items-center gap-2">
+        
+        <h5 className="h6 mb-0">{text('compare_changes_title')}</h5>
+        <span className="badge badge-soft rounded-pill text-bg-secondary">{changes.length}</span>
     </summary>
-    <div className="sm-changes-body">
+    <div className="card-body d-grid gap-3">
         {AREAS.map(({area, title, icon}) => {
             const items = ofArea(changes, area);
             if (items.length === 0) {
                 return null;
             }
-            return <section key={area} className="sm-changes-area">
-                <h6 className="sm-changes-area-title"><Icon name={icon} gap />{text(title)}</h6>
-                <ul className="sm-changes-list">
-                    {items.map((change) => <li key={change.kind + change.name} className={`sm-change-chip tone-${KINDS[change.kind].tone}`}>
-                        <Icon name={KIND_SIGN[change.kind]} className="sm-change-sign" />
+            return <section key={area}>
+                <h6 className="small text-muted text-uppercase fw-semibold"><Icon name={icon} gap />{text(title)}</h6>
+                <ul className="list-unstyled d-flex flex-wrap gap-2 mb-0">
+                    {items.map((change) => <li key={change.kind + change.name} className={`badge badge-soft rounded-pill text-bg-${KINDS[change.kind].tone} fw-normal d-inline-flex align-items-center gap-1`}>
+                        <Icon name={KIND_SIGN[change.kind]} />
                         <span className="visually-hidden">{text('change_' + change.kind)}: </span>
-                        <span className="sm-change-name">{label(text, change)}</span>
-                        {change.kind === 'changed' && <span className="sm-change-values">
-                            <span className="sm-change-from">{named(text, area, change.name, change.from)}</span>
+                        <span className="fw-semibold">{label(text, change)}</span>
+                        {change.kind === 'changed' && <span className="d-inline-flex align-items-center gap-1">
+                            <span className="text-decoration-line-through">{named(text, area, change.name, change.from)}</span>
                             <Icon name="arrow-right" />
-                            <span className="sm-change-to">{named(text, area, change.name, change.to)}</span>
+                            <span>{named(text, area, change.name, change.to)}</span>
                         </span>}
                     </li>)}
                 </ul>

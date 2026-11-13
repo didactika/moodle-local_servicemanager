@@ -2,11 +2,9 @@
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * The dashboard: the schemas of the site, found by typing, filtered by status and acted on one by one or together.
- *
- * It gets every schema at once and filters them in the page, so searching never waits for the server and never reloads.
- *
- * Mounted by core/react_autoinit from the data-react-component that the page writes.
+ * The dashboard, drawn with the Didactika design system as the lists of Delegate account: the head of the page with its actions,
+ * the summary of the schemas and of the web services, and the list of the schemas with its search, its filters (status and date),
+ * its pager and the floating bar of what is chosen. Everything is filtered and paged here, without asking the server again.
  *
  * @module     local_servicemanager/Dashboard
  * @copyright  2026 Didactika.org
@@ -14,30 +12,48 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {useMemo, useState} from 'react';
-import HealthSummary from './components/dashboard/HealthSummary';
 import SchemaTable from './components/dashboard/SchemaTable';
-import SelectionBar from './components/dashboard/SelectionBar';
-import Toolbar from './components/dashboard/Toolbar';
-import WsPill from './components/dashboard/WsPill';
-import ConfirmModal from './components/common/ConfirmModal';
-import EmptyState from './components/common/EmptyState';
+import Summary, {HEALTH} from './components/dashboard/Summary';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import Icon from './components/common/Icon';
-import PageHeader from './components/common/PageHeader';
-import Pager from './components/common/Pager';
-import ActionMenu from './components/common/ActionMenu';
-import IconButton from './components/common/IconButton';
+import {Dialog, Empty, FloatBar, Icon, Pager, SearchBox, TableBox} from './ds/ui';
+import {DateMenu, FilterGroup, StatusMenu} from './ds/Filters';
 import {createText} from './engine/text';
 import {postForm} from './engine/post';
 import {useBulkSelection} from './hooks/useBulkSelection';
+import {useDropdown} from './hooks/useDropdown';
 import {useListState} from './hooks/useListState';
 import {countBy, matches, paginate, type ListState} from './lib/listing';
-import type {DashboardProps, SchemaRow} from './types';
+import type {DashboardProps, SchemaRow, Text} from './types';
 
 type BulkAction = 'enable' | 'disable' | 'export' | 'delete';
 
 /** What a row gives the filters to look at. */
 const findable = (row: SchemaRow) => ({texts: [row.name, row.schemaId, row.version], status: row.status, at: row.modifiedAt});
+
+/**
+ * The menu of the documentation: the reference of the format, the user manual and the documentation of Moodle.
+ *
+ * @param props The addresses and the texts.
+ * @returns The menu.
+ */
+const DocsMenu = ({urls, text}: {urls: DashboardProps['urls']; text: Text}) => {
+    const menu = useDropdown();
+    return <div className="dropdown" ref={menu.ref}>
+        <button type="button" className="btn btn-outline-secondary dropdown-toggle" aria-haspopup="true" aria-expanded={menu.open}
+            onClick={menu.toggle}>
+            <Icon name="docs" text={text} /> {text('docs_menu')}
+        </button>
+        <ul className={`dropdown-menu dropdown-menu-end${menu.open ? ' show' : ''}`}>
+            <li><a className="dropdown-item" href={urls.documentation}>{text('docs_schema_reference')}</a></li>
+            <li><a className="dropdown-item" href={urls.manual} target="_blank" rel="noreferrer">
+                {text('docs_plugin_manual')} <Icon name="i/externallink" text={text} />
+            </a></li>
+            <li><a className="dropdown-item" href={urls.moodleDocs} target="_blank" rel="noreferrer">
+                {text('docs_moodle')} <Icon name="i/externallink" text={text} />
+            </a></li>
+        </ul>
+    </div>;
+};
 
 const Dashboard = (props: DashboardProps) => {
     const {canManage, urls, wsStatus, schemas, perPageOptions} = props;
@@ -45,121 +61,115 @@ const Dashboard = (props: DashboardProps) => {
     const list = useListState(perPageOptions[0], perPageOptions);
     const [deleting, setDeleting] = useState(false);
 
-    // The counts of the status choice are those of the search and the dates, so each button says what it would leave.
+    // The statuses count the rows of the search and the dates, so each one says what it would leave.
     const withoutStatus = useMemo(() => {
         const state: ListState = {...list.state, status: ''};
         return schemas.filter((row) => matches(findable(row), state));
     }, [schemas, list.state.query, list.state.from, list.state.to]);
     const counts = useMemo(() => countBy(withoutStatus), [withoutStatus]);
+    const chosen = list.state.status ? list.state.status.split(',') : [];
     const found = useMemo(
-        () => (list.state.status ? withoutStatus.filter((row) => row.status === list.state.status) : withoutStatus),
+        () => (list.state.status ? withoutStatus.filter((row) => list.state.status.split(',').includes(row.status)) : withoutStatus),
         [withoutStatus, list.state.status]
     );
+    const allCounts = useMemo(() => countBy(schemas), [schemas]);
     const page = paginate(found, list.state.page, list.state.perpage);
     const selection = useBulkSelection(page.rows, schemas);
-    const asking = list.state.query !== '' || list.state.status !== '' || list.extras > 0;
+    const narrowed = list.state.query !== '' || chosen.length > 0 || list.extras > 0;
+    const applied = (chosen.length > 0 ? 1 : 0) + (list.state.from || list.state.to ? 1 : 0);
 
     const send = (action: BulkAction, ids: number[]) => postForm(urls.bulkAction, {sesskey: props.sesskey, action, ids});
     const act = (action: BulkAction) => (action === 'delete' ? setDeleting(true) : send(action, [...selection.chosen]));
 
     return <ErrorBoundary strings={props.strings}>
-        <div className="servicemanager-dashboard">
-            <PageHeader
-                title={text('dashboard')}
-                actions={<WsPill status={wsStatus} canManage={canManage} text={text} />}
-            />
-
-            {schemas.length === 0
-                ? <EmptyState
-                    icon="plug"
-                    title={text('empty_title')}
-                    text={text('no_schemas')}
-                    actions={<>
-                        {canManage && <a href={urls.create} className="btn btn-primary"><Icon name="plus" gap />{text('new_schema')}</a>}
-                        {canManage && <a href={urls.import} className="btn btn-outline-primary"><Icon name="file-import" gap />{text('import_schemas')}</a>}
-                        <a href={urls.documentation} className="btn btn-outline-secondary"><Icon name="book" gap />{text('view_documentation')}</a>
-                    </>}
-                />
-                : <>
-                    <HealthSummary counts={counts} status={list.state.status} onStatus={(status) => list.set({status})} text={text} />
-                    <Toolbar
-                        list={list}
-                        text={text}
-                        actions={<>
-                        <div className="sm-group d-none d-sm-flex" role="group" aria-label={text('core_actions')}>
-                            {canManage && <IconButton large solid tone="primary" icon="plus" label={text('new_schema')} href={urls.create} />}
-                            {canManage && <IconButton large tone="success" icon="file-import" label={text('import_schemas')} href={urls.import} />}
-                            <IconButton large tone="info" icon="file-zipper" label={text('export_all')} href={urls.exportAll} />
-                            <ActionMenu
-                                size="md"
-                                caret
-                                icon="book"
-                                label={text('docs_menu')}
-                                actions={[
-                                    {label: text('docs_schema_reference'), icon: 'file-lines', href: urls.documentation},
-                                    {label: text('docs_plugin_manual'), icon: 'book-open', href: urls.manual},
-                                    {label: text('docs_moodle'), icon: 'life-ring', href: urls.moodleDocs},
-                                ]}
-                            />
-                        </div>
-                        {/* On a phone the actions are one menu; it comes after the buttons, which are the ones a wide screen shows. */}
-                        <div className="d-sm-none">
-                            <ActionMenu size="md" label={text('core_actions')} actions={[
-                                ...(canManage ? [
-                                    {label: text('new_schema'), icon: 'plus', href: urls.create},
-                                    {label: text('import_schemas'), icon: 'file-import', href: urls.import},
-                                ] : []),
-                                {label: text('export_all'), icon: 'file-zipper', href: urls.exportAll},
-                                {label: text('docs_schema_reference'), icon: 'file-lines', href: urls.documentation},
-                                {label: text('docs_plugin_manual'), icon: 'book-open', href: urls.manual},
-                                {label: text('docs_moodle'), icon: 'life-ring', href: urls.moodleDocs},
-                            ]} />
-                        </div>
-                        </>}
-                    />
-
-                    <div className="card sm-list">
-                    {page.rows.length > 0
-                        ? <SchemaTable
-                            rows={page.rows}
-                            canManage={canManage}
-                            selection={selection}
-                            onToggle={(row) => send(row.enabled ? 'disable' : 'enable', [row.id])}
-                            text={text}
-                        />
-                        : <div className="table-responsive" data-region="tablewrap"><EmptyState
-                            bare
-                            icon="filter-circle-xmark"
-                            title={text('empty_filtered_title')}
-                            text={text('no_schemas_filtered')}
-                            actions={asking
-                                ? <button type="button" className="btn btn-secondary" onClick={list.reset}>
-                                    <Icon name="xmark" gap />{text('filter_clear')}
-                                </button>
-                                : undefined}
-                        /></div>}
-                    <Pager page={page.page} perpage={list.state.perpage} total={page.total} onChange={(changes) => list.set(changes)} text={text} />
+        <div className="lsm servicemanager-dashboard d-grid gap-3" style={selection.chosen.size ? {paddingBottom: '5.5rem'} : undefined}>
+            <header className="dd-page-header">
+                <div className="dd-page-header-row">
+                    <div className="dd-page-header-main">
+                        <span className="dd-tile dd-tile-lg"><Icon name="plug" text={text} /></span>
+                        <p className="dd-page-subtitle">{text('dashboard_subtitle')}</p>
                     </div>
-                    {props.truncated && <p className="text-body-secondary small text-center">{text('list_truncated', schemas.length)}</p>}
-                </>}
+                    <div className="dd-page-actions">
+                        <DocsMenu urls={urls} text={text} />
+                        <a className="btn btn-outline-secondary" href={urls.exportAll}>
+                            <Icon name="t/download" text={text} /> {text('export_all')}
+                        </a>
+                        {canManage && <a className="btn btn-outline-secondary" href={urls.import}>
+                            <Icon name="i/import" text={text} /> {text('import_schemas')}
+                        </a>}
+                        {canManage && <a className="btn btn-primary" href={urls.create}>
+                            <Icon name="t/add" text={text} /> {text('new_schema')}
+                        </a>}
+                    </div>
+                </div>
+            </header>
 
-            {canManage && selection.chosen.size > 0 && <SelectionBar
-                count={selection.chosen.size}
-                actions={selection.actions}
-                onAction={act}
-                onClear={selection.clear}
-                text={text}
-            />}
+            <Summary counts={allCounts} ws={wsStatus} sesskey={props.sesskey} text={text} />
 
-            <ConfirmModal
-                open={deleting}
-                title={text('bulk_delete')}
-                message={text('bulk_delete_confirm')}
-                confirmLabel={text('bulk_delete')}
-                cancelLabel={text('core_cancel')}
-                onCancel={() => setDeleting(false)}
-                onConfirm={() => send('delete', [...selection.chosen])}
-            />
+            <div className="card">
+                <div className="table-toolbar" data-region="filters">
+                    <div className="table-toolbar-start">
+                        <SearchBox value={list.state.query} onChange={(query) => list.set({query})} label={text('filter_name')} text={text} />
+                        <FilterGroup count={applied} text={text}>
+                            <StatusMenu
+                                label={text('filter_status')}
+                                statuses={HEALTH.map((part) => ({key: part.key, label: text(`status_${part.key}`), count: counts[part.key] ?? 0}))}
+                                chosen={chosen}
+                                text={text}
+                                onChange={(statuses) => list.set({status: statuses.join(',')})}
+                            />
+                            <DateMenu
+                                label={text('schema_modified')}
+                                from={list.state.from}
+                                to={list.state.to}
+                                text={text}
+                                onChange={(from, to) => list.set({from, to})}
+                            />
+                        </FilterGroup>
+                    </div>
+                    <div className="table-toolbar-end">
+                        <button type="button" className="btn btn-link btn-icon" disabled={!narrowed} title={text('filters_reset')}
+                            aria-label={text('filters_reset')} onClick={list.reset}>
+                            <Icon name="i/reload" text={text} />
+                        </button>
+                    </div>
+                </div>
+                <TableBox busy={false} empty={page.total === 0 && <Empty
+                    icon={narrowed ? 'a/search' : 'plug'}
+                    message={text(narrowed ? 'no_schemas_filtered' : 'no_schemas')}
+                    action={narrowed ? text('filters_reset') : undefined}
+                    onAction={narrowed ? list.reset : undefined}
+                    text={text}
+                />}>
+                    <SchemaTable rows={page.rows} canManage={canManage} selection={selection}
+                        onToggle={(row) => send(row.enabled ? 'disable' : 'enable', [row.id])} text={text} />
+                </TableBox>
+                <Pager page={page.page} perpage={list.state.perpage} total={page.total} text={text}
+                    onChange={(changes) => list.set({...changes, page: changes.page ?? 0})} />
+            </div>
+            {props.truncated && <p className="text-muted small text-center">{text('list_truncated', schemas.length)}</p>}
+
+            {canManage && <FloatBar count={selection.chosen.size} label={text('core_actions')} onClear={selection.clear} text={text}>
+                {selection.actions.enable && <button type="button" className="btn btn-secondary btn-tonal btn-sm" onClick={() => act('enable')}>
+                    <Icon name="t/show" text={text} /> {text('bulk_enable')}
+                </button>}
+                {selection.actions.disable && <button type="button" className="btn btn-secondary btn-tonal btn-sm" onClick={() => act('disable')}>
+                    <Icon name="t/hide" text={text} /> {text('bulk_disable')}
+                </button>}
+                <button type="button" className="btn btn-secondary btn-tonal btn-sm" onClick={() => act('export')}>
+                    <Icon name="t/download" text={text} /> {text('bulk_export')}
+                </button>
+                <button type="button" className="btn btn-danger btn-tonal btn-sm" onClick={() => act('delete')}>
+                    <Icon name="t/delete" text={text} /> {text('bulk_delete')}
+                </button>
+            </FloatBar>}
+
+            {deleting && <Dialog title={text('bulk_delete')} onClose={() => setDeleting(false)} text={text} footer={<>
+                <button type="button" className="btn btn-secondary" onClick={() => setDeleting(false)}>{text('core_cancel')}</button>
+                <button type="button" className="btn btn-danger" onClick={() => send('delete', [...selection.chosen])}>{text('bulk_delete')}</button>
+            </>}>
+                <p className="mb-0">{text('bulk_delete_confirm')}</p>
+            </Dialog>}
         </div>
     </ErrorBoundary>;
 };

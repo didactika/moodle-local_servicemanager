@@ -21,16 +21,16 @@ const ResourcesPanel = /* @__PURE__ */ __name(({ resources, text }) => {
     { label: text("external_service"), icon: "plug", resource: resources.service, detail: resources.service?.shortname }
   ];
   return /* @__PURE__ */ jsxDEV(Panel, { title: text("provisioned_resources"), icon: "server", flush: true, region: "resources", children: /* @__PURE__ */ jsxDEV("ul", { className: "list-group list-group-flush", children: entries.filter((entry) => entry.resource).map((entry) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item d-flex align-items-center", children: [
-    /* @__PURE__ */ jsxDEV("span", { className: "sm-resource-icon text-body-secondary", children: /* @__PURE__ */ jsxDEV(Icon, { name: entry.icon }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("span", { className: "dd-tile me-3", children: /* @__PURE__ */ jsxDEV(Icon, { name: entry.icon }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
       lineNumber: 38,
-      columnNumber: 72
+      columnNumber: 48
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
       lineNumber: 38,
       columnNumber: 17
     }),
-    /* @__PURE__ */ jsxDEV("div", { className: "flex-grow-1 sm-resource-body", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "flex-grow-1", children: [
       /* @__PURE__ */ jsxDEV("div", { className: "text-body-secondary small text-uppercase", children: entry.label }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
         lineNumber: 40,
@@ -46,11 +46,11 @@ const ResourcesPanel = /* @__PURE__ */ __name(({ resources, text }) => {
       lineNumber: 39,
       columnNumber: 17
     }),
-    /* @__PURE__ */ jsxDEV("span", { className: "sm-id-chip compact", children: [
+    /* @__PURE__ */ jsxDEV("span", { className: "small text-muted", children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "fingerprint", gap: true }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
         lineNumber: 43,
-        columnNumber: 54
+        columnNumber: 52
       }),
       entry.detail
     ] }, void 0, true, {

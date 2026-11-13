@@ -17,11 +17,12 @@ const parseState = /* @__PURE__ */ __name((search, perpage, options) => {
   const params = new URLSearchParams(search);
   const asked = Number(params.get("perpage"));
   const page = Number(params.get("page"));
+  const [from, to] = [params.get("from") ?? "", params.get("to") ?? ""].sort((a, b) => a && b ? a.localeCompare(b) : 0);
   return {
     query: params.get("q") ?? "",
     status: params.get("status") ?? "",
-    from: params.get("from") ?? "",
-    to: params.get("to") ?? "",
+    from,
+    to,
     perpage: params.has("perpage") && options.includes(asked) ? asked : perpage,
     page: Number.isInteger(page) && page > 0 ? page : 0
   };
@@ -57,7 +58,7 @@ const dayTime = /* @__PURE__ */ __name((day, end) => {
   return Number.isNaN(start) ? null : start + (end ? 86399 : 0);
 }, "dayTime");
 const matches = /* @__PURE__ */ __name((row, state) => {
-  if (state.status && row.status !== state.status) {
+  if (state.status && !state.status.split(",").includes(row.status ?? "")) {
     return false;
   }
   const from = dayTime(state.from, false);

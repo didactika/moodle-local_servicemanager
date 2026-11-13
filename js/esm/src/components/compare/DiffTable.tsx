@@ -34,14 +34,27 @@ const CONTEXT = 2;
 
 const SIGNS = {same: ' ', removed: '-', added: '+', changed: '~'} as const;
 
-const LineNo = ({value}: {value: number | undefined}) => <td className="sm-line-no" aria-hidden="true">{value ?? ''}</td>;
+const LineNo = ({value}: {value: number | undefined}) => <td className="text-muted text-end small user-select-none" aria-hidden="true">{value ?? ''}</td>;
 
 /** The rows of the side by side view: the line of each version on its own side. */
+/** The colour of a line by what happened to it, from the rows of the tables of Bootstrap. */
+const TONES: Record<string, string> = {added: 'table-success', removed: 'table-danger', changed: 'table-warning', empty: 'table-light'};
+
+/**
+ * A cell of text of the comparison: the line as it is written, with its indentation, in the colour of what happened to it.
+ *
+ * @param props What happened to the line and its text.
+ * @returns The cell.
+ */
+const Line = ({kind, value}: {kind: string; value?: string}) => <td className={TONES[kind] ?? ''}>
+    <pre className="mb-0 small">{value ?? ''}</pre>
+</td>;
+
 const splitRow = (row: DiffRow, index: number) => <tr key={index} id={`diff-row-${index}`}>
     <LineNo value={row.left?.no} />
-    <td className={`sm-diff sm-diff-${row.kind === 'added' ? 'empty' : row.kind}`}>{row.left?.text ?? ''}</td>
+    <Line kind={row.kind === 'added' ? 'empty' : row.kind} value={row.left?.text} />
     <LineNo value={row.right?.no} />
-    <td className={`sm-diff sm-diff-${row.kind === 'removed' ? 'empty' : row.kind}`}>{row.right?.text ?? ''}</td>
+    <Line kind={row.kind === 'removed' ? 'empty' : row.kind} value={row.right?.text} />
 </tr>;
 
 /** The rows of the unified view: a line that changed is the old line and then the new one. */
@@ -50,20 +63,20 @@ const unifiedRows = (row: DiffRow, index: number) => {
     if (row.kind === 'same') {
         rows.push(<tr key={index} id={`diff-row-${index}`}>
             <LineNo value={row.left?.no} /><LineNo value={row.right?.no} />
-            <td className="sm-sign">{SIGNS.same}</td><td className="sm-diff sm-diff-same">{row.left?.text}</td>
+            <td className="text-muted font-monospace">{SIGNS.same}</td><Line kind="same" value={row.left?.text} />
         </tr>);
         return rows;
     }
     if (row.left) {
         rows.push(<tr key={`${index}-l`} id={`diff-row-${index}`}>
             <LineNo value={row.left.no} /><LineNo value={undefined} />
-            <td className="sm-sign">{SIGNS.removed}</td><td className="sm-diff sm-diff-removed">{row.left.text}</td>
+            <td className="text-muted font-monospace">{SIGNS.removed}</td><Line kind="removed" value={row.left.text} />
         </tr>);
     }
     if (row.right) {
         rows.push(<tr key={`${index}-r`} id={row.left ? undefined : `diff-row-${index}`}>
             <LineNo value={undefined} /><LineNo value={row.right.no} />
-            <td className="sm-sign">{SIGNS.added}</td><td className="sm-diff sm-diff-added">{row.right.text}</td>
+            <td className="text-muted font-monospace">{SIGNS.added}</td><Line kind="added" value={row.right.text} />
         </tr>);
     }
     return rows;
@@ -73,9 +86,9 @@ const DiffTable = ({first, second, rows, view, onlyChanges, expanded, onExpand, 
     const parts = onlyChanges ? segments(rows, CONTEXT, expanded) : [{type: 'rows' as const, rows: rows.map((row, index) => ({row, index}))}];
     const columns = 4;
 
-    return <div className="card sm-diff-card">
+    return <div className="card">
         <div className="table-responsive">
-            <table className={`table table-sm mb-0 comparison-table sm-diff-${view}`}>
+            <table className="table table-sm mb-0 comparison-table" data-view={view}>
                 <thead>
                     {view === 'split'
                         ? <tr>
@@ -91,7 +104,7 @@ const DiffTable = ({first, second, rows, view, onlyChanges, expanded, onExpand, 
                 <tbody>
                     {parts.map((part) => {
                         if (part.type === 'folded') {
-                            return <tr key={`fold-${part.from}`} className="sm-folded">
+                            return <tr key={`fold-${part.from}`} className="table-light">
                                 <td colSpan={columns}>
                                     <button type="button" className="btn btn-sm btn-link" onClick={() => onExpand(part.from)}>
                                         <Icon name="ellipsis" gap />{text('compare_unchanged_lines', part.count)}

@@ -45,21 +45,21 @@ Feature: Schema dashboard
     And I should not see "CRM sync"
 
   @javascript
-  Scenario: The status is chosen in the summary, and a status nobody has cannot be chosen
+  Scenario: The status is chosen in its menu, which says how many schemas each status has
     Given I have uploaded a schema with id "test.service"
     And I reload the page
-    Then the "Critical" "button" should be disabled
-    When I click on "Healthy" "button"
+    When I click on "Status" "button"
+    Then I should see "Critical" in the "[data-menu='status']" "css_element"
+    When I click on "Healthy" "text" in the "[data-menu='status']" "css_element"
     Then I should see "Test Service" in the "test.service" "table_row"
-    And I click on "Healthy" "button"
-    And I should see "Test Service"
+    And I should see "Healthy" in the "[data-menu='status'] > button" "css_element"
 
   @javascript
   Scenario: Choose a schema and the actions on it appear
     Given I have uploaded a schema with id "test.service"
     And I reload the page
     When I click on "Select all" "checkbox"
-    Then I should see "1 Selected" in the "[data-region='bulk-actions']" "css_element"
+    Then I should see "1 selected" in the "[data-region='bulk-actions']" "css_element"
     And I should see "Export" in the "[data-region='bulk-actions']" "css_element"
 
   @javascript
@@ -87,9 +87,16 @@ Feature: Schema dashboard
     Then a schema with id "test.service" should exist
 
   @javascript
-  Scenario: When the web services are off the dashboard says where to turn them on
+  Scenario: The web services and their protocols are turned on and off from the dashboard
     Given I have uploaded a schema with id "test.service"
     And I reload the page
     Then I should see "Enable web services" in the "[data-region='ws-status']" "css_element"
-    When I click on "Enable web services" "link" in the "[data-region='ws-status']" "css_element"
-    Then "#admin-enablewebservices" "css_element" should exist
+    When I click on "Enable web services" "button" in the "[data-region='ws-status']" "css_element"
+    Then I should see "The web services of the site are on."
+    When I click on "REST" "checkbox"
+    Then I should see "The protocol REST is on."
+    And I should see "Web services: Operational" in the "[data-region='ws-status']" "css_element"
+    When I click on "Turn off web services" "button" in the "[data-region='ws-status']" "css_element"
+    And I click on "Turn off web services" "button" in the ".modal.show" "css_element"
+    Then I should see "The web services of the site are off."
+    And I should see "Enable web services" in the "[data-region='ws-status']" "css_element"

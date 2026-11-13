@@ -19,8 +19,8 @@ interface SearchBoxProps {
     id?: string;
 }
 
-const SearchBox = ({value, onChange, placeholder, clearLabel, id = 'sm-search'}: SearchBoxProps) => <div className="input-group sm-search">
-    <span className="input-group-text"><Icon name="magnifying-glass" /></span>
+const SearchBox = ({value, onChange, placeholder, clearLabel, id = 'lsm-search'}: SearchBoxProps) => <div className="dd-searchbox" role="search">
+    <Icon name="magnifying-glass" />
     <input
         type="search"
         id={id}
@@ -29,6 +29,7 @@ const SearchBox = ({value, onChange, placeholder, clearLabel, id = 'sm-search'}:
         className="form-control"
         placeholder={placeholder}
         aria-label={placeholder}
+        title={clearLabel}
         autoComplete="off"
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={(event) => {
@@ -37,9 +38,6 @@ const SearchBox = ({value, onChange, placeholder, clearLabel, id = 'sm-search'}:
             }
         }}
     />
-    {value !== '' && <button type="button" className="btn btn-outline-secondary" onClick={() => onChange('')} title={clearLabel}>
-        <Icon name="xmark" /><span className="visually-hidden">{clearLabel}</span>
-    </button>}
 </div>;
 
 export default SearchBox;
