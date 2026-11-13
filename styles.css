@@ -1537,6 +1537,73 @@
     }
 }
 
+@media (max-width: 767.98px) {
+
+    .servicemanager-dashboard,
+    .servicemanager-history-page,
+    .servicemanager-health-page,
+    .servicemanager-detail {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .servicemanager-dashboard .table-responsive .table th,
+    .servicemanager-dashboard .table-responsive .table td,
+    .servicemanager-history-page .table-responsive .table th,
+    .servicemanager-history-page .table-responsive .table td,
+    .servicemanager-health-page .table-responsive .table th,
+    .servicemanager-health-page .table-responsive .table td,
+    .servicemanager-detail .table-responsive .table th,
+    .servicemanager-detail .table-responsive .table td {
+        white-space: nowrap;
+    }
+
+    .servicemanager-dashboard .table-responsive .table th:first-child,
+    .servicemanager-dashboard .table-responsive .table td:first-child,
+    .servicemanager-history-page .table-responsive .table th:first-child,
+    .servicemanager-history-page .table-responsive .table td:first-child,
+    .servicemanager-health-page .table-responsive .table th:first-child,
+    .servicemanager-health-page .table-responsive .table td:first-child,
+    .servicemanager-detail .table-responsive .table th:first-child,
+    .servicemanager-detail .table-responsive .table td:first-child {
+        position: sticky;
+        inset-inline-start: 0;
+        z-index: 1;
+        background-color: var(--sm-body-bg);
+        box-shadow: inset -1px 0 0 var(--dd-hairline, rgba(0, 0, 0, 0.08));
+    }
+
+    .servicemanager-dashboard .table-responsive .table thead th:first-child,
+    .servicemanager-history-page .table-responsive .table thead th:first-child,
+    .servicemanager-health-page .table-responsive .table thead th:first-child,
+    .servicemanager-detail .table-responsive .table thead th:first-child {
+        z-index: 2;
+    }
+
+    .servicemanager-dashboard .nav-tabs,
+    .servicemanager-dashboard .dd-chips,
+    .servicemanager-history-page .nav-tabs,
+    .servicemanager-history-page .dd-chips,
+    .servicemanager-health-page .nav-tabs,
+    .servicemanager-health-page .dd-chips,
+    .servicemanager-detail .nav-tabs,
+    .servicemanager-detail .dd-chips {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .servicemanager-dashboard .nav-tabs .nav-link,
+    .servicemanager-dashboard .dd-chip,
+    .servicemanager-history-page .nav-tabs .nav-link,
+    .servicemanager-history-page .dd-chip,
+    .servicemanager-health-page .nav-tabs .nav-link,
+    .servicemanager-health-page .dd-chip,
+    .servicemanager-detail .nav-tabs .nav-link,
+    .servicemanager-detail .dd-chip {
+        flex: none;
+        white-space: nowrap;
+    }
+}
+
 @media (max-width: 768px) {
 
     .servicemanager-dashboard .btn-group-sm .btn {
