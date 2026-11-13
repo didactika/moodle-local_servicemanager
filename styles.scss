@@ -1,13 +1,21 @@
-// The component styles of the plugin. Edit the partials in scss/ and rebuild styles.css with tools/build-styles.mjs.
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// Nested component sources; styles.css is generated from them for the browsers Moodle supports.
+// Every colour comes from the variables of Bootstrap, which follow the colour mode of the page, so the pages are the same in
+// the light and the dark mode and no rule here repeats a colour.
+// @copyright 2026 Didactika.org
+// @author Hector Arrechea <hectorlazaroarrechea@gmail.com>
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+// The pieces of the Didactika design system (https://moodle-design.didactika.org/), as Delegate account and the Autograder report
+// draw them, under the class lsm of the screens. The dialogs open at the end of the page, outside the screen, so they are reached
+// by the class Moodle gives the pages of the plugin.
+$lsm-modal: '.path-local-servicemanager .modal';
 
 @import 'scss/tokens';
-@import 'scss/common';
-@import 'scss/dashboard';
-@import 'scss/detail';
-@import 'scss/history';
-@import 'scss/compare';
-@import 'scss/documentation';
-@import 'scss/import';
-@import 'scss/health';
-@import 'scss/legacy';
-@import 'scss/icons';
+@import 'scss/chrome';
+@import 'scss/feedback';
+@import 'scss/lists';
+@import 'scss/content';
+@import 'scss/bootstrap4';

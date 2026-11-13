@@ -57,7 +57,7 @@ export const init = (root) => {
     root.addEventListener('click', (event) => {
         const button = event.target.closest(TOGGLE);
         if (!button) {
-            if (!event.target.closest('.sm-filter-menu')) {
+            if (!event.target.closest('[data-menu]')) {
                 closeAll(root);
             }
             return;

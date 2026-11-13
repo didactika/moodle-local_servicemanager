@@ -1,35 +1,95 @@
-// The colours and measures that the styles of the plugin use. Releases that have Bootstrap 5.3 give them as custom properties of the
-// theme, which also follow the colour mode of the page; the rest of the supported releases do not, so each one has the colour that
-// Boost has for it. A theme that changes the colours of Bootstrap changes the plugin too, wherever the variable exists.
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
 
-.servicemanager-dashboard,
-.servicemanager-detail,
-.servicemanager-history-page,
-.servicemanager-compare-page,
-.servicemanager-documentation,
-.servicemanager-import-page,
-.servicemanager-import-result,
-.servicemanager-health-page,
-.sm-modal {
-    --sm-body-bg: var(--bs-body-bg, #fff);
-    --sm-body-color: var(--bs-body-color, #1d2125);
-    --sm-tertiary-bg: var(--bs-tertiary-bg, #f8f9fa);
-    --sm-secondary-color: var(--bs-secondary-color, #6a737b);
-    --sm-border-color: var(--bs-border-color, #dee2e6);
-    --sm-primary: var(--bs-primary, #0f6cbf);
-    --sm-primary-bg-subtle: var(--bs-primary-bg-subtle, #cfe2f3);
-    --sm-success: var(--bs-success, #357a32);
-    --sm-success-text-emphasis: var(--bs-success-text-emphasis, #1c3d1a);
-    --sm-warning: var(--bs-warning, #f0ad4e);
-    --sm-warning-text-emphasis: var(--bs-warning-text-emphasis, #664d03);
-    --sm-danger: var(--bs-danger, #ca3120);
-    --sm-danger-text-emphasis: var(--bs-danger-text-emphasis, #58151c);
-    --sm-info-text-emphasis: var(--bs-info-text-emphasis, #055160);
-    --sm-white: var(--bs-white, #fff);
-    --sm-font-monospace: var(--bs-font-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
-    --sm-border-radius-sm: var(--bs-border-radius-sm, 0.2rem);
-    --sm-border-radius-lg: var(--bs-border-radius-lg, 0.5rem);
-    --sm-btn-border-radius: var(--bs-btn-border-radius, 0.25rem);
-    --sm-box-shadow-sm: var(--bs-box-shadow-sm, 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075));
-    --sm-box-shadow-lg: var(--bs-box-shadow-lg, 0 1rem 3rem rgba(0, 0, 0, 0.175));
+// The tokens of the Didactika design system, scoped to the screens of the plugin. Every colour comes from the theme: the
+// variables of Bootstrap 5 on Moodle 5, the ones of Bootstrap 4 on Moodle 4.5, and the colour of Boost when neither exists,
+// so a theme restyles the plugin by changing its own colours, and the colour mode of Moodle 5 changes them too.
+// @copyright 2026 Didactika.org
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm,
+#{$lsm-modal} {
+    --dd-primary: var(--bs-primary, var(--primary, #0f6cbf));
+    --dd-secondary: var(--bs-secondary, var(--secondary, #6a737b));
+    --dd-success: var(--bs-success, var(--success, #357a32));
+    --dd-info: var(--bs-info, var(--info, #008196));
+    --dd-warning: var(--bs-warning, var(--warning, #f0ad4e));
+    --dd-danger: var(--bs-danger, var(--danger, #ca3120));
+    --dd-ink: var(--bs-body-color, #1d2125);
+    --dd-surface: var(--bs-body-bg, #fff);
+    --dd-muted: var(--bs-secondary-color, #6a737b);
+    --dd-hairline: var(--bs-border-color, #dee2e6);
+    --dd-line: color-mix(in srgb, var(--dd-ink) 42%, var(--dd-surface));
+    --dd-line-hover: color-mix(in srgb, var(--dd-ink) 62%, var(--dd-surface));
+    --dd-surface-2: color-mix(in srgb, var(--dd-ink) 4%, var(--dd-surface));
+    --dd-surface-3: color-mix(in srgb, var(--dd-ink) 9%, var(--dd-surface));
+    --dd-ring: color-mix(in srgb, var(--dd-primary) 30%, transparent);
+    --dd-radius: 0.625rem;
+    --dd-radius-sm: 0.5rem;
+    --dd-radius-lg: 0.75rem;
+    --dd-table-h: 34rem;
+    --dd-h: 2.25rem;
+    --dd-h-sm: 1.75rem;
+    --dd-ease: 140ms cubic-bezier(0.2, 0, 0, 1);
+    --dd-shadow-sm: 0 1px 2px rgb(15 23 42 / 6%), 0 1px 3px rgb(15 23 42 / 8%);
+    --dd-shadow-md: 0 14px 34px -12px rgb(15 23 42 / 30%), 0 2px 6px rgb(15 23 42 / 8%);
+    --dd-shadow-lg: 0 28px 64px -18px rgb(15 23 42 / 40%), 0 4px 12px rgb(15 23 42 / 10%);
+    --dd-primary-soft: color-mix(in srgb, var(--dd-primary) 10%, var(--dd-surface));
+    --dd-primary-soft-2: color-mix(in srgb, var(--dd-primary) 18%, var(--dd-surface));
+    --dd-primary-ink: color-mix(in srgb, var(--dd-primary) 78%, var(--dd-ink));
+
+    color: var(--dd-ink);
+
+    // The role of a component: a class that names a role sets --dd-c, and the tones each component reads come from it.
+    & .btn,
+    & .badge,
+    & .dd-tile {
+        --dd-c: var(--dd-primary);
+    }
+
+    & [class*="-primary"] {
+        --dd-c: var(--dd-primary);
+    }
+
+    & [class*="-secondary"] {
+        --dd-c: var(--dd-secondary);
+    }
+
+    & [class*="-success"] {
+        --dd-c: var(--dd-success);
+    }
+
+    & [class*="-info"] {
+        --dd-c: var(--dd-info);
+    }
+
+    & [class*="-warning"] {
+        --dd-c: var(--dd-warning);
+    }
+
+    & [class*="-danger"] {
+        --dd-c: var(--dd-danger);
+    }
+
+    & .btn,
+    & .badge,
+    & .dd-tile,
+    & [class*="-primary"],
+    & [class*="-secondary"],
+    & [class*="-success"],
+    & [class*="-info"],
+    & [class*="-warning"],
+    & [class*="-danger"] {
+        --dd-c-soft: color-mix(in srgb, var(--dd-c) 10%, var(--dd-surface));
+        --dd-c-soft-2: color-mix(in srgb, var(--dd-c) 18%, var(--dd-surface));
+        --dd-c-ink: color-mix(in srgb, var(--dd-c) 55%, var(--dd-ink));
+    }
+
+    // Grey mixed down to a tenth is almost white, so its tints are stronger and its text darker.
+    & [class*="-secondary"] {
+        --dd-c-soft: color-mix(in srgb, var(--dd-c) 24%, var(--dd-surface));
+        --dd-c-soft-2: color-mix(in srgb, var(--dd-c) 36%, var(--dd-surface));
+        --dd-c-ink: color-mix(in srgb, var(--dd-c) 18%, var(--dd-ink));
+    }
 }
+

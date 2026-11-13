@@ -42,11 +42,13 @@ name, the schema ID and the version, and all of them must be there; **Esc** clea
 
 ## 4. Filters
 
-**Filters**, next to the search, opens a panel with the dates (from and to) and the number of schemas per page. What you
+**Filters**, next to the search, opens a panel with the dates (from and to). What you
 choose applies at once, so there is nothing to confirm. A round badge on the corner of the button counts the filters that are on, and the button takes the colour of the
 search box while they are. The reload icon at the top right of the panel puts every filter back. The funnel and the reload icon are icons of Moodle, so a site can restyle them with Icon Restyle.
 
 ![The filters panel](asset:dashboard-filters.webp)
+
+The list keeps the same height whatever it holds and scrolls inside its box, with the headings in view. Under it, **Rows per page** offers the sizes smaller than the list, and **All**: a list of up to 12 schemas shows all of them; one of 13 to 24 offers 12 or all; and so on up to 12, 24, 48 and 96. The arrows move to the previous and the next page. The history of a schema and its health checks have the same pager.
 
 What you ask for is kept in the address, so a refresh, or a link that you share, shows the same list.
 
@@ -60,6 +62,8 @@ At the right of the search there are four buttons:
 | Green arrow | **Import Schemas**: [files and archives](page:guides/import-and-export). |
 | Blue file | **Export all**: every schema in one ZIP. |
 | Book with a small arrow | **Documentation**: a menu with the [YAML reference](page:reference/yaml), this manual and the documentation of Moodle. |
+
+On a narrow screen, such as a phone, the four buttons become one button with three dots. Its menu holds the same actions and the entries of the documentation menu, so the search, **Filters** and the actions stay on one row.
 
 ![The documentation menu](asset:dashboard-documentation-menu.webp)
 

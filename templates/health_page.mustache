@@ -26,7 +26,7 @@
     * filters - The statuses, each with its count, its address and whether it is the one shown
     * hasrows, rows - The checks of the page: when and how long ago, the status in words, colour and icon, and what each found
     * showing - Which checks of how many the page shows
-    * pagingbar, perpageselect - The paging bar and the choice of the size of page, as HTML
+    * pager - The foot of the list: the sizes of page that fit it, the range and the addresses of the previous and next pages
 
     Example context (json):
     {
@@ -45,65 +45,62 @@
             {"time": "14/10/26, 21:43", "ago": "1 day ago", "status": "warning", "statuslabel": "Warning", "tone": "warning", "icon": "triangle-exclamation", "findings": [{"label": "Service:", "text": "disabled"}, {"label": "Token:", "text": "expired"}]}
         ],
         "showing": "Showing 1 to 2 of 2",
-        "pagingbar": "",
-        "perpageselect": ""
+        "pager": {"formurl": "#", "id": 1, "status": "", "sizes": [{"value": 0, "label": "All", "selected": true}], "range": "1–2 of 2", "hasprev": false, "hasnext": false, "prevurl": "#", "nexturl": "#"}
     }
 }}
-<div class="servicemanager-health-page{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-health">
-    <div class="sm-block">
-        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
+<div class="lsm servicemanager-health-page" data-region="servicemanager-health">
+    <div class="mb-3">
+        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
     </div>
-    <header class="sm-page-header">
-        <div class="sm-page-title">
-            <h2 class="sm-flush">{{#str}}health_checks, local_servicemanager{{/str}}</h2>
-            <p class="sm-muted sm-flush">{{schemaname}}</p>
+    <header class="dd-page-header mb-3">
+        <div>
+            <h2 class="dd-page-title">{{#str}}health_checks, local_servicemanager{{/str}}</h2>
+            <p class="dd-page-subtitle">{{schemaname}}</p>
         </div>
     </header>
 
     {{^hasany}}
-        <div class="card sm-empty" data-region="empty-state">
-            <div class="card-body text-center py-5">
-                <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i></div>
-                <p class="sm-muted mx-auto sm-empty-text">{{#str}}health_none, local_servicemanager{{/str}}</p>
+        <div class="card" data-region="empty-state">
+        <div class="dd-empty">
+            <span class="dd-tile dd-tile-lg">{{#pix}}health, local_servicemanager{{/pix}}</span>
+                <p class="dd-empty-text">{{#str}}health_none, local_servicemanager{{/str}}</p>
             </div>
         </div>
     {{/hasany}}
 
     {{#hasany}}
-        <div class="sm-toolbar sm-spread">
-            <nav class="sm-group sm-health-filters" aria-label="{{#str}}status, moodle{{/str}}" data-region="health-filters">
-                {{#filters}}
-                    <a class="btn sm-pill compact tone-{{tone}}{{#active}} active{{/active}}" href="{{url}}"{{#active}} aria-current="true"{{/active}}>{{label}}<span class="sm-count-badge">{{count}}</span></a>
-                {{/filters}}
-            </nav>
-            <div class="sm-perpage">{{{perpageselect}}}</div>
-        </div>
-
-        <div class="card sm-panel sm-block">
+        <div class="card mb-3">
+            <div class="table-toolbar">
+                <nav class="dd-chips" aria-label="{{#str}}status, moodle{{/str}}" data-region="health-filters">
+                    {{#filters}}
+                        <a class="dd-chip" href="{{url}}" aria-pressed="{{#active}}true{{/active}}{{^active}}false{{/active}}"{{#active}} aria-current="true"{{/active}}>{{label}} <span class="dd-chip-count">{{count}}</span></a>
+                    {{/filters}}
+                </nav>
+            </div>
             {{#hasrows}}
-                <div class="table-responsive">
-                    <table class="table sm-flush-table sm-health-table" data-region="health-table">
+                <div class="table-responsive" data-region="tablewrap">
+                    <table class="table" data-region="health-table">
                         <thead>
                             <tr>
-                                <th class="sm-time-column">{{#str}}time, moodle{{/str}}</th>
-                                <th class="sm-status-column">{{#str}}status, moodle{{/str}}</th>
+                                <th>{{#str}}time, moodle{{/str}}</th>
+                                <th>{{#str}}status, moodle{{/str}}</th>
                                 <th>{{#str}}message, moodle{{/str}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#rows}}
-                                <tr class="sm-health-row tone-{{tone}}" data-status="{{status}}">
-                                    <td class="sm-time-column">
-                                        <span class="sm-health-time">{{time}}</span>
-                                        <span class="sm-health-ago">{{ago}}</span>
-                                    </td>
-                                    <td class="sm-status-column">
-                                        <span class="sm-badge tone-{{tone}}"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{statuslabel}}</span>
+                                <tr data-status="{{status}}">
+                                    <td>
+                                        <span class="d-block">{{time}}</span>
+                                        <small class="d-block text-muted">{{ago}}</span>
                                     </td>
                                     <td>
-                                        <ul class="sm-health-findings tone-{{tone}}">
+                                        <span class="badge badge-soft rounded-pill text-bg-{{tone}}">{{{iconhtml}}}{{statuslabel}}</span>
+                                    </td>
+                                    <td>
+                                        <ul class="list-unstyled d-grid gap-1 mb-0">
                                             {{#findings}}
-                                                <li><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i><span>{{#label}}<strong>{{label}}</strong> {{/label}}{{text}}</span></li>
+                                                <li>{{{iconhtml}}}<span>{{#label}}<strong>{{label}}</strong> {{/label}}{{text}}</span></li>
                                             {{/findings}}
                                         </ul>
                                     </td>
@@ -114,13 +111,45 @@
                 </div>
             {{/hasrows}}
             {{^hasrows}}
-                <div class="card-body sm-muted">{{#str}}health_none_with_status, local_servicemanager{{/str}}</div>
+                <div data-region="tablewrap">
+                    <div data-region="empty-state">
+            <div class="dd-empty">
+                <span class="dd-tile dd-tile-lg">{{#pix}}i/filter, core{{/pix}}</span>
+                            <p class="dd-empty-text">{{#str}}health_none_with_status, local_servicemanager{{/str}}</p>
+                        </div>
+                    </div>
+                </div>
             {{/hasrows}}
+            {{#pager}}
+            <div class="table-foot">
+                <nav class="dd-pager" aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}">
+                    <form method="get" action="{{formurl}}" class="dd-pager-size" data-region="health-perpage">
+                        <input type="hidden" name="id" value="{{id}}">
+                        {{#status}}<input type="hidden" name="status" value="{{status}}">{{/status}}
+                        <label for="lsm-health-perpage" class="mb-0">{{#str}}pagination_per_page, local_servicemanager{{/str}}</label>
+                        <select id="lsm-health-perpage" name="perpage" class="custom-select custom-select-sm form-select form-select-sm dd-select">
+                            {{#sizes}}<option value="{{value}}"{{#selected}} selected{{/selected}}>{{label}}</option>{{/sizes}}
+                        </select>
+                    </form>
+                    <div class="dd-pager-end">
+                        <span class="dd-pager-range" role="status" data-region="health-showing">{{range}}</span>
+                        <div class="dd-pager-arrows">
+                            {{#hasprev}}<a class="btn btn-outline-secondary btn-sm btn-icon" href="{{prevurl}}" title="{{#str}}pagination_previous, local_servicemanager{{/str}}" aria-label="{{#str}}pagination_previous, local_servicemanager{{/str}}">{{#pix}}i/previous, core{{/pix}}</a>{{/hasprev}}
+                            {{^hasprev}}<button type="button" class="btn btn-outline-secondary btn-sm btn-icon" disabled aria-label="{{#str}}pagination_previous, local_servicemanager{{/str}}">{{#pix}}i/previous, core{{/pix}}</button>{{/hasprev}}
+                            {{#hasnext}}<a class="btn btn-outline-secondary btn-sm btn-icon" href="{{nexturl}}" title="{{#str}}pagination_next, local_servicemanager{{/str}}" aria-label="{{#str}}pagination_next, local_servicemanager{{/str}}">{{#pix}}i/next, core{{/pix}}</a>{{/hasnext}}
+                            {{^hasnext}}<button type="button" class="btn btn-outline-secondary btn-sm btn-icon" disabled aria-label="{{#str}}pagination_next, local_servicemanager{{/str}}">{{#pix}}i/next, core{{/pix}}</button>{{/hasnext}}
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            {{/pager}}
         </div>
-
-        <div class="sm-pager">
-            <span class="sm-muted" data-region="health-showing">{{showing}}</span>
-            {{{pagingbar}}}
-        </div>
+        {{#js}}
+            document.querySelectorAll('[data-region="health-perpage"] select').forEach(function(select) {
+                select.addEventListener('change', function() {
+                    select.form.submit();
+                });
+            });
+        {{/js}}
     {{/hasany}}
 </div>

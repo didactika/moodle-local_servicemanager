@@ -29,19 +29,19 @@
         "documentationurl": "#"
     }
 }}
-<div class="servicemanager-import-page{{#legacyicons}} sm-fa4{{/legacyicons}}">
-    <div class="sm-block">
-        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
+<div class="lsm servicemanager-import-page">
+    <div class="mb-3">
+        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
     </div>
     <div class="alert alert-info">
-        <h5><i class="fa-solid fa-circle-info sm-icon-gap" aria-hidden="true"></i>{{#str}}import_info_title, local_servicemanager{{/str}}</h5>
+        <h5>{{#pix}}i/info, core{{/pix}} {{#str}}import_info_title, local_servicemanager{{/str}}</h5>
         <p>{{#str}}import_info_text, local_servicemanager{{/str}}</p>
         <ul>
             <li>{{#str}}import_info_yaml, local_servicemanager{{/str}}</li>
             <li>{{#str}}import_info_zip, local_servicemanager{{/str}}</li>
         </ul>
-        <p class="sm-flush">
-            <a href="{{documentationurl}}" class="alert-link sm-strong"><i class="fa-solid fa-book sm-icon-gap" aria-hidden="true"></i>{{#str}}view_documentation, local_servicemanager{{/str}}</a>
+        <p class="mb-0">
+            <a href="{{documentationurl}}" class="alert-link font-weight-bold fw-bold">{{#pix}}docs, core{{/pix}} {{#str}}view_documentation, local_servicemanager{{/str}}</a>
         </p>
     </div>
 </div>

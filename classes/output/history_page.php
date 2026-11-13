@@ -29,7 +29,7 @@ namespace local_servicemanager\output;
  */
 class history_page implements \renderable, \templatable {
     /** @var int[] The sizes of page that can be chosen. */
-    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+    public const PERPAGE_OPTIONS = [12, 24, 48, 96, 0];
 
     /** @var \stdClass The schema record. */
     private $schema;
@@ -60,6 +60,7 @@ class history_page implements \renderable, \templatable {
             'schemaid' => $id,
             'schemaname' => $this->schema->name,
             'currentlabel' => get_string('history_current', 'local_servicemanager', $this->schema->version),
+            'datelabel' => get_string('history_date', 'local_servicemanager'),
             'hasrows' => !empty($rows),
             'rows' => $rows,
             'count' => count($rows),

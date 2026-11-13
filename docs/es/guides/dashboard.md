@@ -35,9 +35,11 @@ Escriba en **Buscar nombre...** y la lista se acota mientras escribe. No hay nin
 
 ## 4. Filtros
 
-**Filtros**, junto a la búsqueda, abre un panel con las fechas (desde y hasta) y el número de esquemas por página. Lo que elija se aplica al instante, así que no hay nada que confirmar. Una insignia redonda en la esquina del botón cuenta los filtros activos, y el botón toma el color del cuadro de búsqueda mientras lo están. El icono de recarga, arriba a la derecha del panel, restablece todos los filtros. El embudo y el icono de recarga son iconos de Moodle, así que un sitio puede cambiar su estilo con Icon Restyle.
+**Filtros**, junto a la búsqueda, abre un panel con las fechas (desde y hasta). Lo que elija se aplica al instante, así que no hay nada que confirmar. Una insignia redonda en la esquina del botón cuenta los filtros activos, y el botón toma el color del cuadro de búsqueda mientras lo están. El icono de recarga, arriba a la derecha del panel, restablece todos los filtros. El embudo y el icono de recarga son iconos de Moodle, así que un sitio puede cambiar su estilo con Icon Restyle.
 
 ![El panel de filtros](asset:dashboard-filters.webp)
+
+La lista conserva la misma altura sea cual sea su contenido y se desplaza dentro de su caja, con los encabezados a la vista. Debajo, **Filas por página** ofrece los tamaños menores que la lista, y **Todos**: una lista de hasta 12 esquemas los muestra todos; una de 13 a 24 ofrece 12 o todos; y así sucesivamente hasta 12, 24, 48 y 96. Las flechas llevan a la página anterior y a la siguiente. El historial de un esquema y sus comprobaciones de estado tienen el mismo paginador.
 
 Lo que pida se guarda en la dirección, de modo que al recargar, o con un enlace que comparta, se ve la misma lista.
 
@@ -51,6 +53,8 @@ A la derecha de la búsqueda hay cuatro botones:
 | Flecha verde | **Importar esquemas**: [archivos y paquetes comprimidos](page:guides/import-and-export). |
 | Archivo azul | **Exportar todo**: todos los esquemas en un ZIP. |
 | Libro con una flecha pequeña | **Documentación**: un menú con la [referencia YAML](page:reference/yaml), este manual y la documentación de Moodle. |
+
+En una pantalla estrecha, como la de un teléfono, los cuatro botones se convierten en un único botón con tres puntos. Su menú contiene las mismas acciones y las entradas del menú de documentación, de modo que la búsqueda, **Filtros** y las acciones se mantienen en una sola fila.
 
 ![El menú de documentación](asset:dashboard-documentation-menu.webp)
 

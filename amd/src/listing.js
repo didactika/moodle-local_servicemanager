@@ -24,6 +24,7 @@
  */
 
 import {get_strings as getStrings} from 'core/str';
+import Templates from 'core/templates';
 
 /** Milliseconds after the last change before the address follows. */
 const ADDRESS_DELAY = 300;
@@ -98,7 +99,7 @@ export const hasWords = (haystack, query) => query.toLowerCase().split(/\s+/).fi
  */
 export const readState = (sizes) => {
     const params = new URLSearchParams(window.location.search);
-    const asked = Number(params.get('perpage'));
+    const asked = params.has('perpage') ? Number(params.get('perpage')) : -1;
     return {
         query: params.get('q') || '',
         status: params.get('status') || '',
@@ -139,98 +140,113 @@ export const addressKeeper = (firstSize) => {
     };
 };
 
+/** The sizes a page of a list may have, 0 being every row at once; a list starts with the first. */
+export const PAGE_SIZES = [12, 24, 48, 96, 0];
+
 /**
- * The texts of the bar of pages.
+ * The texts of the pager.
  *
  * @returns {Promise} Resolves with the texts.
  */
-export const loadPagerStrings = () => getStrings([
-    {key: 'pagination_first', component: 'local_servicemanager'},
+export const loadPagerStrings = () => Promise.all([getStrings([
     {key: 'pagination_previous', component: 'local_servicemanager'},
     {key: 'pagination_next', component: 'local_servicemanager'},
-    {key: 'pagination_last', component: 'local_servicemanager'},
-    {key: 'pagination_page_info', component: 'local_servicemanager', param: {current: '{current}', total: '{total}'}},
-]).then((loaded) => ({first: loaded[0], previous: loaded[1], next: loaded[2], last: loaded[3], info: loaded[4]}))
-    .catch(() => ({first: '', previous: '', next: '', last: '', info: '{current} / {total}'}));
+    {key: 'pagination_per_page', component: 'local_servicemanager'},
+    {key: 'pagination_all', component: 'local_servicemanager'},
+    {key: 'pagination_range', component: 'local_servicemanager', param: {from: '{from}', to: '{to}', total: '{total}'}},
+    {key: 'pagination_aria_label', component: 'local_servicemanager'},
+]), Templates.renderPix('i/previous', 'core'), Templates.renderPix('i/next', 'core')]).then(([loaded, previousIcon, nextIcon]) => ({
+    previous: loaded[0],
+    next: loaded[1],
+    perpage: loaded[2],
+    all: loaded[3],
+    range: loaded[4],
+    label: loaded[5],
+    previousIcon,
+    nextIcon,
+}))
+    .catch(() => ({previous: '', next: '', perpage: '', all: '', range: '{from}–{to} / {total}', label: '', previousIcon: '‹',
+        nextIcon: '›'}));
 
-const icon = (name) => {
-    const element = document.createElement('i');
-    element.className = 'fa-solid fa-' + name;
-    element.setAttribute('aria-hidden', 'true');
-    return element;
+/**
+ * The rows a page shows: how many fit on it, which page it is and the first and the last row.
+ *
+ * @param {Number} page The page asked for, counted from 0.
+ * @param {Number} perpage Rows on a page, 0 for all of them.
+ * @param {Number} total Rows of the list.
+ * @returns {Object} The size, the page, the first and last row counted from 1, and how many pages there are.
+ */
+export const pageOf = (page, perpage, total) => {
+    const size = perpage > 0 ? perpage : Math.max(1, total);
+    const pages = Math.max(1, Math.ceil(total / size));
+    const at = Math.min(Math.max(0, page), pages - 1);
+    return {size, page: at, pages, from: total === 0 ? 0 : at * size + 1, to: Math.min(total, (at + 1) * size)};
 };
 
-const pageItem = (target, content, title, active) => {
-    const item = document.createElement('li');
-    item.className = 'page-item' + (active ? ' active' : '');
+const arrow = (target, name, title, disabled) => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'page-link';
+    button.className = 'btn btn-outline-secondary btn-sm btn-icon';
     button.dataset.page = target;
-    if (title) {
-        button.title = title;
-        button.setAttribute('aria-label', title);
-    }
-    if (active) {
-        button.setAttribute('aria-current', 'page');
-    }
-    if (typeof content === 'string') {
-        button.textContent = content;
-    } else {
-        button.appendChild(content);
-    }
-    item.appendChild(button);
-    return item;
-};
-
-const dots = () => {
-    const item = document.createElement('li');
-    item.className = 'page-item disabled';
-    const dotsText = document.createElement('span');
-    dotsText.className = 'page-link';
-    dotsText.textContent = '...';
-    item.appendChild(dotsText);
-    return item;
+    button.title = title;
+    button.setAttribute('aria-label', title);
+    button.disabled = disabled;
+    // The icon of Moodle, drawn once by the theme.
+    button.innerHTML = name;
+    return button;
 };
 
 /**
- * Draw the bar that goes from one page to another: two pages on each side of the current one, the ends and the neighbours.
+ * Draw the foot of a list, as the design system draws it: rows per page with the sizes smaller than the list and All, the rows
+ * shown and the arrows. A list of up to 12 rows offers All only; one of 13 to 24 offers 12 and All; and so on.
  *
- * @param {HTMLElement} nav The element of the bar, with a list inside and a region for the line that says where the person is.
+ * @param {HTMLElement} foot The foot of the list.
  * @param {Number} page The current page, counted from 0.
- * @param {Number} pages How many pages there are.
- * @param {Object} strings The texts of the bar.
+ * @param {Number} perpage Rows on a page, 0 for all of them.
+ * @param {Number} total Rows of the list.
+ * @param {Object} strings The texts of the pager.
  */
-export const drawPager = (nav, page, pages, strings) => {
-    nav.hidden = pages < 2;
-    const list = nav.querySelector('ul');
-    list.replaceChildren();
-    if (pages < 2) {
+export const drawPager = (foot, page, perpage, total, strings) => {
+    foot.hidden = total === 0;
+    foot.replaceChildren();
+    if (total === 0) {
         return;
     }
-    const start = Math.max(0, page - 2);
-    const end = Math.min(pages - 1, page + 2);
-    if (page > 1) {
-        list.appendChild(pageItem(0, icon('angles-left'), strings.first));
-    }
-    if (page > 0) {
-        list.appendChild(pageItem(page - 1, icon('angle-left'), strings.previous));
-    }
-    if (start > 0) {
-        list.appendChild(dots());
-    }
-    for (let index = start; index <= end; index++) {
-        list.appendChild(pageItem(index, String(index + 1), '', index === page));
-    }
-    if (end < pages - 1) {
-        list.appendChild(dots());
-    }
-    if (page < pages - 2) {
-        list.appendChild(pageItem(pages - 1, String(pages), strings.last));
-    }
-    if (page < pages - 1) {
-        list.appendChild(pageItem(page + 1, icon('angle-right'), strings.next));
-    }
-    nav.querySelector('[data-region="page-info"]').textContent =
-        strings.info.replace('{current}', page + 1).replace('{total}', pages);
+    const range = pageOf(page, perpage, total);
+    const sizes = PAGE_SIZES.filter((size) => size === 0 || size < total);
+    const shown = perpage > 0 && perpage < total ? perpage : 0;
+
+    const nav = document.createElement('nav');
+    nav.className = 'dd-pager';
+    nav.setAttribute('aria-label', strings.label);
+
+    const left = document.createElement('div');
+    left.className = 'dd-pager-size';
+    const label = document.createElement('label');
+    label.className = 'mb-0';
+    label.htmlFor = 'lsm-perpage';
+    label.textContent = strings.perpage;
+    const select = document.createElement('select');
+    select.id = 'lsm-perpage';
+    select.className = 'custom-select custom-select-sm form-select form-select-sm dd-select';
+    select.dataset.region = 'perpage';
+    sizes.forEach((size) => select.appendChild(new Option(size ? String(size) : strings.all, String(size), false, size === shown)));
+    left.append(label, select);
+
+    const right = document.createElement('div');
+    right.className = 'dd-pager-end';
+    const text = document.createElement('span');
+    text.className = 'dd-pager-range';
+    text.setAttribute('role', 'status');
+    text.textContent = strings.range.replace('{from}', range.from).replace('{to}', range.to).replace('{total}', total);
+    const arrows = document.createElement('div');
+    arrows.className = 'dd-pager-arrows';
+    arrows.append(
+        arrow(range.page - 1, strings.previousIcon || '‹', strings.previous, range.page === 0),
+        arrow(range.page + 1, strings.nextIcon || '›', strings.next, range.to >= total)
+    );
+    right.append(text, arrows);
+
+    nav.append(left, right);
+    foot.appendChild(nav);
 };

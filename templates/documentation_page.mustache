@@ -39,77 +39,77 @@
         "naming": [{"resource": "Username", "pattern": "ws.{id}", "example": "ws.example"}]
     }
 }}
-<div class="servicemanager-documentation{{#legacyicons}} sm-fa4{{/legacyicons}}">
-    <div class="sm-block">
-        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
+<div class="lsm servicemanager-documentation">
+    <div class="mb-3">
+        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
     </div>
-    <header class="sm-page-header">
-        <div class="sm-page-title"><h2 class="sm-flush">{{#str}}schema_reference, local_servicemanager{{/str}}</h2></div>
-        <div class="sm-actions-row">
-            <a href="{{downloadurl}}" class="btn btn-outline-primary"><i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>{{#str}}download_example, local_servicemanager{{/str}}</a>
+    <header class="dd-page-header mb-3">
+        <div><h2 class="dd-page-title">{{#str}}schema_reference, local_servicemanager{{/str}}</h2></div>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <a href="{{downloadurl}}" class="btn btn-outline-primary">{{#pix}}t/download, core{{/pix}} {{#str}}download_example, local_servicemanager{{/str}}</a>
         </div>
     </header>
 
     <div class="card">
         <div class="card-body">
             <h5>{{#str}}quick_links, local_servicemanager{{/str}}</h5>
-            <ul class="list-unstyled sm-block">
+            <ul class="list-unstyled mb-3">
                 {{#links}}
-                    <li><a href="#{{id}}"><i class="fa-solid fa-chevron-right sm-icon-gap" aria-hidden="true"></i>{{label}}</a></li>
+                    <li><a href="#{{id}}">{{#pix}}t/collapsed, core{{/pix}} {{label}}</a></li>
                 {{/links}}
             </ul>
 
             <div class="alert alert-success">
-                <i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>
+                {{#pix}}t/download, core{{/pix}} 
                 <a href="{{downloadurl}}" class="alert-link">{{#str}}download_example, local_servicemanager{{/str}}</a>
                 - {{#str}}download_example_desc, local_servicemanager{{/str}}
             </div>
 
-            <h4 id="structure" class="sm-section-title">{{#str}}doc_structure, local_servicemanager{{/str}}</h4>
+            <h4 id="structure" class="h4 mt-4 mb-3">{{#str}}doc_structure, local_servicemanager{{/str}}</p>
             <p>{{#str}}doc_structure_desc, local_servicemanager{{/str}}</p>
-            <pre class="sm-code" id="sm-doc-structure"><code>{{structure}}</code></pre>
-            <button type="button" class="btn sm-pill compact" data-copy-target="#sm-doc-structure">
-                <i class="fa-solid fa-copy sm-icon-gap" aria-hidden="true"></i>{{#str}}copy, local_servicemanager{{/str}}
+            <pre class="bg-body-tertiary border p-3 rounded" id="lsm-doc-structure"><code>{{structure}}</code></pre>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-copy-target="#lsm-doc-structure">
+                {{#pix}}t/copy, core{{/pix}} {{#str}}copy, local_servicemanager{{/str}}
             </button>
 
-            <h4 id="meta" class="sm-section-title">{{#str}}doc_meta, local_servicemanager{{/str}}</h4>
+            <h4 id="meta" class="h4 mt-4 mb-3">{{#str}}doc_meta, local_servicemanager{{/str}}</p>
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}field, local_servicemanager{{/str}}</th><th>{{#str}}required, moodle{{/str}}</th><th>{{#str}}description, moodle{{/str}}</th></tr></thead>
                 <tbody>
-                    {{#meta}}<tr><td><code>{{name}}</code></td><td><span class="sm-badge tone-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/meta}}
+                    {{#meta}}<tr><td><code>{{name}}</code></td><td><span class="badge badge-soft rounded-pill text-bg-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/meta}}
                 </tbody>
             </table>
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}field, local_servicemanager{{/str}}</th><th>{{#str}}required, moodle{{/str}}</th><th>{{#str}}description, moodle{{/str}}</th></tr></thead>
                 <tbody>
-                    {{#requirements}}<tr><td><code>{{name}}</code></td><td><span class="sm-badge tone-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/requirements}}
+                    {{#requirements}}<tr><td><code>{{name}}</code></td><td><span class="badge badge-soft rounded-pill text-bg-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/requirements}}
                 </tbody>
             </table>
 
-            <h4 id="definition" class="sm-section-title">{{#str}}doc_definition, local_servicemanager{{/str}}</h4>
+            <h4 id="definition" class="h4 mt-4 mb-3">{{#str}}doc_definition, local_servicemanager{{/str}}</p>
             <p>{{#str}}doc_definition_desc, local_servicemanager{{/str}}</p>
             <h5>{{#str}}functions, local_servicemanager{{/str}}</h5>
             <p>{{#str}}doc_functions_desc, local_servicemanager{{/str}}</p>
-            <pre class="sm-code"><code>{{functions}}</code></pre>
+            <pre class="bg-body-tertiary border p-3 rounded"><code>{{functions}}</code></pre>
             <div class="alert alert-info">
-                <i class="fa-solid fa-circle-info sm-icon-gap" aria-hidden="true"></i>
+                {{#pix}}i/info, core{{/pix}} 
                 {{#str}}doc_default_capabilities, local_servicemanager{{/str}}
                 <code>webservice/rest:use</code>, <code>webservice/soap:use</code>.
             </div>
 
-            <h4 id="role" class="sm-section-title">{{#str}}doc_role, local_servicemanager{{/str}}</h4>
+            <h4 id="role" class="h4 mt-4 mb-3">{{#str}}doc_role, local_servicemanager{{/str}}</p>
             <p>{{#str}}doc_role_desc, local_servicemanager{{/str}}</p>
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}field, local_servicemanager{{/str}}</th><th>{{#str}}required, moodle{{/str}}</th><th>{{#str}}description, moodle{{/str}}</th></tr></thead>
                 <tbody>
-                    {{#role}}<tr><td><code>{{name}}</code></td><td><span class="sm-badge tone-secondary">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/role}}
+                    {{#role}}<tr><td><code>{{name}}</code></td><td><span class="badge badge-soft rounded-pill text-bg-secondary">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/role}}
                 </tbody>
             </table>
             <div class="alert alert-info">
-                <i class="fa-solid fa-circle-info sm-icon-gap" aria-hidden="true"></i>{{#str}}doc_role_note, local_servicemanager{{/str}}
+                {{#pix}}i/info, core{{/pix}} {{#str}}doc_role_note, local_servicemanager{{/str}}
             </div>
 
-            <h4 id="naming" class="sm-section-title">{{#str}}doc_naming, local_servicemanager{{/str}}</h4>
+            <h4 id="naming" class="h4 mt-4 mb-3">{{#str}}doc_naming, local_servicemanager{{/str}}</p>
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}resource, local_servicemanager{{/str}}</th><th>{{#str}}pattern, local_servicemanager{{/str}}</th><th>{{#str}}doc_example_col, local_servicemanager{{/str}}</th></tr></thead>
                 <tbody>
@@ -117,10 +117,10 @@
                 </tbody>
             </table>
 
-            <h4 id="example" class="sm-section-title">{{#str}}doc_example, local_servicemanager{{/str}}</h4>
+            <h4 id="example" class="h4 mt-4 mb-3">{{#str}}doc_example, local_servicemanager{{/str}}</p>
             <p>
                 {{#str}}doc_example_complete_desc, local_servicemanager{{/str}}
-                <a href="{{downloadurl}}"><i class="fa-solid fa-download sm-icon-gap" aria-hidden="true"></i>{{#str}}download_example, local_servicemanager{{/str}}</a>
+                <a href="{{downloadurl}}">{{#pix}}t/download, core{{/pix}} {{#str}}download_example, local_servicemanager{{/str}}</a>
                 {{#str}}doc_example_to_get_started, local_servicemanager{{/str}}
             </p>
         </div>

@@ -1,0 +1,556 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// What the design system adds to Bootstrap for feedback and actions: round icon buttons, tonal buttons, soft badges, icon
+// tiles and the floating bar of a selection. They are scoped to the screens of the plugin and to its dialogs.
+// @copyright 2026 Didactika.org
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm,
+#{$lsm-modal} {
+    // Search field: the magnifier is a decoration inside the field.
+    & .dd-searchbox {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex: 1 1 auto;
+        max-width: 22rem;
+
+        &.mw-100 {
+            max-width: 100%;
+        }
+
+        & .icon {
+            position: absolute;
+            left: 0.75rem;
+            margin: 0;
+            color: var(--dd-muted);
+            pointer-events: none;
+        }
+
+        & .form-control {
+            min-height: var(--dd-h);
+            padding-left: 2.25rem;
+            border-color: var(--dd-line);
+            border-radius: 999px;
+        }
+    }
+
+    // A select in the chrome of a list: the shape and height of the search beside it, and the ring of the system on focus.
+    & .dd-select {
+        width: auto;
+        min-width: 12rem;
+        max-width: 20rem;
+        min-height: var(--dd-h);
+        padding-left: 1rem;
+        border-color: var(--dd-line);
+        border-radius: 999px;
+        background-color: var(--dd-surface);
+        color: var(--dd-ink);
+        font-size: 0.9375rem;
+        cursor: pointer;
+        transition: border-color var(--dd-ease), box-shadow var(--dd-ease);
+
+        &:hover {
+            border-color: var(--dd-line-hover);
+        }
+
+        &:focus {
+            border-color: var(--dd-primary);
+            outline: 0;
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+
+        &.border-primary {
+            border-color: var(--dd-primary);
+            background-color: var(--dd-primary-soft);
+            color: var(--dd-primary-ink);
+            font-weight: 600;
+        }
+
+        // A filter that is set has no arrow: the cross that clears it takes its place.
+        &.dd-select-set {
+            padding-right: 2.5rem;
+            background-image: none;
+        }
+
+        // A menu drawn as a button cuts a long value with an ellipsis where its text ends, so it never runs under the cross.
+        &:is(button) {
+            display: block;
+            overflow: hidden;
+            text-align: start;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    // A select that filters a list, and the cross that takes it back to its base state.
+    & .dd-select-filter {
+        position: relative;
+        display: inline-flex;
+        max-width: 100%;
+    }
+
+    & .dd-select-clear {
+        position: absolute;
+        top: 50%;
+        right: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background-color: transparent;
+        color: var(--dd-primary-ink);
+        transform: translateY(-50%);
+        transition: background-color var(--dd-ease);
+
+        & .icon {
+            width: 0.875rem;
+            height: 0.875rem;
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--dd-primary) 14%, transparent);
+        }
+
+        &:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+    }
+
+    // A button that holds only an icon is a circle as wide as it is tall.
+    & .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: var(--dd-h);
+        height: var(--dd-h);
+        padding: 0;
+        border-radius: 50%;
+
+        &.btn-sm {
+            width: var(--dd-h-sm);
+            height: var(--dd-h-sm);
+        }
+
+        & .icon {
+            margin: 0;
+        }
+    }
+
+    // The quick actions of a row: each in the colour of what it does, on a soft tint of it, so they are told apart at a
+    // glance. They keep their place in every row; the ones a row does not allow are there, faded, and do nothing.
+    & .btn-link.btn-icon {
+        --dd-c: var(--dd-muted);
+        background-color: transparent;
+        color: var(--dd-c);
+        text-decoration: none;
+        transition: background-color var(--dd-ease), color var(--dd-ease), opacity var(--dd-ease), transform var(--dd-ease);
+
+        &.text-primary {
+            --dd-c: var(--dd-primary);
+        }
+
+        &.text-info {
+            --dd-c: var(--dd-info);
+        }
+
+        &.text-success {
+            --dd-c: var(--dd-success);
+        }
+
+        &.text-warning {
+            --dd-c: color-mix(in srgb, var(--dd-warning) 70%, var(--dd-ink));
+        }
+
+        &.text-danger {
+            --dd-c: var(--dd-danger);
+        }
+
+        &:not(.disabled, :disabled) {
+            background-color: color-mix(in srgb, var(--dd-c) 9%, var(--dd-surface));
+        }
+
+        &:not(.disabled, :disabled):hover,
+        &:not(.disabled, :disabled):focus-visible {
+            outline: 0;
+            background-color: color-mix(in srgb, var(--dd-c) 18%, var(--dd-surface));
+            color: color-mix(in srgb, var(--dd-c) 80%, var(--dd-ink));
+            transform: translateY(-1px);
+        }
+
+        &:focus-visible {
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+
+        &.disabled,
+        &:disabled {
+            color: var(--dd-muted);
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: auto;
+        }
+    }
+
+    & .table-actions {
+        white-space: nowrap;
+
+        & .btn-icon + .btn-icon {
+            margin-left: 0.25rem;
+        }
+    }
+
+
+    // A tonal button: the soft tint of its role, for the actions of a selection.
+    & .btn.btn-tonal {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        border-color: transparent;
+        background-color: var(--dd-c-soft);
+        box-shadow: none;
+        color: var(--dd-c-ink);
+
+        &:hover,
+        &:focus-visible {
+            background-color: var(--dd-c-soft-2);
+            color: var(--dd-c-ink);
+        }
+
+        & .icon {
+            margin: 0;
+            color: inherit;
+        }
+    }
+
+    & .badge-dot::before {
+        content: "";
+        flex: none;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background-color: var(--dd-c);
+    }
+
+    // An icon tile: a rounded square that holds an icon in the colour of its role.
+    & .dd-tile {
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.75rem;
+        background-color: var(--dd-c-soft-2);
+        color: var(--dd-c-ink);
+        font-size: 1.0625rem;
+        line-height: 1;
+
+        & .icon {
+            margin: 0;
+            color: inherit;
+        }
+    }
+
+    & .dd-tile-lg {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 1rem;
+        font-size: 1.375rem;
+    }
+}
+
+// The menu a select opens, the dropdown menu of the design system: the chosen option tinted and checked, the groups as
+// headers. It is fixed to the window, so the card of a list never cuts it, and opens below or above the select.
+.lsm,
+#{$lsm-modal} {
+    & .dd-select-menu {
+        position: fixed;
+        z-index: 1060;
+        display: block;
+        min-width: 10rem;
+        margin: 0;
+        padding: 0.375rem;
+        overflow-y: auto;
+        border: 1px solid var(--dd-hairline);
+        border-radius: var(--dd-radius);
+        background-color: var(--dd-surface);
+        box-shadow: var(--dd-shadow-md);
+        color: var(--dd-ink);
+        font-size: 0.9375rem;
+        animation: lsm-pop 140ms cubic-bezier(0.2, 0, 0, 1);
+
+        & .dropdown-header {
+            padding: 0.5rem 0.75rem 0.25rem;
+            color: var(--dd-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        & .dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.625rem;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 0;
+            border-radius: 0.5rem;
+            background: none;
+            color: var(--dd-ink);
+            line-height: 1.5;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color var(--dd-ease), color var(--dd-ease);
+
+            & + .dropdown-item {
+                margin-top: 2px;
+            }
+
+            &:hover,
+            &:focus,
+            &.active {
+                outline: 0;
+                background-color: var(--dd-surface-2);
+                color: var(--dd-ink);
+            }
+
+            &[aria-selected="true"] {
+                background-color: var(--dd-primary-soft);
+                color: var(--dd-primary-ink);
+                font-weight: 600;
+
+                &::after {
+                    content: "";
+                    flex: none;
+                    width: 0.3rem;
+                    height: 0.6rem;
+                    margin-right: 0.25rem;
+                    border: solid currentColor;
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg) translateY(-1px);
+                }
+
+                &:focus,
+                &.active {
+                    background-color: var(--dd-primary-soft-2);
+                }
+
+                // Moodle draws its own check before the chosen item; this menu has one at the end.
+                &::before {
+                    content: none;
+                    display: none;
+                }
+            }
+
+            &.disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    & select[aria-expanded="true"] {
+        border-color: var(--dd-primary);
+        box-shadow: 0 0 0 3px var(--dd-ring);
+    }
+}
+
+@keyframes lsm-pop {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lsm,
+    #{$lsm-modal} {
+        & .dd-select-menu {
+            animation: none;
+        }
+    }
+}
+
+// The small select of a pager: the shape of the others, the height of the small buttons beside it.
+.lsm .dd-select.form-select-sm {
+    min-width: 4.75rem;
+    min-height: var(--dd-h-sm);
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
+    font-size: 0.875rem;
+}
+
+// Soft and outline badges: the status of a row, in the colour of its meaning and in words. The markup names the role with
+// text-bg-*, as the design system does; Bootstrap 5 paints those with !important, so the tint has to say it as well.
+/* stylelint-disable declaration-no-important */
+.lsm,
+#{$lsm-modal} {
+    & .badge.badge-soft {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.35em 0.8em;
+        border-radius: 999px;
+        background-color: var(--dd-c-soft-2) !important;
+        color: var(--dd-c-ink) !important;
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+
+    & .badge.badge-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.35em 0.8em;
+        border-radius: 999px;
+        background-color: transparent !important;
+        box-shadow: inset 0 0 0 1px var(--dd-c);
+        color: var(--dd-c-ink) !important;
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+}
+/* stylelint-enable declaration-no-important */
+
+// On Moodle 5.3 the icon of a search comes wrapped in a span; it sits in the field as the icon itself does.
+.lsm,
+#{$lsm-modal} {
+    & .dd-searchbox > span[aria-hidden="true"] {
+        position: absolute;
+        left: 0.75rem;
+        color: var(--dd-muted);
+        pointer-events: none;
+
+        & .icon {
+            position: static;
+            margin: 0;
+        }
+    }
+}
+
+// The floating bar of a selection: how many rows are chosen, what to do with them and a button that clears the choice.
+.lsm .dd-floatbar {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    z-index: 1030;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: calc(100vw - 2rem);
+    padding: 0.5rem 0.6rem 0.5rem 1.25rem;
+    border: 1px solid var(--dd-hairline);
+    border-radius: 1rem;
+    background-color: var(--dd-surface);
+    box-shadow: var(--dd-shadow-lg);
+    transform: translateX(-50%);
+    animation: lsm-rise 200ms cubic-bezier(0.2, 0, 0, 1);
+
+    &[hidden] {
+        display: none;
+    }
+
+    & .dd-floatbar-count {
+        color: var(--dd-ink);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    & .dd-floatbar-all {
+        padding: 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    & .dd-floatbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    & .dd-floatbar-clear {
+        position: relative;
+        display: inline-grid;
+        flex: none;
+        place-items: center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border: 0;
+        border-radius: 0.5rem;
+        background: transparent;
+        color: var(--dd-muted);
+        transition: background-color var(--dd-ease), color var(--dd-ease);
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0.75rem;
+            height: 2px;
+            border-radius: 2px;
+            background: currentColor;
+        }
+
+        &::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        &::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        &:hover,
+        &:focus-visible {
+            outline: 0;
+            background-color: var(--dd-primary-soft);
+            color: var(--dd-primary-ink);
+        }
+    }
+}
+
+@keyframes lsm-rise {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lsm .dd-floatbar {
+        animation: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .lsm .dd-floatbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: var(--dd-radius-lg);
+    }
+}

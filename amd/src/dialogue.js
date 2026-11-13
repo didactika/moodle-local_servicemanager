@@ -59,9 +59,9 @@ const open = (ModalClass, type, config) => {
     return made.then((modal) => {
         const dialogue = modal.getRoot()[0].querySelector('.modal-dialog');
         if (dialogue) {
-            dialogue.classList.add('modal-dialog-scrollable', 'sm-modal');
+            dialogue.classList.add('modal-dialog-scrollable');
         }
-        modal.getRoot()[0].classList.add('sm-modal-root');
+
         return modal;
     });
 };

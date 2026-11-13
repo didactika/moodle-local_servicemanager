@@ -1,0 +1,170 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// One delegation in depth and the accounts of a person: the design system's description list and timeline, and overrides of
+// the Bootstrap pieces the pages use (the link back, the list region, the cards of the accounts, the filters of a report).
+// @copyright 2026 Didactika.org
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm {
+    // The link back to the page above sits at the start of the column, not across it.
+    & > .btn-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        justify-self: start;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    // A list and its chips: the chips stand 1rem above the card.
+    & [data-region="list"] {
+        display: grid;
+        gap: 1rem;
+        min-width: 0;
+    }
+
+    // The cards of the accounts a person may open.
+    & .row > li > .card {
+        transition: border-color var(--dd-ease), box-shadow var(--dd-ease);
+
+        &:hover {
+            border-color: var(--dd-line);
+            box-shadow: var(--dd-shadow-sm);
+        }
+
+        & .userpicture,
+        & .userinitials {
+            flex: none;
+            margin: 0 0.875rem 0 0;
+        }
+    }
+
+    // The filters of a report, in one row that wraps.
+    & [data-region="filters"] {
+        gap: 0.75rem;
+
+        & label {
+            display: block;
+            margin-bottom: 0.375rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+
+        & .form-control {
+            min-width: 10rem;
+            border-color: var(--dd-line);
+        }
+    }
+
+    // Description list: a label and a value on each line, with the labels in one column.
+    & .dd-dl {
+        display: grid;
+        grid-template-columns: minmax(7rem, 11rem) 1fr;
+        margin: 0;
+
+        & dt,
+        & dd {
+            margin: 0;
+            padding: 0.625rem 0;
+            border-bottom: 1px solid var(--dd-hairline);
+        }
+
+        & dt {
+            padding-right: 1rem;
+            color: var(--dd-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        & dd {
+            color: var(--dd-ink);
+            font-size: 0.9375rem;
+            overflow-wrap: anywhere;
+        }
+
+        & dt:last-of-type,
+        & dd:last-of-type {
+            border-bottom: 0;
+        }
+    }
+
+    // Timeline: what happened to the delegation, newest first.
+    & .dd-timeline {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    & .dd-timeline-item {
+        position: relative;
+        display: grid;
+        gap: 0.125rem;
+        padding: 0 0 1.25rem 1.75rem;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0.3125rem;
+            left: 0.1875rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border: 2px solid var(--dd-primary);
+            border-radius: 50%;
+            background: var(--dd-surface);
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 1.25rem;
+            bottom: 0.25rem;
+            left: 0.5rem;
+            width: 2px;
+            border-radius: 2px;
+            background: var(--dd-hairline);
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        &.is-success::before {
+            border-color: var(--dd-success);
+            background: var(--dd-success);
+        }
+
+        &.is-danger::before {
+            border-color: var(--dd-danger);
+            background: var(--dd-danger);
+        }
+    }
+
+    & .dd-timeline-title {
+        color: var(--dd-ink);
+        font-size: 0.9375rem;
+        font-weight: 600;
+    }
+
+    & .dd-timeline-meta {
+        color: var(--dd-muted);
+        font-size: 0.8125rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .lsm .dd-dl {
+        grid-template-columns: 1fr;
+
+        & dt {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+    }
+}
