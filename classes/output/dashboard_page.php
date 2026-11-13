@@ -31,7 +31,7 @@ use local_servicemanager\schema\manager;
  */
 class dashboard_page implements react_component_renderable, \renderable {
     /** @var int[] The sizes of page that can be chosen. */
-    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+    public const PERPAGE_OPTIONS = [12, 24, 48, 96, 0];
 
     /** @var int Most schemas that are sent; a site that has more is told so. */
     public const MAX_SCHEMAS = 1000;
@@ -89,7 +89,8 @@ class dashboard_page implements react_component_renderable, \renderable {
                 'bulkAction' => $this->url('bulk_action.php'),
                 'documentation' => $this->url('documentation.php'),
                 'dashboard' => $this->url('dashboard.php'),
-                'wiki' => 'https://github.com/didactika/moodle-local_servicemanager/wiki',
+                'manual' => 'https://docs.didactika.org/' . (substr(current_language(), 0, 2) === 'es' ? 'es' : 'en') .
+                    '/plugins/local-servicemanager/',
                 'moodleDocs' => get_docs_url('Web_services'),
             ],
             'wsStatus' => $this->web_service_status($canmanage),

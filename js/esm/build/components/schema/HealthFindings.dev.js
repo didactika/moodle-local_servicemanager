@@ -14,8 +14,12 @@ import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import Icon from "../common/Icon";
-const HealthFindings = /* @__PURE__ */ __name(({ check }) => /* @__PURE__ */ jsxDEV("ul", { className: `sm-health-findings tone-${check.tone}`, children: check.findings.map((finding, index) => /* @__PURE__ */ jsxDEV("li", { children: [
-  /* @__PURE__ */ jsxDEV(Icon, { name: check.icon }, void 0, false, {
+const HealthFindings = /* @__PURE__ */ __name(({ check }) => /* @__PURE__ */ jsxDEV("ul", { className: "list-unstyled d-grid gap-1 mb-0", children: check.findings.map((finding, index) => /* @__PURE__ */ jsxDEV("li", { className: "d-flex gap-2", children: [
+  /* @__PURE__ */ jsxDEV("span", { className: `text-${check.tone}`, children: /* @__PURE__ */ jsxDEV(Icon, { name: check.icon }, void 0, false, {
+    fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthFindings.tsx",
+    lineNumber: 22,
+    columnNumber: 48
+  }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthFindings.tsx",
     lineNumber: 22,
     columnNumber: 9

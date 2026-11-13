@@ -43,11 +43,11 @@ const ChipList = ({title, names, chip, text, limit = SHOWN}: ChipListProps) => {
     }, [names, query]);
 
     return <>
-        <div className="sm-chip-row" data-region="chip-list">
+        <div className="d-flex flex-wrap gap-1" data-region="chip-list">
             {(folded ? names.slice(0, limit) : names).map((name) => chip(name))}
             {folded && <button
                 type="button"
-                className="sm-role-more"
+                className="badge rounded-pill text-bg-light border"
                 data-action="chips-all"
                 title={text('chips_all', names.length)}
                 onClick={() => setOpen(true)}
@@ -59,21 +59,21 @@ const ChipList = ({title, names, chip, text, limit = SHOWN}: ChipListProps) => {
         {folded && <Modal
             open={open}
             wide
-            title={<>{title}<span className="sm-role-count ms-2">{names.length}</span></>}
+            title={<>{title}<span className="badge badge-soft rounded-pill text-bg-secondary ms-2">{names.length}</span></>}
             onClose={() => setOpen(false)}
             closeLabel={text('core_cancel')}
         >
-            {names.length > SEARCHABLE_FROM && <div className="sm-dialog-search">
+            {names.length > SEARCHABLE_FROM && <div className="mb-3">
                 <SearchBox
                     value={query}
                     onChange={setQuery}
                     placeholder={text('filter_name')}
                     clearLabel={text('filter_clear')}
-                    id="sm-chips-search"
+                    id="lsm-chips-search"
                 />
             </div>}
-            <ul className="list-group sm-caps-list" data-region="chip-all">
-                {found.map((name) => <li key={name} className="list-group-item"><span className="sm-fn">{name}</span></li>)}
+            <ul className="list-group" data-region="chip-all">
+                {found.map((name) => <li key={name} className="list-group-item"><span className="font-monospace small">{name}</span></li>)}
             </ul>
             {found.length === 0 && <p className="text-body-secondary text-center my-3"><Icon name="filter-circle-xmark" gap />{text('no_schemas_filtered')}</p>}
         </Modal>}

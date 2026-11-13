@@ -1,6 +1,6 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-import { jsxDEV } from "react/jsx-dev-runtime";
+import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
 /**
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
@@ -20,7 +20,7 @@ const DetailsPanel = /* @__PURE__ */ __name(({ schema, urls, canManage, isHistor
     title: text("schema_information"),
     icon: "circle-info",
     region: "details",
-    actions: !isHistory ? /* @__PURE__ */ jsxDEV("div", { className: "sm-group", role: "group", "aria-label": text("core_actions"), children: [
+    actions: !isHistory ? /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap gap-1", role: "group", "aria-label": text("core_actions"), children: [
       canManage && /* @__PURE__ */ jsxDEV(IconButton, { icon: "pen-to-square", label: text("action_edit"), href: urls.edit }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
         lineNumber: 32,
@@ -69,78 +69,60 @@ const DetailsPanel = /* @__PURE__ */ __name(({ schema, urls, canManage, isHistor
         lineNumber: 45,
         columnNumber: 28
       }),
-      /* @__PURE__ */ jsxDEV("dl", { className: "sm-facts-row mb-0", children: [
-        /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
-          /* @__PURE__ */ jsxDEV("dt", { children: text("schema_version") }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 47,
-            columnNumber: 34
-          }),
-          /* @__PURE__ */ jsxDEV("dd", { children: schema.version }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 47,
-            columnNumber: 67
-          })
-        ] }, void 0, true, {
+      /* @__PURE__ */ jsxDEV("dl", { className: "dd-dl mb-0", children: [
+        /* @__PURE__ */ jsxDEV("dt", { children: text("schema_version") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
           lineNumber: 47,
           columnNumber: 9
         }),
-        schema.maintainer && /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
+        /* @__PURE__ */ jsxDEV("dd", { children: schema.version }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+          lineNumber: 47,
+          columnNumber: 42
+        }),
+        schema.maintainer && /* @__PURE__ */ jsxDEV(Fragment, { children: [
           /* @__PURE__ */ jsxDEV("dt", { children: text("schema_maintainer") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
             lineNumber: 48,
-            columnNumber: 56
+            columnNumber: 33
           }),
           /* @__PURE__ */ jsxDEV("dd", { children: schema.maintainer }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
             lineNumber: 48,
-            columnNumber: 92
+            columnNumber: 69
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
           lineNumber: 48,
           columnNumber: 31
         }),
-        /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
-          /* @__PURE__ */ jsxDEV("dt", { children: text("schema_created") }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 49,
-            columnNumber: 34
-          }),
-          /* @__PURE__ */ jsxDEV("dd", { children: schema.created }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 49,
-            columnNumber: 67
-          })
-        ] }, void 0, true, {
+        /* @__PURE__ */ jsxDEV("dt", { children: text("schema_created") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
           lineNumber: 49,
           columnNumber: 9
         }),
-        /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
-          /* @__PURE__ */ jsxDEV("dt", { children: text("schema_modified") }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 50,
-            columnNumber: 34
-          }),
-          /* @__PURE__ */ jsxDEV("dd", { children: schema.modified }, void 0, false, {
-            fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
-            lineNumber: 50,
-            columnNumber: 68
-          })
-        ] }, void 0, true, {
+        /* @__PURE__ */ jsxDEV("dd", { children: schema.created }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+          lineNumber: 49,
+          columnNumber: 42
+        }),
+        /* @__PURE__ */ jsxDEV("dt", { children: text("schema_modified") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
           lineNumber: 50,
           columnNumber: 9
         }),
-        !isHistory && /* @__PURE__ */ jsxDEV("div", { className: "sm-fact", children: [
+        /* @__PURE__ */ jsxDEV("dd", { children: schema.modified }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
+          lineNumber: 50,
+          columnNumber: 43
+        }),
+        !isHistory && /* @__PURE__ */ jsxDEV(Fragment, { children: [
           /* @__PURE__ */ jsxDEV("dt", { children: text("schema_enabled") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
             lineNumber: 52,
             columnNumber: 13
           }),
-          /* @__PURE__ */ jsxDEV("dd", { children: /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${schema.enabled ? "success" : "secondary"}`, children: text(schema.enabled ? "core_yes" : "core_no") }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("dd", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${schema.enabled ? "success" : "secondary"}`, children: text(schema.enabled ? "core_yes" : "core_no") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/DetailsPanel.tsx",
             lineNumber: 54,
             columnNumber: 17

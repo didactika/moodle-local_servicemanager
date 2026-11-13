@@ -1,11 +1,12 @@
-import p from"./Icon";import{Fragment as b,jsx as o,jsxs as f}from"react/jsx-runtime";/**
+import d from"./Icon";import{jsx as s}from"react/jsx-runtime";/**
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * A button or a link that is only an icon, with its name as a tooltip and for assistive technology.
+ * A round icon button of the design system (btn-link btn-icon), as the actions of a row, or a filled one for the main
+ * action; the label is its title and what assistive technology says.
  *
  * @module     local_servicemanager/components/common/IconButton
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */const u=t=>{const n=t.replace(/^outline-/,"");return n==="secondary"?"":` tone-${n}`},m=({icon:t,label:n,href:s,onClick:l,tone:c="secondary",large:i=!1,solid:r=!1,disabled:d=!1})=>{const e=f(b,{children:[o(p,{name:t}),o("span",{className:"visually-hidden",children:n})]}),a=`btn sm-pill icon-only${i?"":" compact"}${u(c)}${r?" solid":""}`;return s?o("a",{href:s,className:a,title:n,children:e}):o("button",{type:"button",className:a,title:n,onClick:l,disabled:d,children:e})};var y=m;export{y as default,u as toneClass};
+ */const m=n=>n&&n!=="secondary"?` text-${n}`:"",f=({icon:n,label:t,href:a,onClick:c,tone:o="secondary",large:e=!1,solid:l=!1,disabled:b=!1})=>{const i=s(d,{name:n}),r=l?`btn btn-${o==="secondary"?"primary":o} btn-icon${e?"":" btn-sm"}`:`btn btn-link btn-icon${e?"":" btn-sm"}${m(o)}`;return a?s("a",{href:a,className:r,title:t,"aria-label":t,children:i}):s("button",{type:"button",className:r,title:t,"aria-label":t,onClick:c,disabled:b,children:i})};var u=f;export{u as default,m as toneClass};

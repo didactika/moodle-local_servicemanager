@@ -10,6 +10,35 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/** The sizes a page of a list may have, 0 being every row at once. */
+export const PAGE_SIZES = [12, 24, 48, 96, 0];
+
+/**
+ * The rows a page covers, counted from one, and none when the list is empty.
+ *
+ * @param page Current page, counted from 0.
+ * @param perpage Rows on a page, 0 for all of them.
+ * @param total Rows of the list.
+ * @returns The first and the last row of the page.
+ */
+export const pageRange = (page: number, perpage: number, total: number): {from: number; to: number} => {
+    const size = perpage > 0 ? perpage : Math.max(total, 1);
+    return {from: total === 0 ? 0 : (page * size) + 1, to: Math.min(total, (page + 1) * size)};
+};
+
+/**
+ * The sizes a pager offers for a list, the ones smaller than it and all of it, and the one it shows: All when every row fits
+ * on the page. A list of up to 12 rows offers All only; one of 13 to 24 offers 12 and All; and so on up to 12, 24, 48, 96, All.
+ *
+ * @param perpage Rows per page, 0 for all of them.
+ * @param total How many rows there are.
+ * @returns The sizes and the one shown.
+ */
+export const fitPageSizes = (perpage: number, total: number): {sizes: number[]; shown: number} => ({
+    sizes: PAGE_SIZES.filter((size) => size === 0 || size < total),
+    shown: perpage > 0 && perpage < total ? perpage : 0,
+});
+
 /** The links of a pagination bar. */
 export interface PageWindow {
     /** Number of pages of the list. */

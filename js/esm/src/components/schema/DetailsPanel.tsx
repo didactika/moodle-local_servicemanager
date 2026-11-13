@@ -28,7 +28,7 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}
     title={text('schema_information')}
     icon="circle-info"
     region="details"
-    actions={!isHistory ? <div className="sm-group" role="group" aria-label={text('core_actions')}>
+    actions={!isHistory ? <div className="d-flex flex-wrap gap-1" role="group" aria-label={text('core_actions')}>
         {canManage && <IconButton icon="pen-to-square" label={text('action_edit')} href={urls.edit} />}
         {canManage && <IconButton icon="clock-rotate-left" label={text('version_history')} href={urls.history} tone="primary" />}
         <IconButton icon="download" label={text('action_export')} href={urls.export} tone="info" />
@@ -43,17 +43,17 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}
     </div> : undefined}
 >
     {schema.description && <p className="mb-3">{schema.description}</p>}
-    <dl className="sm-facts-row mb-0">
-        <div className="sm-fact"><dt>{text('schema_version')}</dt><dd>{schema.version}</dd></div>
-        {schema.maintainer && <div className="sm-fact"><dt>{text('schema_maintainer')}</dt><dd>{schema.maintainer}</dd></div>}
-        <div className="sm-fact"><dt>{text('schema_created')}</dt><dd>{schema.created}</dd></div>
-        <div className="sm-fact"><dt>{text('schema_modified')}</dt><dd>{schema.modified}</dd></div>
-        {!isHistory && <div className="sm-fact">
+    <dl className="dd-dl mb-0">
+        <dt>{text('schema_version')}</dt><dd>{schema.version}</dd>
+        {schema.maintainer && <><dt>{text('schema_maintainer')}</dt><dd>{schema.maintainer}</dd></>}
+        <dt>{text('schema_created')}</dt><dd>{schema.created}</dd>
+        <dt>{text('schema_modified')}</dt><dd>{schema.modified}</dd>
+        {!isHistory && <>
             <dt>{text('schema_enabled')}</dt>
             <dd>
-                <span className={`sm-badge tone-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
+                <span className={`badge badge-soft rounded-pill text-bg-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
             </dd>
-        </div>}
+        </>}
     </dl>
 </Panel>;
 

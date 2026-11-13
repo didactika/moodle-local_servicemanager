@@ -17,7 +17,7 @@
 
 Web Service Manager (**local_servicemanager**) lets an administrator describe a complete Moodle web service in one version-controlled YAML file. For each schema the plugin creates the service user, the role with only the capabilities the service needs, the external service with its authorised functions and the token, and keeps all of them in line with the file every time it changes. A compromised token or a misbehaving consumer can reach only what its schema declares, and disabling or deleting the schema closes the door.
 
-![The dashboard](https://raw.githubusercontent.com/wiki/didactika/moodle-local_servicemanager/images/dashboard.png)
+![The dashboard](https://raw.githubusercontent.com/didactika/moodle-local_servicemanager/MOODLE_400_STABLE/docs/_assets/dashboard.webp)
 
 ## Overview
 
@@ -69,7 +69,7 @@ A release is named after the delivery and the lowest Moodle version of the line,
 4. Click a schema to see its user, role and service, the state of each function, its token and a summary of its health checks. **View all health checks** opens all of them.
 5. **Version history** lists every version; choose two and **Compare Versions**, or **Rollback** to an earlier one.
 
-Deleting a schema removes the user, the role, the service and the token it created. Every step is explained, with screenshots, in the [user manual](https://github.com/didactika/moodle-local_servicemanager/wiki). The reference of the YAML format is in [docs/schema_reference.md](docs/schema_reference.md) and, inside Moodle, in the **Documentation** menu of the dashboard.
+Deleting a schema removes the user, the role, the service and the token it created. Every step is explained, with screenshots, in the [user manual](https://docs.didactika.org/en/plugins/local-servicemanager/). The reference of the YAML format is in [docs/schema_reference.md](docs/schema_reference.md) and, inside Moodle, in the **Documentation** menu of the dashboard.
 
 ## Schema format
 
@@ -194,7 +194,7 @@ The screenshots of the user manual are taken from the real interface by `tests/b
 | No health emails | Check the recipients and the notification level in the settings, and the outgoing mail of Moodle. |
 | A function is reported missing | The plugin that provides it is not installed or is disabled. |
 
-More in the [troubleshooting chapter](https://github.com/didactika/moodle-local_servicemanager/wiki/Troubleshooting).
+More in the [troubleshooting chapter](https://docs.didactika.org/en/plugins/local-servicemanager/guides/troubleshooting/).
 
 ## Getting help
 

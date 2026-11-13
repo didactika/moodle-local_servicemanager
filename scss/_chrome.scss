@@ -1,0 +1,477 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// The chrome of the lists of the plugin, as the design system draws it, written as overrides of the Bootstrap components the
+// markup uses (card, nav-tabs, table, list-group) and as the design system's own pieces (dd-*), always inside .lsm so
+// nothing reaches the rest of Moodle. Buttons, fields, dialogs and alerts stay the ones of Moodle.
+// @copyright 2026 Didactika.org
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm {
+    display: grid;
+    gap: 1.25rem;
+    min-width: 0;
+
+    // Page header: the context of the page and its actions; the title is the heading Moodle draws above it.
+    & .dd-page-header {
+        display: grid;
+        gap: 0.75rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--dd-hairline);
+    }
+
+    & .dd-page-header-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 1.5rem;
+    }
+
+    & .dd-page-header-main {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        min-width: 0;
+    }
+
+    & .dd-page-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.25;
+        color: var(--dd-ink);
+    }
+
+    & .dd-page-subtitle {
+        margin: 0;
+        color: var(--dd-muted);
+        font-size: 0.9375rem;
+    }
+
+    & .dd-page-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    // Tabs of the sections of a page: an underline under the open one.
+    & .nav-tabs {
+        gap: 0.25rem;
+        border-bottom: 1px solid var(--dd-hairline);
+
+        & .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: -1px;
+            padding: 0.625rem 1rem;
+            border: 0;
+            border-bottom: 2px solid transparent;
+            border-radius: var(--dd-radius-sm) var(--dd-radius-sm) 0 0;
+            background: none;
+            color: var(--dd-muted);
+            font-weight: 500;
+            transition: border-color var(--dd-ease), background-color var(--dd-ease), color var(--dd-ease);
+
+            &:hover {
+                border-bottom-color: var(--dd-line);
+                color: var(--dd-ink);
+            }
+
+            &.active {
+                border-bottom-color: var(--dd-primary);
+                background-color: var(--dd-primary-soft);
+                color: var(--dd-primary-ink);
+                font-weight: 600;
+            }
+        }
+    }
+
+    // Filter chips: the filters used all the time, with the rows each one leaves.
+    & .dd-chips {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    & .dd-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4375rem;
+        min-height: 2rem;
+        padding: 0.1875rem 0.75rem;
+        border: 1px solid var(--dd-line);
+        border-radius: 999px;
+        background: var(--dd-surface);
+        color: var(--dd-ink);
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.4;
+        cursor: pointer;
+        transition: background-color var(--dd-ease), border-color var(--dd-ease), color var(--dd-ease);
+
+        &:hover {
+            border-color: var(--dd-line-hover);
+            background: var(--dd-surface-2);
+        }
+
+        &:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+
+        &[aria-pressed="true"] {
+            border-color: var(--dd-primary);
+            background: var(--dd-primary-soft);
+            color: var(--dd-primary-ink);
+            font-weight: 600;
+
+            & .dd-chip-count {
+                background: var(--dd-primary);
+                color: #fff;
+            }
+        }
+    }
+
+    & .dd-chip-count {
+        padding: 0 0.4rem;
+        border-radius: 999px;
+        background: var(--dd-surface-3);
+        color: var(--dd-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    // Cards: a thin line and the radius of the system, no shadow. A list is a card with its toolbar, table and pager.
+    & .card {
+        overflow: hidden;
+        border: 1px solid var(--dd-hairline);
+        border-radius: var(--dd-radius-lg);
+        background: var(--dd-surface);
+        box-shadow: none;
+    }
+
+    & .card-body {
+        padding: 1.25rem;
+    }
+
+    & .card-title {
+        margin-bottom: 0.75rem;
+        color: var(--dd-ink);
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    & .table-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 1rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--dd-hairline);
+    }
+
+    & .table-toolbar-start,
+    & .table-toolbar-end {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    & .table-toolbar-start {
+        flex: 1 1 18rem;
+    }
+
+    // Tables: quiet lines, a small header in capitals, and room to breathe.
+    & .table-responsive {
+        margin: 0;
+        transition: opacity var(--dd-ease);
+
+        &[aria-busy="true"] {
+            opacity: 0.6;
+        }
+
+        // A list keeps the same height whatever it holds: with few rows there is empty space below them, with many it scrolls
+        // and the header stays in view.
+        &[data-region="tablewrap"] {
+            block-size: var(--dd-table-h);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+
+            & thead th {
+                position: sticky;
+                inset-block-start: 0;
+                z-index: 1;
+                background-color: var(--dd-surface);
+            }
+        }
+    }
+
+    // The empty and error states take the same height, so the page does not jump when a search finds nothing.
+    & [data-region="empty"]:not([hidden]),
+    & [data-region="error"]:not([hidden]) {
+        display: grid;
+        min-block-size: var(--dd-table-h);
+        place-content: center;
+    }
+
+    & .table {
+        margin-bottom: 0;
+        color: var(--dd-ink);
+        font-size: 0.9375rem;
+
+        & th,
+        & td {
+            padding: 0.75rem 1rem;
+            border-color: var(--dd-hairline);
+            vertical-align: middle;
+        }
+
+        & thead th {
+            border-top: 0;
+            border-bottom: 1px solid var(--dd-line);
+            color: var(--dd-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        & tbody th {
+            font-weight: 600;
+        }
+
+        & tbody tr:hover > * {
+            background-color: color-mix(in srgb, var(--dd-primary) 5%, var(--dd-surface));
+        }
+
+        // The last row keeps its line under it, also with Bootstrap 4, which draws the line of a cell above the cell.
+        & tbody tr:last-child > * {
+            border-bottom: 1px solid var(--dd-hairline);
+        }
+
+        & tbody tr.table-active > * {
+            background-color: var(--dd-primary-soft);
+            // Bootstrap 5 paints an active row with a grey inset shadow over its background; the tint is the one colour.
+            box-shadow: none;
+        }
+
+        & .table-select {
+            width: 2.75rem;
+            padding-right: 0;
+
+            // Bootstrap 4 places a check absolutely, beside a label; in a cell it stands on its own.
+            & .form-check-input {
+                position: static;
+                display: block;
+                width: 1.125rem;
+                height: 1.125rem;
+                margin: 0;
+                cursor: pointer;
+            }
+        }
+
+        & .table-actions {
+            width: 1%;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        // A person in a row: the name and, under it, the email, cut when the column is narrow.
+        & .userpicture,
+        & .userinitials {
+            flex: none;
+            margin: 0 0.75rem 0 0;
+        }
+
+        & .text-truncate {
+            max-width: 16rem;
+        }
+    }
+
+    & .table-sort {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        letter-spacing: inherit;
+        text-transform: inherit;
+        cursor: pointer;
+
+        &::after {
+            content: "";
+            flex: none;
+            width: 0.4375rem;
+            height: 0.4375rem;
+            border: solid currentColor;
+            border-width: 0 2px 2px 0;
+            opacity: 0.35;
+            transform: translateY(-2px) rotate(45deg);
+            transition: transform 200ms cubic-bezier(0.2, 0, 0, 1), opacity 150ms;
+        }
+
+        &:hover {
+            color: var(--dd-ink);
+
+            &::after {
+                opacity: 0.8;
+            }
+        }
+
+        &:focus-visible {
+            outline: 0;
+            border-radius: 0.25rem;
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+    }
+
+    & th[aria-sort] {
+        color: var(--dd-ink);
+
+        & .table-sort {
+            color: var(--dd-primary-ink);
+
+            &::after {
+                opacity: 1;
+                color: var(--dd-primary);
+            }
+        }
+    }
+
+    & th[aria-sort="ascending"] .table-sort::after {
+        transform: translateY(2px) rotate(-135deg);
+    }
+
+    // Foot of a list: how many rows, which ones, and the arrows.
+    & .table-foot {
+        padding: 0.75rem 1rem;
+        border-top: 1px solid var(--dd-hairline);
+    }
+
+    & .dd-pager {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 1.5rem;
+        color: var(--dd-muted);
+        font-size: 0.875rem;
+    }
+
+    & .dd-pager-size {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+
+        & select {
+            width: auto;
+        }
+    }
+
+    & .dd-pager-end {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1rem;
+    }
+
+    & .dd-pager-range {
+        color: var(--dd-ink);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    & .dd-pager-arrows {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    // States of a list: skeleton rows while it loads, and an empty state when there is nothing to show.
+    & .dd-skeleton {
+        display: block;
+        height: 0.875rem;
+        border-radius: 0.375rem;
+        background: linear-gradient(90deg, var(--dd-hairline) 0%, var(--dd-surface-3) 50%, var(--dd-hairline) 100%);
+        background-size: 200% 100%;
+        animation: lsm-shimmer 1.4s linear infinite;
+    }
+
+    & .dd-empty {
+        display: grid;
+        justify-items: center;
+        gap: 0.5rem;
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+
+        & .dd-tile {
+            width: 3.5rem;
+            height: 3.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 1rem;
+            font-size: 1.5rem;
+        }
+
+        & .btn {
+            margin-top: 0.75rem;
+        }
+    }
+
+    & .dd-empty-title {
+        margin: 0;
+        color: var(--dd-ink);
+        font-size: 1.0625rem;
+        font-weight: 700;
+    }
+
+    & .dd-empty-text {
+        max-width: 28rem;
+        margin: 0;
+        color: var(--dd-muted);
+        font-size: 0.9375rem;
+        line-height: 1.5;
+    }
+
+    // The alert of a list that did not load sits where its rows were.
+    & .card > .alert {
+        margin: 1rem;
+    }
+}
+
+@keyframes lsm-shimmer {
+    from {
+        background-position: 100% 0;
+    }
+
+    to {
+        background-position: -100% 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lsm .dd-skeleton {
+        animation: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .lsm {
+        & .dd-searchbox {
+            max-width: none;
+        }
+
+        & .dd-pager-size {
+            display: none;
+        }
+    }
+}

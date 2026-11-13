@@ -24,15 +24,15 @@ interface ChangeNavigatorProps {
 
 const ChangeNavigator = ({runs, position, onMove, text}: ChangeNavigatorProps) => {
     const current = runs[position];
-    return <div className="sm-floating sm-changenav" role="status" data-region="change-navigator">
-        <button type="button" className="sm-navbtn" onClick={() => onMove(-1)} title={text('compare_prev_change')}>
+    return <div className="dd-floatbar" role="region" aria-label={text('compare_changes_hint')} data-region="change-navigator">
+        <button type="button" className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => onMove(-1)} title={text('compare_prev_change')}>
             <Icon name="chevron-up" /><span className="visually-hidden">{text('compare_prev_change')}</span>
         </button>
-        <span className="sm-changenav-info">
+        <span className="d-flex flex-column small" role="status">
             <strong>{current ? text('compare_change_of', {n: position + 1, total: runs.length}) : text('compare_changes_found', runs.length)}</strong>
             <small>{current ? text('compare_change_at', {line: current.line, kind: text('change_' + current.kind)}) : text('compare_changes_hint')}</small>
         </span>
-        <button type="button" className="sm-navbtn" onClick={() => onMove(1)} title={text('compare_next_change')}>
+        <button type="button" className="btn btn-outline-secondary btn-sm btn-icon" onClick={() => onMove(1)} title={text('compare_next_change')}>
             <Icon name="chevron-down" /><span className="visually-hidden">{text('compare_next_change')}</span>
         </button>
     </div>;

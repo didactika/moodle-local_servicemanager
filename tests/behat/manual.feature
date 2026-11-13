@@ -1,6 +1,6 @@
 @local @local_servicemanager @javascript @servicemanager_manual
-Feature: The screenshots of the wiki
-  In order to keep the wiki true to the interface
+Feature: The screenshots of the user manual
+  In order to keep the user manual true to the interface
   As a maintainer
   I need the screenshots to be taken from the real pages, with data that makes them worth looking at
 
@@ -21,11 +21,11 @@ Feature: The screenshots of the wiki
     And I draw the numbered marks:
       | selector                    | number | where     |
       | [data-region='ws-status']   | 1      | top-left  |
-      | .sm-health                  | 2      | top-left  |
-      | .sm-search                  | 3      | top-left  |
-      | .sm-filter > .btn           | 4      | top-left  |
-      | .sm-toolbar-actions         | 5      | top-right |
-      | table tbody tr .sm-group    | 6      | top-right |
+      | [data-region='summary']     | 2      | top-left  |
+      | .dd-searchbox              | 3      | top-left  |
+      | [data-region='filter-menus'] | 4      | top-left  |
+      | .dd-page-actions           | 5      | top-right |
+      | table tbody tr .table-actions | 6      | top-right |
     And I take a screenshot of the page as "dashboard-marked"
     And I remove the numbered marks
     And I click on "Select all" "checkbox"
@@ -48,9 +48,9 @@ Feature: The screenshots of the wiki
       | selector                    | number | where     |
       | [data-region='ws-status']   | 1      | top-left  |
       | [data-region='details']     | 2      | top-left  |
-      | [data-region='details'] .sm-group | 3 | top-right |
-      | .col-lg-4 .sm-panel, .sm-side .sm-panel | 4 | top-left |
-      | .sm-functions, [data-region='functions'] | 5 | top-left |
+      | [data-region='details'] .card-header > .d-flex | 3 | top-right |
+      | .col-lg-4 .card | 4 | top-left |
+      | [data-region='functions'] | 5 | top-left |
     And I take a screenshot of the page as "schema-marked"
     And I remove the numbered marks
 
@@ -60,10 +60,10 @@ Feature: The screenshots of the wiki
     And I take a screenshot of the page as "history"
     And I draw the numbered marks:
       | selector                | number | where    |
-      | .sm-search              | 1      | top-left |
-      | .sm-filter > .btn       | 2      | top-left |
+      | .dd-searchbox           | 1      | top-left |
+      | [data-region='filter-menus'] | 2      | top-left |
       | [data-region='version'] | 3      | top-left |
-      | [data-region='version'] .sm-group | 4 | top-right |
+      | [data-region='version'] .table-actions | 4 | top-right |
     And I take a screenshot of the page as "history-marked"
     And I remove the numbered marks
     And I click on "Choose version 2.1.0" "checkbox"
