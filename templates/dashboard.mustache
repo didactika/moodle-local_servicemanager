@@ -142,21 +142,6 @@
                 </div>
             </div>
             <div class="sm-toolbar-actions">
-                <div class="dropdown sm-action-menu d-sm-none">
-                    <button type="button" class="btn sm-pill icon-only" data-sm-menu aria-haspopup="true" aria-expanded="false" title="{{#str}}actions, moodle{{/str}}">
-                        <i class="fa-solid fa-ellipsis" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}actions, moodle{{/str}}</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-row-menu">
-                        {{#canmanage}}
-                            <li><a class="dropdown-item" href="{{urls.create}}"><i class="fa-solid fa-plus sm-icon-gap" aria-hidden="true"></i>{{#str}}new_schema, local_servicemanager{{/str}}</a></li>
-                            <li><a class="dropdown-item" href="{{urls.import}}"><i class="fa-solid fa-file-import sm-icon-gap" aria-hidden="true"></i>{{#str}}import_schemas, local_servicemanager{{/str}}</a></li>
-                        {{/canmanage}}
-                        <li><a class="dropdown-item" href="{{urls.exportall}}"><i class="fa-solid fa-file-zipper sm-icon-gap" aria-hidden="true"></i>{{#str}}export_all, local_servicemanager{{/str}}</a></li>
-                        <li><a class="dropdown-item" href="{{urls.documentation}}"><i class="fa-solid fa-file-lines sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_schema_reference, local_servicemanager{{/str}}</a></li>
-                        <li><a class="dropdown-item" href="{{urls.manual}}" target="_blank" rel="noreferrer"><i class="fa-solid fa-book-open sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_plugin_manual, local_servicemanager{{/str}}</a></li>
-                        <li><a class="dropdown-item" href="{{urls.moodledocs}}" target="_blank" rel="noreferrer"><i class="fa-solid fa-life-ring sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_moodle, local_servicemanager{{/str}}</a></li>
-                    </ul>
-                </div>
                 <div class="sm-group d-none d-sm-flex" role="group" aria-label="{{#str}}actions, moodle{{/str}}">
                     {{#canmanage}}
                         <a href="{{urls.create}}" class="btn sm-pill icon-only solid tone-primary" title="{{#str}}new_schema, local_servicemanager{{/str}}">
@@ -180,6 +165,21 @@
                             <li><a class="dropdown-item" href="{{urls.moodledocs}}" target="_blank" rel="noreferrer"><i class="fa-solid fa-life-ring sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_moodle, local_servicemanager{{/str}}</a></li>
                         </ul>
                     </div>
+                </div>
+                <div class="dropdown sm-action-menu d-sm-none">
+                    <button type="button" class="btn sm-pill icon-only" data-sm-menu aria-haspopup="true" aria-expanded="false" title="{{#str}}actions, moodle{{/str}}">
+                        <i class="fa-solid fa-ellipsis" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}actions, moodle{{/str}}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-row-menu">
+                        {{#canmanage}}
+                            <li><a class="dropdown-item" href="{{urls.create}}"><i class="fa-solid fa-plus sm-icon-gap" aria-hidden="true"></i>{{#str}}new_schema, local_servicemanager{{/str}}</a></li>
+                            <li><a class="dropdown-item" href="{{urls.import}}"><i class="fa-solid fa-file-import sm-icon-gap" aria-hidden="true"></i>{{#str}}import_schemas, local_servicemanager{{/str}}</a></li>
+                        {{/canmanage}}
+                        <li><a class="dropdown-item" href="{{urls.exportall}}"><i class="fa-solid fa-file-zipper sm-icon-gap" aria-hidden="true"></i>{{#str}}export_all, local_servicemanager{{/str}}</a></li>
+                        <li><a class="dropdown-item" href="{{urls.documentation}}"><i class="fa-solid fa-file-lines sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_schema_reference, local_servicemanager{{/str}}</a></li>
+                        <li><a class="dropdown-item" href="{{urls.manual}}" target="_blank" rel="noreferrer"><i class="fa-solid fa-book-open sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_plugin_manual, local_servicemanager{{/str}}</a></li>
+                        <li><a class="dropdown-item" href="{{urls.moodledocs}}" target="_blank" rel="noreferrer"><i class="fa-solid fa-life-ring sm-icon-gap" aria-hidden="true"></i>{{#str}}docs_moodle, local_servicemanager{{/str}}</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
