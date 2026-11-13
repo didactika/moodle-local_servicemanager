@@ -49,6 +49,39 @@ const TONES = {healthy: 'success', warning: 'warning', critical: 'danger'};
 /**
  * Start the dashboard.
  */
+/**
+ * Keeps the columns of a table still: the width the browser gives each column is measured and kept, so a filter never moves them.
+ * They are measured again only when the box of the table changes width.
+ *
+ * @param {HTMLTableElement} table The table.
+ */
+const keepColumns = (table) => {
+    const box = table?.parentElement;
+    if (!table || !box) {
+        return;
+    }
+    const freeze = () => {
+        const heads = Array.from(table.tHead?.rows[0]?.cells ?? []);
+        table.style.tableLayout = '';
+        heads.forEach((head) => {
+            head.style.width = '';
+        });
+        const widths = heads.map((head) => head.getBoundingClientRect().width);
+        heads.forEach((head, index) => {
+            head.style.width = `${widths[index]}px`;
+        });
+        table.style.tableLayout = 'fixed';
+    };
+    freeze();
+    let width = box.clientWidth;
+    new ResizeObserver(() => {
+        if (Math.abs(box.clientWidth - width) > 1) {
+            width = box.clientWidth;
+            freeze();
+        }
+    }).observe(box);
+};
+
 export const init = () => {
     const root = document.querySelector('[data-region="servicemanager-dashboard"]');
     if (!root) {
@@ -275,6 +308,11 @@ export const init = () => {
     ]).then(([loadedPager, loaded]) => {
         pager = loadedPager;
         strings = {deleteTitle: loaded[0], deleteBody: loaded[1]};
-        return render();
-    }).catch(() => render());
+        render();
+        keepColumns(table);
+        return null;
+    }).catch(() => {
+        render();
+        keepColumns(table);
+    });
 };
