@@ -120,8 +120,8 @@ final class health_page_test extends \advanced_testcase {
 
         $context = $this->export(new health_page($schema, 'bogus', 99, 7));
 
-        $this->assertCount(5, $context['rows']);
-        $this->assertSame('Showing 26 to 30 of 30', $context['showing']);
+        $this->assertCount(6, $context['rows']);
+        $this->assertSame('Showing 25 to 30 of 30', $context['showing']);
         $this->assertTrue($context['filters'][0]['active']);
     }
 
