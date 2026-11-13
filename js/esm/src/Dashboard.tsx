@@ -86,18 +86,6 @@ const Dashboard = (props: DashboardProps) => {
                         list={list}
                         text={text}
                         actions={<>
-                        <div className="d-sm-none">
-                            <ActionMenu size="md" label={text('core_actions')} actions={[
-                                ...(canManage ? [
-                                    {label: text('new_schema'), icon: 'plus', href: urls.create},
-                                    {label: text('import_schemas'), icon: 'file-import', href: urls.import},
-                                ] : []),
-                                {label: text('export_all'), icon: 'file-zipper', href: urls.exportAll},
-                                {label: text('docs_schema_reference'), icon: 'file-lines', href: urls.documentation},
-                                {label: text('docs_plugin_manual'), icon: 'book-open', href: urls.manual},
-                                {label: text('docs_moodle'), icon: 'life-ring', href: urls.moodleDocs},
-                            ]} />
-                        </div>
                         <div className="sm-group d-none d-sm-flex" role="group" aria-label={text('core_actions')}>
                             {canManage && <IconButton large solid tone="primary" icon="plus" label={text('new_schema')} href={urls.create} />}
                             {canManage && <IconButton large tone="success" icon="file-import" label={text('import_schemas')} href={urls.import} />}
@@ -113,6 +101,19 @@ const Dashboard = (props: DashboardProps) => {
                                     {label: text('docs_moodle'), icon: 'life-ring', href: urls.moodleDocs},
                                 ]}
                             />
+                        </div>
+                        {/* On a phone the actions are one menu; it comes after the buttons, which are the ones a wide screen shows. */}
+                        <div className="d-sm-none">
+                            <ActionMenu size="md" label={text('core_actions')} actions={[
+                                ...(canManage ? [
+                                    {label: text('new_schema'), icon: 'plus', href: urls.create},
+                                    {label: text('import_schemas'), icon: 'file-import', href: urls.import},
+                                ] : []),
+                                {label: text('export_all'), icon: 'file-zipper', href: urls.exportAll},
+                                {label: text('docs_schema_reference'), icon: 'file-lines', href: urls.documentation},
+                                {label: text('docs_plugin_manual'), icon: 'book-open', href: urls.manual},
+                                {label: text('docs_moodle'), icon: 'life-ring', href: urls.moodleDocs},
+                            ]} />
                         </div>
                         </>}
                     />
