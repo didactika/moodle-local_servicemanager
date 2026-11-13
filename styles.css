@@ -2054,7 +2054,7 @@
         inset-inline-start: 0;
         z-index: 1;
         background-color: var(--bs-body-bg);
-        box-shadow: inset -1px 0 0 var(--dd-hairline, rgba(0, 0, 0, 0.08));
+        box-shadow: inset -1px 0 0 var(--bs-border-color);
     }
 
     .servicemanager-dashboard .table-responsive .table thead th:first-child,
