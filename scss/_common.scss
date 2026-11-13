@@ -330,6 +330,7 @@
             margin: 0;
             overflow-y: auto;
             overscroll-behavior: contain;
+            /* stylelint-disable-next-line csstree/validator */
             scrollbar-gutter: stable;
 
             & thead th {
