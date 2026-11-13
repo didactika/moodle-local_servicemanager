@@ -141,43 +141,67 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
         {
           list,
           text,
-          actions: /* @__PURE__ */ jsxDEV("div", { className: "sm-group", role: "group", "aria-label": text("core_actions"), children: [
-            canManage && /* @__PURE__ */ jsxDEV(IconButton, { large: true, solid: true, tone: "primary", icon: "plus", label: text("new_schema"), href: urls.create }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-              lineNumber: 89,
-              columnNumber: 43
-            }),
-            canManage && /* @__PURE__ */ jsxDEV(IconButton, { large: true, tone: "success", icon: "file-import", label: text("import_schemas"), href: urls.import }, void 0, false, {
+          actions: /* @__PURE__ */ jsxDEV(Fragment, { children: [
+            /* @__PURE__ */ jsxDEV("div", { className: "d-sm-none", children: /* @__PURE__ */ jsxDEV(ActionMenu, { size: "md", label: text("core_actions"), actions: [
+              ...canManage ? [
+                { label: text("new_schema"), icon: "plus", href: urls.create },
+                { label: text("import_schemas"), icon: "file-import", href: urls.import }
+              ] : [],
+              { label: text("export_all"), icon: "file-zipper", href: urls.exportAll },
+              { label: text("docs_schema_reference"), icon: "file-lines", href: urls.documentation },
+              { label: text("docs_plugin_manual"), icon: "book-open", href: urls.manual },
+              { label: text("docs_moodle"), icon: "life-ring", href: urls.moodleDocs }
+            ] }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
               lineNumber: 90,
-              columnNumber: 43
-            }),
-            /* @__PURE__ */ jsxDEV(IconButton, { large: true, tone: "info", icon: "file-zipper", label: text("export_all"), href: urls.exportAll }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-              lineNumber: 91,
               columnNumber: 29
+            }) }, void 0, false, {
+              fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+              lineNumber: 89,
+              columnNumber: 25
             }),
-            /* @__PURE__ */ jsxDEV(
-              ActionMenu,
-              {
-                size: "md",
-                caret: true,
-                icon: "book",
-                label: text("docs_menu"),
-                actions: [
-                  { label: text("docs_schema_reference"), icon: "file-lines", href: urls.documentation },
-                  { label: text("docs_plugin_wiki"), icon: "book-open", href: urls.wiki },
-                  { label: text("docs_moodle"), icon: "life-ring", href: urls.moodleDocs }
-                ]
-              },
-              void 0,
-              false,
-              {
+            /* @__PURE__ */ jsxDEV("div", { className: "sm-group d-none d-sm-flex", role: "group", "aria-label": text("core_actions"), children: [
+              canManage && /* @__PURE__ */ jsxDEV(IconButton, { large: true, solid: true, tone: "primary", icon: "plus", label: text("new_schema"), href: urls.create }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-                lineNumber: 92,
+                lineNumber: 102,
+                columnNumber: 43
+              }),
+              canManage && /* @__PURE__ */ jsxDEV(IconButton, { large: true, tone: "success", icon: "file-import", label: text("import_schemas"), href: urls.import }, void 0, false, {
+                fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+                lineNumber: 103,
+                columnNumber: 43
+              }),
+              /* @__PURE__ */ jsxDEV(IconButton, { large: true, tone: "info", icon: "file-zipper", label: text("export_all"), href: urls.exportAll }, void 0, false, {
+                fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+                lineNumber: 104,
                 columnNumber: 29
-              }
-            )
+              }),
+              /* @__PURE__ */ jsxDEV(
+                ActionMenu,
+                {
+                  size: "md",
+                  caret: true,
+                  icon: "book",
+                  label: text("docs_menu"),
+                  actions: [
+                    { label: text("docs_schema_reference"), icon: "file-lines", href: urls.documentation },
+                    { label: text("docs_plugin_manual"), icon: "book-open", href: urls.manual },
+                    { label: text("docs_moodle"), icon: "life-ring", href: urls.moodleDocs }
+                  ]
+                },
+                void 0,
+                false,
+                {
+                  fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+                  lineNumber: 105,
+                  columnNumber: 29
+                }
+              )
+            ] }, void 0, true, {
+              fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+              lineNumber: 101,
+              columnNumber: 25
+            })
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
             lineNumber: 88,
@@ -206,7 +230,7 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 108,
+            lineNumber: 122,
             columnNumber: 27
           }
         ) : /* @__PURE__ */ jsxDEV("div", { className: "table-responsive", "data-region": "tablewrap", children: /* @__PURE__ */ jsxDEV(
@@ -219,13 +243,13 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
             actions: asking ? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: list.reset, children: [
               /* @__PURE__ */ jsxDEV(Icon, { name: "xmark", gap: true }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-                lineNumber: 122,
+                lineNumber: 136,
                 columnNumber: 37
               }),
               text("filter_clear")
             ] }, void 0, true, {
               fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-              lineNumber: 121,
+              lineNumber: 135,
               columnNumber: 35
             }) : void 0
           },
@@ -233,27 +257,27 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 115,
+            lineNumber: 129,
             columnNumber: 85
           }
         ) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 115,
+          lineNumber: 129,
           columnNumber: 27
         }),
         /* @__PURE__ */ jsxDEV(Pager, { page: page.page, perpage: list.state.perpage, total: page.total, onChange: (changes) => list.set(changes), text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 126,
+          lineNumber: 140,
           columnNumber: 21
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 106,
+        lineNumber: 120,
         columnNumber: 21
       }),
       props.truncated && /* @__PURE__ */ jsxDEV("p", { className: "text-body-secondary small text-center", children: text("list_truncated", schemas.length) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 128,
+        lineNumber: 142,
         columnNumber: 41
       })
     ] }, void 0, true, {
@@ -274,7 +298,7 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 131,
+        lineNumber: 145,
         columnNumber: 56
       }
     ),
@@ -293,7 +317,7 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 139,
+        lineNumber: 153,
         columnNumber: 13
       }
     )

@@ -52,7 +52,7 @@ const HealthChecks = /* @__PURE__ */ __name((props) => {
       /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center justify-content-between mb-3 sm-actions-row", children: /* @__PURE__ */ jsxDEV(
         "nav",
         {
-          className: "d-flex flex-wrap align-items-center sm-health-filters",
+          className: "d-flex align-items-center sm-health-filters",
           "aria-label": text("core_status"),
           "data-region": "health-filters",
           children: filters.map((filter) => /* @__PURE__ */ jsxDEV(

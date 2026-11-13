@@ -37,7 +37,7 @@ const HealthChecks = (props: HealthChecksProps) => {
 
             {props.hasAny && <>
                 <div className="d-flex flex-wrap align-items-center justify-content-between mb-3 sm-actions-row">
-                    <nav className="d-flex flex-wrap align-items-center sm-health-filters" aria-label={text('core_status')}
+                    <nav className="d-flex align-items-center sm-health-filters" aria-label={text('core_status')}
                         data-region="health-filters">
                         {filters.map((filter) => <a
                             key={filter.status || 'all'}

@@ -58,7 +58,7 @@ export interface DashboardProps {
     sesskey: string;
     urls: {
         create: string; createYaml: string; import: string; exportAll: string; bulkAction: string; documentation: string;
-        dashboard: string; wiki: string; moodleDocs: string;
+        dashboard: string; manual: string; moodleDocs: string;
     };
     wsStatus: WsStatus;
     schemas: SchemaRow[];

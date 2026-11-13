@@ -4,6 +4,13 @@
     // The statuses to narrow the list to; the one that is shown stands out from the others.
     .sm-health-filters {
         gap: 0.4rem;
+        // The statuses keep one row; on a narrow screen the row scrolls inside its own box.
+        flex-wrap: nowrap;
+        overflow-x: auto;
+
+        & > * {
+            flex: none;
+        }
 
         & .sm-pill.active {
             border-color: var(--sm-tone);

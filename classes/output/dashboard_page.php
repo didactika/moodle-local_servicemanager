@@ -89,7 +89,8 @@ class dashboard_page implements react_component_renderable, \renderable {
                 'bulkAction' => $this->url('bulk_action.php'),
                 'documentation' => $this->url('documentation.php'),
                 'dashboard' => $this->url('dashboard.php'),
-                'wiki' => 'https://github.com/didactika/moodle-local_servicemanager/wiki',
+                'manual' => 'https://docs.didactika.org/' . (substr(current_language(), 0, 2) === 'es' ? 'es' : 'en') .
+                    '/plugins/local-servicemanager/',
                 'moodleDocs' => get_docs_url('Web_services'),
             ],
             'wsStatus' => $this->web_service_status($canmanage),
