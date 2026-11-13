@@ -63,6 +63,8 @@ At the right of the search there are four buttons:
 | Blue file | **Export all**: every schema in one ZIP. |
 | Book with a small arrow | **Documentation**: a menu with the [YAML reference](page:reference/yaml), this manual and the documentation of Moodle. |
 
+On a narrow screen, such as a phone, the four buttons become one button with three dots. Its menu holds the same actions and the entries of the documentation menu, so the search, **Filters** and the actions stay on one row.
+
 ![The documentation menu](asset:dashboard-documentation-menu.webp)
 
 ## 6. The actions of a schema

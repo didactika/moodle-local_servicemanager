@@ -54,6 +54,8 @@ A la derecha de la búsqueda hay cuatro botones:
 | Archivo azul | **Exportar todo**: todos los esquemas en un ZIP. |
 | Libro con una flecha pequeña | **Documentación**: un menú con la [referencia YAML](page:reference/yaml), este manual y la documentación de Moodle. |
 
+En una pantalla estrecha, como la de un teléfono, los cuatro botones se convierten en un único botón con tres puntos. Su menú contiene las mismas acciones y las entradas del menú de documentación, de modo que la búsqueda, **Filtros** y las acciones se mantienen en una sola fila.
+
 ![El menú de documentación](asset:dashboard-documentation-menu.webp)
 
 ## 6. Las acciones de un esquema
