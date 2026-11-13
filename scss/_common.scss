@@ -1102,3 +1102,47 @@
         }
     }
 }
+
+// Narrow screens: the cells keep one line and the table scrolls sideways inside its box, with its first column fixed so each row
+// keeps its name in view; tabs and chips keep one row that scrolls sideways instead of piling up.
+@media (max-width: 767.98px) {
+    .servicemanager-dashboard,
+    .servicemanager-history-page,
+    .servicemanager-health-page,
+    .servicemanager-detail {
+        // The column of the page is never wider than the screen, whatever a row of tabs or chips holds.
+        grid-template-columns: minmax(0, 1fr);
+
+        & .table-responsive .table {
+            & th,
+            & td {
+                white-space: nowrap;
+            }
+
+            & th:first-child,
+            & td:first-child {
+                position: sticky;
+                inset-inline-start: 0;
+                z-index: 1;
+                background-color: var(--bs-body-bg);
+                box-shadow: inset -1px 0 0 var(--dd-hairline, rgb(0 0 0 / 8%));
+            }
+
+            & thead th:first-child {
+                z-index: 2;
+            }
+        }
+
+        & .nav-tabs,
+        & .dd-chips {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        & .nav-tabs .nav-link,
+        & .dd-chip {
+            flex: none;
+            white-space: nowrap;
+        }
+    }
+}
