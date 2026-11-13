@@ -1,0 +1,90 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// Moodle 4.0 to 4.5 load Bootstrap 4, which has none of these utilities of Bootstrap 5 that the screens use. They are given here,
+// to the screens of the plugin only, with the values of Bootstrap 5, so the same markup looks the same on every release; on a
+// release with Bootstrap 5 they are the ones it already has.
+// @copyright 2026 Didactika.org
+// @author Hector Arrechea <hectorlazaroarrechea@gmail.com>
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+/* stylelint-disable declaration-no-important */
+.lsm,
+#{$lsm-modal} {
+    & .gap-1 {
+        gap: 0.25rem !important;
+    }
+
+    & .gap-2 {
+        gap: 0.5rem !important;
+    }
+
+    & .gap-3 {
+        gap: 1rem !important;
+    }
+
+    & .d-grid {
+        display: grid !important;
+    }
+
+    & .fw-normal {
+        font-weight: 400 !important;
+    }
+
+    & .fw-semibold {
+        font-weight: 600 !important;
+    }
+
+    & .fw-bold {
+        font-weight: 700 !important;
+    }
+
+    & .ms-1 {
+        margin-left: 0.25rem !important;
+    }
+
+    & .ms-2 {
+        margin-left: 0.5rem !important;
+    }
+
+    & .ms-auto {
+        margin-left: auto !important;
+    }
+
+    & .me-1 {
+        margin-right: 0.25rem !important;
+    }
+
+    & .me-2 {
+        margin-right: 0.5rem !important;
+    }
+
+    & .me-3 {
+        margin-right: 1rem !important;
+    }
+
+    & .text-end {
+        text-align: right !important;
+    }
+
+    & .font-monospace {
+        font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    }
+
+    & .bg-body-tertiary {
+        background-color: var(--bs-tertiary-bg, #f8f9fa) !important;
+    }
+
+    & .visually-hidden {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+    }
+}
+/* stylelint-enable declaration-no-important */

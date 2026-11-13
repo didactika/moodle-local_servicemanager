@@ -29,7 +29,9 @@ import {init as initMenus} from 'local_servicemanager/menu';
 import {init as initCopy} from 'local_servicemanager/copy';
 import {add as addToast} from 'core/toast';
 import Templates from 'core/templates';
-import {confirm} from 'local_servicemanager/dialogue';
+import {confirm, inform} from 'local_servicemanager/dialogue';
+import {init as initFilters, orderedDays, presets} from 'local_servicemanager/filters';
+import {init as fitTables} from 'local_servicemanager/fit_tables';
 import {
     addressKeeper,
     drawPager,
@@ -59,6 +61,8 @@ const loadYaml = (historyid) => Ajax.call([{
  * Start the page.
  */
 export const init = () => {
+    // The box of the table takes the height the window leaves it.
+    fitTables();
     const root = document.querySelector('[data-region="servicemanager-history"]');
     if (!root) {
         return;
@@ -69,11 +73,13 @@ export const init = () => {
     if (rows.length === 0) {
         return;
     }
-    const search = root.querySelector('#sm-search');
-    const from = root.querySelector('#sm-from');
-    const to = root.querySelector('#sm-to');
+    const toolbar = root.querySelector('[data-region="filters"]');
+    const filters = initFilters(toolbar);
+    const dateMenu = filters.menu('date');
+    const search = root.querySelector('#lsm-search');
+    const from = dateMenu.querySelector('[data-date="from"]');
+    const to = dateMenu.querySelector('[data-date="to"]');
     const firstSize = PAGE_SIZES[0];
-    const filtersCount = root.querySelector('[data-region="filters-count"]');
     const empty = root.querySelector('[data-region="empty-state"]');
     let list = root.querySelector('[data-region="versions"]');
     const pagination = root.querySelector('[data-region="pagination"]');
@@ -83,9 +89,11 @@ export const init = () => {
     const chosenText = root.querySelector('[data-region="compare-chosen"]');
     const tooMany = root.querySelector('[data-region="compare-too-many"]');
     const state = readState(PAGE_SIZES);
+    [state.from, state.to] = [state.from, state.to].sort((a, b) => (a && b ? a.localeCompare(b) : 0));
     const keepAddress = addressKeeper(firstSize);
     const chosen = new Set();
-    let strings = {current: '{n}', chosen: '{n}/{total}', count: '{n}', loading: '', copy: '', failed: root.dataset.yamlFailed};
+    let strings = {current: '{n}', chosen: '{n}/{total}', count: '{n}', loading: '', copy: '', failed: root.dataset.yamlFailed,
+        range: '', since: '', until: '', yaml: ''};
     let pager = {};
 
     const drawChoice = () => {
@@ -94,7 +102,7 @@ export const init = () => {
         clear.hidden = chosen.size === 0;
         bar.hidden = chosen.size === 0;
         rows.forEach((row) => {
-            row.classList.toggle('active-version', chosen.has(Number(row.dataset.id)));
+            row.classList.toggle('table-active', chosen.has(Number(row.dataset.id)));
         });
     };
 
@@ -109,11 +117,16 @@ export const init = () => {
         });
         root.querySelector('[data-region="history-count-text"]').textContent = strings.count.replace('{n}', found.length);
 
-        const extras = (state.from ? 1 : 0) + (state.to ? 1 : 0);
-        filtersCount.textContent = String(extras);
-        filtersCount.hidden = extras === 0;
-        root.querySelector('[data-action="reset-filters"]').disabled = extras === 0;
-        root.querySelector('[data-action="clear-search"]').hidden = state.query === '';
+        const dates = dateLabel();
+        filters.paint('date', dates || dateMenu.querySelector('[data-region="menu-label"]').dataset.label, dates !== '');
+        from.value = state.from;
+        to.value = state.to;
+        from.max = state.to;
+        to.min = state.from;
+        const applied = state.from || state.to ? 1 : 0;
+        toolbar.dataset.applied = String(applied);
+        filters.fit(applied);
+        toolbar.querySelector('.table-toolbar-end [data-action="reset-all"]').disabled = applied === 0 && state.query === '';
         list.hidden = found.length === 0;
         empty.hidden = found.length !== 0;
         drawPager(pagination, state.page, state.perpage, found.length, pager);
@@ -126,49 +139,52 @@ export const init = () => {
         render();
     };
 
-    const toggleYaml = (button) => {
-        const row = button.closest('[data-region="version"]');
-        const holder = row.querySelector('[data-region="yaml"]');
-        if (!holder.hidden) {
-            holder.hidden = true;
-            button.setAttribute('aria-expanded', 'false');
-            return;
+    const dateLabel = () => {
+        const found = Object.entries(presets()).find(([, days]) => days[0] === state.from && days[1] === state.to);
+        if (found) {
+            return dateMenu.querySelector(`[data-preset="${found[0]}"]`).textContent.trim();
         }
-        holder.hidden = false;
-        holder.classList.remove('sm-danger');
-        button.setAttribute('aria-expanded', 'true');
-        holder.textContent = strings.loading;
+        if (state.from && state.to) {
+            return strings.range.replace('{$a->from}', state.from).replace('{$a->to}', state.to);
+        }
+        if (state.from) {
+            return strings.since.replace('{$a}', state.from);
+        }
+        return state.to ? strings.until.replace('{$a}', state.to) : '';
+    };
+
+    const showYaml = (button) => {
+        const row = button.closest('[data-region="version"]');
+        const title = `${strings.yaml} · ${row.dataset.version}`;
         loadYaml(Number(row.dataset.id)).then((yaml) => {
-            const id = 'sm-yaml-' + row.dataset.id;
-            holder.replaceChildren();
             const pre = document.createElement('pre');
-            pre.className = 'sm-yaml';
-            pre.id = id;
+            pre.className = 'bg-body-tertiary border rounded p-3 small mb-0';
             const code = document.createElement('code');
             code.textContent = yaml;
             pre.appendChild(code);
-            const copy = document.createElement('button');
-            copy.type = 'button';
-            copy.className = 'btn sm-pill compact';
-            copy.dataset.copyTarget = '#' + id;
-            const icon = document.createElement('i');
-            icon.className = 'fa-solid fa-copy sm-icon-gap';
-            icon.setAttribute('aria-hidden', 'true');
-            copy.append(icon, document.createTextNode(strings.copy));
-            holder.append(pre, copy);
-            return yaml;
-        }).catch(() => {
-            holder.textContent = strings.failed;
-            holder.classList.add('sm-danger');
-        });
+            return inform(title, pre.outerHTML);
+        }).catch(() => inform(title, strings.failed));
     };
 
     search.value = state.query;
-    from.value = state.from;
-    to.value = state.to;
     search.addEventListener('input', () => set({query: search.value}));
-    from.addEventListener('change', () => set({from: from.value}));
-    to.addEventListener('change', () => set({to: to.value}));
+    dateMenu.addEventListener('click', (event) => {
+        const preset = event.target.closest('[data-preset]');
+        if (preset) {
+            const [first, last] = presets()[preset.dataset.preset];
+            filters.open(null, false);
+            set({from: first, to: last});
+        }
+    });
+    from.addEventListener('change', () => {
+        const [first, last] = orderedDays(from.value, state.to, 'from');
+        set({from: first, to: last});
+    });
+    to.addEventListener('change', () => {
+        const [first, last] = orderedDays(state.from, to.value, 'to');
+        set({from: first, to: last});
+    });
+    dateMenu.querySelector('[data-menu-clear]').addEventListener('click', () => set({from: '', to: ''}));
 
     root.addEventListener('change', (event) => {
         const box = event.target;
@@ -219,19 +235,8 @@ export const init = () => {
     ]).then(([title, body, label]) => confirm(title, body, label, () => rollback(Number(button.dataset.id))));
 
     const actions = {
-        'clear-search': () => {
-            search.value = '';
-            set({query: ''});
-        },
-        'reset-filters': () => {
-            from.value = '';
-            to.value = '';
-            set({from: '', to: ''});
-        },
         'reset-all': () => {
             search.value = '';
-            from.value = '';
-            to.value = '';
             set({query: '', from: '', to: ''});
         },
         'clear-selection': () => {
@@ -242,7 +247,7 @@ export const init = () => {
             });
             drawChoice();
         },
-        'toggle-yaml': toggleYaml,
+        'show-yaml': showYaml,
         'rollback': (button) => askRollback(button),
     };
 
@@ -271,12 +276,17 @@ export const init = () => {
             {key: 'loading', component: 'local_servicemanager'},
             {key: 'copy', component: 'local_servicemanager'},
             {key: 'history_current', component: 'local_servicemanager', param: '{n}'},
+            {key: 'filter_date_range', component: 'local_servicemanager'},
+            {key: 'filter_date_since', component: 'local_servicemanager'},
+            {key: 'filter_date_until', component: 'local_servicemanager'},
+            {key: 'view_yaml', component: 'local_servicemanager'},
         ]).catch(() => null),
     ]).then(([loadedPager, loaded]) => {
         pager = loadedPager;
         if (loaded) {
             strings = Object.assign(strings, {
-                chosen: loaded[0], count: loaded[1], loading: loaded[2], copy: loaded[3], current: loaded[4],
+                chosen: loaded[0], count: loaded[1], loading: loaded[2], copy: loaded[3], current: loaded[4], range: loaded[5],
+                since: loaded[6], until: loaded[7], yaml: loaded[8],
             });
         }
         return render();

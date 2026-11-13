@@ -24,6 +24,7 @@
  */
 
 import {get_strings as getStrings} from 'core/str';
+import Templates from 'core/templates';
 
 /** Milliseconds after the last change before the address follows. */
 const ADDRESS_DELAY = 300;
@@ -147,22 +148,25 @@ export const PAGE_SIZES = [12, 24, 48, 96, 0];
  *
  * @returns {Promise} Resolves with the texts.
  */
-export const loadPagerStrings = () => getStrings([
+export const loadPagerStrings = () => Promise.all([getStrings([
     {key: 'pagination_previous', component: 'local_servicemanager'},
     {key: 'pagination_next', component: 'local_servicemanager'},
     {key: 'pagination_per_page', component: 'local_servicemanager'},
     {key: 'pagination_all', component: 'local_servicemanager'},
     {key: 'pagination_range', component: 'local_servicemanager', param: {from: '{from}', to: '{to}', total: '{total}'}},
     {key: 'pagination_aria_label', component: 'local_servicemanager'},
-]).then((loaded) => ({
+]), Templates.renderPix('i/previous', 'core'), Templates.renderPix('i/next', 'core')]).then(([loaded, previousIcon, nextIcon]) => ({
     previous: loaded[0],
     next: loaded[1],
     perpage: loaded[2],
     all: loaded[3],
     range: loaded[4],
     label: loaded[5],
+    previousIcon,
+    nextIcon,
 }))
-    .catch(() => ({previous: '', next: '', perpage: '', all: '', range: '{from}–{to} / {total}', label: ''}));
+    .catch(() => ({previous: '', next: '', perpage: '', all: '', range: '{from}–{to} / {total}', label: '', previousIcon: '‹',
+        nextIcon: '›'}));
 
 /**
  * The rows a page shows: how many fit on it, which page it is and the first and the last row.
@@ -187,10 +191,8 @@ const arrow = (target, name, title, disabled) => {
     button.title = title;
     button.setAttribute('aria-label', title);
     button.disabled = disabled;
-    const icon = document.createElement('i');
-    icon.className = 'fa-solid fa-' + name;
-    icon.setAttribute('aria-hidden', 'true');
-    button.appendChild(icon);
+    // The icon of Moodle, drawn once by the theme.
+    button.innerHTML = name;
     return button;
 };
 
@@ -222,10 +224,10 @@ export const drawPager = (foot, page, perpage, total, strings) => {
     left.className = 'dd-pager-size';
     const label = document.createElement('label');
     label.className = 'mb-0';
-    label.htmlFor = 'sm-perpage';
+    label.htmlFor = 'lsm-perpage';
     label.textContent = strings.perpage;
     const select = document.createElement('select');
-    select.id = 'sm-perpage';
+    select.id = 'lsm-perpage';
     select.className = 'custom-select custom-select-sm form-select form-select-sm dd-select';
     select.dataset.region = 'perpage';
     sizes.forEach((size) => select.appendChild(new Option(size ? String(size) : strings.all, String(size), false, size === shown)));
@@ -240,8 +242,8 @@ export const drawPager = (foot, page, perpage, total, strings) => {
     const arrows = document.createElement('div');
     arrows.className = 'dd-pager-arrows';
     arrows.append(
-        arrow(range.page - 1, 'angle-left', strings.previous, range.page === 0),
-        arrow(range.page + 1, 'angle-right', strings.next, range.to >= total)
+        arrow(range.page - 1, strings.previousIcon || '‹', strings.previous, range.page === 0),
+        arrow(range.page + 1, strings.nextIcon || '›', strings.next, range.to >= total)
     );
     right.append(text, arrows);
 

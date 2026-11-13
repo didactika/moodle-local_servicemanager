@@ -40,34 +40,34 @@
         "againurl": "#"
     }
 }}
-<div class="servicemanager-import-result{{#legacyicons}} sm-fa4{{/legacyicons}}">
-    <header class="sm-page-header">
-        <div class="sm-page-title">
-            <h2 class="sm-flush">{{#str}}import_result_title, local_servicemanager{{/str}}</h2>
-            <p class="sm-muted sm-flush">{{subtitle}}</p>
+<div class="lsm servicemanager-import-result">
+    <header class="dd-page-header mb-3">
+        <div>
+            <h2 class="dd-page-title">{{#str}}import_result_title, local_servicemanager{{/str}}</h2>
+            <p class="dd-page-subtitle">{{subtitle}}</p>
         </div>
-        <div class="sm-actions-row">
-            <a href="{{dashboardurl}}" class="btn btn-primary"><i class="fa-solid fa-table-list sm-icon-gap" aria-hidden="true"></i>{{#str}}dashboard, local_servicemanager{{/str}}</a>
-            <a href="{{againurl}}" class="btn btn-outline-secondary"><i class="fa-solid fa-file-import sm-icon-gap" aria-hidden="true"></i>{{#str}}import_again, local_servicemanager{{/str}}</a>
+        <div class="dd-page-actions">
+            <a href="{{dashboardurl}}" class="btn btn-primary">{{#pix}}list, local_servicemanager{{/pix}} {{#str}}dashboard, local_servicemanager{{/str}}</a>
+            <a href="{{againurl}}" class="btn btn-outline-secondary">{{#pix}}i/import, core{{/pix}} {{#str}}import_again, local_servicemanager{{/str}}</a>
         </div>
     </header>
 
-    <div class="sm-tiles sm-tiles-four" data-region="summary">
-        <div class="card sm-tile"><div class="card-body">
-            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_imported, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-text-success"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></span></div>
-            <div class="sm-tile-value sm-text-success">{{imported}}</div>
+    <div class="row" data-region="summary">
+        <div class="col-6 col-md-3 mb-3"><div class="card h-100"><div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2"><span class="text-muted small text-uppercase fw-semibold">{{#str}}import_imported, local_servicemanager{{/str}}</span><span class="text-success">{{#pix}}i/valid, core{{/pix}}</span></div>
+            <div class="h4 fw-bold mb-0 text-success">{{imported}}</div>
         </div></div>
-        <div class="card sm-tile"><div class="card-body">
-            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_skipped, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-muted"><i class="fa-solid fa-forward" aria-hidden="true"></i></span></div>
-            <div class="sm-tile-value">{{skipped}}</div>
+        <div class="col-6 col-md-3 mb-3"><div class="card h-100"><div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2"><span class="text-muted small text-uppercase fw-semibold">{{#str}}import_skipped, local_servicemanager{{/str}}</span><span class="text-muted">{{#pix}}t/right, core{{/pix}}</span></div>
+            <div class="h4 fw-bold mb-0">{{skipped}}</div>
         </div></div>
-        <div class="card sm-tile"><div class="card-body">
-            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_failed, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-text-{{failedtone}}"><i class="fa-solid fa-circle-xmark" aria-hidden="true"></i></span></div>
-            <div class="sm-tile-value sm-text-{{failedtone}}">{{failed}}</div>
+        <div class="col-6 col-md-3 mb-3"><div class="card h-100"><div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2"><span class="text-muted small text-uppercase fw-semibold">{{#str}}import_failed, local_servicemanager{{/str}}</span><span class="text-{{failedtone}}">{{#pix}}i/invalid, core{{/pix}}</span></div>
+            <div class="h4 fw-bold mb-0 text-{{failedtone}}">{{failed}}</div>
         </div></div>
-        <div class="card sm-tile"><div class="card-body">
-            <div class="sm-tile-head"><span class="sm-muted small sm-upper sm-tile-label">{{#str}}import_warnings, local_servicemanager{{/str}}</span><span class="sm-tile-icon sm-text-{{warningstone}}"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span></div>
-            <div class="sm-tile-value sm-text-{{warningstone}}">{{warnings}}</div>
+        <div class="col-6 col-md-3 mb-3"><div class="card h-100"><div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2"><span class="text-muted small text-uppercase fw-semibold">{{#str}}import_warnings, local_servicemanager{{/str}}</span><span class="text-{{warningstone}}">{{#pix}}i/warning, core{{/pix}}</span></div>
+            <div class="h4 fw-bold mb-0 text-{{warningstone}}">{{warnings}}</div>
         </div></div>
     </div>
 
@@ -76,16 +76,16 @@
             <ul class="list-group list-group-flush" data-region="import-items">
                 {{#items}}
                     <li class="list-group-item">
-                        <div class="sm-item">
-                            <span class="sm-text-{{tone}} sm-icon-gap"><i class="fa-solid fa-{{icon}}" aria-hidden="true"></i></span>
-                            <div class="sm-grow">
+                        <div>
+                            <span class="text-{{tone}}">{{{iconhtml}}}</span>
+                            <div class="flex-grow-1">
                                 <div>
-                                    {{#viewurl}}<a href="{{viewurl}}" class="sm-strong">{{label}}</a>{{/viewurl}}{{^viewurl}}<strong>{{label}}</strong>{{/viewurl}}
-                                    {{#showid}}<span class="sm-id-chip compact sm-gap-left"><i class="fa-solid fa-fingerprint sm-icon-gap" aria-hidden="true"></i>{{id}}</span>{{/showid}}
-                                    <span class="sm-badge tone-{{tone}} sm-gap-left">{{statuslabel}}</span>
+                                    {{#viewurl}}<a href="{{viewurl}}" class="font-weight-bold fw-bold">{{label}}</a>{{/viewurl}}{{^viewurl}}<strong>{{label}}</strong>{{/viewurl}}
+                                    {{#showid}}<span class="small text-muted ms-2">{{#pix}}fingerprint, local_servicemanager{{/pix}} {{id}}</span>{{/showid}}
+                                    <span class="badge badge-soft rounded-pill text-bg-{{tone}} ms-2">{{statuslabel}}</span>
                                 </div>
                                 {{#hasmessages}}
-                                    <ul class="small sm-messages{{#failed}} sm-danger{{/failed}}{{^failed}} sm-muted{{/failed}}">
+                                    <ul class="small list-unstyled mb-0{{#failed}} text-danger{{/failed}}{{^failed}} text-muted{{/failed}}">
                                         {{#messages}}<li>{{text}}</li>{{/messages}}
                                     </ul>
                                 {{/hasmessages}}

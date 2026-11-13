@@ -17,7 +17,7 @@
 {{!
     @template local_servicemanager/history_rows
 
-    The versions of a schema, one row each in a list. The history draws them once and draws them again when a rollback changes them.
+    The versions of a schema, as a table of the design system. The history draws it once and again when a rollback changes it.
 
     Context variables required for this template:
     * rows - The versions
@@ -27,36 +27,46 @@
         "rows": [{"id": 1, "version": "1.0.0", "username": "Admin", "userpicture": "#", "date": "today", "reason": "", "iscurrent": true, "canrollback": false, "hidden": false, "text": "1.0.0 Admin", "at": 0, "viewurl": "#"}]
     }
 }}
-<ul class="card sm-versions" data-region="versions">
-{{#rows}}
-    <li class="sm-version" data-region="version" data-id="{{id}}" data-at="{{at}}" data-text="{{text}}"{{#hidden}} hidden{{/hidden}}>
-        <div class="sm-version-main">
-            <input type="checkbox" id="compare-{{id}}" name="compare[]" value="{{id}}" class="form-check-input" data-region="version-check">
-            <label for="compare-{{id}}" class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}} {{version}}</label>
-            <span class="sm-version-number"><i class="fa-solid fa-code-branch sm-icon-gap" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}version, local_servicemanager{{/str}} </span>{{version}}</span>
-            {{#iscurrent}}<span class="sm-badge tone-success">{{#str}}current, local_servicemanager{{/str}}</span>{{/iscurrent}}{{^iscurrent}}<span></span>{{/iscurrent}}
-            <span class="sm-version-who">
-                <img src="{{userpicture}}" alt="" width="24" height="24" class="rounded-circle" loading="lazy">
-                <span class="sm-version-name">{{username}}</span>
-                <span class="sm-version-date">{{date}}</span>
-            </span>
-            <span class="sm-version-reason" title="{{reason}}">{{reason}}</span>
-            <div class="sm-group" role="group">
-                <button type="button" class="btn sm-pill icon-only compact" data-action="toggle-yaml" aria-expanded="false" title="{{#str}}view_yaml, local_servicemanager{{/str}}">
-                    <i class="fa-solid fa-code" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}view_yaml, local_servicemanager{{/str}}</span>
-                </button>
-                <a href="{{viewurl}}" class="btn sm-pill icon-only compact tone-primary" title="{{#str}}action_view, local_servicemanager{{/str}}">
-                    <i class="fa-solid fa-eye" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}action_view, local_servicemanager{{/str}}</span>
-                </a>
+<table class="table" data-region="versions">
+    <caption class="sr-only visually-hidden">{{#str}}version_history, local_servicemanager{{/str}}</caption>
+    <thead>
+        <tr>
+            <th scope="col" class="table-select"><span class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}}</span></th>
+            <th scope="col">{{#str}}version, local_servicemanager{{/str}}</th>
+            <th scope="col">{{#str}}history_by, local_servicemanager{{/str}}</th>
+            <th scope="col" class="d-none d-md-table-cell">{{#str}}history_reason, local_servicemanager{{/str}}</th>
+            <th scope="col" class="table-actions"><span class="sr-only visually-hidden">{{#str}}actions, moodle{{/str}}</span></th>
+        </tr>
+    </thead>
+    <tbody>
+    {{#rows}}
+        <tr data-region="version" data-id="{{id}}" data-at="{{at}}" data-text="{{text}}" data-version="{{version}}"{{#hidden}} hidden{{/hidden}}>
+            <td class="table-select">
+                <input type="checkbox" id="lsm-compare-{{id}}" name="compare[]" value="{{id}}" class="form-check-input" data-region="version-check">
+                <label for="lsm-compare-{{id}}" class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}} {{version}}</label>
+            </td>
+            <td>
+                <span class="fw-semibold">{{#pix}}branch, local_servicemanager{{/pix}} {{version}}</span>
+                {{#iscurrent}}<span class="badge badge-soft rounded-pill text-bg-success ms-2">{{#str}}current, local_servicemanager{{/str}}</span>{{/iscurrent}}
+            </td>
+            <td>
+                <span class="d-flex align-items-center gap-2">
+                    <img src="{{userpicture}}" alt="" width="24" height="24" class="rounded-circle" loading="lazy">
+                    <span class="d-flex flex-column">{{username}}<small class="text-muted">{{date}}</small></span>
+                </span>
+            </td>
+            <td class="d-none d-md-table-cell"><span class="text-truncate d-block" title="{{reason}}">{{reason}}</span></td>
+            <td class="table-actions">
+                <button type="button" class="btn btn-link btn-icon btn-sm" data-action="show-yaml" title="{{#str}}view_yaml, local_servicemanager{{/str}}"
+                    aria-label="{{#str}}view_yaml, local_servicemanager{{/str}}: {{version}}">{{#pix}}code, local_servicemanager{{/pix}}</button>
+                <a href="{{viewurl}}" class="btn btn-link btn-icon btn-sm text-primary" title="{{#str}}action_view, local_servicemanager{{/str}}"
+                    aria-label="{{#str}}action_view, local_servicemanager{{/str}}: {{version}}">{{#pix}}view, local_servicemanager{{/pix}}</a>
                 {{#canrollback}}
-                    <button type="button" class="btn sm-pill icon-only compact tone-warning" data-action="rollback" data-id="{{id}}" data-version="{{version}}" title="{{#str}}rollback, local_servicemanager{{/str}}">
-                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}rollback, local_servicemanager{{/str}}</span>
-                    </button>
+                    <button type="button" class="btn btn-link btn-icon btn-sm text-warning" data-action="rollback" data-id="{{id}}" data-version="{{version}}"
+                        title="{{#str}}rollback, local_servicemanager{{/str}}" aria-label="{{#str}}rollback, local_servicemanager{{/str}}: {{version}}">{{#pix}}t/reset, core{{/pix}}</button>
                 {{/canrollback}}
-                {{^canrollback}}<span class="sm-slot" aria-hidden="true"></span>{{/canrollback}}
-            </div>
-        </div>
-        <div class="sm-version-yaml" data-region="yaml" hidden></div>
-    </li>
-{{/rows}}
-</ul>
+            </td>
+        </tr>
+    {{/rows}}
+    </tbody>
+</table>

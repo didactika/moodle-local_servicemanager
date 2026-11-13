@@ -38,100 +38,78 @@
         "compareurl": "#"
     }
 }}
-<div class="servicemanager-history-page{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-history" data-schemaid="{{schemaid}}" data-yaml-failed="{{#str}}version_yaml_failed, local_servicemanager{{/str}}">
-    <div class="sm-block">
-        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
+<div class="lsm servicemanager-history-page" data-region="servicemanager-history" data-schemaid="{{schemaid}}" data-yaml-failed="{{#str}}version_yaml_failed, local_servicemanager{{/str}}">
+    <div class="mb-3">
+        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
     </div>
-    <header class="sm-page-header">
-        <div class="sm-page-title">
-            <h2 class="sm-flush">{{#str}}version_history, local_servicemanager{{/str}}</h2>
-            <p class="sm-muted sm-flush">{{schemaname}} · <span data-region="history-current">{{currentlabel}}</span></p>
+    <header class="dd-page-header mb-3">
+        <div>
+            <h2 class="dd-page-title">{{#str}}version_history, local_servicemanager{{/str}}</h2>
+            <p class="dd-page-subtitle">{{schemaname}} · <span data-region="history-current">{{currentlabel}}</span></p>
         </div>
     </header>
 
     {{^hasrows}}
-        <div class="card sm-empty" data-region="empty-state">
-            <div class="card-body text-center py-5">
-                <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i></div>
-                <h4 class="mb-2">{{#str}}history_empty_title, local_servicemanager{{/str}}</h4>
-                <p class="sm-muted mx-auto sm-empty-text">{{#str}}no_history, local_servicemanager{{/str}}</p>
+        <div class="card" data-region="empty-state">
+        <div class="dd-empty">
+            <span class="dd-tile dd-tile-lg">{{#pix}}history, local_servicemanager{{/pix}}</span>
+                <p class="dd-empty-title">{{#str}}history_empty_title, local_servicemanager{{/str}}</p>
+                <p class="dd-empty-text">{{#str}}no_history, local_servicemanager{{/str}}</p>
             </div>
         </div>
     {{/hasrows}}
 
     {{#hasrows}}
-        <div class="sm-toolbar">
-            <div class="input-group sm-search">
-                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
-                <input type="search" id="sm-search" name="q" class="form-control" autocomplete="off"
-                       placeholder="{{#str}}filter_version, local_servicemanager{{/str}}" aria-label="{{#str}}filter_version, local_servicemanager{{/str}}">
-                <button type="button" class="btn btn-outline-secondary" data-action="clear-search" hidden title="{{#str}}filter_clear, local_servicemanager{{/str}}">
-                    <i class="fa-solid fa-xmark" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}filter_clear, local_servicemanager{{/str}}</span>
-                </button>
+        <div class="card">
+            <div class="table-toolbar" data-region="filters">
+                <div class="table-toolbar-start">
+                    <div class="dd-searchbox" role="search">
+                        {{#pix}}a/search, core{{/pix}}
+                        <label class="sr-only visually-hidden" for="lsm-search">{{#str}}filter_version, local_servicemanager{{/str}}</label>
+                        <input class="form-control" type="search" id="lsm-search" placeholder="{{#str}}filter_version, local_servicemanager{{/str}}" autocomplete="off">
+                    </div>
+                    <div data-region="filter-menus">
+                        {{> local_servicemanager/date_menu }}
+                        <div class="dd-menu dd-menu-end" data-menu="filters" hidden>
+                            <button type="button" class="custom-select form-select dd-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
+                                aria-label="{{#str}}filters, local_servicemanager{{/str}}">{{#pix}}i/filter, core{{/pix}} <span data-region="menu-label"
+                                data-label="{{#str}}filters, local_servicemanager{{/str}}">{{#str}}filters, local_servicemanager{{/str}}</span></button>
+                            <div class="dd-select-menu" role="group" aria-label="{{#str}}filters, local_servicemanager{{/str}}" hidden>
+                                <div data-region="filter-panel"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-toolbar-end">
+                    <button type="button" class="btn btn-link btn-icon" data-action="reset-all" disabled
+                        title="{{#str}}filters_reset, local_servicemanager{{/str}}" aria-label="{{#str}}filters_reset, local_servicemanager{{/str}}">{{#pix}}i/reload, core{{/pix}}</button>
+                </div>
             </div>
-            <div class="dropdown sm-filter" data-region="filters">
-                <button class="btn btn-outline-secondary" type="button" data-sm-menu aria-haspopup="true" aria-expanded="false">
-                    <span class="sm-icon-gap">{{#pix}}i/filter, core{{/pix}}</span>{{#str}}filters, local_servicemanager{{/str}}
-                    <span class="sm-count-badge" data-region="filters-count" hidden>0</span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-end sm-filter-menu">
-                    <div class="sm-filter-head">
-                        <h2 class="sm-filter-heading">{{#str}}filters, local_servicemanager{{/str}}</h2>
-                        <button type="button" class="sm-iconbtn" data-action="reset-filters" disabled
-                                title="{{#str}}filter_clear, local_servicemanager{{/str}}" aria-label="{{#str}}filter_clear, local_servicemanager{{/str}}">
-                            {{#pix}}i/reload, core{{/pix}}
+            <form action="{{compareurl}}" method="get" class="servicemanager-history" data-region="versions-form">
+                <input type="hidden" name="id" value="{{schemaid}}">
+                <div class="table-responsive" data-region="tablewrap">
+                    {{> local_servicemanager/history_rows}}
+                    <div class="dd-empty" data-region="empty-state" hidden>
+                        <span class="dd-tile dd-tile-lg">{{#pix}}a/search, core{{/pix}}</span>
+                        <p class="dd-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-action="reset-all">{{#str}}filters_reset, local_servicemanager{{/str}}</button>
+                    </div>
+                </div>
+                <div class="dd-floatbar" role="region" aria-label="{{#str}}compare_versions, local_servicemanager{{/str}}" data-region="compare-bar" hidden>
+                    <span class="dd-floatbar-count" role="status" data-region="compare-chosen"></span>
+                    <span class="text-danger small" role="alert" data-region="compare-too-many" hidden>{{#str}}compare_select_two, local_servicemanager{{/str}}</span>
+                    <div class="dd-floatbar-actions">
+                        <button type="submit" id="compare-btn" class="btn btn-primary btn-sm" disabled>
+                            {{#pix}}compare, local_servicemanager{{/pix}} {{#str}}compare_versions, local_servicemanager{{/str}}
                         </button>
                     </div>
-                    <div class="sm-field">
-                        <label for="sm-from" class="sm-label">{{#str}}filter_date_from, local_servicemanager{{/str}}</label>
-                        <input type="date" id="sm-from" class="form-control">
-                    </div>
-                    <div class="sm-field">
-                        <label for="sm-to" class="sm-label">{{#str}}filter_date_to, local_servicemanager{{/str}}</label>
-                        <input type="date" id="sm-to" class="form-control">
-                    </div>
+                    <button type="button" class="dd-floatbar-clear" data-action="clear-selection"
+                        title="{{#str}}compare_clear, local_servicemanager{{/str}}" aria-label="{{#str}}compare_clear, local_servicemanager{{/str}}"></button>
                 </div>
-            </div>
+            </form>
+            <div class="table-foot" data-region="pagination" hidden></div>
         </div>
-
-        <div class="card sm-list">
-        <form action="{{compareurl}}" method="get" class="servicemanager-history" data-region="versions-form">
-            <input type="hidden" name="id" value="{{schemaid}}">
-            <p class="sm-muted small mb-0 sm-list-note" data-region="history-count"><span data-region="history-count-text">{{#str}}history_count, local_servicemanager, {{count}}{{/str}}</span> {{#str}}compare_hint, local_servicemanager{{/str}}</p>
-            <div data-region="tablewrap">
-            {{> local_servicemanager/history_rows}}
-
-            <div class="sm-empty" data-region="empty-state" hidden>
-                <div class="card-body text-center py-5">
-                    <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
-                    <h4 class="mb-2">{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h4>
-                    <p class="sm-muted mx-auto sm-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
-                    <button type="button" class="btn btn-secondary" data-action="reset-all">
-                        <i class="fa-solid fa-xmark sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
-                    </button>
-                </div>
-            </div>
-
-            </div>
-
-            <div class="sm-floating sm-compare" role="status" data-region="compare-bar" hidden>
-                <span class="sm-floating-count">
-                    <span data-region="compare-chosen"></span>
-                </span>
-                <span class="sm-compare-warning" role="alert" data-region="compare-too-many" hidden>{{#str}}compare_select_two, local_servicemanager{{/str}}</span>
-                <div class="sm-floating-actions">
-                    <button type="submit" id="compare-btn" class="btn sm-pill solid tone-primary" disabled>
-                        <i class="fa-solid fa-code-compare sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_versions, local_servicemanager{{/str}}
-                    </button>
-                </div>
-                <button type="button" class="sm-floating-clear" data-action="clear-selection" title="{{#str}}compare_clear, local_servicemanager{{/str}}">
-                    <i class="fa-solid fa-xmark" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_clear, local_servicemanager{{/str}}</span>
-                </button>
-            </div>
-        </form>
-
-        <div class="table-foot" data-region="pagination" hidden></div>
-        </div>
+        <p class="text-muted small mt-2 mb-0" data-region="history-count"><span data-region="history-count-text">{{#str}}history_count, local_servicemanager, {{count}}{{/str}}</span> {{#str}}compare_hint, local_servicemanager{{/str}}</p>
     {{/hasrows}}
 </div>
 {{#js}}

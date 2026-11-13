@@ -60,6 +60,7 @@ class history_page implements \renderable, \templatable {
             'schemaid' => $id,
             'schemaname' => $this->schema->name,
             'currentlabel' => get_string('history_current', 'local_servicemanager', $this->schema->version),
+            'datelabel' => get_string('history_date', 'local_servicemanager'),
             'hasrows' => !empty($rows),
             'rows' => $rows,
             'count' => count($rows),
