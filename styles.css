@@ -1986,10 +1986,6 @@
     border-bottom: 1px solid var(--sm-border-color);
 }
 
-.servicemanager-history-page .sm-versions .sm-version:last-child {
-    border-bottom: 0;
-}
-
 .servicemanager-history-page .sm-versions .sm-version.active-version {
     background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
 }

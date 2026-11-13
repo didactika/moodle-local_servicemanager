@@ -11,10 +11,6 @@
         .sm-version {
             border-bottom: 1px solid var(--sm-border-color);
 
-            &:last-child {
-                border-bottom: 0;
-            }
-
             // A version that is chosen to compare, tinted with the colour of the page so it reads in any colour mode.
             &.active-version {
                 background-color: color-mix(in srgb, var(--sm-primary) 9%, var(--sm-body-bg));
