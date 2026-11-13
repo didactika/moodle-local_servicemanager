@@ -18,20 +18,6 @@
         }
     }
 
-    // The choice of the size of page, on one line with its label.
-    .sm-perpage {
-        & form,
-        & .singleselect {
-            display: flex;
-            align-items: center;
-            margin: 0;
-            gap: 0.5rem;
-        }
-
-        & label {
-            margin: 0;
-        }
-    }
 
     // The checks, newest first: a stripe of the colour of its status at the start of each row, so the ones that went wrong are
     // seen at a glance.
@@ -90,18 +76,6 @@
         font-size: 0.8125rem;
     }
 
-    // Which checks the page shows, and the paging bar beside it.
-    .sm-pager {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-
-        & .pagination {
-            margin: 0;
-        }
-    }
 }
 
 .servicemanager-detail,

@@ -315,11 +315,92 @@
     }
 
     .sm-list {
+        overflow: hidden;
         box-shadow: var(--sm-box-shadow-sm);
 
         & thead {
             background-color: var(--sm-tertiary-bg);
         }
+
+        // A list keeps the same height whatever it holds: with few rows there is room below them, with many it scrolls inside
+        // the box and the header stays in view. The room of the scrollbar is kept while there is none, so the columns do not
+        // move when the rows outgrow the box.
+        & [data-region="tablewrap"] {
+            block-size: 34rem;
+            margin: 0;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            scrollbar-gutter: stable;
+
+            & thead th {
+                position: sticky;
+                inset-block-start: 0;
+                z-index: 1;
+                background-color: var(--sm-tertiary-bg);
+            }
+
+            // With nothing to show, the empty state takes the height of the list.
+            & > .sm-empty {
+                display: grid;
+                place-content: center;
+                min-block-size: 100%;
+                border: 0;
+            }
+        }
+
+        & .sm-list-note {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--sm-border-color);
+        }
+    }
+
+    // The foot of a list: rows per page on the left, the range and the arrows on the right.
+    .table-foot {
+        padding: 0.625rem 1rem;
+        border-top: 1px solid var(--sm-border-color);
+        background-color: var(--sm-body-bg);
+    }
+
+    .dd-pager {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 1.5rem;
+        color: var(--sm-secondary-color);
+        font-size: 0.875rem;
+
+        & .dd-select {
+            width: auto;
+            min-width: 4.75rem;
+            border-radius: 999px;
+        }
+    }
+
+    .dd-pager-size,
+    .dd-pager-end,
+    .dd-pager-arrows {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .dd-pager-end {
+        gap: 1rem;
+    }
+
+    .dd-pager-range {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .dd-pager-arrows .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border-radius: 50%;
     }
 
     // The question before something that cannot be undone.

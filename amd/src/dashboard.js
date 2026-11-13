@@ -29,7 +29,15 @@ import {get_strings as getStrings} from 'core/str';
 import {confirm} from 'local_servicemanager/dialogue';
 import {init as initMenus, close as closeMenus} from 'local_servicemanager/menu';
 import {
-    addressKeeper, drawPager, hasWords, inDates, loadPagerStrings, postForm, readState
+    addressKeeper,
+    drawPager,
+    hasWords,
+    inDates,
+    loadPagerStrings,
+    postForm,
+    readState,
+    PAGE_SIZES,
+    pageOf,
 } from 'local_servicemanager/listing';
 
 /** The statuses, in the order of the bar. */
@@ -56,8 +64,7 @@ export const init = () => {
     const search = root.querySelector('#sm-search');
     const from = root.querySelector('#sm-from');
     const to = root.querySelector('#sm-to');
-    const sizes = [...root.querySelectorAll('[data-perpage]')];
-    const firstSize = Number(sizes[0].dataset.perpage);
+    const firstSize = PAGE_SIZES[0];
     const filtersCount = root.querySelector('[data-region="filters-count"]');
     const chips = [...root.querySelectorAll('.sm-health-chip')];
     const empty = root.querySelector('[data-region="empty-state"]');
@@ -65,7 +72,7 @@ export const init = () => {
     const bar = root.querySelector('[data-region="bulk-actions"]');
     const selectAll = root.querySelector('#sm-select-all');
     const chosen = new Set();
-    const state = readState(sizes.map((size) => Number(size.dataset.perpage)));
+    const state = readState(PAGE_SIZES);
     state.status = STATUSES.includes(state.status) ? state.status : '';
     const keepAddress = addressKeeper(firstSize);
     let strings = {};
@@ -107,9 +114,9 @@ export const init = () => {
             }
         });
 
-        const pages = Math.max(1, Math.ceil(found.length / state.perpage));
-        state.page = Math.min(Math.max(0, state.page), pages - 1);
-        const shown = new Set(found.slice(state.page * state.perpage, (state.page + 1) * state.perpage));
+        const range = pageOf(state.page, state.perpage, found.length);
+        state.page = range.page;
+        const shown = new Set(found.slice(range.from - 1, range.to));
         rows.forEach((row) => {
             row.hidden = !shown.has(row);
         });
@@ -129,20 +136,15 @@ export const init = () => {
         });
         drawBar(counts);
 
-        const extras = (state.from ? 1 : 0) + (state.to ? 1 : 0) + (state.perpage !== firstSize ? 1 : 0);
+        const extras = (state.from ? 1 : 0) + (state.to ? 1 : 0);
         filtersCount.textContent = String(extras);
         filtersCount.hidden = extras === 0;
         root.querySelector('[data-action="reset-filters"]').disabled = extras === 0;
-        sizes.forEach((size) => {
-            const on = Number(size.dataset.perpage) === state.perpage;
-            size.classList.toggle('active', on);
-            size.setAttribute('aria-pressed', on ? 'true' : 'false');
-        });
         root.querySelector('[data-action="clear-search"]').hidden = state.query === '';
 
         table.hidden = found.length === 0;
         empty.hidden = found.length !== 0;
-        drawPager(pagination, state.page, pages, pager);
+        drawPager(pagination, state.page, state.perpage, found.length, pager);
         if (selectAll) {
             const visible = rows.filter((row) => !row.hidden);
             selectAll.checked = visible.length > 0 && visible.every((row) => chosen.has(Number(row.dataset.id)));
@@ -193,13 +195,13 @@ export const init = () => {
         'reset-filters': () => {
             from.value = '';
             to.value = '';
-            set({from: '', to: '', perpage: firstSize});
+            set({from: '', to: ''});
         },
         'reset-all': () => {
             search.value = '';
             from.value = '';
             to.value = '';
-            set({query: '', status: '', from: '', to: '', perpage: firstSize});
+            set({query: '', status: '', from: '', to: ''});
         },
         'clear-selection': () => {
             chosen.clear();
@@ -212,17 +214,20 @@ export const init = () => {
         },
     };
 
+    root.addEventListener('change', (event) => {
+        if (event.target.matches('[data-region="perpage"]')) {
+            set({perpage: Number(event.target.value)});
+        }
+    });
+
     root.addEventListener('click', (event) => {
         const target = event.target;
         const chip = target.closest('.sm-health-chip');
-        const size = target.closest('[data-perpage]');
         const page = target.closest('[data-page]');
         const action = target.closest('[data-action]');
         const bulk = target.closest('[data-bulk]');
         if (chip) {
             set({status: chip.dataset.status === state.status ? '' : chip.dataset.status});
-        } else if (size) {
-            set({perpage: Number(size.dataset.perpage)});
         } else if (page) {
             state.page = Number(page.dataset.page);
             render();

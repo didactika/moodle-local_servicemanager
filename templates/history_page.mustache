@@ -90,22 +90,18 @@
                         <label for="sm-to" class="sm-label">{{#str}}filter_date_to, local_servicemanager{{/str}}</label>
                         <input type="date" id="sm-to" class="form-control">
                     </div>
-                    <div class="sm-filter-title">{{#str}}filter_per_page, local_servicemanager{{/str}}</div>
-                    <div class="sm-chips" role="group" aria-label="{{#str}}filter_per_page, local_servicemanager{{/str}}">
-                        {{#perpage}}
-                            <button type="button" class="sm-chip{{#first}} active{{/first}}" data-perpage="{{size}}" aria-pressed="{{#first}}true{{/first}}{{^first}}false{{/first}}">{{size}}</button>
-                        {{/perpage}}
-                    </div>
                 </div>
             </div>
         </div>
 
+        <div class="card sm-list">
         <form action="{{compareurl}}" method="get" class="servicemanager-history" data-region="versions-form">
             <input type="hidden" name="id" value="{{schemaid}}">
-            <p class="sm-muted small" data-region="history-count"><span data-region="history-count-text">{{#str}}history_count, local_servicemanager, {{count}}{{/str}}</span> {{#str}}compare_hint, local_servicemanager{{/str}}</p>
+            <p class="sm-muted small mb-0 sm-list-note" data-region="history-count"><span data-region="history-count-text">{{#str}}history_count, local_servicemanager, {{count}}{{/str}}</span> {{#str}}compare_hint, local_servicemanager{{/str}}</p>
+            <div data-region="tablewrap">
             {{> local_servicemanager/history_rows}}
 
-            <div class="card sm-empty" data-region="empty-state" hidden>
+            <div class="sm-empty" data-region="empty-state" hidden>
                 <div class="card-body text-center py-5">
                     <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
                     <h4 class="mb-2">{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h4>
@@ -114,6 +110,8 @@
                         <i class="fa-solid fa-xmark sm-icon-gap" aria-hidden="true"></i>{{#str}}filter_clear, local_servicemanager{{/str}}
                     </button>
                 </div>
+            </div>
+
             </div>
 
             <div class="sm-floating sm-compare" role="status" data-region="compare-bar" hidden>
@@ -132,10 +130,8 @@
             </div>
         </form>
 
-        <nav class="servicemanager-pagination" data-region="pagination" hidden aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}">
-            <ul class="pagination justify-content-center"></ul>
-            <div class="sm-muted small sm-center" data-region="page-info"></div>
-        </nav>
+        <div class="table-foot" data-region="pagination" hidden></div>
+        </div>
     {{/hasrows}}
 </div>
 {{#js}}

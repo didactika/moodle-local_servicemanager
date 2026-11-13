@@ -139,12 +139,6 @@
                         <label for="sm-to" class="sm-label">{{#str}}filter_date_to, local_servicemanager{{/str}}</label>
                         <input type="date" id="sm-to" class="form-control">
                     </div>
-                    <div class="sm-filter-title">{{#str}}filter_per_page, local_servicemanager{{/str}}</div>
-                    <div class="sm-chips" role="group" aria-label="{{#str}}filter_per_page, local_servicemanager{{/str}}">
-                        {{#perpage}}
-                            <button type="button" class="sm-chip{{#first}} active{{/first}}" data-perpage="{{size}}" aria-pressed="{{#first}}true{{/first}}{{^first}}false{{/first}}">{{size}}</button>
-                        {{/perpage}}
-                    </div>
                 </div>
             </div>
             <div class="sm-toolbar-actions">
@@ -175,9 +169,9 @@
             </div>
         </div>
 
-        <div class="card sm-table-card" data-region="schema-table">
-            <div class="table-responsive">
-                <table class="table sm-table">
+        <div class="card sm-table-card sm-list">
+            <div class="table-responsive" data-region="tablewrap">
+                <table class="table sm-table" data-region="schema-table">
                     <thead>
                         <tr>
                             {{#canmanage}}
@@ -245,10 +239,7 @@
                         {{/schemas}}
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <div class="card sm-empty" data-region="empty-state" hidden>
+                <div class="sm-empty" data-region="empty-state" hidden>
             <div class="card-body text-center py-5">
                 <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
                 <h4 class="mb-2">{{#str}}empty_filtered_title, local_servicemanager{{/str}}</h4>
@@ -259,10 +250,9 @@
             </div>
         </div>
 
-        <nav class="servicemanager-pagination" data-region="pagination" hidden aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}">
-            <ul class="pagination justify-content-center"></ul>
-            <div class="sm-muted small sm-center" data-region="page-info"></div>
-        </nav>
+            </div>
+            <div class="table-foot" data-region="pagination" hidden></div>
+        </div>
         {{#truncated}}<p class="sm-muted small sm-center">{{truncatedtext}}</p>{{/truncated}}
 
         {{#canmanage}}

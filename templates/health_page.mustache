@@ -26,7 +26,7 @@
     * filters - The statuses, each with its count, its address and whether it is the one shown
     * hasrows, rows - The checks of the page: when and how long ago, the status in words, colour and icon, and what each found
     * showing - Which checks of how many the page shows
-    * pagingbar, perpageselect - The paging bar and the choice of the size of page, as HTML
+    * pager - The foot of the list: the sizes of page that fit it, the range and the addresses of the previous and next pages
 
     Example context (json):
     {
@@ -45,8 +45,7 @@
             {"time": "14/10/26, 21:43", "ago": "1 day ago", "status": "warning", "statuslabel": "Warning", "tone": "warning", "icon": "triangle-exclamation", "findings": [{"label": "Service:", "text": "disabled"}, {"label": "Token:", "text": "expired"}]}
         ],
         "showing": "Showing 1 to 2 of 2",
-        "pagingbar": "",
-        "perpageselect": ""
+        "pager": {"formurl": "#", "id": 1, "status": "", "sizes": [{"value": 0, "label": "All", "selected": true}], "range": "1–2 of 2", "hasprev": false, "hasnext": false, "prevurl": "#", "nexturl": "#"}
     }
 }}
 <div class="servicemanager-health-page{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-health">
@@ -76,12 +75,11 @@
                     <a class="btn sm-pill compact tone-{{tone}}{{#active}} active{{/active}}" href="{{url}}"{{#active}} aria-current="true"{{/active}}>{{label}}<span class="sm-count-badge">{{count}}</span></a>
                 {{/filters}}
             </nav>
-            <div class="sm-perpage">{{{perpageselect}}}</div>
         </div>
 
-        <div class="card sm-panel sm-block">
+        <div class="card sm-list sm-block">
             {{#hasrows}}
-                <div class="table-responsive">
+                <div class="table-responsive" data-region="tablewrap">
                     <table class="table sm-flush-table sm-health-table" data-region="health-table">
                         <thead>
                             <tr>
@@ -114,13 +112,45 @@
                 </div>
             {{/hasrows}}
             {{^hasrows}}
-                <div class="card-body sm-muted">{{#str}}health_none_with_status, local_servicemanager{{/str}}</div>
+                <div data-region="tablewrap">
+                    <div class="sm-empty" data-region="empty-state">
+                        <div class="card-body text-center py-5">
+                            <div class="sm-empty-icon sm-muted mb-3"><i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i></div>
+                            <p class="sm-muted mx-auto sm-empty-text">{{#str}}health_none_with_status, local_servicemanager{{/str}}</p>
+                        </div>
+                    </div>
+                </div>
             {{/hasrows}}
+            {{#pager}}
+            <div class="table-foot">
+                <nav class="dd-pager" aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}">
+                    <form method="get" action="{{formurl}}" class="dd-pager-size" data-region="health-perpage">
+                        <input type="hidden" name="id" value="{{id}}">
+                        {{#status}}<input type="hidden" name="status" value="{{status}}">{{/status}}
+                        <label for="sm-health-perpage" class="mb-0">{{#str}}pagination_per_page, local_servicemanager{{/str}}</label>
+                        <select id="sm-health-perpage" name="perpage" class="custom-select custom-select-sm form-select form-select-sm dd-select">
+                            {{#sizes}}<option value="{{value}}"{{#selected}} selected{{/selected}}>{{label}}</option>{{/sizes}}
+                        </select>
+                    </form>
+                    <div class="dd-pager-end">
+                        <span class="dd-pager-range" role="status" data-region="health-showing">{{range}}</span>
+                        <div class="dd-pager-arrows">
+                            {{#hasprev}}<a class="btn btn-outline-secondary btn-sm btn-icon" href="{{prevurl}}" title="{{#str}}pagination_previous, local_servicemanager{{/str}}" aria-label="{{#str}}pagination_previous, local_servicemanager{{/str}}"><i class="fa-solid fa-angle-left" aria-hidden="true"></i></a>{{/hasprev}}
+                            {{^hasprev}}<button type="button" class="btn btn-outline-secondary btn-sm btn-icon" disabled aria-label="{{#str}}pagination_previous, local_servicemanager{{/str}}"><i class="fa-solid fa-angle-left" aria-hidden="true"></i></button>{{/hasprev}}
+                            {{#hasnext}}<a class="btn btn-outline-secondary btn-sm btn-icon" href="{{nexturl}}" title="{{#str}}pagination_next, local_servicemanager{{/str}}" aria-label="{{#str}}pagination_next, local_servicemanager{{/str}}"><i class="fa-solid fa-angle-right" aria-hidden="true"></i></a>{{/hasnext}}
+                            {{^hasnext}}<button type="button" class="btn btn-outline-secondary btn-sm btn-icon" disabled aria-label="{{#str}}pagination_next, local_servicemanager{{/str}}"><i class="fa-solid fa-angle-right" aria-hidden="true"></i></button>{{/hasnext}}
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            {{/pager}}
         </div>
-
-        <div class="sm-pager">
-            <span class="sm-muted" data-region="health-showing">{{showing}}</span>
-            {{{pagingbar}}}
-        </div>
+        {{#js}}
+            document.querySelectorAll('[data-region="health-perpage"] select').forEach(function(select) {
+                select.addEventListener('change', function() {
+                    select.form.submit();
+                });
+            });
+        {{/js}}
     {{/hasany}}
 </div>
