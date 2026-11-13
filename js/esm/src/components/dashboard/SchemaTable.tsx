@@ -12,6 +12,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import type {BulkSelection} from '../../hooks/useBulkSelection';
+import {useRef} from 'react';
+import {useStableColumns} from '../../hooks/useStableColumns';
 import type {SchemaRow, Text} from '../../types';
 import ActionMenu from '../common/ActionMenu';
 import IconButton from '../common/IconButton';
@@ -27,8 +29,11 @@ interface SchemaTableProps {
     text: Text;
 }
 
-const SchemaTable = ({rows, canManage, selection, onToggle, text}: SchemaTableProps) => <div className="table-responsive" data-region="tablewrap">
-        <table className="table table-hover align-middle mb-0">
+const SchemaTable = ({rows, canManage, selection, onToggle, text}: SchemaTableProps) => {
+    const table = useRef<HTMLTableElement>(null);
+    useStableColumns(table, rows.length > 0);
+    return <div className="table-responsive" data-region="tablewrap">
+        <table ref={table} className="table table-hover align-middle mb-0">
             <thead>
                 <tr>
                     {canManage && <th className="text-center sm-check-column">
@@ -83,6 +88,7 @@ const SchemaTable = ({rows, canManage, selection, onToggle, text}: SchemaTablePr
                 </tr>)}
             </tbody>
         </table>
-</div>;
+    </div>;
+};
 
 export default SchemaTable;
