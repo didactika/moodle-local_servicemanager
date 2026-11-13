@@ -22,7 +22,7 @@ const parseState = /* @__PURE__ */ __name((search, perpage, options) => {
     status: params.get("status") ?? "",
     from: params.get("from") ?? "",
     to: params.get("to") ?? "",
-    perpage: options.includes(asked) ? asked : perpage,
+    perpage: params.has("perpage") && options.includes(asked) ? asked : perpage,
     page: Number.isInteger(page) && page > 0 ? page : 0
   };
 }, "parseState");
@@ -73,9 +73,10 @@ const matches = /* @__PURE__ */ __name((row, state) => {
   return words.every((word) => haystack.includes(word));
 }, "matches");
 const paginate = /* @__PURE__ */ __name((rows, page, perpage) => {
-  const pages = Math.max(1, Math.ceil(rows.length / Math.max(1, perpage)));
+  const size = perpage > 0 ? perpage : Math.max(1, rows.length);
+  const pages = Math.max(1, Math.ceil(rows.length / size));
   const at = Math.min(Math.max(0, page), pages - 1);
-  return { rows: rows.slice(at * perpage, (at + 1) * perpage), page: at, pages, total: rows.length };
+  return { rows: rows.slice(at * size, (at + 1) * size), page: at, pages, total: rows.length };
 }, "paginate");
 const countBy = /* @__PURE__ */ __name((rows) => {
   const counts = {};

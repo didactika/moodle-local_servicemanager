@@ -27,8 +27,7 @@ interface SchemaTableProps {
     text: Text;
 }
 
-const SchemaTable = ({rows, canManage, selection, onToggle, text}: SchemaTableProps) => <div className="card sm-list">
-    <div>
+const SchemaTable = ({rows, canManage, selection, onToggle, text}: SchemaTableProps) => <div className="table-responsive" data-region="tablewrap">
         <table className="table table-hover align-middle mb-0">
             <thead>
                 <tr>
@@ -84,7 +83,6 @@ const SchemaTable = ({rows, canManage, selection, onToggle, text}: SchemaTablePr
                 </tr>)}
             </tbody>
         </table>
-    </div>
 </div>;
 
 export default SchemaTable;

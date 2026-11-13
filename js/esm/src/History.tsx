@@ -17,12 +17,11 @@ import {useCallback, useMemo, useState} from 'react';
 import BackLink from './components/common/BackLink';
 import EmptyState from './components/common/EmptyState';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import Chips from './components/common/Chips';
 import FilterMenu from './components/common/FilterMenu';
 import ConfirmModal from './components/common/ConfirmModal';
 import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
-import Pagination from './components/common/Pagination';
+import Pager from './components/common/Pager';
 import SearchBox from './components/common/SearchBox';
 import CompareBar from './components/history/CompareBar';
 import VersionList from './components/history/VersionList';
@@ -105,7 +104,7 @@ const History = (props: HistoryProps) => {
                             placeholder={text('filter_version')}
                             clearLabel={text('filter_clear')}
                         />
-                        <FilterMenu text={text} count={list.extras} onReset={() => list.set({from: '', to: '', perpage: perPageOptions[0]})}>
+                        <FilterMenu text={text} count={list.extras} onReset={() => list.set({from: '', to: ''})}>
                             <div className="mb-3">
                                 <label htmlFor="sm-from" className="form-label">{text('filter_date_from')}</label>
                                 <input type="date" id="sm-from" className="form-control" value={list.state.from} onChange={(event) => list.set({from: event.target.value})} />
@@ -114,31 +113,28 @@ const History = (props: HistoryProps) => {
                                 <label htmlFor="sm-to" className="form-label">{text('filter_date_to')}</label>
                                 <input type="date" id="sm-to" className="form-control" value={list.state.to} onChange={(event) => list.set({to: event.target.value})} />
                             </div>
-                            <div className="sm-filter-title">{text('filter_per_page')}</div>
-                            <Chips
-                                label={text('filter_per_page')}
-                                value={String(list.state.perpage)}
-                                onChange={(value) => list.set({perpage: Number(value)})}
-                                chips={perPageOptions.map((option) => ({value: String(option), label: String(option)}))}
-                            />
                         </FilterMenu>
                     </div>
 
+                    <div className="card sm-list">
                     {page.rows.length === 0
-                        ? <EmptyState
+                        ? <div data-region="tablewrap"><EmptyState
+                            bare
                             icon="filter-circle-xmark"
                             title={text('empty_filtered_title')}
                             text={text('no_schemas_filtered')}
                             actions={<button type="button" className="btn btn-secondary" onClick={list.reset}><Icon name="xmark" gap />{text('filter_clear')}</button>}
-                        />
+                        /></div>
                         : <form action={urls.compare} method="get" className="servicemanager-history">
                             <input type="hidden" name="id" value={props.schemaId} />
-                            <p className="text-body-secondary small mb-2">{text('history_count', found.length)} {text('compare_hint')}</p>
-                            <VersionList rows={page.rows} chosen={chosen} onToggle={toggle} onRollback={setRollingBack} text={text} />
+                            <p className="text-body-secondary small mb-0 sm-list-note">{text('history_count', found.length)} {text('compare_hint')}</p>
+                            <div data-region="tablewrap">
+                                <VersionList rows={page.rows} chosen={chosen} onToggle={toggle} onRollback={setRollingBack} text={text} />
+                            </div>
                             {chosen.size > 0 && <CompareBar chosen={chosen} needed={TO_COMPARE} tooMany={tooMany} onClear={clear} text={text} />}
                         </form>}
-
-                    <Pagination page={page.page} perpage={list.state.perpage} total={page.total} onPage={(next) => list.set({page: next})} text={text} />
+                    <Pager page={page.page} perpage={list.state.perpage} total={page.total} onChange={(changes) => list.set(changes)} text={text} />
+                    </div>
                 </>}
 
             <ConfirmModal

@@ -27,7 +27,7 @@ import EmptyState from "./components/common/EmptyState";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import Icon from "./components/common/Icon";
 import PageHeader from "./components/common/PageHeader";
-import Pagination from "./components/common/Pagination";
+import Pager from "./components/common/Pager";
 import ActionMenu from "./components/common/ActionMenu";
 import IconButton from "./components/common/IconButton";
 import { createText } from "./engine/text";
@@ -140,22 +140,21 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
         Toolbar,
         {
           list,
-          options: perPageOptions,
           text,
           actions: /* @__PURE__ */ jsxDEV("div", { className: "sm-group", role: "group", "aria-label": text("core_actions"), children: [
             canManage && /* @__PURE__ */ jsxDEV(IconButton, { large: true, solid: true, tone: "primary", icon: "plus", label: text("new_schema"), href: urls.create }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-              lineNumber: 90,
+              lineNumber: 89,
               columnNumber: 43
             }),
             canManage && /* @__PURE__ */ jsxDEV(IconButton, { large: true, tone: "success", icon: "file-import", label: text("import_schemas"), href: urls.import }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-              lineNumber: 91,
+              lineNumber: 90,
               columnNumber: 43
             }),
             /* @__PURE__ */ jsxDEV(IconButton, { large: true, tone: "info", icon: "file-zipper", label: text("export_all"), href: urls.exportAll }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-              lineNumber: 92,
+              lineNumber: 91,
               columnNumber: 29
             }),
             /* @__PURE__ */ jsxDEV(
@@ -175,13 +174,13 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
               false,
               {
                 fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-                lineNumber: 93,
+                lineNumber: 92,
                 columnNumber: 29
               }
             )
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 89,
+            lineNumber: 88,
             columnNumber: 34
           })
         },
@@ -193,57 +192,68 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
           columnNumber: 21
         }
       ),
-      page.rows.length > 0 ? /* @__PURE__ */ jsxDEV(
-        SchemaTable,
-        {
-          rows: page.rows,
-          canManage,
-          selection,
-          onToggle: (row) => send(row.enabled ? "disable" : "enable", [row.id]),
-          text
-        },
-        void 0,
-        false,
-        {
-          fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 108,
-          columnNumber: 27
-        }
-      ) : /* @__PURE__ */ jsxDEV(
-        EmptyState,
-        {
-          icon: "filter-circle-xmark",
-          title: text("empty_filtered_title"),
-          text: text("no_schemas_filtered"),
-          actions: asking ? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: list.reset, children: [
-            /* @__PURE__ */ jsxDEV(Icon, { name: "xmark", gap: true }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("div", { className: "card sm-list", children: [
+        page.rows.length > 0 ? /* @__PURE__ */ jsxDEV(
+          SchemaTable,
+          {
+            rows: page.rows,
+            canManage,
+            selection,
+            onToggle: (row) => send(row.enabled ? "disable" : "enable", [row.id]),
+            text
+          },
+          void 0,
+          false,
+          {
+            fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+            lineNumber: 108,
+            columnNumber: 27
+          }
+        ) : /* @__PURE__ */ jsxDEV("div", { className: "table-responsive", "data-region": "tablewrap", children: /* @__PURE__ */ jsxDEV(
+          EmptyState,
+          {
+            bare: true,
+            icon: "filter-circle-xmark",
+            title: text("empty_filtered_title"),
+            text: text("no_schemas_filtered"),
+            actions: asking ? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: list.reset, children: [
+              /* @__PURE__ */ jsxDEV(Icon, { name: "xmark", gap: true }, void 0, false, {
+                fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+                lineNumber: 122,
+                columnNumber: 37
+              }),
+              text("filter_clear")
+            ] }, void 0, true, {
               fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
               lineNumber: 121,
-              columnNumber: 37
-            }),
-            text("filter_clear")
-          ] }, void 0, true, {
+              columnNumber: 35
+            }) : void 0
+          },
+          void 0,
+          false,
+          {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 120,
-            columnNumber: 35
-          }) : void 0
-        },
-        void 0,
-        false,
-        {
+            lineNumber: 115,
+            columnNumber: 85
+          }
+        ) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
           lineNumber: 115,
           columnNumber: 27
-        }
-      ),
-      /* @__PURE__ */ jsxDEV(Pagination, { page: page.page, perpage: list.state.perpage, total: page.total, onPage: (next) => list.set({ page: next }), text }, void 0, false, {
+        }),
+        /* @__PURE__ */ jsxDEV(Pager, { page: page.page, perpage: list.state.perpage, total: page.total, onChange: (changes) => list.set(changes), text }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+          lineNumber: 126,
+          columnNumber: 21
+        })
+      ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 126,
+        lineNumber: 106,
         columnNumber: 21
       }),
       props.truncated && /* @__PURE__ */ jsxDEV("p", { className: "text-body-secondary small text-center", children: text("list_truncated", schemas.length) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 127,
+        lineNumber: 128,
         columnNumber: 41
       })
     ] }, void 0, true, {
@@ -264,7 +274,7 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 130,
+        lineNumber: 131,
         columnNumber: 56
       }
     ),
@@ -283,7 +293,7 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 138,
+        lineNumber: 139,
         columnNumber: 13
       }
     )

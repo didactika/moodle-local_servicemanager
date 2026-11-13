@@ -11,6 +11,15 @@ var __name = (target, value) => __defProp(target, "name", { value, configurable:
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+const PAGE_SIZES = [12, 24, 48, 96, 0];
+const pageRange = /* @__PURE__ */ __name((page, perpage, total) => {
+  const size = perpage > 0 ? perpage : Math.max(total, 1);
+  return { from: total === 0 ? 0 : page * size + 1, to: Math.min(total, (page + 1) * size) };
+}, "pageRange");
+const fitPageSizes = /* @__PURE__ */ __name((perpage, total) => ({
+  sizes: PAGE_SIZES.filter((size) => size === 0 || size < total),
+  shown: perpage > 0 && perpage < total ? perpage : 0
+}), "fitPageSizes");
 const pageWindow = /* @__PURE__ */ __name((page, perpage, total) => {
   const pages = Math.max(1, Math.ceil(total / Math.max(1, perpage)));
   const start = Math.max(0, page - 2);
@@ -36,6 +45,9 @@ const pageUrl = /* @__PURE__ */ __name((base, page) => {
   return path + "?" + [...kept, "page=" + page].join("&");
 }, "pageUrl");
 export {
+  PAGE_SIZES,
+  fitPageSizes,
+  pageRange,
   pageUrl,
   pageWindow
 };

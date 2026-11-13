@@ -31,7 +31,7 @@ use local_servicemanager\schema\manager;
  */
 class dashboard_page implements react_component_renderable, \renderable {
     /** @var int[] The sizes of page that can be chosen. */
-    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+    public const PERPAGE_OPTIONS = [12, 24, 48, 96, 0];
 
     /** @var int Most schemas that are sent; a site that has more is told so. */
     public const MAX_SCHEMAS = 1000;

@@ -80,14 +80,14 @@ final class health_page_test extends \advanced_testcase {
         $first = $this->export(new health_page($schema));
         $second = $this->export(new health_page($schema, '', 1));
 
-        $this->assertCount(25, $first['rows']);
-        $this->assertSame('Showing 1 to 25 of 30', $first['showing']);
+        $this->assertCount(12, $first['rows']);
+        $this->assertSame('Showing 1 to 12 of 30', $first['showing']);
         $this->assertSame('healthy', $first['rows'][0]['status']);
         $this->assertSame('Healthy', $first['rows'][0]['statusLabel']);
-        $this->assertSame(['page' => 0, 'perpage' => 25, 'total' => 30, 'options' => [10, 25, 50, 100]], $first['paging']);
-        $this->assertStringContainsString('perpage=25', $first['urls']['page']);
-        $this->assertCount(5, $second['rows']);
-        $this->assertSame('Showing 26 to 30 of 30', $second['showing']);
+        $this->assertSame(['page' => 0, 'perpage' => 12, 'total' => 30, 'options' => [12, 24, 48, 96, 0]], $first['paging']);
+        $this->assertStringContainsString('perpage=12', $first['urls']['page']);
+        $this->assertCount(12, $second['rows']);
+        $this->assertSame('Showing 13 to 24 of 30', $second['showing']);
         $this->assertSame([30, 10, 10, 10], array_column($first['filters'], 'count'));
         $this->assertSame([true, false, false, false], array_column($first['filters'], 'active'));
     }

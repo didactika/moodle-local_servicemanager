@@ -793,6 +793,7 @@
 .servicemanager-import-page .sm-list,
 .servicemanager-import-result .sm-list,
 .servicemanager-health-page .sm-list {
+    overflow: hidden;
     box-shadow: var(--bs-box-shadow-sm);
 }
 
@@ -805,6 +806,172 @@
 .servicemanager-import-result .sm-list thead,
 .servicemanager-health-page .sm-list thead {
     background-color: var(--bs-tertiary-bg);
+}
+
+.servicemanager-dashboard .sm-list [data-region=tablewrap],
+.servicemanager-detail .sm-list [data-region=tablewrap],
+.servicemanager-history-page .sm-list [data-region=tablewrap],
+.servicemanager-compare-page .sm-list [data-region=tablewrap],
+.servicemanager-documentation .sm-list [data-region=tablewrap],
+.servicemanager-import-page .sm-list [data-region=tablewrap],
+.servicemanager-import-result .sm-list [data-region=tablewrap],
+.servicemanager-health-page .sm-list [data-region=tablewrap] {
+    block-size: 34rem;
+    margin: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.servicemanager-dashboard .sm-list [data-region=tablewrap] thead th,
+.servicemanager-detail .sm-list [data-region=tablewrap] thead th,
+.servicemanager-history-page .sm-list [data-region=tablewrap] thead th,
+.servicemanager-compare-page .sm-list [data-region=tablewrap] thead th,
+.servicemanager-documentation .sm-list [data-region=tablewrap] thead th,
+.servicemanager-import-page .sm-list [data-region=tablewrap] thead th,
+.servicemanager-import-result .sm-list [data-region=tablewrap] thead th,
+.servicemanager-health-page .sm-list [data-region=tablewrap] thead th {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    background-color: var(--bs-tertiary-bg);
+}
+
+.servicemanager-dashboard .sm-list [data-region=tablewrap] > .sm-empty,
+.servicemanager-detail .sm-list [data-region=tablewrap] > .sm-empty,
+.servicemanager-history-page .sm-list [data-region=tablewrap] > .sm-empty,
+.servicemanager-compare-page .sm-list [data-region=tablewrap] > .sm-empty,
+.servicemanager-documentation .sm-list [data-region=tablewrap] > .sm-empty,
+.servicemanager-import-page .sm-list [data-region=tablewrap] > .sm-empty,
+.servicemanager-import-result .sm-list [data-region=tablewrap] > .sm-empty,
+.servicemanager-health-page .sm-list [data-region=tablewrap] > .sm-empty {
+    display: grid;
+    place-content: center;
+    min-block-size: 100%;
+    border: 0;
+}
+
+.servicemanager-dashboard .sm-list .sm-list-note,
+.servicemanager-detail .sm-list .sm-list-note,
+.servicemanager-history-page .sm-list .sm-list-note,
+.servicemanager-compare-page .sm-list .sm-list-note,
+.servicemanager-documentation .sm-list .sm-list-note,
+.servicemanager-import-page .sm-list .sm-list-note,
+.servicemanager-import-result .sm-list .sm-list-note,
+.servicemanager-health-page .sm-list .sm-list-note {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.servicemanager-dashboard .table-foot,
+.servicemanager-detail .table-foot,
+.servicemanager-history-page .table-foot,
+.servicemanager-compare-page .table-foot,
+.servicemanager-documentation .table-foot,
+.servicemanager-import-page .table-foot,
+.servicemanager-import-result .table-foot,
+.servicemanager-health-page .table-foot {
+    padding: 0.625rem 1rem;
+    border-top: 1px solid var(--bs-border-color);
+    background-color: var(--bs-body-bg);
+}
+
+.servicemanager-dashboard .dd-pager,
+.servicemanager-detail .dd-pager,
+.servicemanager-history-page .dd-pager,
+.servicemanager-compare-page .dd-pager,
+.servicemanager-documentation .dd-pager,
+.servicemanager-import-page .dd-pager,
+.servicemanager-import-result .dd-pager,
+.servicemanager-health-page .dd-pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    color: var(--bs-secondary-color);
+    font-size: 0.875rem;
+}
+
+.servicemanager-dashboard .dd-pager .dd-select,
+.servicemanager-detail .dd-pager .dd-select,
+.servicemanager-history-page .dd-pager .dd-select,
+.servicemanager-compare-page .dd-pager .dd-select,
+.servicemanager-documentation .dd-pager .dd-select,
+.servicemanager-import-page .dd-pager .dd-select,
+.servicemanager-import-result .dd-pager .dd-select,
+.servicemanager-health-page .dd-pager .dd-select {
+    width: auto;
+    min-width: 4.75rem;
+    border-radius: 999px;
+}
+
+.servicemanager-dashboard .dd-pager-size,
+.servicemanager-dashboard .dd-pager-end,
+.servicemanager-dashboard .dd-pager-arrows,
+.servicemanager-detail .dd-pager-size,
+.servicemanager-detail .dd-pager-end,
+.servicemanager-detail .dd-pager-arrows,
+.servicemanager-history-page .dd-pager-size,
+.servicemanager-history-page .dd-pager-end,
+.servicemanager-history-page .dd-pager-arrows,
+.servicemanager-compare-page .dd-pager-size,
+.servicemanager-compare-page .dd-pager-end,
+.servicemanager-compare-page .dd-pager-arrows,
+.servicemanager-documentation .dd-pager-size,
+.servicemanager-documentation .dd-pager-end,
+.servicemanager-documentation .dd-pager-arrows,
+.servicemanager-import-page .dd-pager-size,
+.servicemanager-import-page .dd-pager-end,
+.servicemanager-import-page .dd-pager-arrows,
+.servicemanager-import-result .dd-pager-size,
+.servicemanager-import-result .dd-pager-end,
+.servicemanager-import-result .dd-pager-arrows,
+.servicemanager-health-page .dd-pager-size,
+.servicemanager-health-page .dd-pager-end,
+.servicemanager-health-page .dd-pager-arrows {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.servicemanager-dashboard .dd-pager-end,
+.servicemanager-detail .dd-pager-end,
+.servicemanager-history-page .dd-pager-end,
+.servicemanager-compare-page .dd-pager-end,
+.servicemanager-documentation .dd-pager-end,
+.servicemanager-import-page .dd-pager-end,
+.servicemanager-import-result .dd-pager-end,
+.servicemanager-health-page .dd-pager-end {
+    gap: 1rem;
+}
+
+.servicemanager-dashboard .dd-pager-range,
+.servicemanager-detail .dd-pager-range,
+.servicemanager-history-page .dd-pager-range,
+.servicemanager-compare-page .dd-pager-range,
+.servicemanager-documentation .dd-pager-range,
+.servicemanager-import-page .dd-pager-range,
+.servicemanager-import-result .dd-pager-range,
+.servicemanager-health-page .dd-pager-range {
+    font-variant-numeric: tabular-nums;
+}
+
+.servicemanager-dashboard .dd-pager-arrows .btn-icon,
+.servicemanager-detail .dd-pager-arrows .btn-icon,
+.servicemanager-history-page .dd-pager-arrows .btn-icon,
+.servicemanager-compare-page .dd-pager-arrows .btn-icon,
+.servicemanager-documentation .dd-pager-arrows .btn-icon,
+.servicemanager-import-page .dd-pager-arrows .btn-icon,
+.servicemanager-import-result .dd-pager-arrows .btn-icon,
+.servicemanager-health-page .dd-pager-arrows .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border-radius: 50%;
 }
 
 .servicemanager-dashboard .sm-dialog,
@@ -2491,14 +2658,6 @@
     color: var(--bs-white);
 }
 
-.servicemanager-health-page .sm-perpage {
-    gap: 0.5rem;
-}
-
-.servicemanager-health-page .sm-perpage .form-select {
-    width: auto;
-}
-
 .servicemanager-health-page .sm-health-table th {
     color: var(--bs-secondary-color);
     font-size: 0.75rem;
@@ -2549,14 +2708,6 @@
     display: block;
     color: var(--bs-secondary-color);
     font-size: 0.8125rem;
-}
-
-.servicemanager-health-page .sm-pager {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
 }
 
 .servicemanager-detail .sm-health-row,

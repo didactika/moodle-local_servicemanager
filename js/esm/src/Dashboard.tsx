@@ -24,7 +24,7 @@ import EmptyState from './components/common/EmptyState';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
-import Pagination from './components/common/Pagination';
+import Pager from './components/common/Pager';
 import ActionMenu from './components/common/ActionMenu';
 import IconButton from './components/common/IconButton';
 import {createText} from './engine/text';
@@ -84,7 +84,6 @@ const Dashboard = (props: DashboardProps) => {
                     <HealthSummary counts={counts} status={list.state.status} onStatus={(status) => list.set({status})} text={text} />
                     <Toolbar
                         list={list}
-                        options={perPageOptions}
                         text={text}
                         actions={<div className="sm-group" role="group" aria-label={text('core_actions')}>
                             {canManage && <IconButton large solid tone="primary" icon="plus" label={text('new_schema')} href={urls.create} />}
@@ -104,6 +103,7 @@ const Dashboard = (props: DashboardProps) => {
                         </div>}
                     />
 
+                    <div className="card sm-list">
                     {page.rows.length > 0
                         ? <SchemaTable
                             rows={page.rows}
@@ -112,7 +112,8 @@ const Dashboard = (props: DashboardProps) => {
                             onToggle={(row) => send(row.enabled ? 'disable' : 'enable', [row.id])}
                             text={text}
                         />
-                        : <EmptyState
+                        : <div className="table-responsive" data-region="tablewrap"><EmptyState
+                            bare
                             icon="filter-circle-xmark"
                             title={text('empty_filtered_title')}
                             text={text('no_schemas_filtered')}
@@ -121,9 +122,9 @@ const Dashboard = (props: DashboardProps) => {
                                     <Icon name="xmark" gap />{text('filter_clear')}
                                 </button>
                                 : undefined}
-                        />}
-
-                    <Pagination page={page.page} perpage={list.state.perpage} total={page.total} onPage={(next) => list.set({page: next})} text={text} />
+                        /></div>}
+                    <Pager page={page.page} perpage={list.state.perpage} total={page.total} onChange={(changes) => list.set(changes)} text={text} />
+                    </div>
                     {props.truncated && <p className="text-body-secondary small text-center">{text('list_truncated', schemas.length)}</p>}
                 </>}
 

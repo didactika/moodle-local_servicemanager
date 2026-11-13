@@ -13,10 +13,9 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-import Chips from "../common/Chips";
 import FilterMenu from "../common/FilterMenu";
 import SearchBox from "../common/SearchBox";
-const Toolbar = /* @__PURE__ */ __name(({ list, options, text, actions }) => /* @__PURE__ */ jsxDEV("div", { className: "sm-toolbar", children: [
+const Toolbar = /* @__PURE__ */ __name(({ list, text, actions }) => /* @__PURE__ */ jsxDEV("div", { className: "sm-toolbar", children: [
   /* @__PURE__ */ jsxDEV(
     SearchBox,
     {
@@ -29,78 +28,57 @@ const Toolbar = /* @__PURE__ */ __name(({ list, options, text, actions }) => /* 
     false,
     {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-      lineNumber: 29,
+      lineNumber: 27,
       columnNumber: 5
     }
   ),
-  /* @__PURE__ */ jsxDEV(FilterMenu, { text, count: list.extras, onReset: () => list.set({ from: "", to: "", perpage: options[0] }), children: [
+  /* @__PURE__ */ jsxDEV(FilterMenu, { text, count: list.extras, onReset: () => list.set({ from: "", to: "" }), children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: [
       /* @__PURE__ */ jsxDEV("label", { htmlFor: "sm-from", className: "form-label", children: text("filter_date_from") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-        lineNumber: 37,
+        lineNumber: 35,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV("input", { type: "date", id: "sm-from", className: "form-control", value: list.state.from, onChange: (event) => list.set({ from: event.target.value }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-        lineNumber: 38,
+        lineNumber: 36,
         columnNumber: 13
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-      lineNumber: 36,
+      lineNumber: 34,
       columnNumber: 9
     }),
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: [
       /* @__PURE__ */ jsxDEV("label", { htmlFor: "sm-to", className: "form-label", children: text("filter_date_to") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-        lineNumber: 41,
+        lineNumber: 39,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV("input", { type: "date", id: "sm-to", className: "form-control", value: list.state.to, onChange: (event) => list.set({ to: event.target.value }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-        lineNumber: 42,
+        lineNumber: 40,
         columnNumber: 13
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-      lineNumber: 40,
+      lineNumber: 38,
       columnNumber: 9
-    }),
-    /* @__PURE__ */ jsxDEV("div", { className: "sm-filter-title", children: text("filter_per_page") }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-      lineNumber: 44,
-      columnNumber: 9
-    }),
-    /* @__PURE__ */ jsxDEV(
-      Chips,
-      {
-        label: text("filter_per_page"),
-        value: String(list.state.perpage),
-        onChange: (value) => list.set({ perpage: Number(value) }),
-        chips: options.map((option) => ({ value: String(option), label: String(option) }))
-      },
-      void 0,
-      false,
-      {
-        fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-        lineNumber: 45,
-        columnNumber: 9
-      }
-    )
+    })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-    lineNumber: 35,
+    lineNumber: 33,
     columnNumber: 5
   }),
   actions && /* @__PURE__ */ jsxDEV("div", { className: "sm-toolbar-actions", children: actions }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-    lineNumber: 52,
+    lineNumber: 43,
     columnNumber: 17
   })
 ] }, void 0, true, {
   fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Toolbar.tsx",
-  lineNumber: 28,
-  columnNumber: 67
+  lineNumber: 26,
+  columnNumber: 58
 }), "Toolbar");
 var Toolbar_default = Toolbar;
 export {

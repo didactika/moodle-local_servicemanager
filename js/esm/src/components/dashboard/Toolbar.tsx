@@ -13,26 +13,24 @@
 import type {ListControl} from '../../hooks/useListState';
 import type {Text} from '../../types';
 import type {ReactNode} from 'react';
-import Chips from '../common/Chips';
 import FilterMenu from '../common/FilterMenu';
 import SearchBox from '../common/SearchBox';
 
 interface ToolbarProps {
     list: ListControl;
-    options: number[];
     text: Text;
     /** The actions of the whole page, which sit at the end of the row as icons. */
     actions?: ReactNode;
 }
 
-const Toolbar = ({list, options, text, actions}: ToolbarProps) => <div className="sm-toolbar">
+const Toolbar = ({list, text, actions}: ToolbarProps) => <div className="sm-toolbar">
     <SearchBox
         value={list.state.query}
         onChange={(query) => list.set({query})}
         placeholder={text('filter_name')}
         clearLabel={text('filter_clear')}
     />
-    <FilterMenu text={text} count={list.extras} onReset={() => list.set({from: '', to: '', perpage: options[0]})}>
+    <FilterMenu text={text} count={list.extras} onReset={() => list.set({from: '', to: ''})}>
         <div className="mb-3">
             <label htmlFor="sm-from" className="form-label">{text('filter_date_from')}</label>
             <input type="date" id="sm-from" className="form-control" value={list.state.from} onChange={(event) => list.set({from: event.target.value})} />
@@ -41,13 +39,6 @@ const Toolbar = ({list, options, text, actions}: ToolbarProps) => <div className
             <label htmlFor="sm-to" className="form-label">{text('filter_date_to')}</label>
             <input type="date" id="sm-to" className="form-control" value={list.state.to} onChange={(event) => list.set({to: event.target.value})} />
         </div>
-        <div className="sm-filter-title">{text('filter_per_page')}</div>
-        <Chips
-            label={text('filter_per_page')}
-            value={String(list.state.perpage)}
-            onChange={(value) => list.set({perpage: Number(value)})}
-            chips={options.map((option) => ({value: String(option), label: String(option)}))}
-        />
     </FilterMenu>
     {actions && <div className="sm-toolbar-actions">{actions}</div>}
 </div>;

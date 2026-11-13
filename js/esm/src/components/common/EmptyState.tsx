@@ -17,9 +17,14 @@ interface EmptyStateProps {
     title: string;
     text: string;
     actions?: ReactNode;
+    /** Inside the box of a list, which already has its card. */
+    bare?: boolean;
 }
 
-const EmptyState = ({icon, title, text, actions}: EmptyStateProps) => <div className="card sm-empty" data-region="empty-state">
+const EmptyState = ({icon, title, text, actions, bare = false}: EmptyStateProps) => <div
+    className={`${bare ? '' : 'card '}sm-empty`}
+    data-region="empty-state"
+>
     <div className="card-body text-center py-5">
         <div className="sm-empty-icon text-body-secondary mb-3"><Icon name={icon} /></div>
         <h4 className="mb-2">{title}</h4>
