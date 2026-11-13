@@ -1,6 +1,6 @@
 @local @local_servicemanager @javascript @servicemanager_manual
-Feature: The screenshots of the wiki
-  In order to keep the wiki true to the interface
+Feature: The screenshots of the user manual
+  In order to keep the user manual true to the interface
   As a maintainer
   I need the screenshots to be taken from the real pages, with data that makes them worth looking at
 

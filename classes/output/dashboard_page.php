@@ -88,7 +88,8 @@ class dashboard_page implements \renderable, \templatable {
                 'exportall' => $this->url('export.php', ['all' => 1]),
                 'bulk' => $this->url('bulk_action.php'),
                 'documentation' => $this->url('documentation.php'),
-                'wiki' => 'https://github.com/didactika/moodle-local_servicemanager/wiki',
+                'manual' => 'https://docs.didactika.org/' . (substr(current_language(), 0, 2) === 'es' ? 'es' : 'en') .
+                    '/plugins/local-servicemanager/',
                 'moodledocs' => get_docs_url('Web_services'),
             ],
         ];
