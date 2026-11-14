@@ -52,7 +52,7 @@ Feature: Schema dashboard
     Then I should see "Critical" in the "[data-menu='status']" "css_element"
     When I click on "Healthy" "text" in the "[data-menu='status']" "css_element"
     Then I should see "Test Service" in the "test.service" "table_row"
-    And I should see "Healthy" in the "[data-menu='status'] > button" "css_element"
+    And "[data-menu='status'] .dd-select-clear" "css_element" should be visible
 
   @javascript
   Scenario: Choose a schema and the actions on it appear
