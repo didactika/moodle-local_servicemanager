@@ -31,7 +31,7 @@ Feature: Schema dashboard
     And I reload the page
     When I set the field "Search name..." to "nothing like this"
     Then I should see "No schemas found with the applied filters."
-    And I should see "Clear" in the "[data-region='empty-state']" "css_element"
+    And I should see "Clear" in the "[data-region='empty']" "css_element"
 
   @javascript
   Scenario: Typing in the search leaves only the schemas that match

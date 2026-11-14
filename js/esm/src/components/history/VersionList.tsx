@@ -57,8 +57,9 @@ const VersionList = ({rows, chosen, onToggle, onRollback, text}: VersionListProp
             <tbody>
                 {rows.map((row) => <tr key={row.id} className={chosen.has(row.id) ? 'table-active' : undefined} data-region="version">
                     <td className="table-select">
-                        <input type="checkbox" className="form-check-input" checked={chosen.has(row.id)} onChange={() => onToggle(row.id)}
-                            aria-label={`${text('compare_select')} ${row.version}`} />
+                        <input type="checkbox" id={`lsm-compare-${row.id}`} className="form-check-input" checked={chosen.has(row.id)}
+                            onChange={() => onToggle(row.id)} />
+                        <label htmlFor={`lsm-compare-${row.id}`} className="visually-hidden">{`${text('compare_select')} ${row.version}`}</label>
                     </td>
                     <td>
                         <span className="fw-semibold"><Icon name="code-branch" gap />{row.version}</span>

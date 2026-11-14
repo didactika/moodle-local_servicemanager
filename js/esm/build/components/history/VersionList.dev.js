@@ -81,23 +81,30 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV("tbody", { children: rows.map((row) => /* @__PURE__ */ jsxDEV("tr", { className: chosen.has(row.id) ? "table-active" : void 0, "data-region": "version", children: [
-        /* @__PURE__ */ jsxDEV("td", { className: "table-select", children: /* @__PURE__ */ jsxDEV(
-          "input",
-          {
-            type: "checkbox",
-            className: "form-check-input",
-            checked: chosen.has(row.id),
-            onChange: () => onToggle(row.id),
-            "aria-label": `${text("compare_select")} ${row.version}`
-          },
-          void 0,
-          false,
-          {
+        /* @__PURE__ */ jsxDEV("td", { className: "table-select", children: [
+          /* @__PURE__ */ jsxDEV(
+            "input",
+            {
+              type: "checkbox",
+              id: `lsm-compare-${row.id}`,
+              className: "form-check-input",
+              checked: chosen.has(row.id),
+              onChange: () => onToggle(row.id)
+            },
+            void 0,
+            false,
+            {
+              fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
+              lineNumber: 60,
+              columnNumber: 25
+            }
+          ),
+          /* @__PURE__ */ jsxDEV("label", { htmlFor: `lsm-compare-${row.id}`, className: "visually-hidden", children: `${text("compare_select")} ${row.version}` }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 60,
+            lineNumber: 62,
             columnNumber: 25
-          }
-        ) }, void 0, false, {
+          })
+        ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
           lineNumber: 59,
           columnNumber: 21
@@ -106,80 +113,80 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
           /* @__PURE__ */ jsxDEV("span", { className: "fw-semibold", children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: "code-branch", gap: true }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-              lineNumber: 64,
+              lineNumber: 65,
               columnNumber: 55
             }),
             row.version
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 64,
+            lineNumber: 65,
             columnNumber: 25
           }),
           row.isCurrent && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-success ms-2", children: text("current") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 65,
+            lineNumber: 66,
             columnNumber: 43
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-          lineNumber: 63,
+          lineNumber: 64,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: "d-flex align-items-center gap-2", children: [
           /* @__PURE__ */ jsxDEV("img", { src: row.userPicture, alt: "", width: 24, height: 24, className: "rounded-circle", loading: "lazy" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 69,
+            lineNumber: 70,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("span", { className: "d-flex flex-column", children: [
             row.userName,
             /* @__PURE__ */ jsxDEV("small", { className: "text-muted", children: row.date }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-              lineNumber: 72,
+              lineNumber: 73,
               columnNumber: 33
             })
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 70,
+            lineNumber: 71,
             columnNumber: 29
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-          lineNumber: 68,
+          lineNumber: 69,
           columnNumber: 25
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-          lineNumber: 67,
+          lineNumber: 68,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV("td", { className: "d-none d-md-table-cell", children: /* @__PURE__ */ jsxDEV("span", { className: "text-truncate d-block", title: row.reason, children: row.reason }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-          lineNumber: 76,
+          lineNumber: 77,
           columnNumber: 60
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-          lineNumber: 76,
+          lineNumber: 77,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV("td", { className: "table-actions", children: [
           /* @__PURE__ */ jsxDEV(IconButton, { icon: "code", label: text("view_yaml"), onClick: () => openYaml(row) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 78,
+            lineNumber: 79,
             columnNumber: 25
           }),
           /* @__PURE__ */ jsxDEV(IconButton, { icon: "eye", label: text("action_view"), href: row.viewUrl, tone: "primary" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 79,
+            lineNumber: 80,
             columnNumber: 25
           }),
           row.canRollback && /* @__PURE__ */ jsxDEV(IconButton, { icon: "rotate-left", label: text("rollback"), onClick: () => onRollback(row), tone: "warning" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 80,
+            lineNumber: 81,
             columnNumber: 45
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-          lineNumber: 77,
+          lineNumber: 78,
           columnNumber: 21
         })
       ] }, row.id, true, {
@@ -205,51 +212,51 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
         footer: /* @__PURE__ */ jsxDEV(Fragment, { children: [
           opened.yaml !== void 0 && /* @__PURE__ */ jsxDEV(CopyButton, { value: opened.yaml, text }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 87,
+            lineNumber: 88,
             columnNumber: 47
           }),
           /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: () => setOpened(null), children: text("core_closebuttontitle") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 88,
+            lineNumber: 89,
             columnNumber: 17
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-          lineNumber: 86,
+          lineNumber: 87,
           columnNumber: 21
         }),
         children: [
           opened.error && /* @__PURE__ */ jsxDEV("p", { className: "text-danger mb-0", role: "alert", children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: "circle-exclamation", gap: true }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-              lineNumber: 90,
+              lineNumber: 91,
               columnNumber: 75
             }),
             text("version_yaml_failed")
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 90,
+            lineNumber: 91,
             columnNumber: 30
           }),
           !opened.error && opened.yaml === void 0 && /* @__PURE__ */ jsxDEV("p", { className: "text-muted mb-0", children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: "spinner", gap: true }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-              lineNumber: 91,
+              lineNumber: 92,
               columnNumber: 91
             }),
             text("loading")
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 91,
+            lineNumber: 92,
             columnNumber: 60
           }),
           opened.yaml !== void 0 && /* @__PURE__ */ jsxDEV("pre", { className: "bg-body-tertiary border rounded p-3 small mb-0", children: /* @__PURE__ */ jsxDEV("code", { children: opened.yaml }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 92,
+            lineNumber: 93,
             columnNumber: 107
           }) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-            lineNumber: 92,
+            lineNumber: 93,
             columnNumber: 43
           })
         ]
@@ -258,7 +265,7 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
       true,
       {
         fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
-        lineNumber: 85,
+        lineNumber: 86,
         columnNumber: 20
       }
     )
