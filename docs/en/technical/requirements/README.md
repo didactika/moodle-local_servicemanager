@@ -22,12 +22,17 @@ sourceOfTruth: code
 | UC-002 | [Update a schema](./use-cases/updateSchema/README.md) | Maintainer | Schemas | RF-002 | [card](../analysis/use-cases/updateSchema/README.md) | [card](../design/use-cases/updateSchema/README.md) | [card](../implementation/use-cases/updateSchema/README.md) |
 | UC-003 | [Roll back a schema](./use-cases/rollbackSchema/README.md) | Maintainer | Schemas | RF-003 | [card](../analysis/use-cases/rollbackSchema/README.md) | [card](../design/use-cases/rollbackSchema/README.md) | [card](../implementation/use-cases/rollbackSchema/README.md) |
 | UC-004 | [Check the health of the schemas](./use-cases/checkHealth/README.md) | System | Health | RF-004 | [card](../analysis/use-cases/checkHealth/README.md) | [card](../design/use-cases/checkHealth/README.md) | [card](../implementation/use-cases/checkHealth/README.md) |
+| UC-005 | [Turn the web services and their protocols on or off](./use-cases/turnWebServices/README.md) | Administrator | Administration | RF-008 | [card](../analysis/use-cases/turnWebServices/README.md) | [card](../design/use-cases/turnWebServices/README.md) | [card](../implementation/use-cases/turnWebServices/README.md) |
 
 ### Use-case diagram
 
 ![Use cases](./use-case-overview.svg)
 
 ### By actor
+
+#### Administrator
+
+![Administrator](./use-cases-administrator.svg)
 
 #### Maintainer
 

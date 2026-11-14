@@ -15,7 +15,7 @@ order: 20
 ## Create the schema
 
 1. Open **Site administration → Server → Web Service Manager → Dashboard**.
-2. Press the round blue **+** (**New schema**).
+2. Press **New schema**, at the top right of the dashboard.
 3. In **Guided form**, fill in:
    - **Schema ID**: a short name that does not change, such as `crm.sync`.
    - **Name**, and the **Version** if you want one (left empty it is 1.0.0, and the plugin raises it for you later).

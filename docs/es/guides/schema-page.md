@@ -10,7 +10,7 @@ La página de un esquema es donde ve todo lo que el esquema es y ha creado, y do
 
 | # | Parte | Para qué sirve |
 |---|---|---|
-| 1 | [Estado de los servicios web](#1-estado-de-los-servicios-web) | La misma línea que en el panel, con los botones para activar lo que está apagado. |
+| 1 | [Estado de los servicios web](#1-estado-de-los-servicios-web) | El mismo estado que en el panel, y el camino a los ajustes de los protocolos. |
 | 2 | [Información del esquema](#2-información-del-esquema) | La descripción, la versión, las fechas y si está habilitado. |
 | 3 | [Las acciones](#3-las-acciones) | Editar, historial, exportar, deshabilitar y eliminar, como iconos redondos. |
 | 4 | [Acceso y requisitos, y Rol](#4-acceso-y-requisitos) | Las listas: token, acceso a archivos, plugins, capacidades y el rol. |
@@ -18,7 +18,7 @@ La página de un esquema es donde ve todo lo que el esquema es y ha creado, y do
 
 ## 1. Estado de los servicios web
 
-A la derecha del título, al mismo nivel que en el panel, ve si los servicios web están **Operativos**, **Deshabilitados** o con **Aviso**, cada protocolo y el botón **Activar servicios web** o **Activar un protocolo** cuando algo está apagado. Un esquema puede ser perfecto y no responder si el sitio tiene los servicios web apagados; esto se lo dice.
+A la derecha del título ve si los servicios web están **Operativos**, **Desactivados** o con **Ningún protocolo activado**, cada protocolo y **Gestionar**, que abre los ajustes de los protocolos; los servicios web y cada protocolo se activan o desactivan desde el resumen del [panel](page:guides/dashboard). Un esquema puede ser perfecto y no responder si el sitio tiene los servicios web apagados; esto se lo dice.
 
 ## 2. Información del esquema
 

@@ -12,16 +12,16 @@ or in the schema page, lists them.
 | # | Part |
 |---|---|
 | 1 | Search, by version, user, date or reason. |
-| 2 | Filters: dates and size of the page, with the count of the ones that are on. |
+| 2 | **Date**: the menu that limits the history to a period. |
 | 3 | A version: tick it to compare it. |
 | 4 | What you can do with a version. |
 
 ## The list
 
-Each version is one row: its number, **Current** if it is the one the schema has now, who made it and when, and why. The search and the filters work as
-in the dashboard. There is no edit button here: to change the schema, edit it from the [dashboard](page:guides/dashboard) or its [page](page:guides/schema-page). At the end of each row there are three round buttons, always in the same place: the one that a row does not have (the current version cannot be rolled back to) leaves its place empty, so the buttons of the same kind line up from one row to the next.
+Each version is one row of a table: its number, **Current** if it is the one the schema has now, who made it and when, and why. The search, the menu of the date
+and the pager work as in the dashboard. There is no edit button here: to change the schema, edit it from the [dashboard](page:guides/dashboard) or its [page](page:guides/schema-page). At the end of each row there are round buttons:
 
-- the code icon opens its YAML below the row, loaded when you ask for it, with a **Copy** button;
+- the code icon opens its YAML in a window, loaded when you ask for it;
 - the eye opens the page of the schema as it was in that version;
 - the arrow that goes back (**Rollback**) brings the schema back to that version; it is not offered for the current one. It opens a window that asks you to confirm, and the history changes where it is: the version that is current moves, the state that was left is kept as a backup when it was not in the history already, and a message says so. The page is not reloaded.
 

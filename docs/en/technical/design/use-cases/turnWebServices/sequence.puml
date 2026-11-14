@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+skinparam responseMessageBelowArrow true
+
+actor "Administrator" as actor
+participant "dashboard" as dashboard
+participant "web_services.php" as page
+participant "Moodle" as moodle
+database "config, config_log" as config
+
+actor -> dashboard : Enable web services, or a switch
+dashboard -> page : POST sesskey, enable, protocol
+page -> page : require_capability(moodle/site:config)
+page -> moodle : admin_write_settings or enable_plugin
+moodle -> config : new value and its log (config_log_created)
+page --> dashboard : redirect to the dashboard with a message
+dashboard --> actor : the new state
+
+@enduml
