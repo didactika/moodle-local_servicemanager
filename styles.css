@@ -743,15 +743,15 @@
     --dd-c: var(--dd-danger);
 }
 
-.lsm .btn-link.btn-icon:not(.disabled, :disabled),
-.path-local-servicemanager .modal .btn-link.btn-icon:not(.disabled, :disabled) {
+.lsm .btn-link.btn-icon:not(.disabled):not(:disabled),
+.path-local-servicemanager .modal .btn-link.btn-icon:not(.disabled):not(:disabled) {
     background-color: color-mix(in srgb, var(--dd-c) 9%, var(--dd-surface));
 }
 
-.lsm .btn-link.btn-icon:not(.disabled, :disabled):hover,
-.lsm .btn-link.btn-icon:not(.disabled, :disabled):focus-visible,
-.path-local-servicemanager .modal .btn-link.btn-icon:not(.disabled, :disabled):hover,
-.path-local-servicemanager .modal .btn-link.btn-icon:not(.disabled, :disabled):focus-visible {
+.lsm .btn-link.btn-icon:not(.disabled):not(:disabled):hover,
+.lsm .btn-link.btn-icon:not(.disabled):not(:disabled):focus-visible,
+.path-local-servicemanager .modal .btn-link.btn-icon:not(.disabled):not(:disabled):hover,
+.path-local-servicemanager .modal .btn-link.btn-icon:not(.disabled):not(:disabled):focus-visible {
     outline: 0;
     background-color: color-mix(in srgb, var(--dd-c) 18%, var(--dd-surface));
     color: color-mix(in srgb, var(--dd-c) 80%, var(--dd-ink));

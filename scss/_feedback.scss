@@ -175,12 +175,12 @@
             --dd-c: var(--dd-danger);
         }
 
-        &:not(.disabled, :disabled) {
+        &:not(.disabled):not(:disabled) {
             background-color: color-mix(in srgb, var(--dd-c) 9%, var(--dd-surface));
         }
 
-        &:not(.disabled, :disabled):hover,
-        &:not(.disabled, :disabled):focus-visible {
+        &:not(.disabled):not(:disabled):hover,
+        &:not(.disabled):not(:disabled):focus-visible {
             outline: 0;
             background-color: color-mix(in srgb, var(--dd-c) 18%, var(--dd-surface));
             color: color-mix(in srgb, var(--dd-c) 80%, var(--dd-ink));

@@ -73,7 +73,7 @@
             <div class="table-toolbar">
                 <nav class="dd-chips" aria-label="{{#str}}status, moodle{{/str}}" data-region="health-filters">
                     {{#filters}}
-                        <a class="dd-chip" href="{{url}}" aria-pressed="{{#active}}true{{/active}}{{^active}}false{{/active}}"{{#active}} aria-current="true"{{/active}}>{{label}} <span class="dd-chip-count">{{count}}</span></a>
+                        <a class="dd-chip" role="button" href="{{url}}" aria-pressed="{{#active}}true{{/active}}{{^active}}false{{/active}}"{{#active}} aria-current="true"{{/active}}>{{label}} <span class="dd-chip-count">{{count}}</span></a>
                     {{/filters}}
                 </nav>
             </div>
@@ -92,7 +92,7 @@
                                 <tr data-status="{{status}}">
                                     <td>
                                         <span class="d-block">{{time}}</span>
-                                        <small class="d-block text-muted">{{ago}}</span>
+                                        <small class="d-block text-muted">{{ago}}</small>
                                     </td>
                                     <td>
                                         <span class="badge badge-soft rounded-pill text-bg-{{tone}}">{{{iconhtml}}}{{statuslabel}}</span>

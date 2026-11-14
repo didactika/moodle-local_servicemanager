@@ -61,7 +61,7 @@
 
     {{#hasnewtoken}}
         <div class="alert alert-success" role="alert" data-region="new-token">
-            <h4 class="alert-heading">{{#pix}}key, local_servicemanager{{/pix}} {{#str}}token_generated, local_servicemanager{{/str}}</p>
+            <h4 class="alert-heading">{{#pix}}key, local_servicemanager{{/pix}} {{#str}}token_generated, local_servicemanager{{/str}}</h4>
             <p>{{#str}}token_copy_warning, local_servicemanager{{/str}}</p>
             <hr>
             <div class="input-group">
@@ -302,7 +302,7 @@
                         <div class="row">
                             {{#role.rows}}
                                 <section class="col-md-6 mb-3" data-region="role-block">
-                                    <h4 class="h6 d-flex align-items-center gap-2">{{label}}<span class="badge badge-soft rounded-pill text-bg-secondary">{{count}}</span></p>
+                                    <h4 class="h6 d-flex align-items-center gap-2">{{label}}<span class="badge badge-soft rounded-pill text-bg-secondary">{{count}}</span></h4>
                                     <div class="d-flex flex-wrap gap-1" data-region="chip-block" data-title="{{label}}">
                                         {{#names}}<span class="badge badge-soft rounded-pill text-bg-{{tone}} fw-normal" data-chip {{hiddenattr}}>{{name}}</span>{{/names}}
                                         {{#hasmore}}<button type="button" class="badge rounded-pill text-bg-light border" data-action="chips-all" title="{{morelabel}}">+{{morecount}}<span class="sr-only visually-hidden"> {{morelabel}}</span></button>{{/hasmore}}
