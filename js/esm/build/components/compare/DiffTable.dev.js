@@ -23,40 +23,45 @@ const LineNo = /* @__PURE__ */ __name(({ value }) => /* @__PURE__ */ jsxDEV("td"
   lineNumber: 37,
   columnNumber: 58
 }), "LineNo");
-const TONES = { added: "table-success", removed: "table-danger", changed: "table-warning", empty: "table-light" };
+const TONES = {
+  added: "bg-success-subtle",
+  removed: "bg-danger-subtle",
+  changed: "bg-warning-subtle",
+  empty: "bg-body-tertiary"
+};
 const Line = /* @__PURE__ */ __name(({ kind, value }) => /* @__PURE__ */ jsxDEV("td", { className: TONES[kind] ?? "", children: /* @__PURE__ */ jsxDEV("pre", { className: "mb-0 small", children: value ?? "" }, void 0, false, {
   fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-  lineNumber: 50,
+  lineNumber: 52,
   columnNumber: 5
 }) }, void 0, false, {
   fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-  lineNumber: 49,
+  lineNumber: 51,
   columnNumber: 65
 }), "Line");
 const splitRow = /* @__PURE__ */ __name((row, index) => /* @__PURE__ */ jsxDEV("tr", { id: `diff-row-${index}`, children: [
   /* @__PURE__ */ jsxDEV(LineNo, { value: row.left?.no }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-    lineNumber: 54,
+    lineNumber: 56,
     columnNumber: 5
   }),
   /* @__PURE__ */ jsxDEV(Line, { kind: row.kind === "added" ? "empty" : row.kind, value: row.left?.text }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-    lineNumber: 55,
+    lineNumber: 57,
     columnNumber: 5
   }),
   /* @__PURE__ */ jsxDEV(LineNo, { value: row.right?.no }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-    lineNumber: 56,
+    lineNumber: 58,
     columnNumber: 5
   }),
   /* @__PURE__ */ jsxDEV(Line, { kind: row.kind === "removed" ? "empty" : row.kind, value: row.right?.text }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-    lineNumber: 57,
+    lineNumber: 59,
     columnNumber: 5
   })
 ] }, index, true, {
   fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-  lineNumber: 53,
+  lineNumber: 55,
   columnNumber: 51
 }), "splitRow");
 const unifiedRows = /* @__PURE__ */ __name((row, index) => {
@@ -65,27 +70,27 @@ const unifiedRows = /* @__PURE__ */ __name((row, index) => {
     rows.push(/* @__PURE__ */ jsxDEV("tr", { id: `diff-row-${index}`, children: [
       /* @__PURE__ */ jsxDEV(LineNo, { value: row.left?.no }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 65,
+        lineNumber: 67,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV(LineNo, { value: row.right?.no }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 65,
+        lineNumber: 67,
         columnNumber: 44
       }),
       /* @__PURE__ */ jsxDEV("td", { className: "text-muted font-monospace", children: SIGNS.same }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 66,
+        lineNumber: 68,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV(Line, { kind: "same", value: row.left?.text }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 66,
+        lineNumber: 68,
         columnNumber: 72
       })
     ] }, index, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 64,
+      lineNumber: 66,
       columnNumber: 19
     }));
     return rows;
@@ -94,27 +99,27 @@ const unifiedRows = /* @__PURE__ */ __name((row, index) => {
     rows.push(/* @__PURE__ */ jsxDEV("tr", { id: `diff-row-${index}`, children: [
       /* @__PURE__ */ jsxDEV(LineNo, { value: row.left.no }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 72,
+        lineNumber: 74,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV(LineNo, { value: void 0 }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 72,
+        lineNumber: 74,
         columnNumber: 43
       }),
       /* @__PURE__ */ jsxDEV("td", { className: "text-muted font-monospace", children: SIGNS.removed }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 73,
+        lineNumber: 75,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV(Line, { kind: "removed", value: row.left.text }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 73,
+        lineNumber: 75,
         columnNumber: 75
       })
     ] }, `${index}-l`, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 71,
+      lineNumber: 73,
       columnNumber: 19
     }));
   }
@@ -122,27 +127,27 @@ const unifiedRows = /* @__PURE__ */ __name((row, index) => {
     rows.push(/* @__PURE__ */ jsxDEV("tr", { id: row.left ? void 0 : `diff-row-${index}`, children: [
       /* @__PURE__ */ jsxDEV(LineNo, { value: void 0 }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 78,
+        lineNumber: 80,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV(LineNo, { value: row.right.no }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 78,
+        lineNumber: 80,
         columnNumber: 41
       }),
       /* @__PURE__ */ jsxDEV("td", { className: "text-muted font-monospace", children: SIGNS.added }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 79,
+        lineNumber: 81,
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV(Line, { kind: "added", value: row.right.text }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 79,
+        lineNumber: 81,
         columnNumber: 73
       })
     ] }, `${index}-r`, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 77,
+      lineNumber: 79,
       columnNumber: 19
     }));
   }
@@ -160,12 +165,12 @@ const DiffTable = /* @__PURE__ */ __name(({ first, second, rows, view, onlyChang
         " ",
         /* @__PURE__ */ jsxDEV("small", { className: "text-body-secondary", children: first.date }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-          lineNumber: 95,
+          lineNumber: 97,
           columnNumber: 79
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 95,
+        lineNumber: 97,
         columnNumber: 29
       }),
       /* @__PURE__ */ jsxDEV("th", { colSpan: 2, children: [
@@ -175,17 +180,17 @@ const DiffTable = /* @__PURE__ */ __name(({ first, second, rows, view, onlyChang
         " ",
         /* @__PURE__ */ jsxDEV("small", { className: "text-body-secondary", children: second.date }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-          lineNumber: 96,
+          lineNumber: 98,
           columnNumber: 80
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 96,
+        lineNumber: 98,
         columnNumber: 29
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 94,
+      lineNumber: 96,
       columnNumber: 27
     }) : /* @__PURE__ */ jsxDEV("tr", { children: /* @__PURE__ */ jsxDEV("th", { colSpan: columns, children: [
       text("version"),
@@ -194,7 +199,7 @@ const DiffTable = /* @__PURE__ */ __name(({ first, second, rows, view, onlyChang
       " ",
       /* @__PURE__ */ jsxDEV(Icon, { name: "arrow-right" }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-        lineNumber: 100,
+        lineNumber: 102,
         columnNumber: 67
       }),
       " ",
@@ -203,15 +208,15 @@ const DiffTable = /* @__PURE__ */ __name(({ first, second, rows, view, onlyChang
       second.version
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 99,
+      lineNumber: 101,
       columnNumber: 29
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 98,
+      lineNumber: 100,
       columnNumber: 27
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 92,
+      lineNumber: 94,
       columnNumber: 17
     }),
     /* @__PURE__ */ jsxDEV("tbody", { children: parts.map((part) => {
@@ -219,41 +224,41 @@ const DiffTable = /* @__PURE__ */ __name(({ first, second, rows, view, onlyChang
         return /* @__PURE__ */ jsxDEV("tr", { className: "table-light", children: /* @__PURE__ */ jsxDEV("td", { colSpan: columns, children: /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-sm btn-link", onClick: () => onExpand(part.from), children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "ellipsis", gap: true }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-            lineNumber: 110,
+            lineNumber: 112,
             columnNumber: 41
           }),
           text("compare_unchanged_lines", part.count)
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-          lineNumber: 109,
+          lineNumber: 111,
           columnNumber: 37
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-          lineNumber: 108,
+          lineNumber: 110,
           columnNumber: 33
         }) }, `fold-${part.from}`, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-          lineNumber: 107,
+          lineNumber: 109,
           columnNumber: 36
         });
       }
       return part.rows.flatMap(({ row, index }) => view === "split" ? [splitRow(row, index)] : unifiedRows(row, index));
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-      lineNumber: 104,
+      lineNumber: 106,
       columnNumber: 17
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-    lineNumber: 91,
+    lineNumber: 93,
     columnNumber: 13
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-    lineNumber: 90,
+    lineNumber: 92,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/compare/DiffTable.tsx",
-    lineNumber: 89,
+    lineNumber: 91,
     columnNumber: 12
   });
 }, "DiffTable");

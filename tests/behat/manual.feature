@@ -103,10 +103,10 @@ Feature: The screenshots of the user manual
 
   Scenario: The menus of the dashboard
     When I navigate to "Server > Web Service Manager > Dashboard" in site administration
-    And I click on "Filters" "button"
+    And I click on "Status" "button"
     And I wait "1" seconds
     And I take a screenshot of the page as "dashboard-filters"
-    And I click on "Filters" "button"
+    And I click on "Status" "button"
     And I click on "Documentation" "button"
     And I wait "1" seconds
     And I take a screenshot of the page as "dashboard-documentation-menu"

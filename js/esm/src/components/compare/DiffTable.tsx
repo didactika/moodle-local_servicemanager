@@ -37,8 +37,10 @@ const SIGNS = {same: ' ', removed: '-', added: '+', changed: '~'} as const;
 const LineNo = ({value}: {value: number | undefined}) => <td className="text-muted text-end small user-select-none" aria-hidden="true">{value ?? ''}</td>;
 
 /** The rows of the side by side view: the line of each version on its own side. */
-/** The colour of a line by what happened to it, from the rows of the tables of Bootstrap. */
-const TONES: Record<string, string> = {added: 'table-success', removed: 'table-danger', changed: 'table-warning', empty: 'table-light'};
+/** The colour of a line by what happened to it, from the soft backgrounds of Bootstrap 5.3. */
+const TONES: Record<string, string> = {
+    added: 'bg-success-subtle', removed: 'bg-danger-subtle', changed: 'bg-warning-subtle', empty: 'bg-body-tertiary',
+};
 
 /**
  * A cell of text of the comparison: the line as it is written, with its indentation, in the colour of what happened to it.
