@@ -32,6 +32,8 @@ require_once($CFG->libdir . '/adminlib.php');
 require_login();
 require_capability('moodle/site:config', context_system::instance());
 require_sesskey();
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url(new moodle_url('/local/servicemanager/pages/web_services.php'));
 
 $enable = required_param('enable', PARAM_BOOL);
 $protocol = optional_param('protocol', '', PARAM_PLUGIN);
@@ -44,8 +46,8 @@ if ($protocol !== '') {
         throw new moodle_exception('invalidparameter', 'debug');
     }
     \core\plugininfo\webservice::enable_plugin($protocol, $enable ? 1 : 0);
-    $message = get_string($enable ? 'ws_protocol_enabled_done' : 'ws_protocol_disabled_done', 'local_servicemanager',
-        strtoupper($protocol));
+    $key = $enable ? 'ws_protocol_enabled_done' : 'ws_protocol_disabled_done';
+    $message = get_string($key, 'local_servicemanager', strtoupper($protocol));
 } else {
     if ((bool) !empty($CFG->enablewebservices) !== (bool) $enable) {
         // The same path as saving the page of the administration: the value, the log of the configuration and its callbacks.
