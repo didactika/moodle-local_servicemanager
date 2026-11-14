@@ -21,6 +21,7 @@ La posición vertical de una entidad expresa su importancia para el objetivo del
 | 2 | Estructurales: dependen directamente del núcleo | SchemaVersion, ServiceUser, ServiceRole, ExternalService, Token | Lo que crea un esquema, y el historial que conserva. |
 | 3 | Detalle: cualifican o especializan el nivel 2 | WebServiceFunction, Capability, RoleSettings, HealthLog | Lo que define el servicio y su rol, y el registro de sus comprobaciones. |
 | 4 | Soporte: catálogos, auditoría, configuración | SiteSettings | Acotan la retención de versiones y registros y las notificaciones. |
+| WebServiceState | 4 | Si los servicios web del sitio están activados y qué protocolos responden; el panel lo muestra y los activa o desactiva. | `enablewebservices`, `webserviceprotocols` | Son ajustes de Moodle, no una tabla del plugin. |
 
 ## Diagramas
 
@@ -57,6 +58,8 @@ La posición vertical de una entidad expresa su importancia para el objetivo del
 | RN-007 | Un retroceso es la única forma en que un esquema vuelve a una versión más baja. | SchemaVersion | `version_policy::check_rollback` |
 | RN-008 | Un esquema toma el peor estado de sus partes: correcto, con aviso o crítico. | HealthLog | `inspector::inspect` |
 | RN-009 | Un esquema deshabilitado suspende su usuario y su servicio y no se comprueba. | Schema | `provisioner::set_enabled`, `health_check::execute` |
+| RN-010 | Los servicios web y sus protocolos solo los cambia una persona que puede cambiar la configuración del sitio, y cada cambio queda en el registro de la configuración con su valor anterior. | WebServiceState | `pages/web_services.php` |
+| RN-011 | La lista del panel se acota con una búsqueda, con uno o varios estados (cada uno con sus esquemas, contados dentro de los demás filtros) y con un periodo de la última modificación que nunca queda al revés; su caja toma la altura que le deja la ventana y sus columnas conservan el ancho. | Schema | `amd/src/dashboard.js`, `js/esm/src/Dashboard.tsx` |
 
 ## Ciclos de vida
 

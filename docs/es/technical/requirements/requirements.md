@@ -18,6 +18,7 @@ sourceOfTruth: code
 | RF-005 | Un responsable puede habilitar, deshabilitar, eliminar, importar y exportar esquemas, de uno en uno o varios a la vez. | Debe | `external\set_enabled`, `schema\importer` | |
 | RF-006 | Un responsable puede comparar dos versiones de un esquema, línea a línea y por lo que cambió. | Podría | `schema\line_diff`, `schema\version_summary` | |
 | RF-007 | El plugin ofrece servicios web propios para crear y actualizar esquemas desde scripts. | Podría | `db/services.php` | UC-001, UC-002 |
+| RF-008 | Un administrador activa o desactiva los servicios web del sitio, y cada protocolo, desde el panel; cada cambio queda en el registro de la configuración. | Should | `pages/web_services.php` | UC-005 |
 
 ## No funcionales
 

@@ -61,6 +61,10 @@ class ws_status {
             'fixurl' => $fix['url'],
             'fixlabel' => $fix['label'],
             'protocolsurl' => $canmanage ? self::settings_url('webserviceprotocols') : '',
+            'canconfigure' => has_capability('moodle/site:config', \context_system::instance()),
+            'toggleurl' => (new \moodle_url('/local/servicemanager/pages/web_services.php'))->out(false),
+            'returnurl' => qualified_me(),
+            'sesskey' => sesskey(),
         ];
     }
 
@@ -71,10 +75,16 @@ class ws_status {
      * @return array[] One entry for each protocol.
      */
     private static function protocols(array $active): array {
+        global $CFG;
+
+        // Turned on: it answers once the web services are. Enabled: it answers now.
+        $configured = empty($CFG->webserviceprotocols) ? [] : array_map('trim', explode(',', $CFG->webserviceprotocols));
         $protocols = [];
         foreach (array_keys(\core_plugin_manager::instance()->get_plugins_of_type('webservice')) as $key) {
             $on = in_array($key, $active);
             $protocols[] = [
+                'key' => $key,
+                'turnedon' => in_array($key, $configured),
                 'name' => strtoupper($key),
                 'fullname' => get_string('pluginname', 'webservice_' . $key),
                 'enabled' => $on,

@@ -14,14 +14,14 @@ Feature: Changing a schema without leaving its page
     When I click on "Test Service" "link"
     And I click on "Disable" "button"
     Then I should see "was disabled"
-    And I should see "Disabled" in the ".sm-page-header" "css_element"
+    And I should see "Disabled" in the ".dd-page-header" "css_element"
     And "Enable" "button" should exist
 
   @javascript
   Scenario: The page of a schema shows the state of the web services as the dashboard does
     Given I navigate to "Server > Web Service Manager > Dashboard" in site administration
     When I click on "Test Service" "link"
-    Then I should see "Enable web services" in the "[data-region='ws-status']" "css_element"
+    Then I should see "Web services: Disabled" in the "[data-region='ws-status']" "css_element"
 
   @javascript
   Scenario: A token is made after a confirmation and shown next to the button

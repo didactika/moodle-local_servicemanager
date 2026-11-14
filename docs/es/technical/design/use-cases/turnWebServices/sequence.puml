@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+skinparam responseMessageBelowArrow true
+
+actor "Administrator" as actor
+participant "panel" as dashboard
+participant "web_services.php" as page
+participant "Moodle" as moodle
+database "config, config_log" as config
+
+actor -> dashboard : Activar los servicios web, o un interruptor
+dashboard -> page : POST sesskey, enable, protocol
+page -> page : require_capability(moodle/site:config)
+page -> moodle : admin_write_settings o enable_plugin
+moodle -> config : valor nuevo y su registro (config_log_created)
+page --> dashboard : redirección al panel con un mensaje
+dashboard --> actor : el estado nuevo
+
+@enduml

@@ -17,17 +17,17 @@ Feature: Health checks of a schema
     And "[data-region='health'] table" "css_element" should not exist
     When I click on "View all health checks" "link"
     Then I should see "Health checks"
-    And I should see "Showing 1 to 25 of 30" in the "[data-region='health-showing']" "css_element"
+    And I should see "1–12 of 30" in the ".dd-pager-range" "css_element"
 
   Scenario: The checks are shown a page at a time
     Given I am on the health checks page of the schema "test.service"
-    When I click on "2" "link" in the ".pagination" "css_element"
-    Then I should see "Showing 26 to 30 of 30" in the "[data-region='health-showing']" "css_element"
+    When I click on "Next" "link_or_button" in the ".dd-pager" "css_element"
+    Then I should see "13–24 of 30" in the ".dd-pager-range" "css_element"
 
   Scenario: The checks are narrowed to one status
     Given I am on the health checks page of the schema "test.service"
     When I click on "Warning" "link" in the "[data-region='health-filters']" "css_element"
-    Then I should see "Showing 1 to 10 of 10" in the "[data-region='health-showing']" "css_element"
+    Then I should see "1–10 of 10" in the ".dd-pager-range" "css_element"
     And I should see "Token: expired" in the "[data-region='health-table']" "css_element"
     And I should not see "Healthy" in the "[data-region='health-table']" "css_element"
 

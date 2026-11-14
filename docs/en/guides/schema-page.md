@@ -10,7 +10,7 @@ The page of a schema is where you see everything the schema is and has made, and
 
 | # | Part | What it is for |
 |---|---|---|
-| 1 | [State of the web services](#1-state-of-the-web-services) | The same line as in the dashboard, with the buttons to turn on what is off. |
+| 1 | [State of the web services](#1-state-of-the-web-services) | The same state as in the dashboard, and the way to the settings of the protocols. |
 | 2 | [Schema Information](#2-schema-information) | The description, version, dates and whether it is enabled. |
 | 3 | [The actions](#3-the-actions) | Edit, history, export, disable and delete, as round icons. |
 | 4 | [Access and requirements, and Role](#4-access-and-requirements) | The lists: token, file access, plugins, capabilities and the role. |
@@ -18,8 +18,8 @@ The page of a schema is where you see everything the schema is and has made, and
 
 ## 1. State of the web services
 
-At the right of the title, at the same level as in the dashboard, you see whether the web services are **Operational**, **Disabled** or in **Warning**, each protocol, and the
-button **Enable web services** or **Enable a protocol** when something is off. A schema can be perfect and still not answer if the site has the web services off; this tells you so.
+At the right of the title you see whether the web services are **Operational**, **Disabled** or have **No protocols enabled**, each protocol, and **Manage**, which
+opens the settings of the protocols; the web services and each protocol are turned on or off from the summary of the [dashboard](page:guides/dashboard). A schema can be perfect and still not answer if the site has the web services off; this tells you so.
 
 ## 2. Schema Information
 

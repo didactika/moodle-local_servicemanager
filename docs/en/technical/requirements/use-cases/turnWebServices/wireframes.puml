@@ -1,0 +1,7 @@
+@startsalt
+{+
+  { **15 Schemas** | [=====================] }
+  --
+  { (Web services: Disabled) | [X] REST | [ ] SOAP | [Enable web services] | [Manage] }
+}
+@endsalt

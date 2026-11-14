@@ -1,0 +1,241 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// What the lists of the plugin add to the sheets of the design system, as the Autograder report draws its lists: the row of
+// filters, the menus that hold a form, the menu that groups the filters, the columns that keep their width and narrow screens.
+// @copyright 2026 Didactika.org
+// @author Hector Arrechea <hectorlazaroarrechea@gmail.com>
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm {
+    // The card of a list holds menus, so it does not cut them.
+    & .card {
+        overflow: visible;
+    }
+
+    & .card > .table-responsive:last-child,
+    & .card > .table-foot:last-child {
+        border-radius: 0 0 var(--dd-radius-lg) var(--dd-radius-lg);
+    }
+
+    // Every filter is a menu with the shape of a select, in one row beside the search.
+    & .table-toolbar-start {
+        gap: 0.5rem;
+    }
+
+    & .dd-menu {
+        position: relative;
+        display: inline-flex;
+    }
+
+    // A block, not a flex box: only a block cuts its text with an ellipsis where the text ends, before the cross of a set filter.
+    & button.dd-select {
+        display: block;
+        min-width: 0;
+        max-width: 18rem;
+        overflow: hidden;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    & button.dd-select .dd-chip-count {
+        margin-left: 0.5rem;
+    }
+
+    & .dd-menu > .dd-select-menu {
+        position: absolute;
+        inset: calc(100% + 2px) auto auto 0;
+        width: max-content;
+        min-width: 100%;
+        max-width: 22rem;
+        max-height: 20rem;
+    }
+
+    & .dd-menu-end > .dd-select-menu {
+        inset: calc(100% + 2px) 0 auto auto;
+    }
+
+    & .dd-menu-up > .dd-select-menu {
+        inset: auto auto calc(100% + 2px) 0;
+    }
+
+    & .dd-select-menu label.dropdown-item {
+        margin: 0;
+        font-weight: 400;
+    }
+
+    & .dd-select-menu .dropdown-item .form-check-input {
+        position: static;
+        flex: none;
+        margin: 0;
+    }
+
+    & .dd-select-menu .dropdown-item > span:first-of-type {
+        flex: 1 1 auto;
+    }
+
+    & .dd-select-menu .dd-menu-form {
+        display: grid;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem 0.75rem;
+    }
+
+    & .dd-select-menu .dd-menu-dates {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    & .dd-select-menu hr {
+        margin: 0.375rem 0;
+        border-color: var(--dd-hairline);
+    }
+
+    & .dd-chip-count {
+        padding: 0 0.4rem;
+        border-radius: 999px;
+        background: var(--dd-surface-3);
+        color: var(--dd-muted);
+        font-size: 0.75rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+}
+
+@media (max-width: 576px) {
+    .lsm .table-toolbar-start {
+        flex: 1 1 100%;
+    }
+}
+
+.lsm {
+    // The toolbar keeps one row: the search shrinks down to its own room and the filters keep their width beside it. When they
+    // do not fit, the component groups them in one menu, Filters, so the row never breaks in two.
+    & [data-region="filters"] > .table-toolbar-start {
+        flex-wrap: nowrap;
+        min-width: 0;
+
+        & > .dd-searchbox {
+            flex: 1 1 10rem;
+            min-width: 10rem;
+        }
+
+        // On a phone the search gives up room down to 7rem, so the grouped filters and the button that clears them fit beside it.
+        @media (max-width: 400px) {
+            & > .dd-searchbox {
+                min-width: 7rem;
+            }
+        }
+    }
+
+    & [data-region="filter-menus"] {
+        display: flex;
+        flex: none;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.5rem;
+
+        & button.dd-select {
+            max-width: 14rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    // The button that groups the filters is as wide as what it says (the funnel, Filters and the count), so it fits a phone.
+    & [data-menu="filters"] > button.dd-select {
+        min-width: 0;
+    }
+
+    // The menu that groups the filters holds them one under the other, each as wide as the menu, and lets their own lists show.
+    & [data-menu="filters"] > .dd-select-menu {
+        min-width: 17rem;
+        max-height: none;
+        overflow: visible;
+    }
+
+    & [data-region="filter-panel"] {
+        display: grid;
+        gap: 0.5rem;
+        padding: 0.5rem;
+
+        & .dd-menu,
+        & .dd-select-filter,
+        & button.dd-select {
+            width: 100%;
+            max-width: none;
+        }
+    }
+
+    // The columns keep their width whatever the page shows: the component measures them once the table has rows and keeps them
+    // (table-layout: fixed), so a filter, a sort or another page moves nothing. What does not fit wraps, or ends with an ellipsis
+    // in the cells that keep one line.
+    & .table-responsive[data-region="tablewrap"] > .table {
+        & td {
+            overflow-wrap: break-word;
+        }
+
+        & td.text-nowrap {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+// Narrow screens: the cells keep one line and the table scrolls sideways inside its box, with its first column fixed so each row
+// keeps its name in view; tabs and chips keep one row that scrolls sideways instead of piling up.
+@media (max-width: 767.98px) {
+    .lsm {
+        // The column of the page is never wider than the screen, whatever a row of tabs or chips holds.
+        grid-template-columns: minmax(0, 1fr);
+
+        & .table-responsive .table {
+            & th,
+            & td {
+                white-space: nowrap;
+            }
+
+            & th:first-child,
+            & td:first-child {
+                position: sticky;
+                inset-inline-start: 0;
+                z-index: 1;
+                background-color: var(--dd-surface);
+                box-shadow: inset -1px 0 0 var(--dd-hairline, rgba(0, 0, 0, 0.08));
+            }
+
+            & thead th:first-child {
+                z-index: 2;
+            }
+        }
+
+        & .nav-tabs,
+        & .dd-chips {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        & .nav-tabs .nav-link,
+        & .dd-chip {
+            flex: none;
+            white-space: nowrap;
+        }
+
+        // The button that clears the filters stays at the top right of the toolbar, beside the search.
+        & .table-toolbar[data-region="filters"] {
+            position: relative;
+
+            & > .table-toolbar-start {
+                padding-inline-end: 3rem;
+            }
+
+            & > .table-toolbar-end {
+                position: absolute;
+                inset-block-start: 0.75rem;
+                inset-inline-end: 0.75rem;
+            }
+        }
+    }
+}

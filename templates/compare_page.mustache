@@ -46,53 +46,53 @@
         "unified": [{"index": 0, "leftno": 1, "rightno": 1, "sign": " ", "kind": "same", "text": "a"}]
     }
 }}
-<div class="servicemanager-compare-page{{#legacyicons}} sm-fa4{{/legacyicons}}" data-region="servicemanager-compare">
-    <div class="sm-block">
-        <a href="{{backurl}}" class="btn btn-secondary"><i class="fa-solid fa-arrow-left sm-icon-gap" aria-hidden="true"></i>{{#str}}back, local_servicemanager{{/str}}</a>
+<div class="lsm servicemanager-compare-page" data-region="servicemanager-compare">
+    <div class="mb-3">
+        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
     </div>
-    <header class="sm-page-header">
-        <div class="sm-page-title">
-            <h2 class="sm-flush">{{#str}}compare_versions, local_servicemanager{{/str}}</h2>
-            <p class="sm-muted sm-flush">
+    <header class="dd-page-header mb-3">
+        <div>
+            <h2 class="dd-page-title">{{#str}}compare_versions, local_servicemanager{{/str}}</h2>
+            <p class="dd-page-subtitle">
                 <a href="{{first.viewurl}}">{{#str}}version, local_servicemanager{{/str}} {{first.version}}</a>
-                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                {{#pix}}t/right, core{{/pix}}
                 <a href="{{second.viewurl}}">{{#str}}version, local_servicemanager{{/str}} {{second.version}}</a>
                 · {{second.user}}, {{second.date}}
             </p>
         </div>
     </header>
 
-    <div class="sm-badges-row sm-block" data-region="diff-counts">
-        {{#identical}}<span class="sm-badge tone-secondary">{{#str}}compare_no_changes, local_servicemanager{{/str}}</span>{{/identical}}
+    <div class="d-flex flex-wrap gap-2 mb-3" data-region="diff-counts">
+        {{#identical}}<span class="badge badge-soft rounded-pill text-bg-secondary">{{#str}}compare_no_changes, local_servicemanager{{/str}}</span>{{/identical}}
         {{^identical}}
-            {{#added}}<span class="sm-badge tone-success">{{addedlabel}}</span>{{/added}}
-            {{#removed}}<span class="sm-badge tone-danger">{{removedlabel}}</span>{{/removed}}
-            {{#changed}}<span class="sm-badge tone-warning">{{changedlabel}}</span>{{/changed}}
+            {{#added}}<span class="badge badge-soft rounded-pill text-bg-success">{{addedlabel}}</span>{{/added}}
+            {{#removed}}<span class="badge badge-soft rounded-pill text-bg-danger">{{removedlabel}}</span>{{/removed}}
+            {{#changed}}<span class="badge badge-soft rounded-pill text-bg-warning">{{changedlabel}}</span>{{/changed}}
         {{/identical}}
     </div>
 
     {{#hasareas}}
-        <details class="sm-changes sm-block" data-region="change-summary" open>
-            <summary class="sm-changes-head">
-                <i class="fa-solid fa-chevron-right sm-changes-caret" aria-hidden="true"></i>
-                <h5 class="sm-changes-title">{{#str}}compare_changes_title, local_servicemanager{{/str}}</h5>
-                <span class="sm-count-badge">{{changescount}}</span>
+        <details class="card mb-3" data-region="change-summary" open>
+            <summary class="card-header d-flex align-items-center gap-2">
+                {{#pix}}t/collapsed, core{{/pix}}
+                <h5 class="h6 mb-0">{{#str}}compare_changes_title, local_servicemanager{{/str}}</h5>
+                <span class="badge badge-soft rounded-pill text-bg-secondary">{{changescount}}</span>
             </summary>
-            <div class="sm-changes-body">
+            <div class="card-body d-grid gap-3">
                 {{#areas}}
-                    <section class="sm-changes-area">
-                        <h6 class="sm-changes-area-title"><i class="fa-solid fa-{{icon}} sm-icon-gap" aria-hidden="true"></i>{{title}}</h6>
-                        <ul class="sm-changes-list">
+                    <section>
+                        <h6 class="small text-muted text-uppercase fw-semibold">{{{iconhtml}}}{{title}}</h6>
+                        <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0">
                             {{#items}}
-                                <li class="sm-change-chip tone-{{tone}}">
-                                    <i class="fa-solid fa-{{icon}} sm-change-sign" aria-hidden="true"></i>
+                                <li class="badge badge-soft rounded-pill text-bg-{{tone}} fw-normal d-inline-flex align-items-center gap-1">
+                                    {{{iconhtml}}}
                                     <span class="sr-only visually-hidden">{{kindlabel}}: </span>
-                                    <span class="sm-change-name">{{label}}</span>
+                                    <span class="fw-semibold">{{label}}</span>
                                     {{#iskindchanged}}
-                                        <span class="sm-change-values">
-                                            <span class="sm-change-from">{{from}}</span>
-                                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                                            <span class="sm-change-to">{{to}}</span>
+                                        <span class="d-inline-flex align-items-center gap-1">
+                                            <span class="text-decoration-line-through">{{from}}</span>
+                                            {{#pix}}t/right, core{{/pix}}
+                                            <span>{{to}}</span>
                                         </span>
                                     {{/iskindchanged}}
                                 </li>
@@ -104,58 +104,58 @@
         </details>
     {{/hasareas}}
 
-    <div class="sm-actions-row sm-spread sm-block" data-region="diff-tools">
-        <div class="sm-group" role="group" aria-label="{{#str}}compare_view, local_servicemanager{{/str}}">
-            <button type="button" class="btn sm-pill active" data-view="split" aria-pressed="true">
-                <i class="fa-solid fa-table-columns sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_view_split, local_servicemanager{{/str}}
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3" data-region="diff-tools">
+        <div class="d-flex flex-wrap" role="group" aria-label="{{#str}}compare_view, local_servicemanager{{/str}}">
+            <button type="button" class="btn btn-outline-secondary active" data-view="split" aria-pressed="true">
+                {{#pix}}columns, local_servicemanager{{/pix}} {{#str}}compare_view_split, local_servicemanager{{/str}}
             </button>
-            <button type="button" class="btn sm-pill" data-view="unified" aria-pressed="false">
-                <i class="fa-solid fa-bars sm-icon-gap" aria-hidden="true"></i>{{#str}}compare_view_unified, local_servicemanager{{/str}}
+            <button type="button" class="btn btn-outline-secondary" data-view="unified" aria-pressed="false">
+                {{#pix}}i/menubars, core{{/pix}} {{#str}}compare_view_unified, local_servicemanager{{/str}}
             </button>
         </div>
-        <div class="sm-actions-row">
-            <div class="custom-control custom-switch form-check form-switch sm-switch">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <div class="custom-control custom-switch form-check form-switch custom-control custom-switch form-check form-switch mb-0">
                 <input class="custom-control-input form-check-input" type="checkbox" role="switch" id="only-changes" checked>
                 <label class="custom-control-label form-check-label" for="only-changes">{{#str}}compare_only_changes, local_servicemanager{{/str}}</label>
             </div>
         </div>
     </div>
 
-    <div class="card sm-diff-card">
+    <div class="card">
         <div class="table-responsive">
-            <table class="table table-sm comparison-table sm-diff-split" data-region="diff-split">
+            <table class="table table-sm comparison-table" data-region="diff-split">
                 <thead>
                     <tr>
-                        <th colspan="2">{{#str}}version, local_servicemanager{{/str}} {{first.version}} <small class="sm-muted">{{first.date}}</small></th>
-                        <th colspan="2">{{#str}}version, local_servicemanager{{/str}} {{second.version}} <small class="sm-muted">{{second.date}}</small></th>
+                        <th colspan="2">{{#str}}version, local_servicemanager{{/str}} {{first.version}} <small class="text-muted">{{first.date}}</small></th>
+                        <th colspan="2">{{#str}}version, local_servicemanager{{/str}} {{second.version}} <small class="text-muted">{{second.date}}</small></th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#split}}
-                        {{#opensfold}}<tr class="sm-folded" data-region="fold" data-from="{{index}}"><td colspan="4"><button type="button" class="btn btn-sm btn-link" data-action="open-fold"><i class="fa-solid fa-ellipsis sm-icon-gap" aria-hidden="true"></i>{{foldlabel}}</button></td></tr>{{/opensfold}}
+                        {{#opensfold}}<tr class="table-light" data-region="fold" data-from="{{index}}"><td colspan="4"><button type="button" class="btn btn-sm btn-link" data-action="open-fold">{{#pix}}i/moremenu, core{{/pix}} {{foldlabel}}</button></td></tr>{{/opensfold}}
                         <tr id="diff-row-{{index}}" data-row="{{index}}"{{#folded}} data-fold="{{foldfrom}}"{{/folded}}>
-                            <td class="sm-line-no" aria-hidden="true">{{leftno}}</td>
-                            <td class="sm-diff sm-diff-{{leftkind}}">{{lefttext}}</td>
-                            <td class="sm-line-no" aria-hidden="true">{{rightno}}</td>
-                            <td class="sm-diff sm-diff-{{rightkind}}">{{righttext}}</td>
+                            <td class="text-muted text-end small" data-region="line-no" aria-hidden="true">{{leftno}}</td>
+                            <td data-kind="{{leftkind}}"><pre class="mb-0 small">{{lefttext}}</pre></td>
+                            <td class="text-muted text-end small" data-region="line-no" aria-hidden="true">{{rightno}}</td>
+                            <td data-kind="{{rightkind}}"><pre class="mb-0 small">{{righttext}}</pre></td>
                         </tr>
                     {{/split}}
                 </tbody>
             </table>
-            <table class="table table-sm sm-diff-unified" data-region="diff-unified" hidden>
+            <table class="table table-sm" data-region="diff-unified" hidden>
                 <thead>
                     <tr>
-                        <th colspan="4">{{#str}}version, local_servicemanager{{/str}} {{first.version}} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> {{#str}}version, local_servicemanager{{/str}} {{second.version}}</th>
+                        <th colspan="4">{{#str}}version, local_servicemanager{{/str}} {{first.version}} {{#pix}}t/right, core{{/pix}} {{#str}}version, local_servicemanager{{/str}} {{second.version}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#unified}}
-                        {{#opensfold}}<tr class="sm-folded" data-region="fold" data-from="{{index}}"><td colspan="4"><button type="button" class="btn btn-sm btn-link" data-action="open-fold"><i class="fa-solid fa-ellipsis sm-icon-gap" aria-hidden="true"></i>{{foldlabel}}</button></td></tr>{{/opensfold}}
+                        {{#opensfold}}<tr class="table-light" data-region="fold" data-from="{{index}}"><td colspan="4"><button type="button" class="btn btn-sm btn-link" data-action="open-fold">{{#pix}}i/moremenu, core{{/pix}} {{foldlabel}}</button></td></tr>{{/opensfold}}
                         <tr data-row="{{index}}"{{#folded}} data-fold="{{foldfrom}}"{{/folded}}>
-                            <td class="sm-line-no" aria-hidden="true">{{leftno}}</td>
-                            <td class="sm-line-no" aria-hidden="true">{{rightno}}</td>
-                            <td class="sm-sign">{{sign}}</td>
-                            <td class="sm-diff sm-diff-{{kind}}">{{text}}</td>
+                            <td class="text-muted text-end small" data-region="line-no" aria-hidden="true">{{leftno}}</td>
+                            <td class="text-muted text-end small" data-region="line-no" aria-hidden="true">{{rightno}}</td>
+                            <td class="text-muted font-monospace">{{sign}}</td>
+                            <td data-kind="{{kind}}"><pre class="mb-0 small">{{text}}</pre></td>
                         </tr>
                     {{/unified}}
                 </tbody>
@@ -163,16 +163,16 @@
         </div>
     </div>
     {{#hasstarts}}
-        <div class="sm-floating sm-changenav" role="status" data-region="change-navigator">
-            <button type="button" class="sm-navbtn" data-action="prev-change" title="{{#str}}compare_prev_change, local_servicemanager{{/str}}">
-                <i class="fa-solid fa-chevron-up" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_prev_change, local_servicemanager{{/str}}</span>
+        <div class="dd-floatbar" role="status" data-region="change-navigator">
+            <button type="button" class="btn btn-outline-secondary btn-sm btn-icon" data-action="prev-change" title="{{#str}}compare_prev_change, local_servicemanager{{/str}}">
+                {{#pix}}t/up, core{{/pix}}<span class="sr-only visually-hidden">{{#str}}compare_prev_change, local_servicemanager{{/str}}</span>
             </button>
-            <span class="sm-changenav-info">
+            <span class="d-flex flex-column small">
                 <strong data-region="change-title"></strong>
                 <small data-region="change-detail"></small>
             </span>
-            <button type="button" class="sm-navbtn" data-action="next-change" title="{{#str}}compare_next_change, local_servicemanager{{/str}}">
-                <i class="fa-solid fa-chevron-down" aria-hidden="true"></i><span class="sr-only visually-hidden">{{#str}}compare_next_change, local_servicemanager{{/str}}</span>
+            <button type="button" class="btn btn-outline-secondary btn-sm btn-icon" data-action="next-change" title="{{#str}}compare_next_change, local_servicemanager{{/str}}">
+                {{#pix}}t/expanded, core{{/pix}}<span class="sr-only visually-hidden">{{#str}}compare_next_change, local_servicemanager{{/str}}</span>
             </button>
         </div>
     {{/hasstarts}}

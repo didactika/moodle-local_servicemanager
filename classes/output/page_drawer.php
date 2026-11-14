@@ -37,10 +37,9 @@ class page_drawer {
      * @return string The HTML.
      */
     public static function render(string $template, \templatable $page): string {
-        global $CFG, $OUTPUT;
+        global $OUTPUT;
 
-        $context = $page->export_for_template($OUTPUT);
-        $context['legacyicons'] = !file_exists($CFG->dirroot . '/lib/fonts/fa-solid-900.woff2');
+        $context = icons::drawn($page->export_for_template($OUTPUT));
         return $OUTPUT->render_from_template('local_servicemanager/' . $template, $context);
     }
 }

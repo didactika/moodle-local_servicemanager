@@ -61,7 +61,7 @@ export const init = () => {
     }
     initCopy();
 
-    const search = root.querySelector('#sm-functions-search');
+    const search = root.querySelector('#lsm-functions-search');
     if (search) {
         const rows = [...root.querySelectorAll('[data-region="function"]')];
         const empty = root.querySelector('[data-region="functions-empty"]');
@@ -114,13 +114,16 @@ export const init = () => {
     const drawEnabled = (enabled) => {
         root.dataset.enabled = enabled ? '1' : '0';
         const toggle = root.querySelector('[data-region="toggle-schema"]');
-        toggle.classList.toggle('tone-success', enabled);
-        const icon = toggle.querySelector('i');
-        icon.className = 'fa-solid fa-' + (enabled ? 'toggle-on' : 'toggle-off');
+        toggle.classList.toggle('text-success', enabled);
+        Templates.renderPix(enabled ? 't/show' : 't/hide', 'core').then((html) => {
+            toggle.querySelector('.icon')?.remove();
+            toggle.insertAdjacentHTML('afterbegin', html);
+            return html;
+        }).catch(() => null);
         root.querySelector('[data-region="disabled-badge"]').hidden = enabled;
         const badge = root.querySelector('[data-region="enabled-badge"]');
-        badge.classList.toggle('tone-success', enabled);
-        badge.classList.toggle('tone-secondary', !enabled);
+        badge.classList.toggle('text-bg-success', enabled);
+        badge.classList.toggle('text-bg-secondary', !enabled);
         return getStrings([
             {key: enabled ? 'bulk_disable' : 'bulk_enable', component: 'local_servicemanager'},
             {key: enabled ? 'yes' : 'no', component: 'moodle'},
@@ -145,15 +148,19 @@ export const init = () => {
 
     const showToken = (token) => {
         const holder = root.querySelector('[data-region="fresh-token"]');
-        root.querySelector('#sm-fresh-token-value').textContent = token;
+        root.querySelector('#lsm-fresh-token-value').textContent = token;
         holder.hidden = false;
         root.dataset.hasToken = '1';
         const make = root.querySelector('[data-region="make-token"]');
-        make.querySelector('i').className = 'fa-solid fa-rotate';
+        Templates.renderPix('i/reload', 'core').then((html) => {
+            make.querySelector('.icon')?.remove();
+            make.insertAdjacentHTML('afterbegin', html);
+            return html;
+        }).catch(() => null);
         const badge = root.querySelector('[data-region="token-badge"]');
         if (badge) {
-            badge.classList.remove('tone-secondary');
-            badge.classList.add('tone-success');
+            badge.classList.remove('text-bg-secondary');
+            badge.classList.add('text-bg-success');
             text('token_active').then((label) => {
                 badge.textContent = label;
                 return label;
