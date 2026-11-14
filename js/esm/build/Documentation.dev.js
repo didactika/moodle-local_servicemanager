@@ -53,7 +53,7 @@ const NAMING = [
 const SECTIONS = ["structure", "meta", "definition", "role", "naming", "example"];
 const Documentation = /* @__PURE__ */ __name((props) => {
   const text = useMemo(() => createText(props.strings), [props.strings]);
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-documentation", children: [
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-documentation d-grid gap-3", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: props.backUrl, label: text("back") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
       lineNumber: 63,
@@ -142,10 +142,10 @@ const Documentation = /* @__PURE__ */ __name((props) => {
         lineNumber: 85,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("pre", { className: "sm-code p-3 rounded", children: /* @__PURE__ */ jsxDEV("code", { children: props.structureCode }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("pre", { className: "bg-body-tertiary border p-3 rounded", children: /* @__PURE__ */ jsxDEV("code", { children: props.structureCode }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
         lineNumber: 86,
-        columnNumber: 54
+        columnNumber: 70
       }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
         lineNumber: 86,
@@ -195,10 +195,10 @@ const Documentation = /* @__PURE__ */ __name((props) => {
         lineNumber: 96,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("pre", { className: "sm-code p-3 rounded", children: /* @__PURE__ */ jsxDEV("code", { children: props.functionCode }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("pre", { className: "bg-body-tertiary border p-3 rounded", children: /* @__PURE__ */ jsxDEV("code", { children: props.functionCode }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
         lineNumber: 97,
-        columnNumber: 54
+        columnNumber: 70
       }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
         lineNumber: 97,

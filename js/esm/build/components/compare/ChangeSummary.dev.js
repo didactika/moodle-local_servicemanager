@@ -47,19 +47,14 @@ const label = /* @__PURE__ */ __name((text, change) => {
   return change.name;
 }, "label");
 const KIND_SIGN = { added: "plus", removed: "minus", changed: "pen" };
-const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__ */ jsxDEV("details", { className: "sm-changes", "data-region": "change-summary", open: true, children: [
-  /* @__PURE__ */ jsxDEV("summary", { className: "sm-changes-head", children: [
-    /* @__PURE__ */ jsxDEV(Icon, { name: "chevron-right", className: "sm-changes-caret" }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
-      lineNumber: 62,
-      columnNumber: 9
-    }),
-    /* @__PURE__ */ jsxDEV("h5", { className: "sm-changes-title", children: text("compare_changes_title") }, void 0, false, {
+const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__ */ jsxDEV("details", { className: "card", "data-region": "change-summary", open: true, children: [
+  /* @__PURE__ */ jsxDEV("summary", { className: "card-header d-flex align-items-center gap-2", children: [
+    /* @__PURE__ */ jsxDEV("h5", { className: "h6 mb-0", children: text("compare_changes_title") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
       lineNumber: 63,
       columnNumber: 9
     }),
-    /* @__PURE__ */ jsxDEV("span", { className: "sm-count-badge", children: changes.length }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: changes.length }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
       lineNumber: 64,
       columnNumber: 9
@@ -69,17 +64,17 @@ const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__
     lineNumber: 61,
     columnNumber: 5
   }),
-  /* @__PURE__ */ jsxDEV("div", { className: "sm-changes-body", children: AREAS.map(({ area, title, icon }) => {
+  /* @__PURE__ */ jsxDEV("div", { className: "card-body d-grid gap-3", children: AREAS.map(({ area, title, icon }) => {
     const items = ofArea(changes, area);
     if (items.length === 0) {
       return null;
     }
-    return /* @__PURE__ */ jsxDEV("section", { className: "sm-changes-area", children: [
-      /* @__PURE__ */ jsxDEV("h6", { className: "sm-changes-area-title", children: [
+    return /* @__PURE__ */ jsxDEV("section", { children: [
+      /* @__PURE__ */ jsxDEV("h6", { className: "small text-muted text-uppercase fw-semibold", children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: icon, gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
           lineNumber: 73,
-          columnNumber: 55
+          columnNumber: 77
         }),
         text(title)
       ] }, void 0, true, {
@@ -87,8 +82,8 @@ const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__
         lineNumber: 73,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("ul", { className: "sm-changes-list", children: items.map((change) => /* @__PURE__ */ jsxDEV("li", { className: `sm-change-chip tone-${KINDS[change.kind].tone}`, children: [
-        /* @__PURE__ */ jsxDEV(Icon, { name: KIND_SIGN[change.kind], className: "sm-change-sign" }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("ul", { className: "list-unstyled d-flex flex-wrap gap-2 mb-0", children: items.map((change) => /* @__PURE__ */ jsxDEV("li", { className: `badge badge-soft rounded-pill text-bg-${KINDS[change.kind].tone} fw-normal d-inline-flex align-items-center gap-1`, children: [
+        /* @__PURE__ */ jsxDEV(Icon, { name: KIND_SIGN[change.kind] }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
           lineNumber: 76,
           columnNumber: 25
@@ -101,13 +96,13 @@ const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__
           lineNumber: 77,
           columnNumber: 25
         }),
-        /* @__PURE__ */ jsxDEV("span", { className: "sm-change-name", children: label(text, change) }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("span", { className: "fw-semibold", children: label(text, change) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
           lineNumber: 78,
           columnNumber: 25
         }),
-        change.kind === "changed" && /* @__PURE__ */ jsxDEV("span", { className: "sm-change-values", children: [
-          /* @__PURE__ */ jsxDEV("span", { className: "sm-change-from", children: named(text, area, change.name, change.from) }, void 0, false, {
+        change.kind === "changed" && /* @__PURE__ */ jsxDEV("span", { className: "d-inline-flex align-items-center gap-1", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "text-decoration-line-through", children: named(text, area, change.name, change.from) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
             lineNumber: 80,
             columnNumber: 29
@@ -117,7 +112,7 @@ const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__
             lineNumber: 81,
             columnNumber: 29
           }),
-          /* @__PURE__ */ jsxDEV("span", { className: "sm-change-to", children: named(text, area, change.name, change.to) }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("span", { children: named(text, area, change.name, change.to) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
             lineNumber: 82,
             columnNumber: 29

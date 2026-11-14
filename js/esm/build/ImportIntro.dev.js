@@ -21,7 +21,7 @@ import Icon from "./components/common/Icon";
 import { createText } from "./engine/text";
 const ImportIntro = /* @__PURE__ */ __name((props) => {
   const text = useMemo(() => createText(props.strings), [props.strings]);
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-import-page", children: [
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-import-page d-grid gap-3", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-4", children: /* @__PURE__ */ jsxDEV(BackLink, { href: props.backUrl, label: text("back") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ImportIntro.tsx",
       lineNumber: 25,

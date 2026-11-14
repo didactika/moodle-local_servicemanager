@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../src/ds/useDebounced.ts"],
+  "sourceRoot": "../../../../../../sources/public/local/servicemanager/js/esm/build",
+  "sourcesContent": ["/**\n * This file is part of Moodle - https://moodle.org/\n * Moodle is free software under the GNU General Public License, version 3 or later.\n *\n * A value that follows another one a moment after it stops changing, so a search is not made for every key that is pressed.\n *\n * @module     report_autograder/hooks/useDebounced\n * @copyright  2026 Didactika.org\n * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>\n * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\n */\nimport {useEffect, useState} from 'react';\n\n/**\n * Follow a value with a delay.\n *\n * @param value The value that changes.\n * @param milliseconds How long it must stay as it is before it is followed.\n * @returns The value, as it was a moment ago.\n */\nexport const useDebounced = <T,>(value: T, milliseconds: number): T => {\n    const [followed, setFollowed] = useState(value);\n    useEffect(() => {\n        const timer = window.setTimeout(() => setFollowed(value), milliseconds);\n        return () => window.clearTimeout(timer);\n    }, [value, milliseconds]);\n    return followed;\n};\n"],
+  "mappings": ";;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAWA,SAAQ,WAAW,gBAAe;AAS3B,MAAM,eAAe,wBAAK,OAAU,iBAA4B;AACnE,QAAM,CAAC,UAAU,WAAW,IAAI,SAAS,KAAK;AAC9C,YAAU,MAAM;AACZ,UAAM,QAAQ,OAAO,WAAW,MAAM,YAAY,KAAK,GAAG,YAAY;AACtE,WAAO,MAAM,OAAO,aAAa,KAAK;AAAA,EAC1C,GAAG,CAAC,OAAO,YAAY,CAAC;AACxB,SAAO;AACX,GAP4B;",
+  "names": []
+}

@@ -83,7 +83,7 @@
     "eject": "risky",
     "wrap": "risky"
   },
-  "components/common/Pagination": {
+  "components/common/Pager": {
     "eject": "risky",
     "wrap": "risky"
   },

@@ -40,28 +40,28 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
         count={functions.length}
         flush
         region="functions"
-        actions={missing > 0 ? <span className="sm-badge tone-danger">{text('tile_functions_missing', missing)}</span> : undefined}
+        actions={missing > 0 ? <span className="badge badge-soft rounded-pill text-bg-danger">{text('tile_functions_missing', missing)}</span> : undefined}
     >
         {functions.length >= SEARCHABLE_FROM && <div className="p-3 border-bottom">
-            <SearchBox value={query} onChange={setQuery} placeholder={text('functions_search')} clearLabel={text('filter_clear')} id="sm-functions-search" />
+            <SearchBox value={query} onChange={setQuery} placeholder={text('functions_search')} clearLabel={text('filter_clear')} id="lsm-functions-search" />
         </div>}
-        <ul className="list-group list-group-flush sm-functions">
-            {shown.map((fn) => <li key={fn.name} className={`list-group-item sm-function${fn.exists ? '' : ' missing'}`}>
-                <span className={`sm-function-icon ${fn.exists ? 'text-body-secondary' : 'text-danger'}`}>
+        <ul className="list-group list-group-flush">
+            {shown.map((fn) => <li key={fn.name} className={`list-group-item d-flex align-items-start gap-3${fn.exists ? "" : " list-group-item-danger"}`}>
+                <span className={fn.exists ? "text-muted" : "text-danger"}>
                     <Icon name={fn.exists ? (fn.type === 'write' ? 'pen' : 'eye') : 'circle-xmark'} />
                 </span>
-                <div className="flex-grow-1 sm-function-body">
-                    <div className="d-flex flex-wrap align-items-center sm-badges-row">
-                        <span className="sm-fn">{fn.name}</span>
-                        {fn.type && <span className="sm-badge">{text('function_' + fn.type)}</span>}
-                        {fn.critical && <span className="sm-badge">{text('function_critical')}</span>}
-                        {!fn.exists && <span className="sm-badge tone-danger">{text('function_missing')}</span>}
+                <div className="flex-grow-1 min-w-0">
+                    <div className="d-flex flex-wrap align-items-center gap-2">
+                        <span className="font-monospace small">{fn.name}</span>
+                        {fn.type && <span className="badge badge-soft rounded-pill text-bg-secondary">{text('function_' + fn.type)}</span>}
+                        {fn.critical && <span className="badge badge-soft rounded-pill text-bg-secondary">{text('function_critical')}</span>}
+                        {!fn.exists && <span className="badge badge-soft rounded-pill text-bg-danger">{text('function_missing')}</span>}
                     </div>
                     {fn.description && <div className="text-body-secondary small">{fn.description}</div>}
                 </div>
                 {fn.capabilities.length > 0 && <button
                     type="button"
-                    className="btn sm-pill tone-primary compact sm-function-caps"
+                    className="btn btn-sm btn-outline-primary"
                     onClick={() => setViewing(fn)}
                     title={text('function_capabilities_view')}
                 >
@@ -79,11 +79,11 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
             closeLabel={text('core_cancel')}
         >
             {viewing && <>
-                <p className="mb-2"><span className="sm-fn">{viewing.name}</span></p>
+                <p className="mb-2"><span className="font-monospace small">{viewing.name}</span></p>
                 {viewing.description && <p className="text-body-secondary">{viewing.description}</p>}
                 <p className="small text-body-secondary">{text('function_capabilities_help')}</p>
-                <ul className="list-group sm-caps-list">
-                    {viewing.capabilities.map((capability) => <li key={capability} className="list-group-item"><span className="sm-fn">{capability}</span></li>)}
+                <ul className="list-group">
+                    {viewing.capabilities.map((capability) => <li key={capability} className="list-group-item"><span className="font-monospace small">{capability}</span></li>)}
                 </ul>
             </>}
         </Modal>

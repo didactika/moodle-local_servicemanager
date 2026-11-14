@@ -28,13 +28,13 @@ const ChipList = /* @__PURE__ */ __name(({ title, names, chip, text, limit = SHO
     return names.filter((name) => words.every((word) => name.toLowerCase().includes(word)));
   }, [names, query]);
   return /* @__PURE__ */ jsxDEV(Fragment, { children: [
-    /* @__PURE__ */ jsxDEV("div", { className: "sm-chip-row", "data-region": "chip-list", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap gap-1", "data-region": "chip-list", children: [
       (folded ? names.slice(0, limit) : names).map((name) => chip(name)),
       folded && /* @__PURE__ */ jsxDEV(
         "button",
         {
           type: "button",
-          className: "sm-role-more",
+          className: "badge rounded-pill text-bg-light border",
           "data-action": "chips-all",
           title: text("chips_all", names.length),
           onClick: () => setOpen(true),
@@ -71,7 +71,7 @@ const ChipList = /* @__PURE__ */ __name(({ title, names, chip, text, limit = SHO
         wide: true,
         title: /* @__PURE__ */ jsxDEV(Fragment, { children: [
           title,
-          /* @__PURE__ */ jsxDEV("span", { className: "sm-role-count ms-2", children: names.length }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary ms-2", children: names.length }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/ChipList.tsx",
             lineNumber: 62,
             columnNumber: 29
@@ -84,14 +84,14 @@ const ChipList = /* @__PURE__ */ __name(({ title, names, chip, text, limit = SHO
         onClose: () => setOpen(false),
         closeLabel: text("core_cancel"),
         children: [
-          names.length > SEARCHABLE_FROM && /* @__PURE__ */ jsxDEV("div", { className: "sm-dialog-search", children: /* @__PURE__ */ jsxDEV(
+          names.length > SEARCHABLE_FROM && /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(
             SearchBox,
             {
               value: query,
               onChange: setQuery,
               placeholder: text("filter_name"),
               clearLabel: text("filter_clear"),
-              id: "sm-chips-search"
+              id: "lsm-chips-search"
             },
             void 0,
             false,
@@ -105,7 +105,7 @@ const ChipList = /* @__PURE__ */ __name(({ title, names, chip, text, limit = SHO
             lineNumber: 66,
             columnNumber: 48
           }),
-          /* @__PURE__ */ jsxDEV("ul", { className: "list-group sm-caps-list", "data-region": "chip-all", children: found.map((name) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item", children: /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: name }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("ul", { className: "list-group", "data-region": "chip-all", children: found.map((name) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item", children: /* @__PURE__ */ jsxDEV("span", { className: "font-monospace small", children: name }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/ChipList.tsx",
             lineNumber: 76,
             columnNumber: 81

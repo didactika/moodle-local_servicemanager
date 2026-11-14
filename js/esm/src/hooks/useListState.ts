@@ -56,6 +56,7 @@ export const useListState = (perpage: number, options: number[]): ListControl =>
         setState({query: '', status: '', from: '', to: '', perpage, page: 0});
     }, [perpage]);
 
-    const extras = (state.from ? 1 : 0) + (state.to ? 1 : 0) + (state.perpage !== perpage ? 1 : 0);
+    // The size of the page is not a filter: the pager under the list chooses it.
+    const extras = (state.from ? 1 : 0) + (state.to ? 1 : 0);
     return {state, set, reset, extras};
 };

@@ -2,8 +2,8 @@
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * What the person has chosen to compare and the button that compares it. It floats at the bottom of the screen, as the bar of the
- * schemas of the dashboard does, so it is at hand however long the list is.
+ * The floating bar of the design system while versions are chosen to compare: how many of the two are chosen, a warning when a
+ * third one was tried, the button that compares them and the one that clears the choice.
  *
  * @module     local_servicemanager/components/history/CompareBar
  * @copyright  2026 Didactika.org
@@ -22,20 +22,17 @@ interface CompareBarProps {
     text: Text;
 }
 
-const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) => <div className="sm-floating sm-compare" role="status" data-region="compare-bar">
+const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) => <div className="dd-floatbar" role="region"
+    aria-label={text('compare_versions')} data-region="compare-bar">
     {[...chosen].map((id) => <input key={id} type="hidden" name="compare[]" value={id} />)}
-    <span className="sm-floating-count" data-region="compare-chosen">
-        <span>{text('compare_chosen', {n: chosen.size, total: needed})}</span>
-    </span>
-    {tooMany && <span className="sm-compare-warning" role="alert">{text('compare_select_two')}</span>}
-    <div className="sm-floating-actions">
-        <button type="submit" id="compare-btn" className="btn sm-pill solid tone-primary" disabled={chosen.size !== needed}>
+    <span className="dd-floatbar-count" role="status" data-region="compare-chosen">{text('compare_chosen', {n: chosen.size, total: needed})}</span>
+    {tooMany && <span className="text-danger small" role="alert">{text('compare_select_two')}</span>}
+    <div className="dd-floatbar-actions">
+        <button type="submit" id="compare-btn" className="btn btn-primary btn-sm" disabled={chosen.size !== needed}>
             <Icon name="code-compare" gap />{text('compare_versions')}
         </button>
     </div>
-    <button type="button" className="sm-floating-clear" onClick={onClear} title={text('compare_clear')}>
-        <Icon name="xmark" /><span className="visually-hidden">{text('compare_clear')}</span>
-    </button>
+    <button type="button" className="dd-floatbar-clear" onClick={onClear} title={text('compare_clear')} aria-label={text('compare_clear')} />
 </div>;
 
 export default CompareBar;

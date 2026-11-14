@@ -54,3 +54,28 @@ function local_servicemanager_id_to_shortname(string $schemaid): string {
 function local_servicemanager_validate_schema_id(string $schemaid): bool {
     return preg_match('/^[a-zA-Z0-9.]+$/', $schemaid) === 1;
 }
+
+/**
+ * The icons of the plugin, for what Moodle has no icon of its own, mapped to Font Awesome as Moodle maps its icons, so they are
+ * asked for by id and a theme can change them.
+ *
+ * @return string[] Font Awesome class of each icon.
+ */
+function local_servicemanager_get_fontawesome_icon_map(): array {
+    return [
+        'local_servicemanager:branch' => 'fa-code-branch',
+        'local_servicemanager:code' => 'fa-code',
+        'local_servicemanager:columns' => 'fa-table-columns',
+        'local_servicemanager:compare' => 'fa-code-compare',
+        'local_servicemanager:fingerprint' => 'fa-fingerprint',
+        'local_servicemanager:health' => 'fa-heart-pulse',
+        'local_servicemanager:history' => 'fa-clock-rotate-left',
+        'local_servicemanager:key' => 'fa-key',
+        'local_servicemanager:list' => 'fa-table-list',
+        'local_servicemanager:plug' => 'fa-plug',
+        'local_servicemanager:plugin' => 'fa-puzzle-piece',
+        'local_servicemanager:power' => 'fa-power-off',
+        'local_servicemanager:server' => 'fa-server',
+        'local_servicemanager:view' => 'fa-eye',
+    ];
+}

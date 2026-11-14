@@ -8,11 +8,13 @@
 // @author Hector Arrechea <hectorlazaroarrechea@gmail.com>
 // @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
-@import 'scss/common';
-@import 'scss/dashboard';
-@import 'scss/detail';
-@import 'scss/history';
-@import 'scss/compare';
-@import 'scss/documentation';
-@import 'scss/import';
-@import 'scss/health';
+// The pieces of the Didactika design system (https://moodle-design.didactika.org/), as Delegate account and the Autograder report
+// draw them, under the class lsm of the screens. The dialogs open at the end of the page, outside the screen, so they are reached
+// by the class Moodle gives the pages of the plugin.
+$lsm-modal: '.path-local-servicemanager .modal';
+
+@import 'scss/tokens';
+@import 'scss/chrome';
+@import 'scss/feedback';
+@import 'scss/lists';
+@import 'scss/content';

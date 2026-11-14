@@ -30,7 +30,7 @@ const ImportResult = /* @__PURE__ */ __name((props) => {
   const { totals, items, urls } = props;
   const text = useMemo(() => createText(props.strings), [props.strings]);
   const failed = totals.failed > 0;
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-import-result", children: [
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-import-result d-grid gap-3", children: [
     /* @__PURE__ */ jsxDEV(
       PageHeader,
       {
@@ -75,7 +75,7 @@ const ImportResult = /* @__PURE__ */ __name((props) => {
         columnNumber: 13
       }
     ),
-    /* @__PURE__ */ jsxDEV("div", { className: "sm-tiles sm-tiles-four", "data-region": "summary", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "row row-cols-2 row-cols-md-4 g-3", "data-region": "summary", children: [
       /* @__PURE__ */ jsxDEV(StatTile, { label: text("import_imported"), value: totals.imported, tone: "success", icon: "circle-check" }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
         lineNumber: 46,
@@ -104,10 +104,10 @@ const ImportResult = /* @__PURE__ */ __name((props) => {
     items.length > 0 && /* @__PURE__ */ jsxDEV("div", { className: "card", children: /* @__PURE__ */ jsxDEV("ul", { className: "list-group list-group-flush", "data-region": "import-items", children: items.map((item, index) => {
       const look = STATUS[item.status];
       return /* @__PURE__ */ jsxDEV("li", { className: "list-group-item", children: /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-start", children: [
-        /* @__PURE__ */ jsxDEV("span", { className: `text-${look.tone} sm-icon-gap`, children: /* @__PURE__ */ jsxDEV(Icon, { name: look.icon }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("span", { className: `text-${look.tone} me-1`, children: /* @__PURE__ */ jsxDEV(Icon, { name: look.icon }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
           lineNumber: 58,
-          columnNumber: 83
+          columnNumber: 76
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
           lineNumber: 58,
@@ -124,11 +124,11 @@ const ImportResult = /* @__PURE__ */ __name((props) => {
               lineNumber: 61,
               columnNumber: 129
             }),
-            item.id && item.name && /* @__PURE__ */ jsxDEV("span", { className: "sm-id-chip compact ms-2", children: [
+            item.id && item.name && /* @__PURE__ */ jsxDEV("span", { className: "small text-muted ms-2", children: [
               /* @__PURE__ */ jsxDEV(Icon, { name: "fingerprint", gap: true }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
                 lineNumber: 62,
-                columnNumber: 108
+                columnNumber: 106
               }),
               item.id
             ] }, void 0, true, {
@@ -136,7 +136,7 @@ const ImportResult = /* @__PURE__ */ __name((props) => {
               lineNumber: 62,
               columnNumber: 66
             }),
-            /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${look.tone} ms-2`, children: text("import_status_" + item.status) }, void 0, false, {
+            /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${look.tone} ms-2`, children: text("import_status_" + item.status) }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ImportResult.tsx",
               lineNumber: 63,
               columnNumber: 41

@@ -16,8 +16,8 @@ import { jsxDEV } from "react/jsx-dev-runtime";
 import Icon from "../common/Icon";
 const ChangeNavigator = /* @__PURE__ */ __name(({ runs, position, onMove, text }) => {
   const current = runs[position];
-  return /* @__PURE__ */ jsxDEV("div", { className: "sm-floating sm-changenav", role: "status", "data-region": "change-navigator", children: [
-    /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-navbtn", onClick: () => onMove(-1), title: text("compare_prev_change"), children: [
+  return /* @__PURE__ */ jsxDEV("div", { className: "dd-floatbar", role: "region", "aria-label": text("compare_changes_hint"), "data-region": "change-navigator", children: [
+    /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm btn-icon", onClick: () => onMove(-1), title: text("compare_prev_change"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "chevron-up" }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeNavigator.tsx",
         lineNumber: 29,
@@ -33,7 +33,7 @@ const ChangeNavigator = /* @__PURE__ */ __name(({ runs, position, onMove, text }
       lineNumber: 28,
       columnNumber: 9
     }),
-    /* @__PURE__ */ jsxDEV("span", { className: "sm-changenav-info", children: [
+    /* @__PURE__ */ jsxDEV("span", { className: "d-flex flex-column small", role: "status", children: [
       /* @__PURE__ */ jsxDEV("strong", { children: current ? text("compare_change_of", { n: position + 1, total: runs.length }) : text("compare_changes_found", runs.length) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeNavigator.tsx",
         lineNumber: 32,
@@ -49,7 +49,7 @@ const ChangeNavigator = /* @__PURE__ */ __name(({ runs, position, onMove, text }
       lineNumber: 31,
       columnNumber: 9
     }),
-    /* @__PURE__ */ jsxDEV("button", { type: "button", className: "sm-navbtn", onClick: () => onMove(1), title: text("compare_next_change"), children: [
+    /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm btn-icon", onClick: () => onMove(1), title: text("compare_next_change"), children: [
       /* @__PURE__ */ jsxDEV(Icon, { name: "chevron-down" }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeNavigator.tsx",
         lineNumber: 36,

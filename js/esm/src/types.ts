@@ -38,8 +38,14 @@ export interface SchemaRow {
 /** The state of the web services of the site. */
 export interface WsStatus {
     enabled: boolean;
+    /** The person can change the configuration of the site, so the switches work. */
+    canConfigure: boolean;
+    /** Where a change of the web services or of a protocol is sent, and where the page comes back after it. */
+    toggleUrl: string;
+    returnUrl: string;
     level: 'disabled' | 'warning' | 'operational';
-    protocols: Array<{name: string; enabled: boolean}>;
+    /** Each protocol: enabled when it answers now, on when it is turned on (it answers once the web services are). */
+    protocols: Array<{key: string; name: string; enabled: boolean; on: boolean}>;
     enabledProtocols: number;
     healthy: number;
     warning: number;
@@ -58,7 +64,7 @@ export interface DashboardProps {
     sesskey: string;
     urls: {
         create: string; createYaml: string; import: string; exportAll: string; bulkAction: string; documentation: string;
-        dashboard: string; wiki: string; moodleDocs: string;
+        dashboard: string; manual: string; moodleDocs: string;
     };
     wsStatus: WsStatus;
     schemas: SchemaRow[];

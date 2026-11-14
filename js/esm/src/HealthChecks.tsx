@@ -12,116 +12,81 @@
  * @author     Eduardo Estrada <me@e2rd0.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-import {useMemo, type ReactNode} from 'react';
+import {useMemo} from 'react';
 import BackLink from './components/common/BackLink';
 import EmptyState from './components/common/EmptyState';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import Icon from './components/common/Icon';
+import {Empty, TableBox} from './ds/ui';
 import PageHeader from './components/common/PageHeader';
 import HealthFindings from './components/schema/HealthFindings';
 import {createText} from './engine/text';
-import {pageUrl, pageWindow} from './lib/paging';
+import {pageUrl} from './lib/paging';
+import Pager from './components/common/Pager';
 import type {HealthChecksProps} from './types';
 
 const HealthChecks = (props: HealthChecksProps) => {
     const {rows, filters, paging, urls} = props;
     const text = useMemo(() => createText(props.strings), [props.strings]);
-    const bar = pageWindow(paging.page, paging.perpage, paging.total);
-    const link = (page: number, label: string, content: ReactNode) => <li className="page-item">
-        <a className="page-link" href={pageUrl(urls.page, page)} title={label} aria-label={label}>{content}</a>
-    </li>;
 
     return <ErrorBoundary strings={props.strings}>
-        <div className="servicemanager-health-page" data-region="servicemanager-health">
-            <div className="mb-3"><BackLink href={urls.back} label={text('back')} /></div>
+        <div className="lsm servicemanager-health-page d-grid gap-3" data-region="servicemanager-health">
+            <div><BackLink href={urls.back} label={text('back')} /></div>
             <PageHeader title={text('health_checks')} subtitle={props.schemaName} />
 
             {!props.hasAny && <EmptyState icon="heart-pulse" title={text('health_checks')} text={text('health_none')} />}
 
             {props.hasAny && <>
-                <div className="d-flex flex-wrap align-items-center justify-content-between mb-3 sm-actions-row">
-                    <nav className="d-flex flex-wrap align-items-center sm-health-filters" aria-label={text('core_status')}
-                        data-region="health-filters">
-                        {filters.map((filter) => <a
-                            key={filter.status || 'all'}
-                            href={filter.url}
-                            className={`btn sm-pill compact tone-${filter.tone}${filter.active ? ' active' : ''}`}
-                            aria-current={filter.active ? 'true' : undefined}
-                        >{filter.label}<span className="sm-count-badge">{filter.count}</span></a>)}
-                    </nav>
-                    <label className="d-flex align-items-center mb-0 sm-perpage">
-                        <span className="text-nowrap">{text('filter_per_page')}</span>
-                        <select
-                            className="form-select form-select-sm"
-                            value={paging.perpage}
-                            onChange={(event) => {
-                                // The size comes from the props, by the option chosen, and not from the text of the page.
-                                const size = paging.options[event.target.selectedIndex];
-                                if (size !== undefined) {
-                                    const target = new URL(urls.perpage, window.location.href);
-                                    target.searchParams.set('perpage', String(size));
-                                    window.location.assign(target.toString());
-                                }
-                            }}
-                        >
-                            {paging.options.map((size) => <option key={size} value={size}>{size}</option>)}
-                        </select>
-                    </label>
-                </div>
-
-                <div className="card sm-panel mb-3">
-                    {rows.length > 0 && <div className="table-responsive">
-                        <table className="table mb-0 sm-health-table" data-region="health-table">
+                <div className="card">
+                    <div className="table-toolbar">
+                        <nav className="dd-chips" aria-label={text('core_status')} data-region="health-filters">
+                            {filters.map((filter) => <a key={filter.status || 'all'} href={filter.url} className="dd-chip"
+                                aria-pressed={filter.active} aria-current={filter.active ? 'true' : undefined}>
+                                {filter.label} <span className="dd-chip-count">{filter.count}</span>
+                            </a>)}
+                        </nav>
+                    </div>
+                    <TableBox busy={false} empty={rows.length === 0 && <Empty icon="a/search" message={text('health_none_with_status')} text={text} />}>
+                        <table className="table" data-region="health-table">
+                            <caption className="visually-hidden">{text('health_checks')}</caption>
                             <thead>
                                 <tr>
-                                    <th className="sm-time-column">{text('core_time')}</th>
-                                    <th className="sm-status-column">{text('core_status')}</th>
-                                    <th>{text('core_message')}</th>
+                                    <th scope="col">{text('core_time')}</th>
+                                    <th scope="col">{text('core_status')}</th>
+                                    <th scope="col">{text('core_message')}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {rows.map((row, index) => <tr
-                                    key={index}
-                                    className={`sm-health-row tone-${row.tone}`}
-                                    data-status={row.status}
-                                >
-                                    <td className="sm-time-column">
-                                        <span className="sm-health-time">{row.time}</span>
-                                        <span className="sm-health-ago">{row.ago}</span>
-                                    </td>
-                                    <td className="sm-status-column">
-                                        <span className={`sm-badge tone-${row.tone}`}>
-                                            <Icon name={row.icon} gap />{row.statusLabel}
+                                {rows.map((row, index) => <tr key={index} data-status={row.status}>
+                                    <td>
+                                        <span className="d-flex flex-column">
+                                            {row.time}
+                                            <small className="text-muted">{row.ago}</small>
                                         </span>
+                                    </td>
+                                    <td>
+                                        <span className={`badge badge-soft badge-dot rounded-pill text-bg-${row.tone}`}>{row.statusLabel}</span>
                                     </td>
                                     <td><HealthFindings check={row} /></td>
                                 </tr>)}
                             </tbody>
                         </table>
-                    </div>}
-                    {rows.length === 0 && <div className="card-body text-body-secondary">{text('health_none_with_status')}</div>}
+                    </TableBox>
+                    <Pager
+                        page={paging.page}
+                        perpage={paging.perpage}
+                        total={paging.total}
+                        text={text}
+                        onChange={({page, perpage}) => {
+                            // The checks are paged by the server: the page and its size go in the address.
+                            const target = new URL(perpage === undefined ? pageUrl(urls.page, page ?? 0) : urls.perpage, window.location.href);
+                            if (perpage !== undefined) {
+                                target.searchParams.set('perpage', String(perpage));
+                            }
+                            window.location.assign(target.toString());
+                        }}
+                    />
                 </div>
 
-                <div className="sm-pager">
-                    <span className="text-body-secondary" data-region="health-showing">{props.showing}</span>
-                    {bar.pages > 1 && <nav aria-label={text('pagination_aria_label')}>
-                        <ul className="pagination mb-0">
-                            {bar.first && link(0, text('pagination_first'), <Icon name="angles-left" />)}
-                            {bar.previous && link(paging.page - 1, text('pagination_previous'), <Icon name="angle-left" />)}
-                            {bar.startDots && <li className="page-item disabled"><span className="page-link">...</span></li>}
-                            {bar.shown.map((index) => <li
-                                key={index}
-                                className={`page-item${index === paging.page ? ' active' : ''}`}
-                            >
-                                <a className="page-link" href={pageUrl(urls.page, index)}
-                                    aria-current={index === paging.page ? 'page' : undefined}>{index + 1}</a>
-                            </li>)}
-                            {bar.endDots && <li className="page-item disabled"><span className="page-link">...</span></li>}
-                            {bar.last && link(bar.pages - 1, text('pagination_last'), bar.pages)}
-                            {bar.next && link(paging.page + 1, text('pagination_next'), <Icon name="angle-right" />)}
-                        </ul>
-                    </nav>}
-                </div>
             </>}
         </div>
     </ErrorBoundary>;

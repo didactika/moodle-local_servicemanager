@@ -35,13 +35,13 @@ interface BlockProps {
     text: Text;
 }
 
-const Block = ({label, names, tone, text}: BlockProps) => <section className="sm-role-block" data-region="role-block">
-    <h4 className="sm-role-label">{label}<span className="sm-role-count">{names.length}</span></h4>
+const Block = ({label, names, tone, text}: BlockProps) => <section className="col" data-region="role-block">
+    <h4 className="h6 d-flex align-items-center gap-2">{label}<span className="badge badge-soft rounded-pill text-bg-secondary">{names.length}</span></h4>
     <ChipList
         title={label}
         names={names}
         text={text}
-        chip={(name) => <span key={name} className={`sm-role-chip tone-${tone}`}>{name}</span>}
+        chip={(name) => <span key={name} className={`badge badge-soft rounded-pill text-bg-${tone} fw-normal`}>{name}</span>}
     />
 </section>;
 
@@ -54,7 +54,7 @@ const RolePanel = ({role, text}: RolePanelProps) => {
     }
 
     return <Panel title={text('role_panel_title')} icon="user-shield" region="role">
-        <div className="sm-role-grid">
+        <div className="row row-cols-1 row-cols-md-2 g-3">
             {levels.length > 0 && <Block
                 label={text('role_context_levels')}
                 names={['system', ...levels].map((level) => text('role_level_' + level) || level)}

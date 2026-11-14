@@ -23,13 +23,13 @@ const PERMISSIONS = [
   { key: "prevent", tone: "warning" },
   { key: "prohibit", tone: "danger" }
 ];
-const Block = /* @__PURE__ */ __name(({ label, names, tone, text }) => /* @__PURE__ */ jsxDEV("section", { className: "sm-role-block", "data-region": "role-block", children: [
-  /* @__PURE__ */ jsxDEV("h4", { className: "sm-role-label", children: [
+const Block = /* @__PURE__ */ __name(({ label, names, tone, text }) => /* @__PURE__ */ jsxDEV("section", { className: "col", "data-region": "role-block", children: [
+  /* @__PURE__ */ jsxDEV("h4", { className: "h6 d-flex align-items-center gap-2", children: [
     label,
-    /* @__PURE__ */ jsxDEV("span", { className: "sm-role-count", children: names.length }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: names.length }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/RolePanel.tsx",
       lineNumber: 39,
-      columnNumber: 42
+      columnNumber: 63
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/components/schema/RolePanel.tsx",
@@ -42,7 +42,7 @@ const Block = /* @__PURE__ */ __name(({ label, names, tone, text }) => /* @__PUR
       title: label,
       names,
       text,
-      chip: (name) => /* @__PURE__ */ jsxDEV("span", { className: `sm-role-chip tone-${tone}`, children: name }, name, false, {
+      chip: (name) => /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${tone} fw-normal`, children: name }, name, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/RolePanel.tsx",
         lineNumber: 44,
         columnNumber: 25
@@ -68,7 +68,7 @@ const RolePanel = /* @__PURE__ */ __name(({ role, text }) => {
   if (levels.length === 0 && permissions.length === 0 && relations.length === 0) {
     return null;
   }
-  return /* @__PURE__ */ jsxDEV(Panel, { title: text("role_panel_title"), icon: "user-shield", region: "role", children: /* @__PURE__ */ jsxDEV("div", { className: "sm-role-grid", children: [
+  return /* @__PURE__ */ jsxDEV(Panel, { title: text("role_panel_title"), icon: "user-shield", region: "role", children: /* @__PURE__ */ jsxDEV("div", { className: "row row-cols-1 row-cols-md-2 g-3", children: [
     levels.length > 0 && /* @__PURE__ */ jsxDEV(
       Block,
       {

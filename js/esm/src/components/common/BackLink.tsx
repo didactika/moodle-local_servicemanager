@@ -2,7 +2,7 @@
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * The button that goes back to the page before.
+ * The link back to the page this one was opened from, as the design system draws it above a page.
  *
  * @module     local_servicemanager/components/common/BackLink
  * @copyright  2026 Didactika.org
@@ -16,8 +16,8 @@ interface BackLinkProps {
     label: string;
 }
 
-const BackLink = ({href, label}: BackLinkProps) => <a href={href} className="btn btn-secondary">
-    <Icon name="arrow-left" gap />{label}
+const BackLink = ({href, label}: BackLinkProps) => <a href={href} className="btn btn-link px-0">
+    <Icon name="angle-left" gap />{label}
 </a>;
 
 export default BackLink;

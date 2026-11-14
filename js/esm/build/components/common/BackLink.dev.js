@@ -5,7 +5,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * The button that goes back to the page before.
+ * The link back to the page this one was opened from, as the design system draws it above a page.
  *
  * @module     local_servicemanager/components/common/BackLink
  * @copyright  2026 Didactika.org
@@ -13,8 +13,8 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import Icon from "./Icon";
-const BackLink = /* @__PURE__ */ __name(({ href, label }) => /* @__PURE__ */ jsxDEV("a", { href, className: "btn btn-secondary", children: [
-  /* @__PURE__ */ jsxDEV(Icon, { name: "arrow-left", gap: true }, void 0, false, {
+const BackLink = /* @__PURE__ */ __name(({ href, label }) => /* @__PURE__ */ jsxDEV("a", { href, className: "btn btn-link px-0", children: [
+  /* @__PURE__ */ jsxDEV(Icon, { name: "angle-left", gap: true }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/BackLink.tsx",
     lineNumber: 20,
     columnNumber: 5

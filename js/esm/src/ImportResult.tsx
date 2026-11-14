@@ -32,7 +32,7 @@ const ImportResult = (props: ImportResultProps) => {
     const failed = totals.failed > 0;
 
     return <ErrorBoundary strings={props.strings}>
-        <div className="servicemanager-import-result">
+        <div className="lsm servicemanager-import-result d-grid gap-3">
             <PageHeader
                 title={text('import_result_title')}
                 subtitle={text(failed ? 'import_result_with_errors' : 'import_result_ok')}
@@ -42,7 +42,7 @@ const ImportResult = (props: ImportResultProps) => {
                 </>}
             />
 
-            <div className="sm-tiles sm-tiles-four" data-region="summary">
+            <div className="row row-cols-2 row-cols-md-4 g-3" data-region="summary">
                 <StatTile label={text('import_imported')} value={totals.imported} tone="success" icon="circle-check" />
                 <StatTile label={text('import_skipped')} value={totals.skipped} tone="secondary" icon="forward" />
                 <StatTile label={text('import_failed')} value={totals.failed} tone={failed ? 'danger' : 'secondary'} icon="circle-xmark" />
@@ -55,12 +55,12 @@ const ImportResult = (props: ImportResultProps) => {
                         const look = STATUS[item.status];
                         return <li key={index} className="list-group-item">
                             <div className="d-flex align-items-start">
-                                <span className={`text-${look.tone} sm-icon-gap`}><Icon name={look.icon} /></span>
+                                <span className={`text-${look.tone} me-1`}><Icon name={look.icon} /></span>
                                 <div className="flex-grow-1">
                                     <div>
                                         {item.viewUrl ? <a href={item.viewUrl} className="fw-bold">{item.name || item.id}</a> : <strong>{item.name || item.id || text('import_unknown')}</strong>}
-                                        {item.id && item.name && <span className="sm-id-chip compact ms-2"><Icon name="fingerprint" gap />{item.id}</span>}
-                                        <span className={`sm-badge tone-${look.tone} ms-2`}>{text('import_status_' + item.status)}</span>
+                                        {item.id && item.name && <span className="small text-muted ms-2"><Icon name="fingerprint" gap />{item.id}</span>}
+                                        <span className={`badge badge-soft rounded-pill text-bg-${look.tone} ms-2`}>{text('import_status_' + item.status)}</span>
                                     </div>
                                     {item.messages.length > 0 && <ul className={`small mb-0 mt-1 ${item.status === 'failed' ? 'text-danger' : 'text-body-secondary'}`}>
                                         {item.messages.map((message, at) => <li key={at}>{message}</li>)}

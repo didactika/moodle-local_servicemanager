@@ -10,7 +10,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {Component, type ErrorInfo, type ReactNode} from 'react';
-import Icon from './Icon';
+import Icon, {registerIcons} from './Icon';
 
 interface ErrorBoundaryProps {
     /** The texts of the page, from which the message is taken. */
@@ -35,12 +35,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
 
     render() {
+        // Every component of the page draws its icons from those the server drew for it.
+        registerIcons(this.props.strings);
         if (!this.state.failed) {
             return this.props.children;
         }
         const {strings} = this.props;
         return <div className="alert alert-danger d-flex align-items-start" role="alert" data-region="page-error">
-            <span className="sm-icon-gap"><Icon name="circle-exclamation" /></span>
+            <Icon name="circle-exclamation" gap />
             <div>
                 <h5 className="alert-heading">{strings.error_page_title}</h5>
                 <p className="mb-2">{strings.error_page_text}</p>

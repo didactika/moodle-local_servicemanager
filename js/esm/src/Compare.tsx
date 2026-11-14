@@ -42,7 +42,7 @@ const Compare = (props: CompareProps) => {
     };
 
     return <ErrorBoundary strings={props.strings}>
-        <div className="servicemanager-compare-page">
+        <div className="lsm servicemanager-compare-page d-grid gap-3">
             <div className="mb-3"><BackLink href={props.backUrl} label={text('back')} /></div>
 
             <PageHeader
@@ -54,19 +54,19 @@ const Compare = (props: CompareProps) => {
                 </>}
             />
 
-            <div className="d-flex flex-wrap align-items-center mb-3 sm-badges-row" data-region="diff-counts">
+            <div className="d-flex flex-wrap align-items-center mb-3 gap-2" data-region="diff-counts">
                 {identical
-                    ? <span className="sm-badge">{text('compare_no_changes')}</span>
+                    ? <span className="badge badge-soft rounded-pill text-bg-secondary">{text('compare_no_changes')}</span>
                     : <>
-                        {counts.added > 0 && <span className="sm-badge tone-success">{text('compare_added', counts.added)}</span>}
-                        {counts.removed > 0 && <span className="sm-badge tone-danger">{text('compare_removed', counts.removed)}</span>}
-                        {counts.changed > 0 && <span className="sm-badge tone-warning">{text('compare_changed', counts.changed)}</span>}
+                        {counts.added > 0 && <span className="badge badge-soft rounded-pill text-bg-success">{text('compare_added', counts.added)}</span>}
+                        {counts.removed > 0 && <span className="badge badge-soft rounded-pill text-bg-danger">{text('compare_removed', counts.removed)}</span>}
+                        {counts.changed > 0 && <span className="badge badge-soft rounded-pill text-bg-warning">{text('compare_changed', counts.changed)}</span>}
                     </>}
             </div>
 
             {changes.length > 0 && <ChangeSummary changes={changes} text={text} />}
 
-            <div className="d-flex flex-wrap align-items-center justify-content-between mb-3 sm-actions-row" data-region="diff-tools">
+            <div className="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2" data-region="diff-tools">
                 <div className="btn-group" role="group" aria-label={text('compare_view')}>
                     <button type="button" className={`btn btn-outline-secondary${view === 'split' ? ' active' : ''}`} aria-pressed={view === 'split'} onClick={() => setView('split')}>
                         <Icon name="table-columns" gap />{text('compare_view_split')}
@@ -75,7 +75,7 @@ const Compare = (props: CompareProps) => {
                         <Icon name="bars" gap />{text('compare_view_unified')}
                     </button>
                 </div>
-                <div className="d-flex align-items-center sm-actions-row">
+                <div className="d-flex align-items-center gap-2">
                     <div className="form-check form-switch mb-0">
                         <input
                             className="form-check-input"

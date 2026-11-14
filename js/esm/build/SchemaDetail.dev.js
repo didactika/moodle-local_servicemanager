@@ -65,7 +65,7 @@ const SchemaDetail = /* @__PURE__ */ __name((props) => {
       return addToast(text("token_regenerated"), { type: "success" });
     }).catch(failed).finally(() => setBusy(false));
   }, "makeToken");
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-detail", children: [
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-detail d-grid gap-3", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: isHistory ? urls.back : urls.dashboard, label: text(isHistory ? "back" : "dashboard") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
       lineNumber: 73,
@@ -90,7 +90,7 @@ const SchemaDetail = /* @__PURE__ */ __name((props) => {
             lineNumber: 81,
             columnNumber: 21
           }),
-          !isHistory && !enabled && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge", children: text("disabled") }, void 0, false, {
+          !isHistory && !enabled && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: text("disabled") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
             lineNumber: 82,
             columnNumber: 48
@@ -105,11 +105,11 @@ const SchemaDetail = /* @__PURE__ */ __name((props) => {
           lineNumber: 84,
           columnNumber: 43
         }) : void 0,
-        subtitle: /* @__PURE__ */ jsxDEV("span", { className: "sm-id-chip", title: text("schema_id"), children: [
+        subtitle: /* @__PURE__ */ jsxDEV("span", { className: "small text-muted", title: text("schema_id"), children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "fingerprint", gap: true }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/SchemaDetail.tsx",
             lineNumber: 85,
-            columnNumber: 82
+            columnNumber: 88
           }),
           schema.schemaId
         ] }, void 0, true, {

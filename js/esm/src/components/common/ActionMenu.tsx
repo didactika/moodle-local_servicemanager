@@ -56,18 +56,18 @@ const ActionMenu = ({label, actions, size = 'sm', tone = 'secondary', icon = 'el
             }}>{content}</button>;
     };
 
-    return <div className="dropdown sm-action-menu" ref={menu.ref}>
+    return <div className="dropdown" ref={menu.ref}>
         <button
             type="button"
-            className={`btn sm-pill ${caret ? 'has-caret' : `icon-only${size === 'sm' ? ' compact' : ''}`}${toneClass(tone)}`}
+            className={caret ? `btn btn-outline-secondary dropdown-toggle${size === 'sm' ? ' btn-sm' : ''}` : `btn btn-link btn-icon${size === 'sm' ? ' btn-sm' : ''}${toneClass(tone)}`}
             aria-haspopup="true"
             aria-expanded={menu.open}
             title={label}
             onClick={menu.toggle}
         >
-            <Icon name={icon} />{caret && <Icon name="chevron-down" className="sm-caret" />}<span className="visually-hidden">{label}</span>
+            <Icon name={icon} /><span className="visually-hidden">{label}</span>
         </button>
-        <ul className={`dropdown-menu dropdown-menu-end sm-row-menu${menu.open ? ' show' : ''}`}>
+        <ul className={`dropdown-menu dropdown-menu-end${menu.open ? ' show' : ''}`}>
             {common.map((action) => <li key={action.label}>{item(action)}</li>)}
             {common.length > 0 && dangerous.length > 0 && <li><hr className="dropdown-divider" /></li>}
             {dangerous.map((action) => <li key={action.label}>{item(action)}</li>)}

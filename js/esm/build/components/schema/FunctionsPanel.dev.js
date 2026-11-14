@@ -35,13 +35,13 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
       count: functions.length,
       flush: true,
       region: "functions",
-      actions: missing > 0 ? /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-danger", children: text("tile_functions_missing", missing) }, void 0, false, {
+      actions: missing > 0 ? /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-danger", children: text("tile_functions_missing", missing) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
         lineNumber: 43,
         columnNumber: 32
       }) : void 0,
       children: [
-        functions.length >= SEARCHABLE_FROM && /* @__PURE__ */ jsxDEV("div", { className: "p-3 border-bottom", children: /* @__PURE__ */ jsxDEV(SearchBox, { value: query, onChange: setQuery, placeholder: text("functions_search"), clearLabel: text("filter_clear"), id: "sm-functions-search" }, void 0, false, {
+        functions.length >= SEARCHABLE_FROM && /* @__PURE__ */ jsxDEV("div", { className: "p-3 border-bottom", children: /* @__PURE__ */ jsxDEV(SearchBox, { value: query, onChange: setQuery, placeholder: text("functions_search"), clearLabel: text("filter_clear"), id: "lsm-functions-search" }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
           lineNumber: 46,
           columnNumber: 13
@@ -50,8 +50,8 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
           lineNumber: 45,
           columnNumber: 49
         }),
-        /* @__PURE__ */ jsxDEV("ul", { className: "list-group list-group-flush sm-functions", children: shown.map((fn) => /* @__PURE__ */ jsxDEV("li", { className: `list-group-item sm-function${fn.exists ? "" : " missing"}`, children: [
-          /* @__PURE__ */ jsxDEV("span", { className: `sm-function-icon ${fn.exists ? "text-body-secondary" : "text-danger"}`, children: /* @__PURE__ */ jsxDEV(Icon, { name: fn.exists ? fn.type === "write" ? "pen" : "eye" : "circle-xmark" }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("ul", { className: "list-group list-group-flush", children: shown.map((fn) => /* @__PURE__ */ jsxDEV("li", { className: `list-group-item d-flex align-items-start gap-3${fn.exists ? "" : " list-group-item-danger"}`, children: [
+          /* @__PURE__ */ jsxDEV("span", { className: fn.exists ? "text-muted" : "text-danger", children: /* @__PURE__ */ jsxDEV(Icon, { name: fn.exists ? fn.type === "write" ? "pen" : "eye" : "circle-xmark" }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
             lineNumber: 51,
             columnNumber: 21
@@ -60,24 +60,24 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
             lineNumber: 50,
             columnNumber: 17
           }),
-          /* @__PURE__ */ jsxDEV("div", { className: "flex-grow-1 sm-function-body", children: [
-            /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center sm-badges-row", children: [
-              /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: fn.name }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("div", { className: "flex-grow-1 min-w-0", children: [
+            /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-2", children: [
+              /* @__PURE__ */ jsxDEV("span", { className: "font-monospace small", children: fn.name }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 55,
                 columnNumber: 25
               }),
-              fn.type && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge", children: text("function_" + fn.type) }, void 0, false, {
+              fn.type && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: text("function_" + fn.type) }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 56,
                 columnNumber: 37
               }),
-              fn.critical && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge", children: text("function_critical") }, void 0, false, {
+              fn.critical && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: text("function_critical") }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 57,
                 columnNumber: 41
               }),
-              !fn.exists && /* @__PURE__ */ jsxDEV("span", { className: "sm-badge tone-danger", children: text("function_missing") }, void 0, false, {
+              !fn.exists && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-danger", children: text("function_missing") }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 58,
                 columnNumber: 40
@@ -101,7 +101,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
             "button",
             {
               type: "button",
-              className: "btn sm-pill tone-primary compact sm-function-caps",
+              className: "btn btn-sm btn-outline-primary",
               onClick: () => setViewing(fn),
               title: text("function_capabilities_view"),
               children: [
@@ -155,7 +155,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
             onClose: () => setViewing(null),
             closeLabel: text("core_cancel"),
             children: viewing && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-              /* @__PURE__ */ jsxDEV("p", { className: "mb-2", children: /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: viewing.name }, void 0, false, {
+              /* @__PURE__ */ jsxDEV("p", { className: "mb-2", children: /* @__PURE__ */ jsxDEV("span", { className: "font-monospace small", children: viewing.name }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 82,
                 columnNumber: 37
@@ -174,7 +174,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
                 lineNumber: 84,
                 columnNumber: 17
               }),
-              /* @__PURE__ */ jsxDEV("ul", { className: "list-group sm-caps-list", children: viewing.capabilities.map((capability) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item", children: /* @__PURE__ */ jsxDEV("span", { className: "sm-fn", children: capability }, void 0, false, {
+              /* @__PURE__ */ jsxDEV("ul", { className: "list-group", children: viewing.capabilities.map((capability) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item", children: /* @__PURE__ */ jsxDEV("span", { className: "font-monospace small", children: capability }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 86,
                 columnNumber: 112
