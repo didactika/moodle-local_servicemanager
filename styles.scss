@@ -8,6 +8,10 @@
 // @author Hector Arrechea <hectorlazaroarrechea@gmail.com>
 // @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
+// Every rule is written once for the pages of the plugin, its dialogs and its settings, so Sass joins long lines of
+// selectors in styles.css; their length says nothing about how the rules read, so the generated file does not count it.
+/* stylelint-disable max-line-length */
+
 // The pieces of the Didactika design system (https://moodle-design.didactika.org/), as Delegate account and the Autograder report
 // draw them, under the class lsm of the screens. The dialogs open at the end of the page, outside the screen, so they are reached
 // by the class Moodle gives the pages of the plugin.

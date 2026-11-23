@@ -2,6 +2,8 @@
 /* Moodle 4.0 and later cores disagree on decimal formatting; use the current leading-zero style. */
 /* stylelint-disable number-leading-zero */
 
+/* stylelint-disable max-line-length */
+
 .lsm,
 .path-local-servicemanager .modal {
     --dd-primary: var(--bs-primary, var(--primary, #0f6cbf));
