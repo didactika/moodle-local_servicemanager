@@ -8,4 +8,4 @@ import n from"./Icon";import{jsx as r,jsxs as c}from"react/jsx-runtime";/**
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */const t=({value:l,onChange:a,placeholder:o,clearLabel:s,id:i="lsm-search"})=>c("div",{className:"dd-searchbox",role:"search",children:[r(n,{name:"magnifying-glass"}),r("input",{type:"search",id:i,name:"q",value:l,className:"form-control",placeholder:o,"aria-label":o,title:s,autoComplete:"off",onChange:e=>a(e.target.value),onKeyDown:e=>{e.key==="Escape"&&a("")}})]});var d=t;export{d as default};
+ */const s=({value:i,onChange:a,placeholder:o,clearLabel:l,id:t="lsm-search"})=>c("div",{className:"position-relative d-flex align-items-center",role:"search",children:[r(n,{name:"magnifying-glass"}),r("input",{type:"search",id:t,name:"q",value:i,className:"form-control",placeholder:o,"aria-label":o,title:l,autoComplete:"off",onChange:e=>a(e.target.value),onKeyDown:e=>{e.key==="Escape"&&a("")}})]});var m=s;export{m as default};

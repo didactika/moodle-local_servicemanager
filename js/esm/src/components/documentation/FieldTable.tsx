@@ -24,7 +24,7 @@ interface FieldTableProps {
     text: Text;
 }
 
-const FieldTable = ({fields, text}: FieldTableProps) => <table className="table table-bordered table-striped">
+const FieldTable = ({fields, text}: FieldTableProps) => <div className="table-responsive"><table className="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{text('field')}</th>
@@ -35,10 +35,10 @@ const FieldTable = ({fields, text}: FieldTableProps) => <table className="table 
     <tbody>
         {fields.map((field) => <tr key={field.name}>
             <td><code>{field.name}</code></td>
-            <td><span className={`badge badge-soft rounded-pill text-bg-${field.required ? 'success' : 'secondary'}`}>{text(field.required ? 'core_yes' : 'core_no')}</span></td>
+            <td><span className={`badge rounded-pill text-bg-${field.required ? 'success' : 'secondary'}`}>{text(field.required ? 'core_yes' : 'core_no')}</span></td>
             <td>{text(field.description)}</td>
         </tr>)}
     </tbody>
-</table>;
+</table></div>;
 
 export default FieldTable;

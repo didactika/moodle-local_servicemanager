@@ -14,7 +14,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {useCallback, useMemo, useState} from 'react';
-import BackLink from './components/common/BackLink';
 import EmptyState from './components/common/EmptyState';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import ConfirmModal from './components/common/ConfirmModal';
@@ -50,6 +49,11 @@ const History = (props: HistoryProps) => {
     const found = useMemo(() => rows.filter((row) => matches(findable(row), list.state)), [rows, list.state.query, list.state.from, list.state.to]);
     const page = paginate(found, list.state.page, list.state.perpage);
     const asking = list.state.query !== '' || list.state.from !== '' || list.state.to !== '';
+    // The button that clears the search and every filter: at the end of the row, or at the end of the group of filters.
+    const resetButton = <button type="button" className="btn btn-link btn-icon" disabled={!asking} title={text('filters_reset')}
+        aria-label={text('filters_reset')} onClick={list.reset}>
+        <Icon name="rotate" />
+    </button>;
 
     const toggle = useCallback((id: number) => {
         if (!chosen.has(id) && chosen.size >= TO_COMPARE) {
@@ -87,7 +91,6 @@ const History = (props: HistoryProps) => {
 
     return <ErrorBoundary strings={props.strings}>
         <div className="lsm servicemanager-history-page d-grid gap-3">
-            <div><BackLink href={urls.back} label={text('back')} /></div>
 
             <PageHeader
                 title={text('version_history')}
@@ -98,19 +101,16 @@ const History = (props: HistoryProps) => {
                 ? <EmptyState icon="clock-rotate-left" title={text('history_empty_title')} text={text('no_history')} />
                 : <>
                     <div className="card">
-                        <div className="table-toolbar" data-region="filters">
-                            <div className="table-toolbar-start">
+                        <div className="d-flex align-items-center justify-content-between gap-3 px-3 py-2 border-bottom" data-region="filters">
+                            <div className="d-flex align-items-center gap-2 flex-grow-1">
                                 <DsSearch value={list.state.query} onChange={(query) => list.set({query})} label={text('filter_version')} text={text} />
-                                <FilterGroup count={list.state.from || list.state.to ? 1 : 0} text={text}>
+                                <FilterGroup count={list.state.from || list.state.to ? 1 : 0} text={text} reset={resetButton}>
                                     <DateMenu label={text('history_date')} from={list.state.from} to={list.state.to} text={text}
                                         onChange={(from, to) => list.set({from, to})} />
                                 </FilterGroup>
                             </div>
-                            <div className="table-toolbar-end">
-                                <button type="button" className="btn btn-link btn-icon" disabled={!asking} title={text('filters_reset')}
-                                    aria-label={text('filters_reset')} onClick={list.reset}>
-                                    <Icon name="rotate" />
-                                </button>
+                            <div className="d-flex align-items-center gap-2 flex-shrink-0">
+                                {resetButton}
                             </div>
                         </div>
                         <form action={urls.compare} method="get" className="servicemanager-history">

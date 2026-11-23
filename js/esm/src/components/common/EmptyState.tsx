@@ -23,10 +23,10 @@ interface EmptyStateProps {
 }
 
 const EmptyState = ({icon, title, text, actions, bare = false}: EmptyStateProps) => {
-    const body = <div className="dd-empty" data-region="empty">
-        <span className="dd-tile dd-tile-lg"><Icon name={icon} /></span>
-        <p className="dd-empty-title">{title}</p>
-        <p className="dd-empty-text">{text}</p>
+    const body = <div className="d-flex flex-column align-items-center gap-2 px-4 py-5 text-center" data-region="empty">
+        <span className="icon-box"><Icon name={icon} /></span>
+        <p className="fw-bold mb-0">{title}</p>
+        <p className="text-muted mb-0">{text}</p>
         {actions && <div className="d-flex flex-wrap justify-content-center gap-2">{actions}</div>}
     </div>;
     return bare ? body : <div className="card">{body}</div>;

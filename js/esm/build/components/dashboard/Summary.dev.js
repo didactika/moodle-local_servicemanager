@@ -90,7 +90,7 @@ const Summary = /* @__PURE__ */ __name(({ counts, ws: initial, text }) => {
             columnNumber: 17
           }
         ),
-        /* @__PURE__ */ jsxDEV("ul", { className: "list-inline mb-0", children: HEALTH.map((part) => /* @__PURE__ */ jsxDEV("li", { className: "list-inline-item", children: /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${part.tone}`, children: [
+        /* @__PURE__ */ jsxDEV("ul", { className: "list-inline mb-0", children: HEALTH.map((part) => /* @__PURE__ */ jsxDEV("li", { className: "list-inline-item", children: /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${part.tone}`, children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: part.icon, text }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Summary.tsx",
             lineNumber: 69,
@@ -119,7 +119,7 @@ const Summary = /* @__PURE__ */ __name(({ counts, ws: initial, text }) => {
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-2 border-top pt-3", "data-region": "ws-status", children: [
-        /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft badge-dot rounded-pill text-bg-${LEVELS[ws.level]} me-1`, children: [
+        /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${LEVELS[ws.level]} me-1`, children: [
           text("tile_services"),
           ": ",
           text(`ws_status_${ws.level}`)
@@ -133,7 +133,7 @@ const Summary = /* @__PURE__ */ __name(({ counts, ws: initial, text }) => {
           {
             type: "button",
             "aria-pressed": protocol.on,
-            className: `btn btn-sm btn-tonal rounded-pill btn-${protocol.on ? "success" : "secondary"}`,
+            className: `btn btn-sm rounded-pill btn-outline-${protocol.on ? "success" : "secondary"}`,
             title: text(protocol.on ? "ws_protocol_turn_off" : "ws_protocol_turn_on", protocol.name),
             disabled: busy,
             onClick: () => void change(!protocol.on, protocol.key),
@@ -154,7 +154,7 @@ const Summary = /* @__PURE__ */ __name(({ counts, ws: initial, text }) => {
             lineNumber: 79,
             columnNumber: 23
           }
-        ) : /* @__PURE__ */ jsxDEV("span", { className: `badge badge-outline rounded-pill text-bg-${protocol.on ? "success" : "secondary"}`, children: [
+        ) : /* @__PURE__ */ jsxDEV("span", { className: `badge border rounded-pill text-bg-${protocol.on ? "success" : "secondary"}`, children: [
           protocol.name,
           /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: [
             " ",
@@ -170,7 +170,7 @@ const Summary = /* @__PURE__ */ __name(({ counts, ws: initial, text }) => {
           columnNumber: 23
         })),
         ws.canConfigure && /* @__PURE__ */ jsxDEV("div", { className: "ms-auto d-flex flex-wrap gap-2", children: [
-          ws.enabled ? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-sm btn-tonal btn-secondary rounded-pill", onClick: () => setAsking(true), children: [
+          ws.enabled ? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-sm btn-outline-secondary rounded-pill", onClick: () => setAsking(true), children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: "power", text }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Summary.tsx",
               lineNumber: 91,
@@ -195,7 +195,7 @@ const Summary = /* @__PURE__ */ __name(({ counts, ws: initial, text }) => {
             lineNumber: 93,
             columnNumber: 27
           }),
-          ws.protocolsUrl && /* @__PURE__ */ jsxDEV("a", { href: ws.protocolsUrl, className: "btn btn-sm btn-tonal btn-secondary rounded-pill", children: [
+          ws.protocolsUrl && /* @__PURE__ */ jsxDEV("a", { href: ws.protocolsUrl, className: "btn btn-sm btn-outline-secondary rounded-pill", children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: "i/settings", text }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Summary.tsx",
               lineNumber: 97,

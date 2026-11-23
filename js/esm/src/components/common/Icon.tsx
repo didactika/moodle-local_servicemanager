@@ -46,6 +46,7 @@ export const ICON_IDS: Record<string, string> = {
     'forward': 't/right',
     'gear': 'i/settings',
     'heart-pulse': 'health',
+    'id-card': 'i/info',
     'key': 'key',
     'magnifying-glass': 'a/search',
     'minus': 't/less',

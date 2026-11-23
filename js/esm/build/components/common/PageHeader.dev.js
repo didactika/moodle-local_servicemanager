@@ -13,10 +13,10 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-const PageHeader = /* @__PURE__ */ __name(({ title, subtitle, badges, actions }) => /* @__PURE__ */ jsxDEV("header", { className: "dd-page-header", children: /* @__PURE__ */ jsxDEV("div", { className: "dd-page-header-row", children: [
-  /* @__PURE__ */ jsxDEV("div", { className: "dd-page-header-main", children: /* @__PURE__ */ jsxDEV("div", { children: [
+const PageHeader = /* @__PURE__ */ __name(({ title, subtitle, badges, actions }) => /* @__PURE__ */ jsxDEV("header", { className: "d-grid gap-3 pb-3 border-bottom", children: /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center justify-content-between gap-3", children: [
+  /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center gap-3", children: /* @__PURE__ */ jsxDEV("div", { children: [
     /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-2", children: [
-      /* @__PURE__ */ jsxDEV("h2", { className: "dd-page-title", children: title }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("h2", { className: "h5 fw-bold mb-0", children: title }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/PageHeader.tsx",
         lineNumber: 28,
         columnNumber: 21
@@ -27,7 +27,7 @@ const PageHeader = /* @__PURE__ */ __name(({ title, subtitle, badges, actions })
       lineNumber: 27,
       columnNumber: 17
     }),
-    subtitle && /* @__PURE__ */ jsxDEV("p", { className: "dd-page-subtitle", children: subtitle }, void 0, false, {
+    subtitle && /* @__PURE__ */ jsxDEV("p", { className: "text-muted mb-0", children: subtitle }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/PageHeader.tsx",
       lineNumber: 31,
       columnNumber: 30
@@ -41,7 +41,7 @@ const PageHeader = /* @__PURE__ */ __name(({ title, subtitle, badges, actions })
     lineNumber: 25,
     columnNumber: 9
   }),
-  actions && /* @__PURE__ */ jsxDEV("div", { className: "dd-page-actions", children: actions }, void 0, false, {
+  actions && /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-2", children: actions }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/PageHeader.tsx",
     lineNumber: 34,
     columnNumber: 21

@@ -35,7 +35,7 @@ const ResourcesPanel = ({resources, text}: ResourcesPanelProps) => {
     return <Panel title={text('provisioned_resources')} icon="server" flush region="resources">
         <ul className="list-group list-group-flush">
             {entries.filter((entry) => entry.resource).map((entry) => <li key={entry.label} className="list-group-item d-flex align-items-center">
-                <span className="dd-tile me-3"><Icon name={entry.icon} /></span>
+                <span className="icon-box me-3"><Icon name={entry.icon} /></span>
                 <div className="flex-grow-1">
                     <div className="text-body-secondary small text-uppercase">{entry.label}</div>
                     <a href={entry.resource?.url} target="_blank" rel="noreferrer">{entry.resource?.name}</a>

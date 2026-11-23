@@ -15,22 +15,22 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  */
 import Icon from "./Icon";
 const EmptyState = /* @__PURE__ */ __name(({ icon, title, text, actions, bare = false }) => {
-  const body = /* @__PURE__ */ jsxDEV("div", { className: "dd-empty", "data-region": "empty", children: [
-    /* @__PURE__ */ jsxDEV("span", { className: "dd-tile dd-tile-lg", children: /* @__PURE__ */ jsxDEV(Icon, { name: icon }, void 0, false, {
+  const body = /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-column align-items-center gap-2 px-4 py-5 text-center", "data-region": "empty", children: [
+    /* @__PURE__ */ jsxDEV("span", { className: "icon-box", children: /* @__PURE__ */ jsxDEV(Icon, { name: icon }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/EmptyState.tsx",
       lineNumber: 27,
-      columnNumber: 46
+      columnNumber: 36
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/EmptyState.tsx",
       lineNumber: 27,
       columnNumber: 9
     }),
-    /* @__PURE__ */ jsxDEV("p", { className: "dd-empty-title", children: title }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("p", { className: "fw-bold mb-0", children: title }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/EmptyState.tsx",
       lineNumber: 28,
       columnNumber: 9
     }),
-    /* @__PURE__ */ jsxDEV("p", { className: "dd-empty-text", children: text }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("p", { className: "text-muted mb-0", children: text }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/common/EmptyState.tsx",
       lineNumber: 29,
       columnNumber: 9

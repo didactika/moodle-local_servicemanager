@@ -51,7 +51,7 @@ function StatusMenu({ label, statuses, chosen, text, onChange }) {
       lineNumber: 61,
       columnNumber: 13
     }, this),
-    option.count >= 0 && /* @__PURE__ */ jsxDEV("span", { className: "dd-chip-count", children: option.count }, void 0, false, {
+    option.count >= 0 && /* @__PURE__ */ jsxDEV("span", { className: "badge text-bg-secondary ms-auto", children: option.count }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
       lineNumber: 62,
       columnNumber: 35
@@ -116,7 +116,7 @@ function DateMenu({ label, from, to, text, onChange }) {
       lineNumber: 124,
       columnNumber: 13
     }, this),
-    /* @__PURE__ */ jsxDEV("div", { className: "dd-menu-form", children: /* @__PURE__ */ jsxDEV("div", { className: "dd-menu-dates", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "d-grid gap-2 px-3 pt-2 pb-3", children: /* @__PURE__ */ jsxDEV("div", { className: "d-flex gap-2", children: [
       /* @__PURE__ */ jsxDEV("div", { children: [
         /* @__PURE__ */ jsxDEV("label", { className: "form-label small mb-1", htmlFor: fromId, children: text("filter_date_from") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
@@ -198,7 +198,7 @@ function DateMenu({ label, from, to, text, onChange }) {
 }
 __name(DateMenu, "DateMenu");
 const SEARCH_ROOM = 160;
-function FilterGroup({ count, text, children }) {
+function FilterGroup({ count, text, reset, children }) {
   const [grouped, setGrouped] = useState(false);
   const box = useRef(null);
   const needed = useRef(0);
@@ -232,23 +232,30 @@ function FilterGroup({ count, text, children }) {
       button: /* @__PURE__ */ jsxDEV(Fragment, { children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "i/filter", text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
-          lineNumber: 186,
+          lineNumber: 187,
           columnNumber: 23
         }, this),
         " ",
         count > 0 ? `${text("filters")} (${count})` : text("filters")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
-        lineNumber: 186,
+        lineNumber: 187,
         columnNumber: 21
       }, this),
       label: text("filters"),
       name: "filters",
       active: count > 0,
       place: "end",
-      children: () => /* @__PURE__ */ jsxDEV("div", { "data-region": "filter-panel", children }, void 0, false, {
+      children: () => /* @__PURE__ */ jsxDEV("div", { "data-region": "filter-panel", children: [
+        children,
+        reset && /* @__PURE__ */ jsxDEV("div", { className: "d-flex justify-content-end", children: reset }, void 0, false, {
+          fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
+          lineNumber: 195,
+          columnNumber: 27
+        }, this)
+      ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
-        lineNumber: 192,
+        lineNumber: 193,
         columnNumber: 20
       }, this)
     },
@@ -256,13 +263,13 @@ function FilterGroup({ count, text, children }) {
     false,
     {
       fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
-      lineNumber: 185,
+      lineNumber: 186,
       columnNumber: 20
     },
     this
   ) : children }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/ds/Filters.tsx",
-    lineNumber: 184,
+    lineNumber: 185,
     columnNumber: 12
   }, this);
 }

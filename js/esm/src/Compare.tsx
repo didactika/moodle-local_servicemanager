@@ -12,7 +12,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {useMemo, useState} from 'react';
-import BackLink from './components/common/BackLink';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
@@ -43,7 +42,6 @@ const Compare = (props: CompareProps) => {
 
     return <ErrorBoundary strings={props.strings}>
         <div className="lsm servicemanager-compare-page d-grid gap-3">
-            <div className="mb-3"><BackLink href={props.backUrl} label={text('back')} /></div>
 
             <PageHeader
                 title={props.title}
@@ -56,11 +54,11 @@ const Compare = (props: CompareProps) => {
 
             <div className="d-flex flex-wrap align-items-center mb-3 gap-2" data-region="diff-counts">
                 {identical
-                    ? <span className="badge badge-soft rounded-pill text-bg-secondary">{text('compare_no_changes')}</span>
+                    ? <span className="badge rounded-pill text-bg-secondary">{text('compare_no_changes')}</span>
                     : <>
-                        {counts.added > 0 && <span className="badge badge-soft rounded-pill text-bg-success">{text('compare_added', counts.added)}</span>}
-                        {counts.removed > 0 && <span className="badge badge-soft rounded-pill text-bg-danger">{text('compare_removed', counts.removed)}</span>}
-                        {counts.changed > 0 && <span className="badge badge-soft rounded-pill text-bg-warning">{text('compare_changed', counts.changed)}</span>}
+                        {counts.added > 0 && <span className="badge rounded-pill text-bg-success">{text('compare_added', counts.added)}</span>}
+                        {counts.removed > 0 && <span className="badge rounded-pill text-bg-danger">{text('compare_removed', counts.removed)}</span>}
+                        {counts.changed > 0 && <span className="badge rounded-pill text-bg-warning">{text('compare_changed', counts.changed)}</span>}
                     </>}
             </div>
 

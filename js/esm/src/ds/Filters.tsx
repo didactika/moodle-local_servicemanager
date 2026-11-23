@@ -59,7 +59,7 @@ export function StatusMenu({label, statuses, chosen, text, onChange}: {
                     : [...chosen, option.key])}
             />
             <span>{option.label}</span>
-            {option.count >= 0 && <span className="dd-chip-count">{option.count}</span>}
+            {option.count >= 0 && <span className="badge text-bg-secondary ms-auto">{option.count}</span>}
         </label>)}
     </Menu>;
 }
@@ -122,8 +122,8 @@ export function DateMenu({label, from, to, text, onChange}: {
                 }}
             >{text(`filter_date_${item.key}`)}</button>)}
             <hr />
-            <div className="dd-menu-form">
-                <div className="dd-menu-dates">
+            <div className="d-grid gap-2 px-3 pt-2 pb-3">
+                <div className="d-flex gap-2">
                     <div>
                         <label className="form-label small mb-1" htmlFor={fromId}>{text('filter_date_from')}</label>
                         <input id={fromId} type="date" className="form-control form-control-sm" value={from} max={to || undefined}
@@ -146,12 +146,13 @@ const SEARCH_ROOM = 160;
 /**
  * The filters of the toolbar, in one row beside the search. When they do not fit, on a narrow screen or when the values chosen are
  * long, they are grouped in one menu, Filters, which says how many narrow the report and holds them; they come back to the row when
- * there is room again.
+ * there is room again. While they are grouped, the button that clears every filter is the last thing of the group, and the row
+ * hides its own.
  *
- * @param props How many filters narrow the report, the texts and the filters.
+ * @param props How many filters narrow the report, the texts, the button that clears every filter and the filters.
  * @returns The filters, in the row or grouped.
  */
-export function FilterGroup({count, text, children}: {count: number; text: Text; children: ReactNode}) {
+export function FilterGroup({count, text, reset, children}: {count: number; text: Text; reset?: ReactNode; children: ReactNode}) {
     const [grouped, setGrouped] = useState(false);
     const box = useRef<HTMLDivElement>(null);
     const needed = useRef(0);
@@ -189,7 +190,10 @@ export function FilterGroup({count, text, children}: {count: number; text: Text;
             active={count > 0}
             place="end"
         >
-            {() => <div data-region="filter-panel">{children}</div>}
+            {() => <div data-region="filter-panel">
+                {children}
+                {reset && <div className="d-flex justify-content-end">{reset}</div>}
+            </div>}
         </Menu> : children}
     </div>;
 }

@@ -47,6 +47,7 @@ const ICON_IDS = {
   "forward": "t/right",
   "gear": "i/settings",
   "heart-pulse": "health",
+  "id-card": "i/info",
   "key": "key",
   "magnifying-glass": "a/search",
   "minus": "t/less",
@@ -84,11 +85,11 @@ const Icon = /* @__PURE__ */ __name(({ name, gap = false, className = "" }) => {
   const classes = `d-inline-flex${gap ? " me-1" : ""}${className ? ` ${className}` : ""}`;
   return html ? /* @__PURE__ */ jsxDEV("span", { className: classes, "aria-hidden": "true", dangerouslySetInnerHTML: { __html: html } }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/Icon.tsx",
-    lineNumber: 103,
+    lineNumber: 104,
     columnNumber: 11
   }) : /* @__PURE__ */ jsxDEV("span", { className: classes, "aria-hidden": "true" }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/Icon.tsx",
-    lineNumber: 104,
+    lineNumber: 105,
     columnNumber: 11
   });
 }, "Icon");

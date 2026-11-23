@@ -13,7 +13,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import Icon from "./Icon";
-const SearchBox = /* @__PURE__ */ __name(({ value, onChange, placeholder, clearLabel, id = "lsm-search" }) => /* @__PURE__ */ jsxDEV("div", { className: "dd-searchbox", role: "search", children: [
+const SearchBox = /* @__PURE__ */ __name(({ value, onChange, placeholder, clearLabel, id = "lsm-search" }) => /* @__PURE__ */ jsxDEV("div", { className: "position-relative d-flex align-items-center", role: "search", children: [
   /* @__PURE__ */ jsxDEV(Icon, { name: "magnifying-glass" }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
     lineNumber: 23,

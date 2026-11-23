@@ -17,6 +17,6 @@ interface StatusBadgeProps {
 }
 
 const StatusBadge = ({status, label}: StatusBadgeProps) =>
-    <span className={`badge badge-soft badge-dot rounded-pill text-bg-${statusLook(status).tone}`}>{label}</span>;
+    <span className={`badge rounded-pill text-bg-${statusLook(status).tone}`}>{label}</span>;
 
 export default StatusBadge;

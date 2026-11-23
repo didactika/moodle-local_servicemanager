@@ -65,35 +65,35 @@ const Summary = ({counts, ws: initial, text}: {counts: Record<string, number>; w
                 </div>
                 <ul className="list-inline mb-0">
                     {HEALTH.map((part) => <li key={part.key} className="list-inline-item">
-                        <span className={`badge badge-soft rounded-pill text-bg-${part.tone}`}>
+                        <span className={`badge rounded-pill text-bg-${part.tone}`}>
                             <Icon name={part.icon} text={text} /> {counts[part.key] ?? 0} {text(`status_${part.key}`)}
                         </span>
                     </li>)}
                 </ul>
             </div>
             <div className="d-flex flex-wrap align-items-center gap-2 border-top pt-3" data-region="ws-status">
-                <span className={`badge badge-soft badge-dot rounded-pill text-bg-${LEVELS[ws.level]} me-1`}>
+                <span className={`badge rounded-pill text-bg-${LEVELS[ws.level]} me-1`}>
                     {text('tile_services')}: {text(`ws_status_${ws.level}`)}
                 </span>
                 {ws.protocols.map((protocol) => ws.canConfigure
                     ? <button key={protocol.key} type="button" aria-pressed={protocol.on}
-                        className={`btn btn-sm btn-tonal rounded-pill btn-${protocol.on ? 'success' : 'secondary'}`}
+                        className={`btn btn-sm rounded-pill btn-outline-${protocol.on ? 'success' : 'secondary'}`}
                         title={text(protocol.on ? 'ws_protocol_turn_off' : 'ws_protocol_turn_on', protocol.name)}
                         disabled={busy} onClick={() => void change(!protocol.on, protocol.key)}>
                         <Icon name={protocol.on ? 'i/checkedcircle' : 'i/uncheckedcircle'} text={text} /> {protocol.name}
                     </button>
-                    : <span key={protocol.key} className={`badge badge-outline rounded-pill text-bg-${protocol.on ? 'success' : 'secondary'}`}>
+                    : <span key={protocol.key} className={`badge border rounded-pill text-bg-${protocol.on ? 'success' : 'secondary'}`}>
                         {protocol.name}<span className="visually-hidden"> {text(protocol.on ? 'ws_enabled_label' : 'ws_disabled_label')}</span>
                     </span>)}
                 {ws.canConfigure && <div className="ms-auto d-flex flex-wrap gap-2">
                     {ws.enabled
-                        ? <button type="button" className="btn btn-sm btn-tonal btn-secondary rounded-pill" onClick={() => setAsking(true)}>
+                        ? <button type="button" className="btn btn-sm btn-outline-secondary rounded-pill" onClick={() => setAsking(true)}>
                             <Icon name="power" text={text} /> {text('ws_disable_services')}
                         </button>
                         : <button type="button" className="btn btn-sm btn-primary rounded-pill" disabled={busy} onClick={() => void change(true)}>
                             <Icon name="power" text={text} /> {text('ws_enable_services')}
                         </button>}
-                    {ws.protocolsUrl && <a href={ws.protocolsUrl} className="btn btn-sm btn-tonal btn-secondary rounded-pill">
+                    {ws.protocolsUrl && <a href={ws.protocolsUrl} className="btn btn-sm btn-outline-secondary rounded-pill">
                         <Icon name="i/settings" text={text} /> {text('tile_manage')}
                     </a>}
                 </div>}

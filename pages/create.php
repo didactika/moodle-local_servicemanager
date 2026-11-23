@@ -156,7 +156,8 @@ if ($form->is_submitted()) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->tabtree($tabs, $mode);
+// Inside the container of the plugin, the tabs look as the tabs of its other pages.
+echo html_writer::div($OUTPUT->tabtree($tabs, $mode), 'lsm mb-3');
 echo $OUTPUT->notification(
     get_string(($editing ? 'edit_intro_' : 'create_intro_') . $mode, 'local_servicemanager'),
     \core\output\notification::NOTIFY_INFO,

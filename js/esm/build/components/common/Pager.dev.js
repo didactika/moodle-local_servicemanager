@@ -23,8 +23,8 @@ const Pager = /* @__PURE__ */ __name(({ page, perpage, total, onChange, text }) 
   }
   const { from, to } = pageRange(page, perpage, total);
   const { sizes, shown } = fitPageSizes(perpage, total);
-  return /* @__PURE__ */ jsxDEV("div", { className: "table-foot", children: /* @__PURE__ */ jsxDEV("nav", { className: "dd-pager", "aria-label": text("pagination_aria_label"), children: [
-    /* @__PURE__ */ jsxDEV("div", { className: "dd-pager-size", children: [
+  return /* @__PURE__ */ jsxDEV("div", { className: "px-3 py-2 border-top", children: /* @__PURE__ */ jsxDEV("nav", { className: "d-flex flex-wrap align-items-center justify-content-between gap-3 small text-muted", "aria-label": text("pagination_aria_label"), children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "d-none d-sm-flex align-items-center gap-2", children: [
       /* @__PURE__ */ jsxDEV("label", { htmlFor: id, className: "mb-0", children: text("pagination_per_page") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/Pager.tsx",
         lineNumber: 39,
@@ -34,7 +34,7 @@ const Pager = /* @__PURE__ */ __name(({ page, perpage, total, onChange, text }) 
         "select",
         {
           id,
-          className: "form-select form-select-sm dd-select",
+          className: "form-select form-select-sm",
           value: shown,
           onChange: (event) => onChange({ perpage: Number(event.target.value), page: 0 }),
           children: sizes.map((size) => /* @__PURE__ */ jsxDEV("option", { value: size, children: size ? size : text("pagination_all") }, size, false, {
@@ -56,13 +56,13 @@ const Pager = /* @__PURE__ */ __name(({ page, perpage, total, onChange, text }) 
       lineNumber: 38,
       columnNumber: 13
     }),
-    /* @__PURE__ */ jsxDEV("div", { className: "dd-pager-end", children: [
-      /* @__PURE__ */ jsxDEV("span", { className: "dd-pager-range", role: "status", children: text("pagination_range", { from, to, total }) }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-3 ms-auto", children: [
+      /* @__PURE__ */ jsxDEV("span", { className: "text-body text-nowrap", role: "status", children: text("pagination_range", { from, to, total }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/common/Pager.tsx",
         lineNumber: 50,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("div", { className: "dd-pager-arrows", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "d-flex gap-1", children: [
         /* @__PURE__ */ jsxDEV(
           "button",
           {

@@ -36,12 +36,12 @@ interface BlockProps {
 }
 
 const Block = ({label, names, tone, text}: BlockProps) => <section className="col" data-region="role-block">
-    <h4 className="h6 d-flex align-items-center gap-2">{label}<span className="badge badge-soft rounded-pill text-bg-secondary">{names.length}</span></h4>
+    <h4 className="h6 d-flex align-items-center gap-2">{label}<span className="badge rounded-pill text-bg-secondary">{names.length}</span></h4>
     <ChipList
         title={label}
         names={names}
         text={text}
-        chip={(name) => <span key={name} className={`badge badge-soft rounded-pill text-bg-${tone} fw-normal`}>{name}</span>}
+        chip={(name) => <span key={name} className={`badge rounded-pill text-bg-${tone} fw-normal`}>{name}</span>}
     />
 </section>;
 

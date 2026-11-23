@@ -19,7 +19,7 @@ interface SearchBoxProps {
     id?: string;
 }
 
-const SearchBox = ({value, onChange, placeholder, clearLabel, id = 'lsm-search'}: SearchBoxProps) => <div className="dd-searchbox" role="search">
+const SearchBox = ({value, onChange, placeholder, clearLabel, id = 'lsm-search'}: SearchBoxProps) => <div className="position-relative d-flex align-items-center" role="search">
     <Icon name="magnifying-glass" />
     <input
         type="search"

@@ -28,9 +28,9 @@ const WsPill = ({status, canManage, text}: WsPillProps) => {
     const level = LEVELS[status.level];
 
     return <span className="d-inline-flex flex-wrap align-items-center gap-2" data-region="ws-status">
-        <span className={`badge badge-soft badge-dot rounded-pill text-bg-${level.tone}`}>{text('tile_services')}: {text(level.label)}</span>
+        <span className={`badge rounded-pill text-bg-${level.tone}`}>{text('tile_services')}: {text(level.label)}</span>
         {status.protocols.map((protocol) => <span key={protocol.name}
-            className={`badge badge-outline rounded-pill text-bg-${protocol.enabled ? 'success' : 'secondary'}`}
+            className={`badge border rounded-pill text-bg-${protocol.enabled ? 'success' : 'secondary'}`}
             title={text(protocol.enabled ? 'ws_enabled_label' : 'ws_disabled_label')}>
             {protocol.name}<span className="visually-hidden"> {text(protocol.enabled ? 'ws_enabled_label' : 'ws_disabled_label')}</span>
         </span>)}

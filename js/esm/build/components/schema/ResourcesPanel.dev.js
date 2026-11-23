@@ -21,10 +21,10 @@ const ResourcesPanel = /* @__PURE__ */ __name(({ resources, text }) => {
     { label: text("external_service"), icon: "plug", resource: resources.service, detail: resources.service?.shortname }
   ];
   return /* @__PURE__ */ jsxDEV(Panel, { title: text("provisioned_resources"), icon: "server", flush: true, region: "resources", children: /* @__PURE__ */ jsxDEV("ul", { className: "list-group list-group-flush", children: entries.filter((entry) => entry.resource).map((entry) => /* @__PURE__ */ jsxDEV("li", { className: "list-group-item d-flex align-items-center", children: [
-    /* @__PURE__ */ jsxDEV("span", { className: "dd-tile me-3", children: /* @__PURE__ */ jsxDEV(Icon, { name: entry.icon }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("span", { className: "icon-box me-3", children: /* @__PURE__ */ jsxDEV(Icon, { name: entry.icon }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
       lineNumber: 38,
-      columnNumber: 48
+      columnNumber: 49
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/ResourcesPanel.tsx",
       lineNumber: 38,

@@ -27,7 +27,7 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
       columnNumber: 9
     }),
     /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
-      canManage && /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "table-select", children: [
+      canManage && /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "align-middle", "data-column": "select", children: [
         /* @__PURE__ */ jsxDEV(
           "input",
           {
@@ -75,10 +75,10 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
         lineNumber: 50,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "table-actions", children: /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("core_actions") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "text-end text-nowrap", "data-column": "actions", children: /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("core_actions") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SchemaTable.tsx",
         lineNumber: 51,
-        columnNumber: 59
+        columnNumber: 88
       }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SchemaTable.tsx",
         lineNumber: 51,
@@ -94,7 +94,7 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
       columnNumber: 9
     }),
     /* @__PURE__ */ jsxDEV("tbody", { children: rows.map((row) => /* @__PURE__ */ jsxDEV("tr", { className: selection.chosen.has(row.id) ? "table-active" : void 0, children: [
-      canManage && /* @__PURE__ */ jsxDEV("td", { className: "table-select", children: /* @__PURE__ */ jsxDEV(
+      canManage && /* @__PURE__ */ jsxDEV("td", { className: "align-middle", "data-column": "select", children: /* @__PURE__ */ jsxDEV(
         "input",
         {
           type: "checkbox",
@@ -122,7 +122,7 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
             lineNumber: 63,
             columnNumber: 29
           }),
-          !row.enabled && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary ms-2", children: text("disabled") }, void 0, false, {
+          !row.enabled && /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-secondary ms-2", children: text("disabled") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SchemaTable.tsx",
             lineNumber: 64,
             columnNumber: 46
@@ -159,7 +159,7 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
         lineNumber: 69,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft badge-dot rounded-pill text-bg-${TONES[row.status] ?? "secondary"}`, children: row.statusLabel }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${TONES[row.status] ?? "secondary"}`, children: row.statusLabel }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/dashboard/SchemaTable.tsx",
         lineNumber: 71,
         columnNumber: 21
@@ -177,7 +177,7 @@ const SchemaTable = /* @__PURE__ */ __name(({ rows, canManage, selection, onTogg
         lineNumber: 75,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("td", { className: "table-actions", children: [
+      /* @__PURE__ */ jsxDEV("td", { className: "text-end text-nowrap", "data-column": "actions", children: [
         /* @__PURE__ */ jsxDEV(
           "a",
           {

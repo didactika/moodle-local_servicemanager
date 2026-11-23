@@ -13,7 +13,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {useMemo} from 'react';
-import BackLink from './components/common/BackLink';
 import EmptyState from './components/common/EmptyState';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import {Empty, TableBox} from './ds/ui';
@@ -30,18 +29,17 @@ const HealthChecks = (props: HealthChecksProps) => {
 
     return <ErrorBoundary strings={props.strings}>
         <div className="lsm servicemanager-health-page d-grid gap-3" data-region="servicemanager-health">
-            <div><BackLink href={urls.back} label={text('back')} /></div>
             <PageHeader title={text('health_checks')} subtitle={props.schemaName} />
 
             {!props.hasAny && <EmptyState icon="heart-pulse" title={text('health_checks')} text={text('health_none')} />}
 
             {props.hasAny && <>
                 <div className="card">
-                    <div className="table-toolbar">
-                        <nav className="dd-chips" aria-label={text('core_status')} data-region="health-filters">
-                            {filters.map((filter) => <a key={filter.status || 'all'} href={filter.url} className="dd-chip"
+                    <div className="d-flex align-items-center justify-content-between gap-3 px-3 py-2 border-bottom">
+                        <nav className="nav nav-pills flex-nowrap gap-2" aria-label={text('core_status')} data-region="health-filters">
+                            {filters.map((filter) => <a key={filter.status || 'all'} href={filter.url} className={`nav-link d-inline-flex align-items-center gap-2${filter.active ? ' active' : ''}`}
                                 aria-pressed={filter.active} aria-current={filter.active ? 'true' : undefined}>
-                                {filter.label} <span className="dd-chip-count">{filter.count}</span>
+                                {filter.label} <span className="badge text-bg-secondary ms-auto">{filter.count}</span>
                             </a>)}
                         </nav>
                     </div>
@@ -64,7 +62,7 @@ const HealthChecks = (props: HealthChecksProps) => {
                                         </span>
                                     </td>
                                     <td>
-                                        <span className={`badge badge-soft badge-dot rounded-pill text-bg-${row.tone}`}>{row.statusLabel}</span>
+                                        <span className={`badge rounded-pill text-bg-${row.tone}`}>{row.statusLabel}</span>
                                     </td>
                                     <td><HealthFindings check={row} /></td>
                                 </tr>)}

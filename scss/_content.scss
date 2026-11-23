@@ -52,119 +52,16 @@
         }
 
         & .form-control {
-            min-width: 10rem;
             border-color: var(--dd-line);
         }
-    }
 
-    // Description list: a label and a value on each line, with the labels in one column.
-    & .dd-dl {
-        display: grid;
-        grid-template-columns: minmax(7rem, 11rem) 1fr;
-        margin: 0;
-
-        & dt,
-        & dd {
-            margin: 0;
-            padding: 0.625rem 0;
-            border-bottom: 1px solid var(--dd-hairline);
+        // The search field gives up its width with its box, so it is left out.
+        & .form-control:not([type="search"]) {
+            min-width: 10rem;
         }
-
-        & dt {
-            padding-right: 1rem;
-            color: var(--dd-muted);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        & dd {
-            color: var(--dd-ink);
-            font-size: 0.9375rem;
-            overflow-wrap: anywhere;
-        }
-
-        & dt:last-of-type,
-        & dd:last-of-type {
-            border-bottom: 0;
-        }
-    }
-
-    // Timeline: what happened to the delegation, newest first.
-    & .dd-timeline {
-        position: relative;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    & .dd-timeline-item {
-        position: relative;
-        display: grid;
-        gap: 0.125rem;
-        padding: 0 0 1.25rem 1.75rem;
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: 0.3125rem;
-            left: 0.1875rem;
-            width: 0.75rem;
-            height: 0.75rem;
-            border: 2px solid var(--dd-primary);
-            border-radius: 50%;
-            background: var(--dd-surface);
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: 1.25rem;
-            bottom: 0.25rem;
-            left: 0.5rem;
-            width: 2px;
-            border-radius: 2px;
-            background: var(--dd-hairline);
-        }
-
-        &:last-child {
-            padding-bottom: 0;
-
-            &::after {
-                display: none;
-            }
-        }
-
-        &.is-success::before {
-            border-color: var(--dd-success);
-            background: var(--dd-success);
-        }
-
-        &.is-danger::before {
-            border-color: var(--dd-danger);
-            background: var(--dd-danger);
-        }
-    }
-
-    & .dd-timeline-title {
-        color: var(--dd-ink);
-        font-size: 0.9375rem;
-        font-weight: 600;
-    }
-
-    & .dd-timeline-meta {
-        color: var(--dd-muted);
-        font-size: 0.8125rem;
     }
 
 }
 
 @media (max-width: 480px) {
-    .lsm .dd-dl {
-        grid-template-columns: 1fr;
-
-        & dt {
-            padding-bottom: 0;
-            border-bottom: 0;
-        }
-    }
 }

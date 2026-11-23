@@ -10,6 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - The web services of the site and each protocol are turned on or off from the dashboard without reloading the page: the change is sent to a web service, written as the administration writes it (so it is kept in the log of the configuration), and the summary shows the new state with a message.
+- The pages follow the design system with the classes of Bootstrap and Moodle, overridden inside the plugin, and no components of their own, so a theme restyles them by restyling Bootstrap. The tabs are plain text with a line under the open one, with no frame or halo when pressed; a clicked button shows no halo, and the ring of focus shows only from the keyboard. The tabs of the form of a schema look the same.
+- The pages have no "Back" links: the breadcrumb of Moodle leads back to the dashboard, the schema and its history.
+- The statuses of the health checks are one row of pills that scrolls sideways on a narrow screen.
+- When the filters of a list are grouped in one menu, the button that clears the search and every filter is the last item of that menu.
+
+### Fixed
+
+- The menus of the dashboard (Documentation and the actions of each row) are closed until they are opened; the menu of a row floats next to its button and the table never cuts it.
+- On a narrow screen the search field gives up its width and the filters never cover it, the name of a schema stays in view while the table scrolls sideways, the bars of a selection take the width of the screen, and the tables of the documentation and the functions of a schema scroll or break inside their box instead of the page.
+- A search that finds nothing shows the empty state, at the height of the list and its pager; on Moodle 4.x it showed under the rows even with no filter.
+- The breadcrumb of the import page names each step once, the icon of the details on the comparison of two versions is shown (it was missing, and Moodle 4.x answered with an error), and the name of a capability is not split by a space.
 
 ## [1.1.1-m503] - 2026-10-16
 

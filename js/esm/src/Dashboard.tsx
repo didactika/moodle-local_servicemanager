@@ -76,6 +76,11 @@ const Dashboard = (props: DashboardProps) => {
     const page = paginate(found, list.state.page, list.state.perpage);
     const selection = useBulkSelection(page.rows, schemas);
     const narrowed = list.state.query !== '' || chosen.length > 0 || list.extras > 0;
+    // The button that clears the search and every filter: at the end of the row, or at the end of the group of filters.
+    const resetButton = <button type="button" className="btn btn-link btn-icon" disabled={!narrowed} title={text('filters_reset')}
+        aria-label={text('filters_reset')} onClick={list.reset}>
+        <Icon name="i/reload" text={text} />
+    </button>;
     const applied = (chosen.length > 0 ? 1 : 0) + (list.state.from || list.state.to ? 1 : 0);
 
     const send = (action: BulkAction, ids: number[]) => postForm(urls.bulkAction, {sesskey: props.sesskey, action, ids});
@@ -83,13 +88,13 @@ const Dashboard = (props: DashboardProps) => {
 
     return <ErrorBoundary strings={props.strings}>
         <div className="lsm servicemanager-dashboard d-grid gap-3" style={selection.chosen.size ? {paddingBottom: '5.5rem'} : undefined}>
-            <header className="dd-page-header">
-                <div className="dd-page-header-row">
-                    <div className="dd-page-header-main">
-                        <span className="dd-tile dd-tile-lg"><Icon name="plug" text={text} /></span>
-                        <p className="dd-page-subtitle">{text('dashboard_subtitle')}</p>
+            <header className="d-grid gap-3 pb-3 border-bottom">
+                <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <div className="d-flex align-items-center gap-3">
+                        <span className="icon-box"><Icon name="plug" text={text} /></span>
+                        <p className="text-muted mb-0">{text('dashboard_subtitle')}</p>
                     </div>
-                    <div className="dd-page-actions">
+                    <div className="d-flex flex-wrap align-items-center gap-2">
                         <DocsMenu urls={urls} text={text} />
                         <a className="btn btn-outline-secondary" href={urls.exportAll}>
                             <Icon name="t/download" text={text} /> {text('export_all')}
@@ -107,10 +112,10 @@ const Dashboard = (props: DashboardProps) => {
             <Summary counts={allCounts} ws={wsStatus} sesskey={props.sesskey} text={text} />
 
             <div className="card">
-                <div className="table-toolbar" data-region="filters">
-                    <div className="table-toolbar-start">
+                <div className="d-flex align-items-center justify-content-between gap-3 px-3 py-2 border-bottom" data-region="filters">
+                    <div className="d-flex align-items-center gap-2 flex-grow-1">
                         <SearchBox value={list.state.query} onChange={(query) => list.set({query})} label={text('filter_name')} text={text} />
-                        <FilterGroup count={applied} text={text}>
+                        <FilterGroup count={applied} text={text} reset={resetButton}>
                             <StatusMenu
                                 label={text('filter_status')}
                                 statuses={HEALTH.map((part) => ({key: part.key, label: text(`status_${part.key}`), count: counts[part.key] ?? 0}))}
@@ -127,11 +132,8 @@ const Dashboard = (props: DashboardProps) => {
                             />
                         </FilterGroup>
                     </div>
-                    <div className="table-toolbar-end">
-                        <button type="button" className="btn btn-link btn-icon" disabled={!narrowed} title={text('filters_reset')}
-                            aria-label={text('filters_reset')} onClick={list.reset}>
-                            <Icon name="i/reload" text={text} />
-                        </button>
+                    <div className="d-flex align-items-center gap-2 flex-shrink-0">
+                        {resetButton}
                     </div>
                 </div>
                 <TableBox busy={false} empty={page.total === 0 && <Empty
@@ -150,16 +152,16 @@ const Dashboard = (props: DashboardProps) => {
             {props.truncated && <p className="text-muted small text-center">{text('list_truncated', schemas.length)}</p>}
 
             {canManage && <FloatBar count={selection.chosen.size} label={text('core_actions')} onClear={selection.clear} text={text}>
-                {selection.actions.enable && <button type="button" className="btn btn-secondary btn-tonal btn-sm" onClick={() => act('enable')}>
+                {selection.actions.enable && <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => act('enable')}>
                     <Icon name="t/show" text={text} /> {text('bulk_enable')}
                 </button>}
-                {selection.actions.disable && <button type="button" className="btn btn-secondary btn-tonal btn-sm" onClick={() => act('disable')}>
+                {selection.actions.disable && <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => act('disable')}>
                     <Icon name="t/hide" text={text} /> {text('bulk_disable')}
                 </button>}
-                <button type="button" className="btn btn-secondary btn-tonal btn-sm" onClick={() => act('export')}>
+                <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => act('export')}>
                     <Icon name="t/download" text={text} /> {text('bulk_export')}
                 </button>
-                <button type="button" className="btn btn-danger btn-tonal btn-sm" onClick={() => act('delete')}>
+                <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => act('delete')}>
                     <Icon name="t/delete" text={text} /> {text('bulk_delete')}
                 </button>
             </FloatBar>}

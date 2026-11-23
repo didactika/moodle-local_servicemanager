@@ -44,7 +44,7 @@ const HealthPanel = /* @__PURE__ */ __name(({ health, text }) => /* @__PURE__ */
             lineNumber: 35,
             columnNumber: 13
           }),
-          /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${health.latest.tone}`, children: [
+          /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${health.latest.tone}`, children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: health.latest.icon, gap: true }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",
               lineNumber: 37,
@@ -80,7 +80,7 @@ const HealthPanel = /* @__PURE__ */ __name(({ health, text }) => /* @__PURE__ */
         lineNumber: 33,
         columnNumber: 23
       }),
-      /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap gap-2 mt-3", children: (health.counts ?? []).map((count) => /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${statusLook(count.status).tone}`, children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap gap-2 mt-3", children: (health.counts ?? []).map((count) => /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${statusLook(count.status).tone}`, children: [
         count.label,
         /* @__PURE__ */ jsxDEV("span", { className: "ms-2", children: count.count }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/HealthPanel.tsx",

@@ -35,7 +35,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
       count: functions.length,
       flush: true,
       region: "functions",
-      actions: missing > 0 ? /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-danger", children: text("tile_functions_missing", missing) }, void 0, false, {
+      actions: missing > 0 ? /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-danger", children: text("tile_functions_missing", missing) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
         lineNumber: 43,
         columnNumber: 32
@@ -60,24 +60,24 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
             lineNumber: 50,
             columnNumber: 17
           }),
-          /* @__PURE__ */ jsxDEV("div", { className: "flex-grow-1 min-w-0", children: [
+          /* @__PURE__ */ jsxDEV("div", { className: "flex-grow-1 overflow-hidden", children: [
             /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-2", children: [
-              /* @__PURE__ */ jsxDEV("span", { className: "font-monospace small", children: fn.name }, void 0, false, {
+              /* @__PURE__ */ jsxDEV("span", { className: "font-monospace small text-break", children: fn.name }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 55,
                 columnNumber: 25
               }),
-              fn.type && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: text("function_" + fn.type) }, void 0, false, {
+              fn.type && /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-secondary", children: text("function_" + fn.type) }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 56,
                 columnNumber: 37
               }),
-              fn.critical && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: text("function_critical") }, void 0, false, {
+              fn.critical && /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-secondary", children: text("function_critical") }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 57,
                 columnNumber: 41
               }),
-              !fn.exists && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-danger", children: text("function_missing") }, void 0, false, {
+              !fn.exists && /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-danger", children: text("function_missing") }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
                 lineNumber: 58,
                 columnNumber: 40
@@ -87,7 +87,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
               lineNumber: 54,
               columnNumber: 21
             }),
-            fn.description && /* @__PURE__ */ jsxDEV("div", { className: "text-body-secondary small", children: fn.description }, void 0, false, {
+            fn.description && /* @__PURE__ */ jsxDEV("div", { className: "text-body-secondary small text-break", children: fn.description }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/schema/FunctionsPanel.tsx",
               lineNumber: 60,
               columnNumber: 40
@@ -101,7 +101,7 @@ const FunctionsPanel = /* @__PURE__ */ __name(({ functions, text }) => {
             "button",
             {
               type: "button",
-              className: "btn btn-sm btn-outline-primary",
+              className: "btn btn-sm btn-outline-primary text-nowrap flex-shrink-0",
               onClick: () => setViewing(fn),
               title: text("function_capabilities_view"),
               children: [

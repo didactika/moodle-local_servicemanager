@@ -47,23 +47,23 @@ const VersionList = ({rows, chosen, onToggle, onRollback, text}: VersionListProp
             <caption className="visually-hidden">{text('version_history')}</caption>
             <thead>
                 <tr>
-                    <th scope="col" className="table-select"><span className="visually-hidden">{text('compare_select')}</span></th>
+                    <th scope="col" className="align-middle" data-column="select"><span className="visually-hidden">{text('compare_select')}</span></th>
                     <th scope="col">{text('version')}</th>
                     <th scope="col">{text('history_by')}</th>
                     <th scope="col" className="d-none d-md-table-cell">{text('history_reason')}</th>
-                    <th scope="col" className="table-actions"><span className="visually-hidden">{text('core_actions')}</span></th>
+                    <th scope="col" className="text-end text-nowrap" data-column="actions"><span className="visually-hidden">{text('core_actions')}</span></th>
                 </tr>
             </thead>
             <tbody>
                 {rows.map((row) => <tr key={row.id} className={chosen.has(row.id) ? 'table-active' : undefined} data-region="version">
-                    <td className="table-select">
+                    <td className="align-middle" data-column="select">
                         <input type="checkbox" id={`lsm-compare-${row.id}`} className="form-check-input" checked={chosen.has(row.id)}
                             onChange={() => onToggle(row.id)} />
                         <label htmlFor={`lsm-compare-${row.id}`} className="visually-hidden">{`${text('compare_select')} ${row.version}`}</label>
                     </td>
                     <td>
                         <span className="fw-semibold"><Icon name="code-branch" gap />{row.version}</span>
-                        {row.isCurrent && <span className="badge badge-soft rounded-pill text-bg-success ms-2">{text('current')}</span>}
+                        {row.isCurrent && <span className="badge rounded-pill text-bg-success ms-2">{text('current')}</span>}
                     </td>
                     <td>
                         <span className="d-flex align-items-center gap-2">
@@ -75,7 +75,7 @@ const VersionList = ({rows, chosen, onToggle, onRollback, text}: VersionListProp
                         </span>
                     </td>
                     <td className="d-none d-md-table-cell"><span className="text-truncate d-block" title={row.reason}>{row.reason}</span></td>
-                    <td className="table-actions">
+                    <td className="text-end text-nowrap" data-column="actions">
                         <IconButton icon="code" label={text('view_yaml')} onClick={() => openYaml(row)} />
                         <IconButton icon="eye" label={text('action_view')} href={row.viewUrl} tone="primary" />
                         {row.canRollback && <IconButton icon="rotate-left" label={text('rollback')} onClick={() => onRollback(row)} tone="warning" />}

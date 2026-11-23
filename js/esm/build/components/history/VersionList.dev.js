@@ -38,10 +38,10 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
-        /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "table-select", children: /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("compare_select") }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "align-middle", "data-column": "select", children: /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("compare_select") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
           lineNumber: 50,
-          columnNumber: 62
+          columnNumber: 83
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
           lineNumber: 50,
@@ -62,10 +62,10 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
           lineNumber: 53,
           columnNumber: 21
         }),
-        /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "table-actions", children: /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("core_actions") }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("th", { scope: "col", className: "text-end text-nowrap", "data-column": "actions", children: /* @__PURE__ */ jsxDEV("span", { className: "visually-hidden", children: text("core_actions") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
           lineNumber: 54,
-          columnNumber: 63
+          columnNumber: 92
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
           lineNumber: 54,
@@ -81,7 +81,7 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
         columnNumber: 13
       }),
       /* @__PURE__ */ jsxDEV("tbody", { children: rows.map((row) => /* @__PURE__ */ jsxDEV("tr", { className: chosen.has(row.id) ? "table-active" : void 0, "data-region": "version", children: [
-        /* @__PURE__ */ jsxDEV("td", { className: "table-select", children: [
+        /* @__PURE__ */ jsxDEV("td", { className: "align-middle", "data-column": "select", children: [
           /* @__PURE__ */ jsxDEV(
             "input",
             {
@@ -122,7 +122,7 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
             lineNumber: 65,
             columnNumber: 25
           }),
-          row.isCurrent && /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-success ms-2", children: text("current") }, void 0, false, {
+          row.isCurrent && /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-success ms-2", children: text("current") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
             lineNumber: 66,
             columnNumber: 43
@@ -168,7 +168,7 @@ const VersionList = /* @__PURE__ */ __name(({ rows, chosen, onToggle, onRollback
           lineNumber: 77,
           columnNumber: 21
         }),
-        /* @__PURE__ */ jsxDEV("td", { className: "table-actions", children: [
+        /* @__PURE__ */ jsxDEV("td", { className: "text-end text-nowrap", "data-column": "actions", children: [
           /* @__PURE__ */ jsxDEV(IconButton, { icon: "code", label: text("view_yaml"), onClick: () => openYaml(row) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/history/VersionList.tsx",
             lineNumber: 79,

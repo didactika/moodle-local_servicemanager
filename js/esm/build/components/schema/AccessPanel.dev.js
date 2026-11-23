@@ -19,7 +19,7 @@ import IconButton from "../common/IconButton";
 import Panel from "../common/Panel";
 const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeToken, text }) => {
   const { requirements, extraCapabilities, schema, isHistory, canManage } = props;
-  const file = /* @__PURE__ */ __name((on, icon, label, title) => /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${on ? "success" : "secondary"}`, title, children: [
+  const file = /* @__PURE__ */ __name((on, icon, label, title) => /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${on ? "success" : "secondary"}`, title, children: [
     /* @__PURE__ */ jsxDEV(Icon, { name: icon, gap: true }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
       lineNumber: 31,
@@ -31,15 +31,15 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
     lineNumber: 30,
     columnNumber: 79
   }), "file");
-  return /* @__PURE__ */ jsxDEV(Panel, { title: text("guided_access"), icon: "shield-halved", region: "access", children: /* @__PURE__ */ jsxDEV("dl", { className: "dd-dl mb-0", children: [
+  return /* @__PURE__ */ jsxDEV(Panel, { title: text("guided_access"), icon: "shield-halved", region: "access", children: /* @__PURE__ */ jsxDEV("dl", { className: "row mx-0 mb-0", children: [
     !isHistory && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      /* @__PURE__ */ jsxDEV("dt", { children: text("tile_token") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dt", { className: "col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom", children: text("tile_token") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
         lineNumber: 37,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dd", { children: [
-        /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${schema.hasToken ? "success" : "secondary"}`, children: text(schema.hasToken ? "token_active" : "token_none") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dd", { className: "col-sm-8 px-0 py-2 mb-0 border-bottom", children: [
+        /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${schema.hasToken ? "success" : "secondary"}`, children: text(schema.hasToken ? "token_active" : "token_none") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
           lineNumber: 39,
           columnNumber: 21
@@ -90,7 +90,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
         lineNumber: 38,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dt", { children: text("req_file_access") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dt", { className: "col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom", children: text("req_file_access") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
         lineNumber: 54,
         columnNumber: 17
@@ -109,12 +109,12 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
       columnNumber: 28
     }),
     requirements.plugins.length > 0 && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      /* @__PURE__ */ jsxDEV("dt", { children: text("req_plugins") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dt", { className: "col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom", children: text("req_plugins") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
         lineNumber: 61,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dd", { children: requirements.plugins.map((plugin) => /* @__PURE__ */ jsxDEV("div", { children: [
+      /* @__PURE__ */ jsxDEV("dd", { className: "col-sm-8 px-0 py-2 mb-0 border-bottom", children: requirements.plugins.map((plugin) => /* @__PURE__ */ jsxDEV("div", { children: [
         /* @__PURE__ */ jsxDEV("span", { className: plugin.installed ? "text-success" : "text-warning", children: /* @__PURE__ */ jsxDEV(Icon, { name: plugin.installed ? "circle-check" : "triangle-exclamation", gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
           lineNumber: 65,
@@ -149,12 +149,12 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
       columnNumber: 49
     }),
     extraCapabilities.length > 0 && /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      /* @__PURE__ */ jsxDEV("dt", { children: text("extra_capabilities") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("dt", { className: "col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom", children: text("extra_capabilities") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
         lineNumber: 73,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dd", { children: /* @__PURE__ */ jsxDEV(
+      /* @__PURE__ */ jsxDEV("dd", { className: "col-sm-8 px-0 py-2 mb-0 border-bottom", children: /* @__PURE__ */ jsxDEV(
         ChipList,
         {
           title: text("extra_capabilities"),
@@ -162,7 +162,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
           text,
           chip: (capability) => {
             const [plugin, name] = capability.split(":");
-            return /* @__PURE__ */ jsxDEV("code", { className: "badge badge-outline rounded-pill text-bg-secondary font-monospace fw-normal", title: capability, children: [
+            return /* @__PURE__ */ jsxDEV("code", { className: "badge border rounded-pill text-bg-secondary font-monospace fw-normal", title: capability, children: [
               /* @__PURE__ */ jsxDEV("span", { className: "text-muted", children: plugin }, void 0, false, {
                 fileName: "public/local/servicemanager/js/esm/src/components/schema/AccessPanel.tsx",
                 lineNumber: 82,

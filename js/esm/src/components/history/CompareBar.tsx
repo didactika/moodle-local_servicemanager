@@ -22,17 +22,17 @@ interface CompareBarProps {
     text: Text;
 }
 
-const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) => <div className="dd-floatbar" role="region"
+const CompareBar = ({chosen, needed, tooMany, onClear, text}: CompareBarProps) => <div className="card" role="region"
     aria-label={text('compare_versions')} data-region="compare-bar">
     {[...chosen].map((id) => <input key={id} type="hidden" name="compare[]" value={id} />)}
-    <span className="dd-floatbar-count" role="status" data-region="compare-chosen">{text('compare_chosen', {n: chosen.size, total: needed})}</span>
+    <span className="fw-bold text-nowrap" role="status" data-region="compare-chosen">{text('compare_chosen', {n: chosen.size, total: needed})}</span>
     {tooMany && <span className="text-danger small" role="alert">{text('compare_select_two')}</span>}
-    <div className="dd-floatbar-actions">
+    <div className="d-flex flex-wrap gap-2">
         <button type="submit" id="compare-btn" className="btn btn-primary btn-sm" disabled={chosen.size !== needed}>
             <Icon name="code-compare" gap />{text('compare_versions')}
         </button>
     </div>
-    <button type="button" className="dd-floatbar-clear" onClick={onClear} title={text('compare_clear')} aria-label={text('compare_clear')} />
+    <button type="button" className="btn-close" onClick={onClear} title={text('compare_clear')} aria-label={text('compare_clear')} />
 </div>;
 
 export default CompareBar;

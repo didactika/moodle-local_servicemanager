@@ -43,7 +43,7 @@
     // The role of a component: a class that names a role sets --dd-c, and the tones each component reads come from it.
     & .btn,
     & .badge,
-    & .dd-tile {
+    & .icon-box {
         --dd-c: var(--dd-primary);
     }
 
@@ -73,7 +73,7 @@
 
     & .btn,
     & .badge,
-    & .dd-tile,
+    & .icon-box,
     & [class*="-primary"],
     & [class*="-secondary"],
     & [class*="-success"],

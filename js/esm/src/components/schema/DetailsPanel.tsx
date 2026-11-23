@@ -43,15 +43,15 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}
     </div> : undefined}
 >
     {schema.description && <p className="mb-3">{schema.description}</p>}
-    <dl className="dd-dl mb-0">
-        <dt>{text('schema_version')}</dt><dd>{schema.version}</dd>
-        {schema.maintainer && <><dt>{text('schema_maintainer')}</dt><dd>{schema.maintainer}</dd></>}
-        <dt>{text('schema_created')}</dt><dd>{schema.created}</dd>
-        <dt>{text('schema_modified')}</dt><dd>{schema.modified}</dd>
+    <dl className="row mx-0 mb-0">
+        <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_version')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.version}</dd>
+        {schema.maintainer && <><dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_maintainer')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.maintainer}</dd></>}
+        <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_created')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.created}</dd>
+        <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_modified')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.modified}</dd>
         {!isHistory && <>
-            <dt>{text('schema_enabled')}</dt>
-            <dd>
-                <span className={`badge badge-soft rounded-pill text-bg-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
+            <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_enabled')}</dt>
+            <dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">
+                <span className={`badge rounded-pill text-bg-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
             </dd>
         </>}
     </dl>

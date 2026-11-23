@@ -59,7 +59,7 @@ const ChipList = ({title, names, chip, text, limit = SHOWN}: ChipListProps) => {
         {folded && <Modal
             open={open}
             wide
-            title={<>{title}<span className="badge badge-soft rounded-pill text-bg-secondary ms-2">{names.length}</span></>}
+            title={<>{title}<span className="badge rounded-pill text-bg-secondary ms-2">{names.length}</span></>}
             onClose={() => setOpen(false)}
             closeLabel={text('core_cancel')}
         >

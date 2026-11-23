@@ -26,7 +26,7 @@ const PERMISSIONS = [
 const Block = /* @__PURE__ */ __name(({ label, names, tone, text }) => /* @__PURE__ */ jsxDEV("section", { className: "col", "data-region": "role-block", children: [
   /* @__PURE__ */ jsxDEV("h4", { className: "h6 d-flex align-items-center gap-2", children: [
     label,
-    /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: names.length }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-secondary", children: names.length }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/schema/RolePanel.tsx",
       lineNumber: 39,
       columnNumber: 63
@@ -42,7 +42,7 @@ const Block = /* @__PURE__ */ __name(({ label, names, tone, text }) => /* @__PUR
       title: label,
       names,
       text,
-      chip: (name) => /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft rounded-pill text-bg-${tone} fw-normal`, children: name }, name, false, {
+      chip: (name) => /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${tone} fw-normal`, children: name }, name, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/schema/RolePanel.tsx",
         lineNumber: 44,
         columnNumber: 25

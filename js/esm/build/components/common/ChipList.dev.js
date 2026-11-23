@@ -71,7 +71,7 @@ const ChipList = /* @__PURE__ */ __name(({ title, names, chip, text, limit = SHO
         wide: true,
         title: /* @__PURE__ */ jsxDEV(Fragment, { children: [
           title,
-          /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary ms-2", children: names.length }, void 0, false, {
+          /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-secondary ms-2", children: names.length }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/components/common/ChipList.tsx",
             lineNumber: 62,
             columnNumber: 29

@@ -28,7 +28,7 @@ const Panel = ({title, icon, count, actions, flush = false, region, children}: P
         <h3 className="h6 mb-0 d-flex align-items-center gap-2">
             <span className="text-muted"><Icon name={icon} /></span>
             {title}
-            {count !== undefined && <span className="badge badge-soft rounded-pill text-bg-secondary">{count}</span>}
+            {count !== undefined && <span className="badge rounded-pill text-bg-secondary">{count}</span>}
         </h3>
         {actions}
     </header>

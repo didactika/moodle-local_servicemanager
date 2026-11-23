@@ -16,6 +16,7 @@ import type {ReactNode, RefObject} from 'react';
 import {createPortal} from 'react-dom';
 import {fitPageSizes, pageRange} from '../lib/paging';
 import type {Text} from '../types';
+import {place as float} from '../hooks/useDropdown';
 
 /**
  * A Moodle icon, drawn by the server with the icon map of the theme.
@@ -35,7 +36,7 @@ export function Icon({name, text}: {name: string; text: Text}) {
  */
 export function SearchBox({value, onChange, label, text}: {value: string; onChange: (value: string) => void; label: string; text: Text}) {
     const id = useId();
-    return <div className="dd-searchbox" role="search">
+    return <div className="position-relative d-flex align-items-center" role="search">
         <Icon name="a/search" text={text} />
         <label className="visually-hidden" htmlFor={id}>{label}</label>
         <input
@@ -80,6 +81,13 @@ export function Menu({button, label, name, active = false, small = false, place 
     const toggle = useRef<HTMLButtonElement>(null);
     const id = useId();
 
+    // A menu in a box that scrolls, as the menu of a row, floats next to its button so the box never cuts it.
+    useLayoutEffect(() => {
+        if (root.current) {
+            float(root.current);
+        }
+    }, [open]);
+
     useEffect(() => {
         if (!open) {
             return undefined;
@@ -95,20 +103,32 @@ export function Menu({button, label, name, active = false, small = false, place 
                 toggle.current?.focus();
             }
         };
+        // A floating menu would stay behind while its row scrolls away, so scrolling its box or resizing the window closes it.
+        const scrolled = (event: Event): void => {
+            const box = event.target instanceof Element ? event.target : null;
+            if (box && box.classList.contains('table-responsive') && box.contains(root.current)) {
+                setOpen(false);
+            }
+        };
+        const resized = (): void => setOpen(false);
         document.addEventListener('pointerdown', outside, true);
         document.addEventListener('keydown', keys, true);
+        document.addEventListener('scroll', scrolled, true);
+        window.addEventListener('resize', resized);
         return () => {
             document.removeEventListener('pointerdown', outside, true);
             document.removeEventListener('keydown', keys, true);
+            document.removeEventListener('scroll', scrolled, true);
+            window.removeEventListener('resize', resized);
         };
     }, [open]);
 
-    return <span className={`dd-menu${place ? ` dd-menu-${place}` : ''}${onClear ? ' dd-select-filter' : ''}`} data-menu={name} ref={root}>
+    return <span className={`${place === 'up' ? 'dropup' : 'dropdown'} d-inline-flex`} data-menu={name} ref={root}>
         <button
             ref={toggle}
             type="button"
             className={icon ? 'btn btn-link btn-icon btn-sm'
-                : `form-select dd-select${small ? ' form-select-sm' : ''}${active ? ' border-primary' : ''}${clearable ? ' dd-select-set' : ''}`}
+                : `form-select${small ? ' form-select-sm' : ''}${active ? ' border-primary' : ''}`}
             title={icon ? label : undefined}
             aria-label={label}
             aria-haspopup="true"
@@ -118,7 +138,7 @@ export function Menu({button, label, name, active = false, small = false, place 
         >{button}</button>
         {clearable && <button
             type="button"
-            className="dd-select-clear"
+            className="btn btn-link p-0" data-menu-clear
             title={clear}
             aria-label={clear}
             onClick={() => {
@@ -127,7 +147,7 @@ export function Menu({button, label, name, active = false, small = false, place 
                 toggle.current?.focus();
             }}
         >{text && <Icon name="e/cancel" text={text} />}</button>}
-        {open && <div id={id} className="dd-select-menu" role="group" aria-label={label}>
+        {open && <div id={id} className={`dropdown-menu show${place === 'end' ? ' dropdown-menu-end' : ''}`} role="group" aria-label={label}>
             {children(() => {
                 setOpen(false);
                 toggle.current?.focus();
@@ -200,7 +220,7 @@ export function SortHeader({label, help, active, direction, onSort, col}: {
         ariaSort = direction === 'asc' ? 'ascending' : 'descending';
     }
     return <th scope="col" aria-sort={ariaSort} data-col={col}>
-        <button type="button" className="table-sort" title={help} onClick={onSort}>{label}</button>
+        <button type="button" className="btn btn-link" title={help} onClick={onSort}>{label}</button>
     </th>;
 }
 
@@ -225,9 +245,9 @@ export function Pager({page, perpage, total, disabled, text, onChange}: {
     const {from, to} = pageRange(page, perpage, total);
     // Only the sizes smaller than the list are offered, besides all of it, and the select always shows one of them.
     const {sizes, shown} = fitPageSizes(perpage, total);
-    return <div className="table-foot">
-        <div className="dd-pager">
-            <div className="dd-pager-size">
+    return <div className="px-3 py-2 border-top">
+        <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 small text-muted">
+            <div className="d-none d-sm-flex align-items-center gap-2">
                 <span>{text('pagination_per_page')}</span>
                 <SelectMenu
                     small
@@ -238,9 +258,9 @@ export function Pager({page, perpage, total, disabled, text, onChange}: {
                     onChange={(size) => onChange({perpage: Number(size), page: 0})}
                 />
             </div>
-            <div className="dd-pager-end">
-                <span className="dd-pager-range" role="status">{text('pagination_range', {from, to, total})}</span>
-                <div className="dd-pager-arrows">
+            <div className="d-flex flex-wrap align-items-center gap-3 ms-auto">
+                <span className="text-body text-nowrap" role="status">{text('pagination_range', {from, to, total})}</span>
+                <div className="d-flex gap-1">
                     <button
                         type="button"
                         className="btn btn-outline-secondary btn-sm btn-icon"
@@ -284,17 +304,23 @@ export function useFitHeight(box: RefObject<HTMLElement | null>): void {
     useLayoutEffect(() => {
         const fit = (): void => {
             const element = box.current;
-            if (!element) {
+            // While the empty state takes the place of the rows, the box keeps the height measured while they were shown.
+            if (!element || element.querySelector('[data-region="empty"]')) {
                 return;
             }
             const rect = element.getBoundingClientRect();
             const top = rect.top + window.scrollY;
             // What comes under the box inside its card, such as the pager, wherever it sits.
-            const card = element.closest('.card')?.getBoundingClientRect();
-            const below = card ? Math.max(0, card.bottom - rect.bottom) : 0;
+            const frame = element.closest<HTMLElement>('.card');
+            const card = frame?.getBoundingClientRect();
+            // The line of the card stays under the empty state, so it is not part of what the empty state takes the place of.
+            const line = frame ? parseFloat(getComputedStyle(frame).borderBottomWidth) || 0 : 0;
+            const below = card ? Math.max(0, card.bottom - rect.bottom - line) : 0;
             const height = Math.max(TABLE_MIN, window.innerHeight - top - below - TABLE_ROOM);
-            // On the card, so the empty state that may take the place of the table has the same height.
-            ((element.closest('.card') as HTMLElement | null) ?? element).style.setProperty('--dd-table-h', height + 'px');
+            // On the card, so the empty state that may take the place of the table and of its pager has the same height.
+            const holder = frame ?? element;
+            holder.style.setProperty('--dd-table-h', height + 'px');
+            holder.style.setProperty('--dd-foot-h', below + 'px');
         };
         fit();
         // Measured again when the window changes size, or when what is above the box finishes drawing and moves it.
@@ -341,9 +367,9 @@ export function Empty({icon, message, action, onAction, text}: {
     onAction?: () => void;
     text: Text;
 }) {
-    return <div className="dd-empty" data-region="empty" role="status">
-        <span className="dd-tile dd-tile-lg"><Icon name={icon} text={text} /></span>
-        <p className="dd-empty-text">{message}</p>
+    return <div className="d-flex flex-column align-items-center gap-2 px-4 py-5 text-center" data-region="empty" role="status">
+        <span className="icon-box"><Icon name={icon} text={text} /></span>
+        <p className="text-muted mb-0">{message}</p>
         {action && onAction && <button type="button" className="btn btn-outline-secondary btn-sm" onClick={onAction}>{action}</button>}
     </div>;
 }
@@ -456,10 +482,10 @@ export function FloatBar({count, label, onClear, children, text}: {
     if (count === 0) {
         return null;
     }
-    return <div className="dd-floatbar" role="region" aria-label={label} data-region="bulk-actions">
-        <span className="dd-floatbar-count" role="status">{text('selected_count', count)}</span>
-        <div className="dd-floatbar-actions">{children}</div>
-        <button type="button" className="dd-floatbar-clear" title={text('clear_selection')} aria-label={text('clear_selection')}
+    return <div className="card" role="region" aria-label={label} data-region="bulk-actions">
+        <span className="fw-bold text-nowrap" role="status">{text('selected_count', count)}</span>
+        <div className="d-flex flex-wrap gap-2">{children}</div>
+        <button type="button" className="btn-close" title={text('clear_selection')} aria-label={text('clear_selection')}
             onClick={onClear} />
     </div>;
 }

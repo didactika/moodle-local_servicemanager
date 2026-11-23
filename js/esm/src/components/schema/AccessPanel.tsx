@@ -27,16 +27,16 @@ interface AccessPanelProps {
 
 const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelProps) => {
     const {requirements, extraCapabilities, schema, isHistory, canManage} = props;
-    const file = (on: boolean, icon: string, label: string, title: string) => <span className={`badge badge-soft rounded-pill text-bg-${on ? 'success' : 'secondary'}`} title={title}>
+    const file = (on: boolean, icon: string, label: string, title: string) => <span className={`badge rounded-pill text-bg-${on ? 'success' : 'secondary'}`} title={title}>
         <Icon name={icon} gap />{label}
     </span>;
 
     return <Panel title={text('guided_access')} icon="shield-halved" region="access">
-        <dl className="dd-dl mb-0">
+        <dl className="row mx-0 mb-0">
             {!isHistory && <>
-                <dt>{text('tile_token')}</dt>
-                <dd>
-                    <span className={`badge badge-soft rounded-pill text-bg-${schema.hasToken ? 'success' : 'secondary'}`}>{text(schema.hasToken ? 'token_active' : 'token_none')}</span>
+                <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('tile_token')}</dt>
+                <dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">
+                    <span className={`badge rounded-pill text-bg-${schema.hasToken ? 'success' : 'secondary'}`}>{text(schema.hasToken ? 'token_active' : 'token_none')}</span>
                     {canManage && <span className="ms-2">
                         <IconButton
                             icon={schema.hasToken ? 'rotate' : 'key'}
@@ -51,15 +51,15 @@ const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelPr
                         <div className="small text-body-secondary">{text('token_shown_once')}</div>
                     </div>}
                 </dd>
-                <dt>{text('req_file_access')}</dt>
+                <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('req_file_access')}</dt>
                 <dd className="d-flex flex-wrap gap-2">
                     {file(requirements.downloadFiles, 'download', text('req_download_files'), text(requirements.downloadFiles ? 'req_download_files_enabled' : 'req_download_files_disabled'))}
                     {file(requirements.uploadFiles, 'upload', text('req_upload_files'), text(requirements.uploadFiles ? 'req_upload_files_enabled' : 'req_upload_files_disabled'))}
                 </dd>
             </>}
             {requirements.plugins.length > 0 && <>
-                <dt>{text('req_plugins')}</dt>
-                <dd>
+                <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('req_plugins')}</dt>
+                <dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">
                     {requirements.plugins.map((plugin) => <div key={plugin.name}>
                         <span className={plugin.installed ? 'text-success' : 'text-warning'}>
                             <Icon name={plugin.installed ? 'circle-check' : 'triangle-exclamation'} gap />
@@ -70,15 +70,15 @@ const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelPr
                 </dd>
             </>}
             {extraCapabilities.length > 0 && <>
-                <dt>{text('extra_capabilities')}</dt>
-                <dd>
+                <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('extra_capabilities')}</dt>
+                <dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">
                     <ChipList
                         title={text('extra_capabilities')}
                         names={extraCapabilities}
                         text={text}
                         chip={(capability) => {
                             const [plugin, name] = capability.split(':');
-                            return <code key={capability} className="badge badge-outline rounded-pill text-bg-secondary font-monospace fw-normal" title={capability}>
+                            return <code key={capability} className="badge border rounded-pill text-bg-secondary font-monospace fw-normal" title={capability}>
                                 <span className="text-muted">{plugin}</span>{name !== undefined && <span>:{name}</span>}
                             </code>;
                         }}

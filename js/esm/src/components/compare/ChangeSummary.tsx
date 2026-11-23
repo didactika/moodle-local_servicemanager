@@ -61,7 +61,7 @@ const ChangeSummary = ({changes, text}: ChangeSummaryProps) => <details classNam
     <summary className="card-header d-flex align-items-center gap-2">
         
         <h5 className="h6 mb-0">{text('compare_changes_title')}</h5>
-        <span className="badge badge-soft rounded-pill text-bg-secondary">{changes.length}</span>
+        <span className="badge rounded-pill text-bg-secondary">{changes.length}</span>
     </summary>
     <div className="card-body d-grid gap-3">
         {AREAS.map(({area, title, icon}) => {
@@ -72,7 +72,7 @@ const ChangeSummary = ({changes, text}: ChangeSummaryProps) => <details classNam
             return <section key={area}>
                 <h6 className="small text-muted text-uppercase fw-semibold"><Icon name={icon} gap />{text(title)}</h6>
                 <ul className="list-unstyled d-flex flex-wrap gap-2 mb-0">
-                    {items.map((change) => <li key={change.kind + change.name} className={`badge badge-soft rounded-pill text-bg-${KINDS[change.kind].tone} fw-normal d-inline-flex align-items-center gap-1`}>
+                    {items.map((change) => <li key={change.kind + change.name} className={`badge rounded-pill text-bg-${KINDS[change.kind].tone} fw-normal d-inline-flex align-items-center gap-1`}>
                         <Icon name={KIND_SIGN[change.kind]} />
                         <span className="visually-hidden">{text('change_' + change.kind)}: </span>
                         <span className="fw-semibold">{label(text, change)}</span>

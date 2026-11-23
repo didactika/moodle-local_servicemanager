@@ -21,7 +21,7 @@ const LEVELS = {
 const WsPill = /* @__PURE__ */ __name(({ status, canManage, text }) => {
   const level = LEVELS[status.level];
   return /* @__PURE__ */ jsxDEV("span", { className: "d-inline-flex flex-wrap align-items-center gap-2", "data-region": "ws-status", children: [
-    /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft badge-dot rounded-pill text-bg-${level.tone}`, children: [
+    /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${level.tone}`, children: [
       text("tile_services"),
       ": ",
       text(level.label)
@@ -33,7 +33,7 @@ const WsPill = /* @__PURE__ */ __name(({ status, canManage, text }) => {
     status.protocols.map((protocol) => /* @__PURE__ */ jsxDEV(
       "span",
       {
-        className: `badge badge-outline rounded-pill text-bg-${protocol.enabled ? "success" : "secondary"}`,
+        className: `badge border rounded-pill text-bg-${protocol.enabled ? "success" : "secondary"}`,
         title: text(protocol.enabled ? "ws_enabled_label" : "ws_disabled_label"),
         children: [
           protocol.name,

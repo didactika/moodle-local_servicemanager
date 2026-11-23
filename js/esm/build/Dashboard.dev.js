@@ -130,104 +130,127 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
   const page = paginate(found, list.state.page, list.state.perpage);
   const selection = useBulkSelection(page.rows, schemas);
   const narrowed = list.state.query !== "" || chosen.length > 0 || list.extras > 0;
+  const resetButton = /* @__PURE__ */ jsxDEV(
+    "button",
+    {
+      type: "button",
+      className: "btn btn-link btn-icon",
+      disabled: !narrowed,
+      title: text("filters_reset"),
+      "aria-label": text("filters_reset"),
+      onClick: list.reset,
+      children: /* @__PURE__ */ jsxDEV(Icon, { name: "i/reload", text }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+        lineNumber: 82,
+        columnNumber: 9
+      })
+    },
+    void 0,
+    false,
+    {
+      fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
+      lineNumber: 80,
+      columnNumber: 25
+    }
+  );
   const applied = (chosen.length > 0 ? 1 : 0) + (list.state.from || list.state.to ? 1 : 0);
   const send = /* @__PURE__ */ __name((action, ids) => postForm(urls.bulkAction, { sesskey: props.sesskey, action, ids }), "send");
   const act = /* @__PURE__ */ __name((action) => action === "delete" ? setDeleting(true) : send(action, [...selection.chosen]), "act");
   return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-dashboard d-grid gap-3", style: selection.chosen.size ? { paddingBottom: "5.5rem" } : void 0, children: [
-    /* @__PURE__ */ jsxDEV("header", { className: "dd-page-header", children: /* @__PURE__ */ jsxDEV("div", { className: "dd-page-header-row", children: [
-      /* @__PURE__ */ jsxDEV("div", { className: "dd-page-header-main", children: [
-        /* @__PURE__ */ jsxDEV("span", { className: "dd-tile dd-tile-lg", children: /* @__PURE__ */ jsxDEV(Icon, { name: "plug", text }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("header", { className: "d-grid gap-3 pb-3 border-bottom", children: /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center justify-content-between gap-3", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center gap-3", children: [
+        /* @__PURE__ */ jsxDEV("span", { className: "icon-box", children: /* @__PURE__ */ jsxDEV(Icon, { name: "plug", text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 89,
-          columnNumber: 62
+          lineNumber: 94,
+          columnNumber: 52
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 89,
+          lineNumber: 94,
           columnNumber: 25
         }),
-        /* @__PURE__ */ jsxDEV("p", { className: "dd-page-subtitle", children: text("dashboard_subtitle") }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("p", { className: "text-muted mb-0", children: text("dashboard_subtitle") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 90,
+          lineNumber: 95,
           columnNumber: 25
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 88,
+        lineNumber: 93,
         columnNumber: 21
       }),
-      /* @__PURE__ */ jsxDEV("div", { className: "dd-page-actions", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-2", children: [
         /* @__PURE__ */ jsxDEV(DocsMenu, { urls, text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 93,
+          lineNumber: 98,
           columnNumber: 25
         }),
         /* @__PURE__ */ jsxDEV("a", { className: "btn btn-outline-secondary", href: urls.exportAll, children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "t/download", text }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 95,
+            lineNumber: 100,
             columnNumber: 29
           }),
           " ",
           text("export_all")
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 94,
+          lineNumber: 99,
           columnNumber: 25
         }),
         canManage && /* @__PURE__ */ jsxDEV("a", { className: "btn btn-outline-secondary", href: urls.import, children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "i/import", text }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 98,
+            lineNumber: 103,
             columnNumber: 29
           }),
           " ",
           text("import_schemas")
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 97,
+          lineNumber: 102,
           columnNumber: 39
         }),
         canManage && /* @__PURE__ */ jsxDEV("a", { className: "btn btn-primary", href: urls.create, children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "t/add", text }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 101,
+            lineNumber: 106,
             columnNumber: 29
           }),
           " ",
           text("new_schema")
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 100,
+          lineNumber: 105,
           columnNumber: 39
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 92,
+        lineNumber: 97,
         columnNumber: 21
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 87,
+      lineNumber: 92,
       columnNumber: 17
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 86,
+      lineNumber: 91,
       columnNumber: 13
     }),
     /* @__PURE__ */ jsxDEV(Summary, { counts: allCounts, ws: wsStatus, sesskey: props.sesskey, text }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 107,
+      lineNumber: 112,
       columnNumber: 13
     }),
     /* @__PURE__ */ jsxDEV("div", { className: "card", children: [
-      /* @__PURE__ */ jsxDEV("div", { className: "table-toolbar", "data-region": "filters", children: [
-        /* @__PURE__ */ jsxDEV("div", { className: "table-toolbar-start", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center justify-content-between gap-3 px-3 py-2 border-bottom", "data-region": "filters", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center gap-2 flex-grow-1", children: [
           /* @__PURE__ */ jsxDEV(SearchBox, { value: list.state.query, onChange: (query) => list.set({ query }), label: text("filter_name"), text }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 112,
+            lineNumber: 117,
             columnNumber: 25
           }),
-          /* @__PURE__ */ jsxDEV(FilterGroup, { count: applied, text, children: [
+          /* @__PURE__ */ jsxDEV(FilterGroup, { count: applied, text, reset: resetButton, children: [
             /* @__PURE__ */ jsxDEV(
               StatusMenu,
               {
@@ -241,7 +264,7 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
               false,
               {
                 fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-                lineNumber: 114,
+                lineNumber: 119,
                 columnNumber: 29
               }
             ),
@@ -258,50 +281,28 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
               false,
               {
                 fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-                lineNumber: 121,
+                lineNumber: 126,
                 columnNumber: 29
               }
             )
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 113,
+            lineNumber: 118,
             columnNumber: 25
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 111,
+          lineNumber: 116,
           columnNumber: 21
         }),
-        /* @__PURE__ */ jsxDEV("div", { className: "table-toolbar-end", children: /* @__PURE__ */ jsxDEV(
-          "button",
-          {
-            type: "button",
-            className: "btn btn-link btn-icon",
-            disabled: !narrowed,
-            title: text("filters_reset"),
-            "aria-label": text("filters_reset"),
-            onClick: list.reset,
-            children: /* @__PURE__ */ jsxDEV(Icon, { name: "i/reload", text }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-              lineNumber: 133,
-              columnNumber: 29
-            })
-          },
-          void 0,
-          false,
-          {
-            fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-            lineNumber: 131,
-            columnNumber: 25
-          }
-        ) }, void 0, false, {
+        /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center gap-2 flex-shrink-0", children: resetButton }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 130,
+          lineNumber: 135,
           columnNumber: 21
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 110,
+        lineNumber: 115,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV(TableBox, { busy: false, empty: page.total === 0 && /* @__PURE__ */ jsxDEV(
@@ -317,7 +318,7 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
         false,
         {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 137,
+          lineNumber: 139,
           columnNumber: 67
         }
       ), children: /* @__PURE__ */ jsxDEV(
@@ -333,12 +334,12 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
         false,
         {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 144,
+          lineNumber: 146,
           columnNumber: 21
         }
       ) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 137,
+        lineNumber: 139,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV(
@@ -354,109 +355,109 @@ const Dashboard = /* @__PURE__ */ __name((props) => {
         false,
         {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 147,
+          lineNumber: 149,
           columnNumber: 17
         }
       )
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 109,
+      lineNumber: 114,
       columnNumber: 13
     }),
     props.truncated && /* @__PURE__ */ jsxDEV("p", { className: "text-muted small text-center", children: text("list_truncated", schemas.length) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 150,
+      lineNumber: 152,
       columnNumber: 33
     }),
     canManage && /* @__PURE__ */ jsxDEV(FloatBar, { count: selection.chosen.size, label: text("core_actions"), onClear: selection.clear, text, children: [
-      selection.actions.enable && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary btn-tonal btn-sm", onClick: () => act("enable"), children: [
+      selection.actions.enable && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm", onClick: () => act("enable"), children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "t/show", text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 154,
+          lineNumber: 156,
           columnNumber: 21
         }),
         " ",
         text("bulk_enable")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 153,
+        lineNumber: 155,
         columnNumber: 46
       }),
-      selection.actions.disable && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary btn-tonal btn-sm", onClick: () => act("disable"), children: [
+      selection.actions.disable && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm", onClick: () => act("disable"), children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "t/hide", text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 157,
+          lineNumber: 159,
           columnNumber: 21
         }),
         " ",
         text("bulk_disable")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 156,
+        lineNumber: 158,
         columnNumber: 47
       }),
-      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary btn-tonal btn-sm", onClick: () => act("export"), children: [
+      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm", onClick: () => act("export"), children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "t/download", text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 160,
+          lineNumber: 162,
           columnNumber: 21
         }),
         " ",
         text("bulk_export")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 159,
+        lineNumber: 161,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-danger btn-tonal btn-sm", onClick: () => act("delete"), children: [
+      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-danger btn-sm", onClick: () => act("delete"), children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "t/delete", text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-          lineNumber: 163,
+          lineNumber: 165,
           columnNumber: 21
         }),
         " ",
         text("bulk_delete")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 162,
+        lineNumber: 164,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 152,
+      lineNumber: 154,
       columnNumber: 27
     }),
     deleting && /* @__PURE__ */ jsxDEV(Dialog, { title: text("bulk_delete"), onClose: () => setDeleting(false), text, footer: /* @__PURE__ */ jsxDEV(Fragment, { children: [
       /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: () => setDeleting(false), children: text("core_cancel") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 168,
+        lineNumber: 170,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-danger", onClick: () => send("delete", [...selection.chosen]), children: text("bulk_delete") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-        lineNumber: 169,
+        lineNumber: 171,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 167,
+      lineNumber: 169,
       columnNumber: 117
     }), children: /* @__PURE__ */ jsxDEV("p", { className: "mb-0", children: text("bulk_delete_confirm") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 171,
+      lineNumber: 173,
       columnNumber: 17
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-      lineNumber: 167,
+      lineNumber: 169,
       columnNumber: 26
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-    lineNumber: 85,
+    lineNumber: 90,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/Dashboard.tsx",
-    lineNumber: 84,
+    lineNumber: 89,
     columnNumber: 12
   });
 }, "Dashboard");

@@ -20,18 +20,18 @@ interface PageHeaderProps {
     actions?: ReactNode;
 }
 
-const PageHeader = ({title, subtitle, badges, actions}: PageHeaderProps) => <header className="dd-page-header">
-    <div className="dd-page-header-row">
-        <div className="dd-page-header-main">
+const PageHeader = ({title, subtitle, badges, actions}: PageHeaderProps) => <header className="d-grid gap-3 pb-3 border-bottom">
+    <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div className="d-flex align-items-center gap-3">
             <div>
                 <div className="d-flex flex-wrap align-items-center gap-2">
-                    <h2 className="dd-page-title">{title}</h2>
+                    <h2 className="h5 fw-bold mb-0">{title}</h2>
                     {badges}
                 </div>
-                {subtitle && <p className="dd-page-subtitle">{subtitle}</p>}
+                {subtitle && <p className="text-muted mb-0">{subtitle}</p>}
             </div>
         </div>
-        {actions && <div className="dd-page-actions">{actions}</div>}
+        {actions && <div className="d-flex flex-wrap align-items-center gap-2">{actions}</div>}
     </div>
 </header>;
 

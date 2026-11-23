@@ -13,7 +13,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import { statusLook } from "../../lib/status";
-const StatusBadge = /* @__PURE__ */ __name(({ status, label }) => /* @__PURE__ */ jsxDEV("span", { className: `badge badge-soft badge-dot rounded-pill text-bg-${statusLook(status).tone}`, children: label }, void 0, false, {
+const StatusBadge = /* @__PURE__ */ __name(({ status, label }) => /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${statusLook(status).tone}`, children: label }, void 0, false, {
   fileName: "public/local/servicemanager/js/esm/src/components/common/StatusBadge.tsx",
   lineNumber: 20,
   columnNumber: 5

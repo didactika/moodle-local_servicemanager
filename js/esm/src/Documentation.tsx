@@ -12,7 +12,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {useMemo} from 'react';
-import BackLink from './components/common/BackLink';
 import CopyButton from './components/common/CopyButton';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Icon from './components/common/Icon';
@@ -60,7 +59,6 @@ const Documentation = (props: DocumentationProps) => {
     const text = useMemo(() => createText(props.strings), [props.strings]);
 
     return <ErrorBoundary strings={props.strings}><div className="lsm servicemanager-documentation d-grid gap-3">
-        <div className="mb-3"><BackLink href={props.backUrl} label={text('back')} /></div>
         <PageHeader
             title={text('schema_reference')}
             actions={<a href={props.downloadUrl} className="btn btn-outline-primary"><Icon name="download" gap />{text('download_example')}</a>}
@@ -83,7 +81,7 @@ const Documentation = (props: DocumentationProps) => {
 
                 <h4 id="structure" className="mt-4 mb-3 text-primary">{text('doc_structure')}</h4>
                 <p>{text('doc_structure_desc')}</p>
-                <pre className="bg-body-tertiary border p-3 rounded"><code>{props.structureCode}</code></pre>
+                <pre className="bg-body-tertiary border p-3 rounded mw-100 overflow-auto"><code>{props.structureCode}</code></pre>
                 <CopyButton value={props.structureCode} text={text} tone="outline-secondary" />
 
                 <h4 id="meta" className="mt-4 mb-3 text-primary">{text('doc_meta')}</h4>
@@ -94,7 +92,7 @@ const Documentation = (props: DocumentationProps) => {
                 <p>{text('doc_definition_desc')}</p>
                 <h5 className="mt-3">{text('functions')}</h5>
                 <p>{text('doc_functions_desc')}</p>
-                <pre className="bg-body-tertiary border p-3 rounded"><code>{props.functionCode}</code></pre>
+                <pre className="bg-body-tertiary border p-3 rounded mw-100 overflow-auto"><code>{props.functionCode}</code></pre>
                 <div className="alert alert-info mt-3">
                     <Icon name="circle-info" gap />
                     {text('doc_default_capabilities')}
@@ -109,6 +107,7 @@ const Documentation = (props: DocumentationProps) => {
                 </div>
 
                 <h4 id="naming" className="mt-4 mb-3 text-primary">{text('doc_naming')}</h4>
+                <div className="table-responsive">
                 <table className="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -125,6 +124,7 @@ const Documentation = (props: DocumentationProps) => {
                         </tr>)}
                     </tbody>
                 </table>
+                </div>
 
                 <h4 id="example" className="mt-4 mb-3 text-primary">{text('doc_example')}</h4>
                 <p>

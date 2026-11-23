@@ -1,4 +1,4 @@
-import o from"./Icon";import{jsx as t,jsxs as r}from"react/jsx-runtime";/**
+import c from"./Icon";import{jsx as e,jsxs as r}from"react/jsx-runtime";/**
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
@@ -9,4 +9,4 @@ import o from"./Icon";import{jsx as t,jsxs as r}from"react/jsx-runtime";/**
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */const m=({icon:d,title:s,text:p,actions:e,bare:i=!1})=>{const a=r("div",{className:"dd-empty","data-region":"empty",children:[t("span",{className:"dd-tile dd-tile-lg",children:t(o,{name:d})}),t("p",{className:"dd-empty-title",children:s}),t("p",{className:"dd-empty-text",children:p}),e&&t("div",{className:"d-flex flex-wrap justify-content-center gap-2",children:e})]});return i?a:t("div",{className:"card",children:a})};var l=m;export{l as default};
+ */const m=({icon:s,title:o,text:n,actions:t,bare:p=!1})=>{const a=r("div",{className:"d-flex flex-column align-items-center gap-2 px-4 py-5 text-center","data-region":"empty",children:[e("span",{className:"icon-box",children:e(c,{name:s})}),e("p",{className:"fw-bold mb-0",children:o}),e("p",{className:"text-muted mb-0",children:n}),t&&e("div",{className:"d-flex flex-wrap justify-content-center gap-2",children:t})]});return p?a:e("div",{className:"card",children:a})};var l=m;export{l as default};

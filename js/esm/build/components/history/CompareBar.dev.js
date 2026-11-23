@@ -17,7 +17,7 @@ import Icon from "../common/Icon";
 const CompareBar = /* @__PURE__ */ __name(({ chosen, needed, tooMany, onClear, text }) => /* @__PURE__ */ jsxDEV(
   "div",
   {
-    className: "dd-floatbar",
+    className: "card",
     role: "region",
     "aria-label": text("compare_versions"),
     "data-region": "compare-bar",
@@ -27,7 +27,7 @@ const CompareBar = /* @__PURE__ */ __name(({ chosen, needed, tooMany, onClear, t
         lineNumber: 27,
         columnNumber: 30
       })),
-      /* @__PURE__ */ jsxDEV("span", { className: "dd-floatbar-count", role: "status", "data-region": "compare-chosen", children: text("compare_chosen", { n: chosen.size, total: needed }) }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("span", { className: "fw-bold text-nowrap", role: "status", "data-region": "compare-chosen", children: text("compare_chosen", { n: chosen.size, total: needed }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
         lineNumber: 28,
         columnNumber: 5
@@ -37,7 +37,7 @@ const CompareBar = /* @__PURE__ */ __name(({ chosen, needed, tooMany, onClear, t
         lineNumber: 29,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("div", { className: "dd-floatbar-actions", children: /* @__PURE__ */ jsxDEV("button", { type: "submit", id: "compare-btn", className: "btn btn-primary btn-sm", disabled: chosen.size !== needed, children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap gap-2", children: /* @__PURE__ */ jsxDEV("button", { type: "submit", id: "compare-btn", className: "btn btn-primary btn-sm", disabled: chosen.size !== needed, children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "code-compare", gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
           lineNumber: 32,
@@ -53,7 +53,7 @@ const CompareBar = /* @__PURE__ */ __name(({ chosen, needed, tooMany, onClear, t
         lineNumber: 30,
         columnNumber: 5
       }),
-      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "dd-floatbar-clear", onClick: onClear, title: text("compare_clear"), "aria-label": text("compare_clear") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn-close", onClick: onClear, title: text("compare_clear"), "aria-label": text("compare_clear") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/components/history/CompareBar.tsx",
         lineNumber: 35,
         columnNumber: 5

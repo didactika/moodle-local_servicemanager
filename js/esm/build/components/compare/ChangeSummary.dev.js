@@ -54,7 +54,7 @@ const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__
       lineNumber: 63,
       columnNumber: 9
     }),
-    /* @__PURE__ */ jsxDEV("span", { className: "badge badge-soft rounded-pill text-bg-secondary", children: changes.length }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("span", { className: "badge rounded-pill text-bg-secondary", children: changes.length }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
       lineNumber: 64,
       columnNumber: 9
@@ -82,7 +82,7 @@ const ChangeSummary = /* @__PURE__ */ __name(({ changes, text }) => /* @__PURE__
         lineNumber: 73,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("ul", { className: "list-unstyled d-flex flex-wrap gap-2 mb-0", children: items.map((change) => /* @__PURE__ */ jsxDEV("li", { className: `badge badge-soft rounded-pill text-bg-${KINDS[change.kind].tone} fw-normal d-inline-flex align-items-center gap-1`, children: [
+      /* @__PURE__ */ jsxDEV("ul", { className: "list-unstyled d-flex flex-wrap gap-2 mb-0", children: items.map((change) => /* @__PURE__ */ jsxDEV("li", { className: `badge rounded-pill text-bg-${KINDS[change.kind].tone} fw-normal d-inline-flex align-items-center gap-1`, children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: KIND_SIGN[change.kind] }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/components/compare/ChangeSummary.tsx",
           lineNumber: 76,

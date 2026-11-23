@@ -35,15 +35,7 @@
     "eject": "risky",
     "wrap": "risky"
   },
-  "components/common/BackLink": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
   "components/common/ChipList": {
-    "eject": "risky",
-    "wrap": "risky"
-  },
-  "components/common/Chips": {
     "eject": "risky",
     "wrap": "risky"
   },

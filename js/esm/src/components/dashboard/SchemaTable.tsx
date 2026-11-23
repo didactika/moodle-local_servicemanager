@@ -39,7 +39,7 @@ const SchemaTable = ({rows, canManage, selection, onToggle, text}: {
         <caption className="visually-hidden">{text('dashboard')}</caption>
         <thead>
             <tr>
-                {canManage && <th scope="col" className="table-select">
+                {canManage && <th scope="col" className="align-middle" data-column="select">
                     <input type="checkbox" id="lsm-select-all" className="form-check-input" checked={selection.allChosen}
                         onChange={selection.toggleAll} />
                     <label htmlFor="lsm-select-all" className="visually-hidden">{text('select_all')}</label>
@@ -48,12 +48,12 @@ const SchemaTable = ({rows, canManage, selection, onToggle, text}: {
                 <th scope="col">{text('schema_version')}</th>
                 <th scope="col">{text('schema_status')}</th>
                 <th scope="col" className="d-none d-md-table-cell">{text('schema_modified')}</th>
-                <th scope="col" className="table-actions"><span className="visually-hidden">{text('core_actions')}</span></th>
+                <th scope="col" className="text-end text-nowrap" data-column="actions"><span className="visually-hidden">{text('core_actions')}</span></th>
             </tr>
         </thead>
         <tbody>
             {rows.map((row) => <tr key={row.id} className={selection.chosen.has(row.id) ? 'table-active' : undefined}>
-                {canManage && <td className="table-select">
+                {canManage && <td className="align-middle" data-column="select">
                     <input type="checkbox" className="form-check-input" checked={selection.chosen.has(row.id)}
                         onChange={() => selection.toggle(row.id)} aria-label={row.name} />
                 </td>}
@@ -61,19 +61,19 @@ const SchemaTable = ({rows, canManage, selection, onToggle, text}: {
                     <span className="d-flex flex-column">
                         <span>
                             <a href={row.viewUrl} className="fw-bold">{row.name}</a>
-                            {!row.enabled && <span className="badge badge-soft rounded-pill text-bg-secondary ms-2">{text('disabled')}</span>}
+                            {!row.enabled && <span className="badge rounded-pill text-bg-secondary ms-2">{text('disabled')}</span>}
                         </span>
                         <small className="text-muted"><Icon name="fingerprint" text={text} /> {row.schemaId}</small>
                     </span>
                 </td>
                 <td>{row.version}</td>
                 <td>
-                    <span className={`badge badge-soft badge-dot rounded-pill text-bg-${TONES[row.status] ?? 'secondary'}`}>
+                    <span className={`badge rounded-pill text-bg-${TONES[row.status] ?? 'secondary'}`}>
                         {row.statusLabel}
                     </span>
                 </td>
                 <td className="d-none d-md-table-cell"><small className="text-muted">{row.modified}</small></td>
-                <td className="table-actions">
+                <td className="text-end text-nowrap" data-column="actions">
                     <a className="btn btn-link btn-icon btn-sm text-primary" href={row.viewUrl} title={text('action_view')}
                         aria-label={`${text('action_view')}: ${row.name}`}><Icon name="view" text={text} /></a>
                     {canManage && <a className="btn btn-link btn-icon btn-sm text-primary" href={row.editUrl} title={text('action_edit')}

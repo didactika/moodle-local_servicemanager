@@ -40,7 +40,7 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
         count={functions.length}
         flush
         region="functions"
-        actions={missing > 0 ? <span className="badge badge-soft rounded-pill text-bg-danger">{text('tile_functions_missing', missing)}</span> : undefined}
+        actions={missing > 0 ? <span className="badge rounded-pill text-bg-danger">{text('tile_functions_missing', missing)}</span> : undefined}
     >
         {functions.length >= SEARCHABLE_FROM && <div className="p-3 border-bottom">
             <SearchBox value={query} onChange={setQuery} placeholder={text('functions_search')} clearLabel={text('filter_clear')} id="lsm-functions-search" />
@@ -50,18 +50,18 @@ const FunctionsPanel = ({functions, text}: FunctionsPanelProps) => {
                 <span className={fn.exists ? "text-muted" : "text-danger"}>
                     <Icon name={fn.exists ? (fn.type === 'write' ? 'pen' : 'eye') : 'circle-xmark'} />
                 </span>
-                <div className="flex-grow-1 min-w-0">
+                <div className="flex-grow-1 overflow-hidden">
                     <div className="d-flex flex-wrap align-items-center gap-2">
-                        <span className="font-monospace small">{fn.name}</span>
-                        {fn.type && <span className="badge badge-soft rounded-pill text-bg-secondary">{text('function_' + fn.type)}</span>}
-                        {fn.critical && <span className="badge badge-soft rounded-pill text-bg-secondary">{text('function_critical')}</span>}
-                        {!fn.exists && <span className="badge badge-soft rounded-pill text-bg-danger">{text('function_missing')}</span>}
+                        <span className="font-monospace small text-break">{fn.name}</span>
+                        {fn.type && <span className="badge rounded-pill text-bg-secondary">{text('function_' + fn.type)}</span>}
+                        {fn.critical && <span className="badge rounded-pill text-bg-secondary">{text('function_critical')}</span>}
+                        {!fn.exists && <span className="badge rounded-pill text-bg-danger">{text('function_missing')}</span>}
                     </div>
-                    {fn.description && <div className="text-body-secondary small">{fn.description}</div>}
+                    {fn.description && <div className="text-body-secondary small text-break">{fn.description}</div>}
                 </div>
                 {fn.capabilities.length > 0 && <button
                     type="button"
-                    className="btn btn-sm btn-outline-primary"
+                    className="btn btn-sm btn-outline-primary text-nowrap flex-shrink-0"
                     onClick={() => setViewing(fn)}
                     title={text('function_capabilities_view')}
                 >

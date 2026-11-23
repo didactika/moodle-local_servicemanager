@@ -1,4 +1,4 @@
-import{useMemo as a}from"react";import e from"./components/common/BackLink";import n from"./components/common/ErrorBoundary";import m from"./components/common/Icon";import{createText as l}from"./engine/text";import{jsx as r,jsxs as i}from"react/jsx-runtime";/**
+import{useMemo as e}from"react";import a from"./components/common/ErrorBoundary";import m from"./components/common/Icon";import{createText as n}from"./engine/text";import{jsx as r,jsxs as i}from"react/jsx-runtime";/**
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
@@ -10,4 +10,4 @@ import{useMemo as a}from"react";import e from"./components/common/BackLink";impo
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */const s=t=>{const o=a(()=>l(t.strings),[t.strings]);return r(n,{strings:t.strings,children:i("div",{className:"lsm servicemanager-import-page d-grid gap-3",children:[r("div",{className:"mb-4",children:r(e,{href:t.backUrl,label:o("back")})}),i("div",{className:"alert alert-info",children:[i("h5",{children:[r(m,{name:"circle-info",gap:!0}),o("import_info_title")]}),r("p",{children:o("import_info_text")}),i("ul",{children:[r("li",{children:o("import_info_yaml")}),r("li",{children:o("import_info_zip")})]}),r("p",{className:"mb-0",children:i("a",{href:t.documentationUrl,className:"alert-link fw-bold",children:[r(m,{name:"book",gap:!0}),o("view_documentation")]})})]})]})})};var _=s;export{_ as default};
+ */const l=t=>{const o=e(()=>n(t.strings),[t.strings]);return r(a,{strings:t.strings,children:r("div",{className:"lsm servicemanager-import-page d-grid gap-3",children:i("div",{className:"alert alert-info",children:[i("h5",{children:[r(m,{name:"circle-info",gap:!0}),o("import_info_title")]}),r("p",{children:o("import_info_text")}),i("ul",{children:[r("li",{children:o("import_info_yaml")}),r("li",{children:o("import_info_zip")})]}),r("p",{className:"mb-0",children:i("a",{href:t.documentationUrl,className:"alert-link fw-bold",children:[r(m,{name:"book",gap:!0}),o("view_documentation")]})})]})})})};var d=l;export{d as default};

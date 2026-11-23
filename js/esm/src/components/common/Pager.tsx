@@ -33,22 +33,22 @@ const Pager = ({page, perpage, total, onChange, text}: PagerProps) => {
     const {from, to} = pageRange(page, perpage, total);
     // Only the sizes smaller than the list are offered, besides all of it, and the select always shows one of them.
     const {sizes, shown} = fitPageSizes(perpage, total);
-    return <div className="table-foot">
-        <nav className="dd-pager" aria-label={text('pagination_aria_label')}>
-            <div className="dd-pager-size">
+    return <div className="px-3 py-2 border-top">
+        <nav className="d-flex flex-wrap align-items-center justify-content-between gap-3 small text-muted" aria-label={text('pagination_aria_label')}>
+            <div className="d-none d-sm-flex align-items-center gap-2">
                 <label htmlFor={id} className="mb-0">{text('pagination_per_page')}</label>
                 <select
                     id={id}
-                    className="form-select form-select-sm dd-select"
+                    className="form-select form-select-sm"
                     value={shown}
                     onChange={(event) => onChange({perpage: Number(event.target.value), page: 0})}
                 >
                     {sizes.map((size) => <option key={size} value={size}>{size ? size : text('pagination_all')}</option>)}
                 </select>
             </div>
-            <div className="dd-pager-end">
-                <span className="dd-pager-range" role="status">{text('pagination_range', {from, to, total})}</span>
-                <div className="dd-pager-arrows">
+            <div className="d-flex flex-wrap align-items-center gap-3 ms-auto">
+                <span className="text-body text-nowrap" role="status">{text('pagination_range', {from, to, total})}</span>
+                <div className="d-flex gap-1">
                     <button type="button" className="btn btn-outline-secondary btn-sm btn-icon" disabled={page === 0}
                         title={text('pagination_previous')} aria-label={text('pagination_previous')}
                         onClick={() => onChange({page: page - 1})}>

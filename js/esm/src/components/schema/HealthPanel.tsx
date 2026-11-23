@@ -33,7 +33,7 @@ const HealthPanel = ({health, text}: HealthPanelProps) => <Panel
     {health.latest && <>
         <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
             <span className="text-body-secondary small text-uppercase">{text('health_latest')}</span>
-            <span className={`badge badge-soft rounded-pill text-bg-${health.latest.tone}`}>
+            <span className={`badge rounded-pill text-bg-${health.latest.tone}`}>
                 <Icon name={health.latest.icon} gap />{health.latest.statusLabel}
             </span>
             <span className="text-body-secondary">{health.latest.time} · {health.latest.ago}</span>
@@ -41,7 +41,7 @@ const HealthPanel = ({health, text}: HealthPanelProps) => <Panel
         <HealthFindings check={health.latest} />
     </>}
     <div className="d-flex flex-wrap gap-2 mt-3">
-        {(health.counts ?? []).map((count) => <span key={count.status} className={`badge badge-soft rounded-pill text-bg-${statusLook(count.status).tone}`}>
+        {(health.counts ?? []).map((count) => <span key={count.status} className={`badge rounded-pill text-bg-${statusLook(count.status).tone}`}>
             {count.label}<span className="ms-2">{count.count}</span>
         </span>)}
     </div>

@@ -8,4 +8,4 @@ import{statusLook as s}from"../../lib/status";import{jsx as o}from"react/jsx-run
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */const e=({status:t,label:a})=>o("span",{className:`badge badge-soft badge-dot rounded-pill text-bg-${s(t).tone}`,children:a});var g=e;export{g as default};
+ */const e=({status:t,label:a})=>o("span",{className:`badge rounded-pill text-bg-${s(t).tone}`,children:a});var g=e;export{g as default};
