@@ -42,10 +42,11 @@ class page_text {
 
     /** @var string[] The icons of Moodle the components draw, by id, so they follow the icons of the theme. */
     private const ICONS = [
-        'a/search', 'docs', 'e/cancel', 'i/checked', 'i/externallink', 'i/filter', 'i/import', 'i/info', 'i/invalid',
-        'i/loading', 'i/menubars', 'i/moremenu', 'i/next', 'i/permissions', 'i/previous', 'i/reload', 'i/scheduled',
-        'i/settings', 'i/user', 'i/valid', 'i/warning', 't/add', 't/collapsed', 't/copy', 't/delete', 't/download', 't/edit',
-        't/expanded', 't/hide', 't/left', 't/less', 't/preview', 't/reset', 't/right', 't/show', 't/up',
+        'a/search', 'docs', 'e/cancel', 'i/checked', 'i/checkedcircle', 'i/externallink', 'i/filter', 'i/import', 'i/info',
+        'i/invalid', 'i/loading', 'i/menubars', 'i/moremenu', 'i/next', 'i/permissions', 'i/previous', 'i/reload',
+        'i/scheduled', 'i/settings', 'i/uncheckedcircle', 'i/user', 'i/valid', 'i/warning', 't/add', 't/collapsed', 't/copy',
+        't/delete', 't/download', 't/edit', 't/expanded', 't/hide', 't/left', 't/less', 't/preview', 't/reset', 't/right',
+        't/show', 't/up',
     ];
 
     /** @var string[] The icons of the plugin, which lib.php maps to Font Awesome, for what Moodle has no icon of. */

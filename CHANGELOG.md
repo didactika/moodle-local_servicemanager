@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The web services of the site and each protocol are turned on or off from the dashboard without reloading the page: the change is sent to a web service, written as the administration writes it (so it is kept in the log of the configuration), and the summary shows the new state with a message.
+
 ## [1.1.1-m503] - 2026-10-16
 
 ### Changed

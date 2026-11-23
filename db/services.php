@@ -58,6 +58,14 @@ $functions = [
         'ajax' => true,
         'capabilities' => 'local/servicemanager:manage',
     ],
+    'local_servicemanager_set_web_services' => [
+        'classname' => 'local_servicemanager\external\set_web_services',
+        'methodname' => 'execute',
+        'description' => 'Turn the web services of the site, or one of their protocols, on or off.',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'moodle/site:config',
+    ],
     'local_servicemanager_rollback_schema' => [
         'classname' => 'local_servicemanager\external\rollback_schema',
         'methodname' => 'execute',

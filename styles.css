@@ -153,36 +153,66 @@
     gap: 0.5rem;
 }
 
-.lsm .nav-tabs {
+.lsm .nav-tabs.nav-tabs {
+    flex-wrap: nowrap;
     gap: 0.25rem;
-    border-bottom: 1px solid var(--dd-hairline);
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 0;
+    background-color: transparent;
+    box-shadow: inset 0 -1px 0 var(--dd-hairline);
+    scrollbar-width: none;
 }
 
-.lsm .nav-tabs .nav-link {
+.lsm .nav-tabs.nav-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.lsm .nav-tabs.nav-tabs .nav-item {
+    flex: none;
+}
+
+.lsm .nav-tabs.nav-tabs .nav-link.nav-link {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: -1px;
-    padding: 0.625rem 1rem;
+    margin: 0;
+    padding: 0.75rem 1rem;
     border: 0;
-    border-bottom: 2px solid transparent;
-    border-radius: var(--dd-radius-sm) var(--dd-radius-sm) 0 0;
+    border-radius: 0;
     background: none;
+    box-shadow: none;
     color: var(--dd-muted);
     font-weight: 500;
-    transition: border-color var(--dd-ease), background-color var(--dd-ease), color var(--dd-ease);
+    white-space: nowrap;
+    transition: box-shadow var(--dd-ease), color var(--dd-ease);
 }
 
-.lsm .nav-tabs .nav-link:hover {
-    border-bottom-color: var(--dd-line);
+.lsm .nav-tabs.nav-tabs .nav-link.nav-link:hover {
+    box-shadow: inset 0 -2px 0 var(--dd-line);
     color: var(--dd-ink);
 }
 
-.lsm .nav-tabs .nav-link.active {
-    border-bottom-color: var(--dd-primary);
-    background-color: var(--dd-primary-soft);
+.lsm .nav-tabs.nav-tabs .nav-link.nav-link:focus {
+    outline: 0;
+}
+
+.lsm .nav-tabs.nav-tabs .nav-link.nav-link:focus-visible {
+    border-radius: var(--dd-radius-sm);
+    box-shadow: inset 0 0 0 2px var(--dd-primary);
+}
+
+.lsm .nav-tabs.nav-tabs .nav-link.nav-link.active:not(:disabled):not(.disabled) {
+    border: 0;
+    background: none;
+    box-shadow: inset 0 -3px 0 var(--dd-primary);
     color: var(--dd-primary-ink);
-    font-weight: 600;
+}
+
+.lsm .nav-tabs.nav-tabs .nav-link.nav-link.active:focus-visible {
+    box-shadow: inset 0 -3px 0 var(--dd-primary), inset 0 0 0 2px var(--dd-primary);
 }
 
 .lsm .dd-chips {
@@ -1325,13 +1355,13 @@
         z-index: 2;
     }
 
-    .lsm .nav-tabs,
     .lsm .dd-chips {
         flex-wrap: nowrap;
         overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
     }
 
-    .lsm .nav-tabs .nav-link,
     .lsm .dd-chip {
         flex: none;
         white-space: nowrap;
@@ -1505,4 +1535,144 @@
         padding-bottom: 0;
         border-bottom: 0;
     }
+}
+
+.lsm .btn.btn:focus:not(:focus-visible),
+.lsm .btn.btn:active:focus:not(:focus-visible),
+.lsm .page-link.page-link:focus:not(:focus-visible),
+.lsm .page-link.page-link:active:focus:not(:focus-visible),
+.lsm .dropdown-item.dropdown-item:focus:not(:focus-visible),
+.lsm .dropdown-item.dropdown-item:active:focus:not(:focus-visible),
+.lsm .list-group-item-action.list-group-item-action:focus:not(:focus-visible),
+.lsm .list-group-item-action.list-group-item-action:active:focus:not(:focus-visible),
+.lsm .dd-select.dd-select:focus:not(:focus-visible),
+.lsm .dd-select.dd-select:active:focus:not(:focus-visible),
+.lsm .dd-select-clear.dd-select-clear:focus:not(:focus-visible),
+.lsm .dd-select-clear.dd-select-clear:active:focus:not(:focus-visible),
+.lsm select.custom-select:focus:not(:focus-visible),
+.lsm select.custom-select:active:focus:not(:focus-visible),
+.lsm select.form-select:focus:not(:focus-visible),
+.lsm select.form-select:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal .btn.btn:focus:not(:focus-visible),
+.path-local-servicemanager .modal .btn.btn:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal .page-link.page-link:focus:not(:focus-visible),
+.path-local-servicemanager .modal .page-link.page-link:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal .dropdown-item.dropdown-item:focus:not(:focus-visible),
+.path-local-servicemanager .modal .dropdown-item.dropdown-item:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal .list-group-item-action.list-group-item-action:focus:not(:focus-visible),
+.path-local-servicemanager .modal .list-group-item-action.list-group-item-action:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal .dd-select.dd-select:focus:not(:focus-visible),
+.path-local-servicemanager .modal .dd-select.dd-select:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal .dd-select-clear.dd-select-clear:focus:not(:focus-visible),
+.path-local-servicemanager .modal .dd-select-clear.dd-select-clear:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal select.custom-select:focus:not(:focus-visible),
+.path-local-servicemanager .modal select.custom-select:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal select.form-select:focus:not(:focus-visible),
+.path-local-servicemanager .modal select.form-select:active:focus:not(:focus-visible) {
+    outline: 0;
+    box-shadow: none;
+}
+
+.lsm .btn.btn:focus-visible,
+.lsm .page-link.page-link:focus-visible,
+.lsm .dropdown-item.dropdown-item:focus-visible,
+.lsm .list-group-item-action.list-group-item-action:focus-visible,
+.lsm .dd-select.dd-select:focus-visible,
+.lsm .dd-select-clear.dd-select-clear:focus-visible,
+.lsm select.custom-select:focus-visible,
+.lsm select.form-select:focus-visible,
+.path-local-servicemanager .modal .btn.btn:focus-visible,
+.path-local-servicemanager .modal .page-link.page-link:focus-visible,
+.path-local-servicemanager .modal .dropdown-item.dropdown-item:focus-visible,
+.path-local-servicemanager .modal .list-group-item-action.list-group-item-action:focus-visible,
+.path-local-servicemanager .modal .dd-select.dd-select:focus-visible,
+.path-local-servicemanager .modal .dd-select-clear.dd-select-clear:focus-visible,
+.path-local-servicemanager .modal select.custom-select:focus-visible,
+.path-local-servicemanager .modal select.form-select:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--dd-ring);
+}
+
+.lsm select.custom-select:focus:not(:focus-visible),
+.lsm select.form-select:focus:not(:focus-visible),
+.lsm .dd-select.dd-select:focus:not(:focus-visible),
+.path-local-servicemanager .modal select.custom-select:focus:not(:focus-visible),
+.path-local-servicemanager .modal select.form-select:focus:not(:focus-visible),
+.path-local-servicemanager .modal .dd-select.dd-select:focus:not(:focus-visible) {
+    border-color: var(--dd-line-hover);
+}
+
+.lsm .btn.btn:is([class*=btn-outline-], .btn-link):active:not(:disabled):not(.disabled),
+.lsm .btn.btn:is([class*=btn-outline-], .btn-link).active:not(:disabled):not(.disabled),
+.path-local-servicemanager .modal .btn.btn:is([class*=btn-outline-], .btn-link):active:not(:disabled):not(.disabled),
+.path-local-servicemanager .modal .btn.btn:is([class*=btn-outline-], .btn-link).active:not(:disabled):not(.disabled) {
+    border-color: var(--dd-c);
+    background-color: var(--dd-c-soft-2);
+    box-shadow: none;
+    color: var(--dd-c-ink);
+}
+
+.lsm .btn.btn.btn-link:active:not(:disabled):not(.disabled),
+.path-local-servicemanager .modal .btn.btn.btn-link:active:not(:disabled):not(.disabled) {
+    border-color: transparent;
+}
+
+.lsm .btn.btn:is(.btn-primary, .btn-secondary, .btn-danger, .btn-success, .btn-warning, .btn-info):active:not(:disabled):not(.disabled),
+.path-local-servicemanager .modal .btn.btn:is(.btn-primary, .btn-secondary, .btn-danger, .btn-success, .btn-warning, .btn-info):active:not(:disabled):not(.disabled) {
+    box-shadow: none;
+    filter: brightness(0.94);
+}
+
+.lsm input.form-check-input[type]:focus:not(:focus-visible),
+.lsm input[type=checkbox].form-check-input:focus:not(:focus-visible),
+.lsm input[type=radio].form-check-input:focus:not(:focus-visible),
+.path-local-servicemanager .modal input.form-check-input[type]:focus:not(:focus-visible),
+.path-local-servicemanager .modal input[type=checkbox].form-check-input:focus:not(:focus-visible),
+.path-local-servicemanager .modal input[type=radio].form-check-input:focus:not(:focus-visible) {
+    outline: 0;
+    box-shadow: none;
+}
+
+.lsm input.form-check-input[type]:not(:checked):focus:not(:focus-visible),
+.lsm input[type=checkbox].form-check-input:not(:checked):focus:not(:focus-visible),
+.lsm input[type=radio].form-check-input:not(:checked):focus:not(:focus-visible),
+.path-local-servicemanager .modal input.form-check-input[type]:not(:checked):focus:not(:focus-visible),
+.path-local-servicemanager .modal input[type=checkbox].form-check-input:not(:checked):focus:not(:focus-visible),
+.path-local-servicemanager .modal input[type=radio].form-check-input:not(:checked):focus:not(:focus-visible) {
+    border-color: var(--dd-line-hover);
+}
+
+.lsm input.form-check-input[type]:active,
+.lsm input[type=checkbox].form-check-input:active,
+.lsm input[type=radio].form-check-input:active,
+.path-local-servicemanager .modal input.form-check-input[type]:active,
+.path-local-servicemanager .modal input[type=checkbox].form-check-input:active,
+.path-local-servicemanager .modal input[type=radio].form-check-input:active {
+    filter: none;
+}
+
+.lsm input.form-check-input[type]:focus-visible,
+.lsm input[type=checkbox].form-check-input:focus-visible,
+.lsm input[type=radio].form-check-input:focus-visible,
+.path-local-servicemanager .modal input.form-check-input[type]:focus-visible,
+.path-local-servicemanager .modal input[type=checkbox].form-check-input:focus-visible,
+.path-local-servicemanager .modal input[type=radio].form-check-input:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--dd-ring);
+}
+
+.lsm .custom-control-input:focus:not(:focus-visible) ~ .custom-control-label::before,
+.path-local-servicemanager .modal .custom-control-input:focus:not(:focus-visible) ~ .custom-control-label::before {
+    box-shadow: none;
+}
+
+.lsm .custom-control-input:not(:checked):focus:not(:focus-visible) ~ .custom-control-label::before,
+.path-local-servicemanager .modal .custom-control-input:not(:checked):focus:not(:focus-visible) ~ .custom-control-label::before {
+    border-color: var(--dd-line-hover);
+}
+
+.lsm .custom-control-input:not(:disabled):active ~ .custom-control-label::before,
+.path-local-servicemanager .modal .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+    border-color: var(--dd-primary);
+    background-color: var(--dd-primary-soft);
 }

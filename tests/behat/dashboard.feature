@@ -93,7 +93,7 @@ Feature: Schema dashboard
     Then I should see "Enable web services" in the "[data-region='ws-status']" "css_element"
     When I click on "Enable web services" "button" in the "[data-region='ws-status']" "css_element"
     Then I should see "The web services of the site are on."
-    When I click on "REST" "checkbox"
+    When I click on "REST" "button" in the "[data-region='ws-status']" "css_element"
     Then I should see "The protocol REST is on."
     And I should see "Web services: Operational" in the "[data-region='ws-status']" "css_element"
     When I click on "Turn off web services" "button" in the "[data-region='ws-status']" "css_element"

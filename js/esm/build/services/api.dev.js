@@ -21,6 +21,7 @@ const setSchemaEnabled = /* @__PURE__ */ __name(async (id, enabled) => {
   const result = await call("local_servicemanager_set_enabled", { id, enabled });
   return result.enabled;
 }, "setSchemaEnabled");
+const setWebServices = /* @__PURE__ */ __name((enable, protocol = "") => call("local_servicemanager_set_web_services", { enable, protocol }), "setWebServices");
 const rollbackSchema = /* @__PURE__ */ __name(async (id, historyid) => {
   const result = await call("local_servicemanager_rollback_schema", { id, historyid });
   return {
@@ -47,6 +48,7 @@ export {
   getVersionYaml,
   regenerateToken,
   rollbackSchema,
-  setSchemaEnabled
+  setSchemaEnabled,
+  setWebServices
 };
 //# sourceMappingURL=api.dev.js.map
