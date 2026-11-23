@@ -116,7 +116,7 @@
                 </div>
             {{/hasrows}}
             {{#pager}}
-            <div class="px-3 py-2 border-top">
+            <div class="px-3 py-2 border-top" data-region="pager">
                 <nav class="d-flex flex-wrap align-items-center justify-content-between gap-3 small text-muted" aria-label="{{#str}}pagination_aria_label, local_servicemanager{{/str}}">
                     <form method="get" action="{{formurl}}" class="d-none d-sm-flex align-items-center gap-2" data-region="health-perpage">
                         <input type="hidden" name="id" value="{{id}}">

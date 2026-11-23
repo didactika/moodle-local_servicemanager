@@ -16,7 +16,6 @@
 
 namespace local_servicemanager\output;
 
-
 /**
  * The versions of a schema: who changed it, when and why, with the way to see one, go back to it or compare two.
  *

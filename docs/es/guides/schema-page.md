@@ -10,21 +10,16 @@ La página de un esquema es donde ve todo lo que el esquema es y ha creado, y do
 
 | # | Parte | Para qué sirve |
 |---|---|---|
-| 1 | [Estado de los servicios web](#1-estado-de-los-servicios-web) | El mismo estado que en el panel, y el camino a los ajustes de los protocolos. |
-| 2 | [Información del esquema](#2-información-del-esquema) | La descripción, la versión, las fechas y si está habilitado. |
-| 3 | [Las acciones](#3-las-acciones) | Editar, historial, exportar, deshabilitar y eliminar, como iconos redondos. |
-| 4 | [Acceso y requisitos, y Rol](#4-acceso-y-requisitos) | Las listas: token, acceso a archivos, plugins, capacidades y el rol. |
-| 5 | [Funciones](#5-funciones) | Lo que el servicio puede llamar. |
+| 1 | [Información del esquema](#1-información-del-esquema) | La descripción, la versión, las fechas y si está habilitado. |
+| 2 | [Las acciones](#2-las-acciones) | Editar, historial, exportar, deshabilitar y eliminar, como iconos redondos. |
+| 3 | [Acceso y requisitos, y Rol](#3-acceso-y-requisitos) | Las listas: token, acceso a archivos, plugins, capacidades y el rol. |
+| 4 | [Funciones](#4-funciones) | Lo que el servicio puede llamar. |
 
-## 1. Estado de los servicios web
-
-A la derecha del título ve si los servicios web están **Operativos**, **Desactivados** o con **Ningún protocolo activado**, cada protocolo y **Gestionar**, que abre los ajustes de los protocolos; los servicios web y cada protocolo se activan o desactivan desde el resumen del [panel](page:guides/dashboard). Un esquema puede ser perfecto y no responder si el sitio tiene los servicios web apagados; esto se lo dice.
-
-## 2. Información del esquema
+## 1. Información del esquema
 
 La columna principal, a la izquierda, tiene la información del esquema, sus funciones y lo que creó. Empieza con la descripción y, en una fila, la versión, cuándo se creó y se modificó por última vez y si está habilitado (y el responsable, si el esquema lo tiene).
 
-## 3. Las acciones
+## 2. Las acciones
 
 A la derecha del título de **Información del esquema** están las acciones, como iconos redondos:
 
@@ -36,7 +31,7 @@ A la derecha del título de **Información del esquema** están las acciones, co
 | Interruptor | **Deshabilitar** o **Habilitar**. Un esquema deshabilitado suspende su usuario de servicio y su servicio. La página cambia donde está y lo dice con un mensaje; no se recarga. |
 | Papelera | **Eliminar**: quita el esquema y todo lo que creó. Pide confirmación en una ventana. |
 
-## 4. Acceso y requisitos
+## 3. Acceso y requisitos
 
 La columna de la derecha tiene el acceso y el rol: lo que son listas.
 
@@ -48,7 +43,7 @@ Cuando el esquema dice lo que puede hacer el rol, una tarjeta lista, cada cosa e
 
 ![Un esquema con un rol](asset:schema-role.webp)
 
-## 5. Funciones
+## 4. Funciones
 
 Cada función tiene un icono (una pluma para las que escriben, un ojo para las que leen), su nombre, **Lectura** o **Escritura**, **Crítica** si el esquema la necesita, lo que Moodle dice que hace, y una insignia si este Moodle no la tiene. Con ocho funciones o más, aparece un cuadro de búsqueda sobre la lista.
 

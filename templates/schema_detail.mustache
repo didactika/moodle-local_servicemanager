@@ -75,27 +75,6 @@
             </div>
             <p class="mb-0"><span class="small text-muted" title="{{#str}}schema_id, local_servicemanager{{/str}}">{{#pix}}fingerprint, local_servicemanager{{/pix}} {{schema.schemaid}}</span></p>
         </div>
-        {{#hasws}}
-        <span class="d-inline-flex flex-wrap align-items-center gap-2" data-region="ws-status">
-            <span class="badge rounded-pill text-bg-{{ws.tone}}">{{{ws.iconhtml}}}{{#str}}tile_services, local_servicemanager{{/str}}: {{ws.label}}</span>
-            {{#ws.protocols}}
-                <span class="badge border rounded-pill text-bg-{{#enabled}}success{{/enabled}}{{^enabled}}secondary{{/enabled}}" title="{{label}}">
-                    {{{iconhtml}}}{{fullname}}
-                    <span class="sr-only visually-hidden"> {{label}}</span>
-                </span>
-            {{/ws.protocols}}
-            {{#ws.fixurl}}
-                <a href="{{ws.fixurl}}" class="btn btn-sm btn-outline-{{ws.tone}}" data-region="ws-fix">
-                    {{#pix}}power, local_servicemanager{{/pix}} {{ws.fixlabel}}
-                </a>
-            {{/ws.fixurl}}
-            {{#canmanage}}{{#ws.protocolsurl}}
-                <a href="{{ws.protocolsurl}}" class="btn btn-sm btn-outline-secondary" title="{{#str}}ws_manage_protocols_link, local_servicemanager{{/str}}">
-                    {{#pix}}i/settings, core{{/pix}} {{#str}}tile_manage, local_servicemanager{{/str}}
-                </a>
-            {{/ws.protocolsurl}}{{/canmanage}}
-        </span>
-        {{/hasws}}
     </header>
 
     <div class="row" data-region="cards">

@@ -39,7 +39,7 @@ La segunda línea muestra si los servicios web del sitio están **Operativos**, 
 - **Activar los servicios web** activa los servicios web del sitio. **Desactivar los servicios web** los desactiva, tras una confirmación, ya que todos los servicios web del sitio dejan de responder.
 - El botón de un protocolo activa o desactiva ese protocolo.
 
-Cada cambio se guarda como lo guarda la administración de Moodle, de modo que queda en el registro de la configuración del sitio con su valor anterior. **Gestionar** abre los ajustes de los protocolos. La [página de un esquema](page:guides/schema-page) muestra el mismo estado de los servicios web en su parte superior.
+Cada cambio se guarda como lo guarda la administración de Moodle, de modo que queda en el registro de la configuración del sitio con su valor anterior. **Gestionar** abre los ajustes de los protocolos.
 
 ## 3. Búsqueda y filtros
 

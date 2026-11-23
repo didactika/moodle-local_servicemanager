@@ -75,7 +75,7 @@
                 <input type="hidden" name="returnurl" value="{{returnurl}}">
                 <input type="hidden" name="enable" value="{{#enabled}}0{{/enabled}}{{^enabled}}1{{/enabled}}">
                 {{#enabled}}
-                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill" data-action="ws-off">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_disable_services, local_servicemanager{{/str}}</button>
+                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill" data-action="ws-off">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_disable_services, local_servicemanager{{/str}}</button>
                 {{/enabled}}
                 {{^enabled}}
                     <button type="submit" class="btn btn-sm btn-primary rounded-pill">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_enable_services, local_servicemanager{{/str}}</button>

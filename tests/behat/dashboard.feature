@@ -52,7 +52,7 @@ Feature: Schema dashboard
     Then I should see "Critical" in the "[data-menu='status']" "css_element"
     When I click on "Healthy" "text" in the "[data-menu='status']" "css_element"
     Then I should see "Test Service" in the "test.service" "table_row"
-    And "[data-menu='status'] .dd-select-clear" "css_element" should be visible
+    And "[data-menu='status'] [data-menu-clear]" "css_element" should be visible
 
   @javascript
   Scenario: Choose a schema and the actions on it appear
@@ -74,7 +74,7 @@ Feature: Schema dashboard
     And I click on "View Documentation" "link"
     Then I should see "YAML Schema Reference"
     And I should see "Schema Structure"
-    And I should see "Back"
+    And "Web Service Manager" "link" should exist in the ".breadcrumb" "css_element"
 
   @javascript
   Scenario: Deleting the chosen schemas asks first and only then deletes

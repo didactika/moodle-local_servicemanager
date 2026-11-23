@@ -45,7 +45,7 @@ administration of Moodle and without reloading the page; a message confirms each
 - The button of a protocol turns that protocol on or off.
 
 Each change is saved as the administration of Moodle saves it, so it is kept in the log of the configuration of the site with its previous value. **Manage**
-opens the settings of the protocols. The [page of a schema](page:guides/schema-page) shows the same state of the web services at its top.
+opens the settings of the protocols.
 
 ## 3. Search and filters
 

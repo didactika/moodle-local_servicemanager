@@ -14,12 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The pages have no "Back" links: the breadcrumb of Moodle leads back to the dashboard, the schema and its history.
 - The statuses of the health checks are one row of pills that scrolls sideways on a narrow screen.
 - When the filters of a list are grouped in one menu, the button that clears the search and every filter is the last item of that menu.
+- The state of the web services is shown on the dashboard only: the page of a schema no longer repeats it. The button that turns the web services off is red, as an action that stops every service.
 
 ### Fixed
 
 - The menus of the dashboard (Documentation and the actions of each row) are closed until they are opened; the menu of a row floats next to its button and the table never cuts it.
 - On a narrow screen the search field gives up its width and the filters never cover it, the name of a schema stays in view while the table scrolls sideways, the bars of a selection take the width of the screen, and the tables of the documentation and the functions of a schema scroll or break inside their box instead of the page.
 - A search that finds nothing shows the empty state, at the height of the list and its pager; on Moodle 4.x it showed under the rows even with no filter.
+- The bar that goes through the changes of a comparison floats again at the bottom of the window.
 - The breadcrumb of the import page names each step once, the icon of the details on the comparison of two versions is shown (it was missing, and Moodle 4.x answered with an error), and the name of a capability is not split by a space.
 
 ## [1.1.1-m400] - 2026-10-16
