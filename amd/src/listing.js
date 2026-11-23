@@ -192,7 +192,7 @@ const arrow = (target, name, title, disabled) => {
     button.setAttribute('aria-label', title);
     button.disabled = disabled;
     // The icon of Moodle, drawn once by the theme.
-    button.innerHTML = name;
+    Templates.replaceNodeContents(button, name, '');
     return button;
 };
 

@@ -65,8 +65,8 @@ const sync = async(field) => {
             button.dataset.action = 'clear-search';
             button.title = label;
             button.setAttribute('aria-label', label);
-            button.innerHTML = icon;
             box.append(button);
+            Templates.replaceNodeContents(button, icon, '');
         }
     }
     button.hidden = field.value === '';

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When the filters of a list are grouped in one menu, the button that clears the search and every filter is the last item of that menu.
 - The state of the web services is shown on the dashboard only: the page of a schema no longer repeats it. The button that turns the web services off is red, as an action that stops every service.
 - A search field empties with a small button of its own, which shows the pointer and a soft tint under it, instead of the cross the browser draws.
+- The icons that the scripts of the pages add to a button come through the templates of Moodle instead of being written into the page as text.
 
 ### Fixed
 

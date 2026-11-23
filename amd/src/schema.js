@@ -119,8 +119,7 @@ export const init = () => {
         toggle.classList.toggle('text-success', enabled);
         Templates.renderPix(enabled ? 't/show' : 't/hide', 'core').then((html) => {
             toggle.querySelector('.icon')?.remove();
-            toggle.insertAdjacentHTML('afterbegin', html);
-            return html;
+            return Templates.prependNodeContents(toggle, html, '');
         }).catch(() => null);
         root.querySelector('[data-region="disabled-badge"]').hidden = enabled;
         const badge = root.querySelector('[data-region="enabled-badge"]');
@@ -156,8 +155,7 @@ export const init = () => {
         const make = root.querySelector('[data-region="make-token"]');
         Templates.renderPix('i/reload', 'core').then((html) => {
             make.querySelector('.icon')?.remove();
-            make.insertAdjacentHTML('afterbegin', html);
-            return html;
+            return Templates.prependNodeContents(make, html, '');
         }).catch(() => null);
         const badge = root.querySelector('[data-region="token-badge"]');
         if (badge) {
