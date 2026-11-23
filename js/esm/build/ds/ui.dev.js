@@ -376,7 +376,7 @@ function useFitHeight(box) {
       const height = Math.max(TABLE_MIN, window.innerHeight - top - below - TABLE_ROOM);
       const holder = frame ?? element;
       holder.style.setProperty("--dd-table-h", height + "px");
-      holder.style.setProperty("--dd-foot-h", below + "px");
+      holder.style.setProperty("--dd-foot-n", String(below));
     }, "fit");
     fit();
     const observer = new ResizeObserver(() => fit());
@@ -398,7 +398,7 @@ function TableBox({ busy, empty, children }) {
   useFitHeight(box);
   return /* @__PURE__ */ jsxDEV("div", { ref: box, className: "table-responsive", "data-region": "tablewrap", "aria-busy": busy, children: empty || children }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 351,
+    lineNumber: 352,
     columnNumber: 12
   }, this);
 }
@@ -407,26 +407,26 @@ function Empty({ icon, message, action, onAction, text }) {
   return /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-column align-items-center gap-2 px-4 py-5 text-center", "data-region": "empty", role: "status", children: [
     /* @__PURE__ */ jsxDEV("span", { className: "icon-box", children: /* @__PURE__ */ jsxDEV(Icon, { name: icon, text }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 371,
+      lineNumber: 372,
       columnNumber: 36
     }, this) }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 371,
-      columnNumber: 9
-    }, this),
-    /* @__PURE__ */ jsxDEV("p", { className: "text-muted mb-0", children: message }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
       lineNumber: 372,
       columnNumber: 9
     }, this),
-    action && onAction && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm", onClick: onAction, children: action }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("p", { className: "text-muted mb-0", children: message }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
       lineNumber: 373,
+      columnNumber: 9
+    }, this),
+    action && onAction && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm", onClick: onAction, children: action }, void 0, false, {
+      fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
+      lineNumber: 374,
       columnNumber: 32
     }, this)
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 370,
+    lineNumber: 371,
     columnNumber: 12
   }, this);
 }
@@ -459,40 +459,40 @@ function Dialog({ title, children, footer, onClose, text }) {
           /* @__PURE__ */ jsxDEV("div", { className: "modal-header", children: [
             /* @__PURE__ */ jsxDEV("h5", { className: "modal-title", id: titleId, children: title }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-              lineNumber: 416,
+              lineNumber: 417,
               columnNumber: 25
             }, this),
             /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn-close", "aria-label": text("core_closebuttontitle"), onClick: onClose }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-              lineNumber: 417,
+              lineNumber: 418,
               columnNumber: 25
             }, this)
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 415,
+            lineNumber: 416,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "modal-body", children }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 419,
+            lineNumber: 420,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "modal-footer", children: footer ?? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: onClose, children: text("core_closebuttontitle") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 421,
+            lineNumber: 422,
             columnNumber: 36
           }, this) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 420,
+            lineNumber: 421,
             columnNumber: 21
           }, this)
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-          lineNumber: 414,
+          lineNumber: 415,
           columnNumber: 17
         }, this) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-          lineNumber: 413,
+          lineNumber: 414,
           columnNumber: 13
         }, this)
       },
@@ -500,19 +500,19 @@ function Dialog({ title, children, footer, onClose, text }) {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 403,
+        lineNumber: 404,
         columnNumber: 9
       },
       this
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "modal-backdrop show" }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 426,
+      lineNumber: 427,
       columnNumber: 9
     }, this)
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 402,
+    lineNumber: 403,
     columnNumber: 25
   }, this), document.body);
 }
@@ -556,12 +556,12 @@ function FloatBar({ count, label, onClear, children, text }) {
   return /* @__PURE__ */ jsxDEV("div", { className: "card", role: "region", "aria-label": label, "data-region": "bulk-actions", children: [
     /* @__PURE__ */ jsxDEV("span", { className: "fw-bold text-nowrap", role: "status", children: text("selected_count", count) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 486,
+      lineNumber: 487,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap gap-2", children }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 487,
+      lineNumber: 488,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ jsxDEV(
@@ -577,14 +577,14 @@ function FloatBar({ count, label, onClear, children, text }) {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 488,
+        lineNumber: 489,
         columnNumber: 9
       },
       this
     )
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 485,
+    lineNumber: 486,
     columnNumber: 12
   }, this);
 }

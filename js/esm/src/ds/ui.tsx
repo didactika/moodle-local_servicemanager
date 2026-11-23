@@ -320,7 +320,8 @@ export function useFitHeight(box: RefObject<HTMLElement | null>): void {
             // On the card, so the empty state that may take the place of the table and of its pager has the same height.
             const holder = frame ?? element;
             holder.style.setProperty('--dd-table-h', height + 'px');
-            holder.style.setProperty('--dd-foot-h', below + 'px');
+            // The height of the pager as a number of pixels, which the styles turn into a length; with no script it is 0.
+            holder.style.setProperty('--dd-foot-n', String(below));
         };
         fit();
         // Measured again when the window changes size, or when what is above the box finishes drawing and moves it.
