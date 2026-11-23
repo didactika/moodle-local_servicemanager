@@ -36,6 +36,7 @@ import {init as initFilters, orderedDays, presets} from 'local_servicemanager/fi
 import {init as fitTables} from 'local_servicemanager/fit_tables';
 import {addressKeeper, drawPager, hasWords, inDates, loadPagerStrings, postForm, readState, PAGE_SIZES, pageOf} from
     'local_servicemanager/listing';
+import {init as initSearchClear} from 'local_servicemanager/search_clear';
 
 /** The statuses, in the order of the menu. */
 const STATUSES = ['healthy', 'warning', 'critical'];
@@ -153,6 +154,7 @@ const dateLabel = (menu, state, strings) => {
 };
 
 export const init = () => {
+    initSearchClear();
     // The box of the table takes the height the window leaves it.
     fitTables();
     const root = document.querySelector('[data-region="servicemanager-dashboard"]');

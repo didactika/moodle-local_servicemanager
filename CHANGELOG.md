@@ -5,7 +5,7 @@ All notable changes to the Web Service Manager plugin will be documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.0-m400] - 2026-11-23
 
 ### Changed
 
@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The statuses of the health checks are one row of pills that scrolls sideways on a narrow screen.
 - When the filters of a list are grouped in one menu, the button that clears the search and every filter is the last item of that menu.
 - The state of the web services is shown on the dashboard only: the page of a schema no longer repeats it. The button that turns the web services off is red, as an action that stops every service.
+- A search field empties with a small button of its own, which shows the pointer and a soft tint under it, instead of the cross the browser draws.
 
 ### Fixed
 
@@ -23,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A search that finds nothing shows the empty state, at the height of the list and its pager; on Moodle 4.x it showed under the rows even with no filter.
 - The bar that goes through the changes of a comparison floats again at the bottom of the window.
 - The breadcrumb of the import page names each step once, the icon of the details on the comparison of two versions is shown (it was missing, and Moodle 4.x answered with an error), and the name of a capability is not split by a space.
+- The badges of the file access of a schema sit in their column and on their line, as the other rows of the section.
 
 ## [1.1.1-m400] - 2026-10-16
 
@@ -82,7 +84,6 @@ First release of the Moodle 4.0 to 5.2 line, on `MOODLE_400_STABLE`. The Moodle 
 - Rolling back to a version asks in a window and changes the history where it is, without leaving the page, through the new function `local_servicemanager_rollback_schema`. A row that cannot be rolled back keeps the place of its button, so the buttons of the same kind are always in the same place.
 - The comparison goes through its changes from a bar at the bottom with the arrows, which change it is and where; what changed is a card that folds, with each change as a small label.
 - The search box and the button of the filters are pills; the search has one cross, not two.
-
 - The history of a schema has compact rows, icon actions and a floating bar that appears only when a version is chosen to compare; the filters button and the search box take the same colour when they are on.
 - The dashboard, the schema, the history and the comparator are redrawn with the same design as the 5.3 line: search that filters as you type, filters asked for once, actions as coloured icons, errors and notifications as dismissible messages.
 - The pages are drawn by Mustache templates and AMD modules; the colours come from Bootstrap, so the theme can override them.

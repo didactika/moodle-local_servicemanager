@@ -29,6 +29,7 @@ import {add as addToast} from 'core/toast';
 import Templates from 'core/templates';
 import {confirm, inform} from 'local_servicemanager/dialogue';
 import {init as initCopy} from 'local_servicemanager/copy';
+import {init as initSearchClear} from 'local_servicemanager/search_clear';
 
 /**
  * Show the capabilities of a function.
@@ -55,6 +56,7 @@ const showCapabilities = (button) => {
  * Start the page.
  */
 export const init = () => {
+    initSearchClear();
     const root = document.querySelector('[data-region="servicemanager-detail"]');
     if (!root) {
         return;

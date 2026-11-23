@@ -42,6 +42,7 @@ import {
     PAGE_SIZES,
     pageOf,
 } from 'local_servicemanager/listing';
+import {init as initSearchClear} from 'local_servicemanager/search_clear';
 
 /** How many versions are compared at once. */
 const TO_COMPARE = 2;
@@ -61,6 +62,7 @@ const loadYaml = (historyid) => Ajax.call([{
  * Start the page.
  */
 export const init = () => {
+    initSearchClear();
     // The box of the table takes the height the window leaves it.
     fitTables();
     const root = document.querySelector('[data-region="servicemanager-history"]');
