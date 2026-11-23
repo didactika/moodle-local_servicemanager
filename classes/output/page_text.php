@@ -44,9 +44,9 @@ class page_text {
     private const ICONS = [
         'a/search', 'docs', 'e/cancel', 'i/checked', 'i/checkedcircle', 'i/externallink', 'i/filter', 'i/import', 'i/info',
         'i/invalid', 'i/loading', 'i/menubars', 'i/moremenu', 'i/next', 'i/permissions', 'i/previous', 'i/reload',
-        'i/scheduled', 'i/settings', 'i/uncheckedcircle', 'i/user', 'i/valid', 'i/warning', 't/add', 't/collapsed', 't/copy',
-        't/delete', 't/download', 't/edit', 't/expanded', 't/hide', 't/left', 't/less', 't/preview', 't/reset', 't/right',
-        't/show', 't/up',
+        'i/scheduled', 'i/settings', 'i/uncheckedcircle', 'i/upload', 'i/user', 'i/valid', 'i/warning', 't/add', 't/collapsed',
+        't/copy', 't/delete', 't/download', 't/edit', 't/expanded', 't/hide', 't/left', 't/less', 't/preview', 't/reset',
+        't/right', 't/show', 't/up',
     ];
 
     /** @var string[] The icons of the plugin, which lib.php maps to Font Awesome, for what Moodle has no icon of. */

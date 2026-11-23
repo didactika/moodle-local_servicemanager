@@ -52,7 +52,7 @@ const AccessPanel = ({props, freshToken, busy, onMakeToken, text}: AccessPanelPr
                     </div>}
                 </dd>
                 <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('req_file_access')}</dt>
-                <dd className="d-flex flex-wrap gap-2">
+                <dd className="col-sm-8 px-0 py-2 mb-0 border-bottom d-flex flex-wrap align-items-center gap-1">
                     {file(requirements.downloadFiles, 'download', text('req_download_files'), text(requirements.downloadFiles ? 'req_download_files_enabled' : 'req_download_files_disabled'))}
                     {file(requirements.uploadFiles, 'upload', text('req_upload_files'), text(requirements.uploadFiles ? 'req_upload_files_enabled' : 'req_upload_files_disabled'))}
                 </dd>

@@ -49,6 +49,14 @@ export function SearchBox({value, onChange, label, text}: {value: string; onChan
             onChange={(event) => onChange(event.target.value)}
             onKeyDown={(event) => event.key === 'Enter' && event.preventDefault()}
         />
+        {/* A round icon button empties the field: the cross the browser draws is not a button and does not follow the theme. */}
+        {value !== '' && <button type="button" className="btn btn-link btn-icon btn-sm" data-action="clear-search"
+            title={text('filter_clear')} aria-label={text('filter_clear')} onClick={(event) => {
+                onChange('');
+                event.currentTarget.parentElement?.querySelector<HTMLInputElement>('input')?.focus();
+            }}>
+            <Icon name="e/cancel" text={text} />
+        </button>}
     </div>;
 }
 

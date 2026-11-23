@@ -72,6 +72,7 @@ const ICON_IDS = {
   "toggle-on": "t/show",
   "trash": "t/delete",
   "triangle-exclamation": "i/warning",
+  "upload": "i/upload",
   "user": "i/user",
   "user-shield": "i/permissions",
   "xmark": "e/cancel"
@@ -85,11 +86,11 @@ const Icon = /* @__PURE__ */ __name(({ name, gap = false, className = "" }) => {
   const classes = `d-inline-flex${gap ? " me-1" : ""}${className ? ` ${className}` : ""}`;
   return html ? /* @__PURE__ */ jsxDEV("span", { className: classes, "aria-hidden": "true", dangerouslySetInnerHTML: { __html: html } }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/Icon.tsx",
-    lineNumber: 104,
+    lineNumber: 105,
     columnNumber: 11
   }) : /* @__PURE__ */ jsxDEV("span", { className: classes, "aria-hidden": "true" }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/components/common/Icon.tsx",
-    lineNumber: 105,
+    lineNumber: 106,
     columnNumber: 11
   });
 }, "Icon");

@@ -45,6 +45,32 @@ const SearchBox = /* @__PURE__ */ __name(({ value, onChange, placeholder, clearL
       lineNumber: 24,
       columnNumber: 5
     }
+  ),
+  value !== "" && /* @__PURE__ */ jsxDEV(
+    "button",
+    {
+      type: "button",
+      className: "btn btn-link btn-icon btn-sm",
+      "data-action": "clear-search",
+      title: clearLabel,
+      "aria-label": clearLabel,
+      onClick: (event) => {
+        onChange("");
+        event.currentTarget.parentElement?.querySelector("input")?.focus();
+      },
+      children: /* @__PURE__ */ jsxDEV(Icon, { name: "xmark" }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
+        lineNumber: 47,
+        columnNumber: 9
+      })
+    },
+    void 0,
+    false,
+    {
+      fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",
+      lineNumber: 42,
+      columnNumber: 22
+    }
   )
 ] }, void 0, true, {
   fileName: "public/local/servicemanager/js/esm/src/components/common/SearchBox.tsx",

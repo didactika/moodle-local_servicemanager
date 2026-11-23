@@ -71,6 +71,7 @@ export const ICON_IDS: Record<string, string> = {
     'toggle-on': 't/show',
     'trash': 't/delete',
     'triangle-exclamation': 'i/warning',
+    'upload': 'i/upload',
     'user': 'i/user',
     'user-shield': 'i/permissions',
     'xmark': 'e/cancel',

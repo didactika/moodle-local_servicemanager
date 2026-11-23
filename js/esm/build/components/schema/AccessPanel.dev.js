@@ -95,7 +95,7 @@ const AccessPanel = /* @__PURE__ */ __name(({ props, freshToken, busy, onMakeTok
         lineNumber: 54,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("dd", { className: "d-flex flex-wrap gap-2", children: [
+      /* @__PURE__ */ jsxDEV("dd", { className: "col-sm-8 px-0 py-2 mb-0 border-bottom d-flex flex-wrap align-items-center gap-1", children: [
         file(requirements.downloadFiles, "download", text("req_download_files"), text(requirements.downloadFiles ? "req_download_files_enabled" : "req_download_files_disabled")),
         file(requirements.uploadFiles, "upload", text("req_upload_files"), text(requirements.uploadFiles ? "req_upload_files_enabled" : "req_upload_files_disabled"))
       ] }, void 0, true, {

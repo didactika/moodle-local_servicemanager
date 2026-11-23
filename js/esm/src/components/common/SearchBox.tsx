@@ -38,6 +38,14 @@ const SearchBox = ({value, onChange, placeholder, clearLabel, id = 'lsm-search'}
             }
         }}
     />
+    {/* A round icon button empties the field: the cross the browser draws is not a button and does not follow the theme. */}
+    {value !== '' && <button type="button" className="btn btn-link btn-icon btn-sm" data-action="clear-search" title={clearLabel}
+        aria-label={clearLabel} onClick={(event) => {
+            onChange('');
+            event.currentTarget.parentElement?.querySelector<HTMLInputElement>('input')?.focus();
+        }}>
+        <Icon name="xmark" />
+    </button>}
 </div>;
 
 export default SearchBox;

@@ -59,7 +59,7 @@ The plugin directory in Moodle 5.3 is `public/local/servicemanager`.
 | `main` | 5.3 | React and TypeScript (ESM) | `X.Y.Z-m503` |
 | `MOODLE_400_STABLE` | 4.0 to 5.2 | AMD modules and Mustache templates | `X.Y.Z-m400` |
 
-A release is named after the delivery and the lowest Moodle version of the line, so `1.1.1-m400` and `1.1.1-m503` carry the same functions for different Moodle versions.
+A release is named after the delivery and the lowest Moodle version of the line, so `1.2.0-m400` and `1.2.0-m503` carry the same functions for different Moodle versions.
 
 ## Usage
 
