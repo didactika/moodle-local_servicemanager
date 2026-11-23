@@ -59,7 +59,7 @@ La posición vertical de una entidad expresa su importancia para el objetivo del
 | RN-008 | Un esquema toma el peor estado de sus partes: correcto, con aviso o crítico. | HealthLog | `inspector::inspect` |
 | RN-009 | Un esquema deshabilitado suspende su usuario y su servicio y no se comprueba. | Schema | `provisioner::set_enabled`, `health_check::execute` |
 | RN-010 | Los servicios web y sus protocolos solo los cambia una persona que puede cambiar la configuración del sitio, y cada cambio queda en el registro de la configuración con su valor anterior. | WebServiceState | `pages/web_services.php` |
-| RN-011 | La lista del panel se acota con una búsqueda, con uno o varios estados (cada uno con sus esquemas, contados dentro de los demás filtros) y con un periodo de la última modificación que nunca queda al revés; su caja toma la altura que le deja la ventana y sus columnas conservan el ancho. | Schema | `amd/src/dashboard.js`, `js/esm/src/Dashboard.tsx` |
+| RN-011 | La lista del panel se acota con una búsqueda, con uno o varios estados (cada uno con sus esquemas, contados dentro de los demás filtros) y con un periodo de la última modificación que nunca queda al revés; su caja toma la altura que le deja la ventana y sus columnas conservan el ancho. Cuando nada coincide, el estado vacío toma la altura de la lista y de su paginador; cuando los filtros se reúnen en un menú, el botón que quita la búsqueda y todos los filtros es lo último de ese menú. | Schema | `amd/src/dashboard.js`, `amd/src/filters.js`, `js/esm/src/Dashboard.tsx`, `js/esm/src/ds/Filters.tsx` |
 
 ## Ciclos de vida
 

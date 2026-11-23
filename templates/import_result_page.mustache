@@ -41,12 +41,12 @@
     }
 }}
 <div class="lsm servicemanager-import-result">
-    <header class="dd-page-header mb-3">
+    <header class="d-grid gap-3 pb-3 border-bottom mb-3">
         <div>
-            <h2 class="dd-page-title">{{#str}}import_result_title, local_servicemanager{{/str}}</h2>
-            <p class="dd-page-subtitle">{{subtitle}}</p>
+            <h2 class="h5 fw-bold mb-0">{{#str}}import_result_title, local_servicemanager{{/str}}</h2>
+            <p class="text-muted mb-0">{{subtitle}}</p>
         </div>
-        <div class="dd-page-actions">
+        <div class="d-flex flex-wrap align-items-center gap-2">
             <a href="{{dashboardurl}}" class="btn btn-primary">{{#pix}}list, local_servicemanager{{/pix}} {{#str}}dashboard, local_servicemanager{{/str}}</a>
             <a href="{{againurl}}" class="btn btn-outline-secondary">{{#pix}}i/import, core{{/pix}} {{#str}}import_again, local_servicemanager{{/str}}</a>
         </div>
@@ -82,7 +82,7 @@
                                 <div>
                                     {{#viewurl}}<a href="{{viewurl}}" class="font-weight-bold fw-bold">{{label}}</a>{{/viewurl}}{{^viewurl}}<strong>{{label}}</strong>{{/viewurl}}
                                     {{#showid}}<span class="small text-muted ms-2">{{#pix}}fingerprint, local_servicemanager{{/pix}} {{id}}</span>{{/showid}}
-                                    <span class="badge badge-soft rounded-pill text-bg-{{tone}} ms-2">{{statuslabel}}</span>
+                                    <span class="badge rounded-pill text-bg-{{tone}} ms-2">{{statuslabel}}</span>
                                 </div>
                                 {{#hasmessages}}
                                     <ul class="small list-unstyled mb-0{{#failed}} text-danger{{/failed}}{{^failed}} text-muted{{/failed}}">

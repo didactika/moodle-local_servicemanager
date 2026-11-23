@@ -84,7 +84,7 @@ export const init = (toolbar) => {
         menus().forEach((item) => {
             const on = item === target && show;
             item.querySelector(':scope > [data-menu-toggle]')?.setAttribute('aria-expanded', on ? 'true' : 'false');
-            const list = item.querySelector(':scope > .dd-select-menu');
+            const list = item.querySelector(':scope > .dropdown-menu');
             if (list) {
                 list.hidden = !on;
             }
@@ -98,7 +98,7 @@ export const init = (toolbar) => {
             open(item, toggle.getAttribute('aria-expanded') !== 'true');
             // A menu inside the group of filters stays inside it, so the group does not close.
             if (item.closest('[data-region="filter-panel"]')) {
-                menu('filters').querySelector(':scope > .dd-select-menu').hidden = false;
+                menu('filters').querySelector(':scope > .dropdown-menu').hidden = false;
             }
         }
     });
@@ -128,7 +128,6 @@ export const init = (toolbar) => {
         const toggle = item.querySelector(':scope > [data-menu-toggle]');
         toggle.querySelector('[data-region="menu-label"]').textContent = label;
         toggle.classList.toggle('border-primary', active);
-        toggle.classList.toggle('dd-select-set', active);
         const clear = item.querySelector(':scope > [data-menu-clear]');
         if (clear) {
             clear.hidden = !active;
@@ -136,7 +135,8 @@ export const init = (toolbar) => {
     };
 
     /**
-     * Group the menus in one menu, Filters, when they do not fit beside the search, and take them back when they do.
+     * Group the menus in one menu, Filters, when they do not fit beside the search, and take them back when they do. While they
+     * are grouped, the button that clears every filter is the last thing of the group.
      *
      * @param {number} count How many filters narrow the list.
      */
@@ -148,6 +148,7 @@ export const init = (toolbar) => {
             return;
         }
         const panel = group.querySelector('[data-region="filter-panel"]');
+        const reset = toolbar.querySelector('[data-action="reset-all"]')?.parentElement;
         const gap = parseFloat(window.getComputedStyle(row).columnGap) || 0;
         const room = row.clientWidth - SEARCH_ROOM - gap;
         if (!fitting.grouped) {
@@ -157,12 +158,18 @@ export const init = (toolbar) => {
                 fitting.needed = width;
                 fitting.grouped = true;
                 filters.forEach((child) => panel.appendChild(child));
+                if (reset) {
+                    panel.appendChild(reset);
+                }
                 group.hidden = false;
             }
         } else if (room >= fitting.needed) {
             fitting.grouped = false;
             open(null, false);
-            Array.from(panel.children).forEach((child) => box.insertBefore(child, group));
+            Array.from(panel.children).filter((child) => child !== reset).forEach((child) => box.insertBefore(child, group));
+            if (reset) {
+                row.parentElement.appendChild(reset);
+            }
             group.hidden = true;
         }
         const label = group.querySelector('[data-region="menu-label"]');

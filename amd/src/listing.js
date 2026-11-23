@@ -217,30 +217,30 @@ export const drawPager = (foot, page, perpage, total, strings) => {
     const shown = perpage > 0 && perpage < total ? perpage : 0;
 
     const nav = document.createElement('nav');
-    nav.className = 'dd-pager';
+    nav.className = 'd-flex flex-wrap align-items-center justify-content-between gap-3 small text-muted';
     nav.setAttribute('aria-label', strings.label);
 
     const left = document.createElement('div');
-    left.className = 'dd-pager-size';
+    left.className = 'd-none d-sm-flex align-items-center gap-2';
     const label = document.createElement('label');
     label.className = 'mb-0';
     label.htmlFor = 'lsm-perpage';
     label.textContent = strings.perpage;
     const select = document.createElement('select');
     select.id = 'lsm-perpage';
-    select.className = 'custom-select custom-select-sm form-select form-select-sm dd-select';
+    select.className = 'custom-select custom-select-sm form-select form-select-sm';
     select.dataset.region = 'perpage';
     sizes.forEach((size) => select.appendChild(new Option(size ? String(size) : strings.all, String(size), false, size === shown)));
     left.append(label, select);
 
     const right = document.createElement('div');
-    right.className = 'dd-pager-end';
+    right.className = 'd-flex flex-wrap align-items-center gap-3 ms-auto';
     const text = document.createElement('span');
-    text.className = 'dd-pager-range';
+    text.className = 'text-body text-nowrap';
     text.setAttribute('role', 'status');
     text.textContent = strings.range.replace('{from}', range.from).replace('{to}', range.to).replace('{total}', total);
     const arrows = document.createElement('div');
-    arrows.className = 'dd-pager-arrows';
+    arrows.className = 'd-flex gap-1';
     arrows.append(
         arrow(range.page - 1, strings.previousIcon || '‹', strings.previous, range.page === 0),
         arrow(range.page + 1, strings.nextIcon || '›', strings.next, range.to >= total)

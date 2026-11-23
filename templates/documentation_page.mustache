@@ -20,7 +20,7 @@
     The reference of the YAML format of a schema.
 
     Context variables required for this template:
-    * backurl, downloadurl - Where Back and the example lead
+    * downloadurl - Where the example leads
     * links - The sections, for the quick links
     * structure, functions - Examples of YAML
     * meta, requirements, role - The fields of those sections
@@ -28,7 +28,6 @@
 
     Example context (json):
     {
-        "backurl": "#",
         "downloadurl": "#",
         "links": [{"id": "structure", "label": "Schema Structure"}],
         "structure": "meta:",
@@ -40,11 +39,8 @@
     }
 }}
 <div class="lsm servicemanager-documentation">
-    <div class="mb-3">
-        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
-    </div>
-    <header class="dd-page-header mb-3">
-        <div><h2 class="dd-page-title">{{#str}}schema_reference, local_servicemanager{{/str}}</h2></div>
+    <header class="d-grid gap-3 pb-3 border-bottom mb-3">
+        <div><h2 class="h5 fw-bold mb-0">{{#str}}schema_reference, local_servicemanager{{/str}}</h2></div>
         <div class="d-flex flex-wrap align-items-center gap-2">
             <a href="{{downloadurl}}" class="btn btn-outline-primary">{{#pix}}t/download, core{{/pix}} {{#str}}download_example, local_servicemanager{{/str}}</a>
         </div>
@@ -67,30 +63,34 @@
 
             <h4 id="structure" class="h4 mt-4 mb-3">{{#str}}doc_structure, local_servicemanager{{/str}}</h4>
             <p>{{#str}}doc_structure_desc, local_servicemanager{{/str}}</p>
-            <pre class="bg-body-tertiary border p-3 rounded" id="lsm-doc-structure"><code>{{structure}}</code></pre>
+            <pre class="bg-body-tertiary border p-3 rounded mw-100 overflow-auto" id="lsm-doc-structure"><code>{{structure}}</code></pre>
             <button type="button" class="btn btn-sm btn-outline-secondary" data-copy-target="#lsm-doc-structure">
                 {{#pix}}t/copy, core{{/pix}} {{#str}}copy, local_servicemanager{{/str}}
             </button>
 
             <h4 id="meta" class="h4 mt-4 mb-3">{{#str}}doc_meta, local_servicemanager{{/str}}</h4>
+            <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}field, local_servicemanager{{/str}}</th><th>{{#str}}required, moodle{{/str}}</th><th>{{#str}}description, moodle{{/str}}</th></tr></thead>
                 <tbody>
-                    {{#meta}}<tr><td><code>{{name}}</code></td><td><span class="badge badge-soft rounded-pill text-bg-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/meta}}
+                    {{#meta}}<tr><td><code>{{name}}</code></td><td><span class="badge rounded-pill text-bg-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/meta}}
                 </tbody>
             </table>
+            </div>
+            <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}field, local_servicemanager{{/str}}</th><th>{{#str}}required, moodle{{/str}}</th><th>{{#str}}description, moodle{{/str}}</th></tr></thead>
                 <tbody>
-                    {{#requirements}}<tr><td><code>{{name}}</code></td><td><span class="badge badge-soft rounded-pill text-bg-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/requirements}}
+                    {{#requirements}}<tr><td><code>{{name}}</code></td><td><span class="badge rounded-pill text-bg-{{#required}}success{{/required}}{{^required}}secondary{{/required}}">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/requirements}}
                 </tbody>
             </table>
+            </div>
 
             <h4 id="definition" class="h4 mt-4 mb-3">{{#str}}doc_definition, local_servicemanager{{/str}}</h4>
             <p>{{#str}}doc_definition_desc, local_servicemanager{{/str}}</p>
             <h5>{{#str}}functions, local_servicemanager{{/str}}</h5>
             <p>{{#str}}doc_functions_desc, local_servicemanager{{/str}}</p>
-            <pre class="bg-body-tertiary border p-3 rounded"><code>{{functions}}</code></pre>
+            <pre class="bg-body-tertiary border p-3 rounded mw-100 overflow-auto"><code>{{functions}}</code></pre>
             <div class="alert alert-info">
                 {{#pix}}i/info, core{{/pix}} 
                 {{#str}}doc_default_capabilities, local_servicemanager{{/str}}
@@ -99,23 +99,27 @@
 
             <h4 id="role" class="h4 mt-4 mb-3">{{#str}}doc_role, local_servicemanager{{/str}}</h4>
             <p>{{#str}}doc_role_desc, local_servicemanager{{/str}}</p>
+            <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}field, local_servicemanager{{/str}}</th><th>{{#str}}required, moodle{{/str}}</th><th>{{#str}}description, moodle{{/str}}</th></tr></thead>
                 <tbody>
-                    {{#role}}<tr><td><code>{{name}}</code></td><td><span class="badge badge-soft rounded-pill text-bg-secondary">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/role}}
+                    {{#role}}<tr><td><code>{{name}}</code></td><td><span class="badge rounded-pill text-bg-secondary">{{requiredlabel}}</span></td><td>{{description}}</td></tr>{{/role}}
                 </tbody>
             </table>
+            </div>
             <div class="alert alert-info">
                 {{#pix}}i/info, core{{/pix}} {{#str}}doc_role_note, local_servicemanager{{/str}}
             </div>
 
             <h4 id="naming" class="h4 mt-4 mb-3">{{#str}}doc_naming, local_servicemanager{{/str}}</h4>
+            <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead><tr><th>{{#str}}resource, local_servicemanager{{/str}}</th><th>{{#str}}pattern, local_servicemanager{{/str}}</th><th>{{#str}}doc_example_col, local_servicemanager{{/str}}</th></tr></thead>
                 <tbody>
                     {{#naming}}<tr><td>{{resource}}</td><td><code>{{pattern}}</code></td><td><code>{{example}}</code></td></tr>{{/naming}}
                 </tbody>
             </table>
+            </div>
 
             <h4 id="example" class="h4 mt-4 mb-3">{{#str}}doc_example, local_servicemanager{{/str}}</h4>
             <p>

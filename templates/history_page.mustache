@@ -23,7 +23,7 @@
     * schemaid, schemaname, currentlabel - What schema it is
     * hasrows, rows, count - The versions
     * perpage - Sizes of page
-    * backurl, compareurl - Where the actions lead
+    * compareurl - Where the comparison leads
 
     Example context (json):
     {
@@ -34,53 +34,49 @@
         "rows": [{"id": 1, "version": "1.0.0", "username": "Admin", "userpicture": "#", "date": "today", "reason": "", "iscurrent": true, "hidden": false, "text": "1.0.0 Admin", "at": 0, "viewurl": "#", "rollbackurl": ""}],
         "count": 1,
         "perpage": [{"size": 10, "first": true}],
-        "backurl": "#",
         "compareurl": "#"
     }
 }}
 <div class="lsm servicemanager-history-page" data-region="servicemanager-history" data-schemaid="{{schemaid}}" data-yaml-failed="{{#str}}version_yaml_failed, local_servicemanager{{/str}}">
-    <div class="mb-3">
-        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
-    </div>
-    <header class="dd-page-header mb-3">
+    <header class="d-grid gap-3 pb-3 border-bottom mb-3">
         <div>
-            <h2 class="dd-page-title">{{#str}}version_history, local_servicemanager{{/str}}</h2>
-            <p class="dd-page-subtitle">{{schemaname}} · <span data-region="history-current">{{currentlabel}}</span></p>
+            <h2 class="h5 fw-bold mb-0">{{#str}}version_history, local_servicemanager{{/str}}</h2>
+            <p class="text-muted mb-0">{{schemaname}} · <span data-region="history-current">{{currentlabel}}</span></p>
         </div>
     </header>
 
     {{^hasrows}}
         <div class="card" data-region="empty-state">
-        <div class="dd-empty">
-            <span class="dd-tile dd-tile-lg">{{#pix}}history, local_servicemanager{{/pix}}</span>
-                <p class="dd-empty-title">{{#str}}history_empty_title, local_servicemanager{{/str}}</p>
-                <p class="dd-empty-text">{{#str}}no_history, local_servicemanager{{/str}}</p>
+        <div class="d-flex flex-column align-items-center gap-2 px-4 py-5 text-center">
+            <span class="icon-box">{{#pix}}history, local_servicemanager{{/pix}}</span>
+                <p class="fw-bold mb-0">{{#str}}history_empty_title, local_servicemanager{{/str}}</p>
+                <p class="text-muted mb-0">{{#str}}no_history, local_servicemanager{{/str}}</p>
             </div>
         </div>
     {{/hasrows}}
 
     {{#hasrows}}
         <div class="card">
-            <div class="table-toolbar" data-region="filters">
-                <div class="table-toolbar-start">
-                    <div class="dd-searchbox" role="search">
+            <div class="d-flex align-items-center justify-content-between gap-3 px-3 py-2 border-bottom" data-region="filters">
+                <div class="d-flex align-items-center gap-2 flex-grow-1">
+                    <div class="position-relative d-flex align-items-center" role="search">
                         {{#pix}}a/search, core{{/pix}}
                         <label class="sr-only visually-hidden" for="lsm-search">{{#str}}filter_version, local_servicemanager{{/str}}</label>
                         <input class="form-control" type="search" id="lsm-search" placeholder="{{#str}}filter_version, local_servicemanager{{/str}}" autocomplete="off">
                     </div>
                     <div data-region="filter-menus">
                         {{> local_servicemanager/date_menu }}
-                        <div class="dd-menu dd-menu-end" data-menu="filters" hidden>
-                            <button type="button" class="custom-select form-select dd-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
+                        <div class="dropdown" data-menu="filters" hidden>
+                            <button type="button" class="custom-select form-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
                                 aria-label="{{#str}}filters, local_servicemanager{{/str}}">{{#pix}}i/filter, core{{/pix}} <span data-region="menu-label"
                                 data-label="{{#str}}filters, local_servicemanager{{/str}}">{{#str}}filters, local_servicemanager{{/str}}</span></button>
-                            <div class="dd-select-menu" role="group" aria-label="{{#str}}filters, local_servicemanager{{/str}}" hidden>
+                            <div class="dropdown-menu show dropdown-menu-end dropdown-menu-right" role="group" aria-label="{{#str}}filters, local_servicemanager{{/str}}" hidden>
                                 <div data-region="filter-panel"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="table-toolbar-end">
+                <div class="d-flex align-items-center gap-2 flex-shrink-0">
                     <button type="button" class="btn btn-link btn-icon" data-action="reset-all" disabled
                         title="{{#str}}filters_reset, local_servicemanager{{/str}}" aria-label="{{#str}}filters_reset, local_servicemanager{{/str}}">{{#pix}}i/reload, core{{/pix}}</button>
                 </div>
@@ -89,25 +85,27 @@
                 <input type="hidden" name="id" value="{{schemaid}}">
                 <div class="table-responsive" data-region="tablewrap">
                     {{> local_servicemanager/history_rows}}
-                    <div class="dd-empty" data-region="empty-state" hidden>
-                        <span class="dd-tile dd-tile-lg">{{#pix}}a/search, core{{/pix}}</span>
-                        <p class="dd-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-action="reset-all">{{#str}}filters_reset, local_servicemanager{{/str}}</button>
+                    <div data-region="empty-state" hidden>
+                        <div class="d-flex flex-column align-items-center gap-2 px-4 py-5 text-center">
+                            <span class="icon-box">{{#pix}}a/search, core{{/pix}}</span>
+                            <p class="text-muted mb-0">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-action="reset-all">{{#str}}filters_reset, local_servicemanager{{/str}}</button>
+                        </div>
                     </div>
                 </div>
-                <div class="dd-floatbar" role="region" aria-label="{{#str}}compare_versions, local_servicemanager{{/str}}" data-region="compare-bar" hidden>
-                    <span class="dd-floatbar-count" role="status" data-region="compare-chosen"></span>
+                <div class="card" role="region" aria-label="{{#str}}compare_versions, local_servicemanager{{/str}}" data-region="compare-bar" hidden>
+                    <span class="fw-bold text-nowrap" role="status" data-region="compare-chosen"></span>
                     <span class="text-danger small" role="alert" data-region="compare-too-many" hidden>{{#str}}compare_select_two, local_servicemanager{{/str}}</span>
-                    <div class="dd-floatbar-actions">
+                    <div class="d-flex flex-wrap gap-2">
                         <button type="submit" id="compare-btn" class="btn btn-primary btn-sm" disabled>
                             {{#pix}}compare, local_servicemanager{{/pix}} {{#str}}compare_versions, local_servicemanager{{/str}}
                         </button>
                     </div>
-                    <button type="button" class="dd-floatbar-clear" data-action="clear-selection"
-                        title="{{#str}}compare_clear, local_servicemanager{{/str}}" aria-label="{{#str}}compare_clear, local_servicemanager{{/str}}"></button>
+                    <button type="button" class="btn btn-link btn-icon" data-action="clear-selection"
+                        title="{{#str}}compare_clear, local_servicemanager{{/str}}" aria-label="{{#str}}compare_clear, local_servicemanager{{/str}}">{{#pix}}e/cancel, core{{/pix}}</button>
                 </div>
             </form>
-            <div class="table-foot" data-region="pagination" hidden></div>
+            <div class="px-3 py-2 border-top" data-region="pagination" hidden></div>
         </div>
         <p class="text-muted small mt-2 mb-0" data-region="history-count"><span data-region="history-count-text">{{#str}}history_count, local_servicemanager, {{count}}{{/str}}</span> {{#str}}compare_hint, local_servicemanager{{/str}}</p>
     {{/hasrows}}

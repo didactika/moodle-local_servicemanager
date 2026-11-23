@@ -49,7 +49,9 @@ Sobre la lista:
 - **Estado** enumera los estados con el número de esquemas de cada uno, contados dentro de la búsqueda y de la fecha; marque uno o varios para ver solo esos esquemas.
 - **Última modificación** limita la lista a un periodo: hoy, los últimos siete días, el mes en curso, los últimos treinta días o dos fechas a su elección. La primera fecha nunca es posterior a la última: una fecha que pasa a la otra mueve la otra hasta ella.
 
-Un menú que acota la lista aparece resaltado y muestra solo a qué está acotada, por ejemplo **Correcto**, o **Estado: 2** cuando hay dos estados marcados; la cruz que sustituye a su flecha quita ese filtro. El botón con el icono de recargar, al final de la fila, quita a la vez la búsqueda y todos los filtros. Cuando los menús no caben junto a la búsqueda, por ejemplo en un teléfono, se reúnen en un único menú, **Filtros**, con el icono del embudo.
+Un menú que acota la lista aparece resaltado y muestra solo a qué está acotada, por ejemplo **Correcto**, o **Estado: 2** cuando hay dos estados marcados; la cruz que sustituye a su flecha quita ese filtro. El botón con el icono de recargar, al final de la fila, quita a la vez la búsqueda y todos los filtros. Cuando los menús no caben junto a la búsqueda, por ejemplo en un teléfono, se reúnen en un único menú, **Filtros**, con el icono del embudo; el botón que quita la búsqueda y todos los filtros pasa entonces a ser lo último de ese menú.
+
+Cuando la búsqueda y los filtros no coinciden con ningún esquema, la lista lo indica donde estaban sus filas, a la misma altura, con un botón que quita la búsqueda y todos los filtros.
 
 ![El menú Estado, con los esquemas de cada estado](asset:dashboard-filters.webp)
 

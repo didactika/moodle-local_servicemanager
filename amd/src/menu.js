@@ -49,6 +49,34 @@ const closeAll = (root, keep = null) => {
 };
 
 /**
+ * Float a menu next to its button when it sits in a box that scrolls, such as the table of a list, so the box never cuts it.
+ * It opens under the button, aligned to its end, or over it when there is no room below.
+ *
+ * @param {HTMLElement} button The button that opens the menu.
+ * @param {HTMLElement} menu The menu.
+ */
+const place = (button, menu) => {
+    menu.style.position = '';
+    menu.style.inset = '';
+    if (!button.closest('.table-responsive')) {
+        return;
+    }
+    const gap = 2;
+    const edge = 8;
+    menu.style.position = 'fixed';
+    menu.style.inset = '0 auto auto 0';
+    const rect = button.getBoundingClientRect();
+    const width = menu.offsetWidth;
+    const height = menu.offsetHeight;
+    const left = Math.max(edge, Math.min(rect.right - width, window.innerWidth - width - edge));
+    const below = rect.bottom + gap;
+    const top = below + height > window.innerHeight - edge ? Math.max(edge, rect.top - height - gap) : below;
+    // A theme may give an ancestor a transform, which moves the origin of a fixed box; where the menu landed at 0 says where it is.
+    const origin = menu.getBoundingClientRect();
+    menu.style.inset = `${top - origin.top}px auto auto ${left - origin.left}px`;
+};
+
+/**
  * Make the menus inside an element work.
  *
  * @param {HTMLElement} root The element that holds the menus.
@@ -68,7 +96,17 @@ export const init = (root) => {
         closeAll(root, holder);
         menu.classList.toggle('show', opening);
         button.setAttribute('aria-expanded', opening ? 'true' : 'false');
+        if (opening) {
+            place(button, menu);
+        }
     });
+    // A floating menu would stay behind while its row scrolls away, so scrolling closes it.
+    root.addEventListener('scroll', (event) => {
+        if (event.target.closest && event.target.closest('.table-responsive')) {
+            closeAll(root);
+        }
+    }, true);
+    window.addEventListener('resize', () => closeAll(root));
     root.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             closeAll(root);

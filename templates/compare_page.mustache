@@ -20,7 +20,6 @@
     The comparison of two versions of a schema.
 
     Context variables required for this template:
-    * backurl - Where Back leads
     * first, second - The versions
     * identical, added, removed, changed - What differs, with the labels that say it
     * areas - What changed, said in terms of the schema
@@ -28,7 +27,6 @@
 
     Example context (json):
     {
-        "backurl": "#",
         "first": {"version": "1.0.0", "date": "today", "user": "Admin", "viewurl": "#"},
         "second": {"version": "1.1.0", "date": "today", "user": "Admin", "viewurl": "#"},
         "identical": false,
@@ -47,13 +45,10 @@
     }
 }}
 <div class="lsm servicemanager-compare-page" data-region="servicemanager-compare">
-    <div class="mb-3">
-        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
-    </div>
-    <header class="dd-page-header mb-3">
+    <header class="d-grid gap-3 pb-3 border-bottom mb-3">
         <div>
-            <h2 class="dd-page-title">{{#str}}compare_versions, local_servicemanager{{/str}}</h2>
-            <p class="dd-page-subtitle">
+            <h2 class="h5 fw-bold mb-0">{{#str}}compare_versions, local_servicemanager{{/str}}</h2>
+            <p class="text-muted mb-0">
                 <a href="{{first.viewurl}}">{{#str}}version, local_servicemanager{{/str}} {{first.version}}</a>
                 {{#pix}}t/right, core{{/pix}}
                 <a href="{{second.viewurl}}">{{#str}}version, local_servicemanager{{/str}} {{second.version}}</a>
@@ -63,11 +58,11 @@
     </header>
 
     <div class="d-flex flex-wrap gap-2 mb-3" data-region="diff-counts">
-        {{#identical}}<span class="badge badge-soft rounded-pill text-bg-secondary">{{#str}}compare_no_changes, local_servicemanager{{/str}}</span>{{/identical}}
+        {{#identical}}<span class="badge rounded-pill text-bg-secondary">{{#str}}compare_no_changes, local_servicemanager{{/str}}</span>{{/identical}}
         {{^identical}}
-            {{#added}}<span class="badge badge-soft rounded-pill text-bg-success">{{addedlabel}}</span>{{/added}}
-            {{#removed}}<span class="badge badge-soft rounded-pill text-bg-danger">{{removedlabel}}</span>{{/removed}}
-            {{#changed}}<span class="badge badge-soft rounded-pill text-bg-warning">{{changedlabel}}</span>{{/changed}}
+            {{#added}}<span class="badge rounded-pill text-bg-success">{{addedlabel}}</span>{{/added}}
+            {{#removed}}<span class="badge rounded-pill text-bg-danger">{{removedlabel}}</span>{{/removed}}
+            {{#changed}}<span class="badge rounded-pill text-bg-warning">{{changedlabel}}</span>{{/changed}}
         {{/identical}}
     </div>
 
@@ -76,7 +71,7 @@
             <summary class="card-header d-flex align-items-center gap-2">
                 {{#pix}}t/collapsed, core{{/pix}}
                 <h5 class="h6 mb-0">{{#str}}compare_changes_title, local_servicemanager{{/str}}</h5>
-                <span class="badge badge-soft rounded-pill text-bg-secondary">{{changescount}}</span>
+                <span class="badge rounded-pill text-bg-secondary">{{changescount}}</span>
             </summary>
             <div class="card-body d-grid gap-3">
                 {{#areas}}
@@ -84,7 +79,7 @@
                         <h6 class="small text-muted text-uppercase fw-semibold">{{{iconhtml}}}{{title}}</h6>
                         <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0">
                             {{#items}}
-                                <li class="badge badge-soft rounded-pill text-bg-{{tone}} fw-normal d-inline-flex align-items-center gap-1">
+                                <li class="badge rounded-pill text-bg-{{tone}} fw-normal d-inline-flex align-items-center gap-1">
                                     {{{iconhtml}}}
                                     <span class="sr-only visually-hidden">{{kindlabel}}: </span>
                                     <span class="fw-semibold">{{label}}</span>
@@ -163,7 +158,7 @@
         </div>
     </div>
     {{#hasstarts}}
-        <div class="dd-floatbar" role="status" data-region="change-navigator">
+        <div class="card" role="status" data-region="change-navigator">
             <button type="button" class="btn btn-outline-secondary btn-sm btn-icon" data-action="prev-change" title="{{#str}}compare_prev_change, local_servicemanager{{/str}}">
                 {{#pix}}t/up, core{{/pix}}<span class="sr-only visually-hidden">{{#str}}compare_prev_change, local_servicemanager{{/str}}</span>
             </button>

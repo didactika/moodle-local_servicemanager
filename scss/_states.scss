@@ -13,8 +13,8 @@
     & .page-link.page-link,
     & .dropdown-item.dropdown-item,
     & .list-group-item-action.list-group-item-action,
-    & .dd-select.dd-select,
-    & .dd-select-clear.dd-select-clear,
+    & button:is(.form-select, .custom-select),
+    & [data-menu-clear][data-menu-clear],
     & select.custom-select,
     & select.form-select {
         &:focus:not(:focus-visible),
@@ -31,7 +31,7 @@
 
     & select.custom-select,
     & select.form-select,
-    & .dd-select.dd-select {
+    & button:is(.form-select, .custom-select) {
         &:focus:not(:focus-visible) {
             border-color: var(--dd-line-hover);
         }

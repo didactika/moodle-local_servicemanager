@@ -59,7 +59,11 @@ Above the list:
 
 A menu that narrows the list is highlighted and shows only what it is narrowed to, for example **Healthy**, or **Status: 2** when two statuses are ticked; the
 cross that replaces its arrow removes that filter. The button with the reload icon at the end of the row removes the search and every filter at once. When the
-menus do not fit beside the search, for example on a phone, they are gathered in one menu, **Filters**, with the funnel icon.
+menus do not fit beside the search, for example on a phone, they are gathered in one menu, **Filters**, with the funnel icon; the button that removes the
+search and every filter is then the last item of that menu.
+
+When the search and the filters match no schema, the list says so where its rows were, at the same height, with a button that removes the search and every
+filter.
 
 ![The Status menu, with the schemas of each status](asset:dashboard-filters.webp)
 

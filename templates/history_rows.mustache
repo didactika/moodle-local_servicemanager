@@ -31,23 +31,23 @@
     <caption class="sr-only visually-hidden">{{#str}}version_history, local_servicemanager{{/str}}</caption>
     <thead>
         <tr>
-            <th scope="col" class="table-select"><span class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}}</span></th>
+            <th scope="col" class="align-middle" data-column="select"><span class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}}</span></th>
             <th scope="col">{{#str}}version, local_servicemanager{{/str}}</th>
             <th scope="col">{{#str}}history_by, local_servicemanager{{/str}}</th>
             <th scope="col" class="d-none d-md-table-cell">{{#str}}history_reason, local_servicemanager{{/str}}</th>
-            <th scope="col" class="table-actions"><span class="sr-only visually-hidden">{{#str}}actions, moodle{{/str}}</span></th>
+            <th scope="col" class="text-end text-nowrap" data-column="actions"><span class="sr-only visually-hidden">{{#str}}actions, moodle{{/str}}</span></th>
         </tr>
     </thead>
     <tbody>
     {{#rows}}
         <tr data-region="version" data-id="{{id}}" data-at="{{at}}" data-text="{{text}}" data-version="{{version}}"{{#hidden}} hidden{{/hidden}}>
-            <td class="table-select">
+            <td class="align-middle" data-column="select">
                 <input type="checkbox" id="lsm-compare-{{id}}" name="compare[]" value="{{id}}" class="form-check-input" data-region="version-check">
                 <label for="lsm-compare-{{id}}" class="sr-only visually-hidden">{{#str}}compare_select, local_servicemanager{{/str}} {{version}}</label>
             </td>
             <td>
                 <span class="fw-semibold">{{#pix}}branch, local_servicemanager{{/pix}} {{version}}</span>
-                {{#iscurrent}}<span class="badge badge-soft rounded-pill text-bg-success ms-2">{{#str}}current, local_servicemanager{{/str}}</span>{{/iscurrent}}
+                {{#iscurrent}}<span class="badge rounded-pill text-bg-success ms-2">{{#str}}current, local_servicemanager{{/str}}</span>{{/iscurrent}}
             </td>
             <td>
                 <span class="d-flex align-items-center gap-2">
@@ -56,7 +56,7 @@
                 </span>
             </td>
             <td class="d-none d-md-table-cell"><span class="text-truncate d-block" title="{{reason}}">{{reason}}</span></td>
-            <td class="table-actions">
+            <td class="text-end text-nowrap" data-column="actions">
                 <button type="button" class="btn btn-link btn-icon btn-sm" data-action="show-yaml" title="{{#str}}view_yaml, local_servicemanager{{/str}}"
                     aria-label="{{#str}}view_yaml, local_servicemanager{{/str}}: {{version}}">{{#pix}}code, local_servicemanager{{/pix}}</button>
                 <a href="{{viewurl}}" class="btn btn-link btn-icon btn-sm text-primary" title="{{#str}}action_view, local_servicemanager{{/str}}"

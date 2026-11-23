@@ -20,19 +20,14 @@
     What the person reads above the form that imports schemas.
 
     Context variables required for this template:
-    * backurl - Where Back leads
     * documentationurl - The reference of the YAML format
 
     Example context (json):
     {
-        "backurl": "#",
         "documentationurl": "#"
     }
 }}
 <div class="lsm servicemanager-import-page">
-    <div class="mb-3">
-        <a href="{{backurl}}" class="btn btn-secondary">{{#pix}}t/left, core{{/pix}} {{#str}}back, local_servicemanager{{/str}}</a>
-    </div>
     <div class="alert alert-info">
         <h5>{{#pix}}i/info, core{{/pix}} {{#str}}import_info_title, local_servicemanager{{/str}}</h5>
         <p>{{#str}}import_info_text, local_servicemanager{{/str}}</p>

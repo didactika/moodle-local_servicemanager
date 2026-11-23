@@ -27,20 +27,20 @@
         "datelabel": "Last modified"
     }
 }}
-<div class="dd-menu dd-select-filter" data-menu="date">
-    <button type="button" class="custom-select form-select dd-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
+<div class="dropdown d-inline-flex" data-menu="date">
+    <button type="button" class="custom-select form-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
         aria-label="{{datelabel}}"><span data-region="menu-label" data-label="{{datelabel}}">{{datelabel}}</span></button>
-    <button type="button" class="dd-select-clear" data-menu-clear hidden
+    <button type="button" class="btn btn-link p-0" data-menu-clear hidden
         title="{{#str}}filter_clear, local_servicemanager{{/str}}: {{datelabel}}"
         aria-label="{{#str}}filter_clear, local_servicemanager{{/str}}: {{datelabel}}">{{#pix}}e/cancel, core{{/pix}}</button>
-    <div class="dd-select-menu" role="group" aria-label="{{datelabel}}" hidden>
+    <div class="dropdown-menu show" role="group" aria-label="{{datelabel}}" hidden>
         <button type="button" class="dropdown-item" data-preset="today">{{#str}}filter_date_today, local_servicemanager{{/str}}</button>
         <button type="button" class="dropdown-item" data-preset="week">{{#str}}filter_date_week, local_servicemanager{{/str}}</button>
         <button type="button" class="dropdown-item" data-preset="month">{{#str}}filter_date_month, local_servicemanager{{/str}}</button>
         <button type="button" class="dropdown-item" data-preset="last30">{{#str}}filter_date_last30, local_servicemanager{{/str}}</button>
         <hr>
-        <div class="dd-menu-form">
-            <div class="dd-menu-dates">
+        <div class="d-grid gap-2 px-3 pt-2 pb-3">
+            <div class="d-flex gap-2">
                 <div>
                     <label class="form-label small mb-1" for="lsm-from">{{#str}}filter_date_from, local_servicemanager{{/str}}</label>
                     <input type="date" id="lsm-from" class="form-control form-control-sm" data-date="from">

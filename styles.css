@@ -39,10 +39,10 @@
 
 .lsm .btn,
 .lsm .badge,
-.lsm .dd-tile,
+.lsm .icon-box,
 .path-local-servicemanager .modal .btn,
 .path-local-servicemanager .modal .badge,
-.path-local-servicemanager .modal .dd-tile {
+.path-local-servicemanager .modal .icon-box {
     --dd-c: var(--dd-primary);
 }
 
@@ -78,7 +78,7 @@
 
 .lsm .btn,
 .lsm .badge,
-.lsm .dd-tile,
+.lsm .icon-box,
 .lsm [class*=-primary],
 .lsm [class*=-secondary],
 .lsm [class*=-success],
@@ -87,7 +87,7 @@
 .lsm [class*=-danger],
 .path-local-servicemanager .modal .btn,
 .path-local-servicemanager .modal .badge,
-.path-local-servicemanager .modal .dd-tile,
+.path-local-servicemanager .modal .icon-box,
 .path-local-servicemanager .modal [class*=-primary],
 .path-local-servicemanager .modal [class*=-secondary],
 .path-local-servicemanager .modal [class*=-success],
@@ -112,47 +112,45 @@
     min-width: 0;
 }
 
-.lsm .dd-page-header {
-    display: grid;
-    gap: 0.75rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--dd-hairline);
-}
-
-.lsm .dd-page-header-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem 1.5rem;
-}
-
-.lsm .dd-page-header-main {
-    display: flex;
-    align-items: center;
-    gap: 0.875rem;
+.lsm > * {
     min-width: 0;
 }
 
-.lsm .dd-page-title {
+.lsm [data-region=cards].row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.25;
-    color: var(--dd-ink);
 }
 
-.lsm .dd-page-subtitle {
+.lsm [data-region=cards].row > [class*=col-] {
+    width: auto;
+    max-width: none;
     margin: 0;
-    color: var(--dd-muted);
-    font-size: 0.9375rem;
+    padding: 0;
 }
 
-.lsm .dd-page-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
+@media (min-width: 992px) {
+
+    .lsm [data-region=cards].row {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+}
+
+.lsm [data-region=health-filters] {
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.lsm [data-region=health-filters]::-webkit-scrollbar {
+    display: none;
+}
+
+.lsm [data-region=health-filters] > .nav-link {
+    flex: none;
+    white-space: nowrap;
 }
 
 .lsm .nav-tabs.nav-tabs {
@@ -217,62 +215,6 @@
     box-shadow: inset 0 -3px 0 var(--dd-primary), inset 0 0 0 2px var(--dd-primary);
 }
 
-.lsm .dd-chips {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.lsm .dd-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4375rem;
-    min-height: 2rem;
-    padding: 0.1875rem 0.75rem;
-    border: 1px solid var(--dd-line);
-    border-radius: 999px;
-    background: var(--dd-surface);
-    color: var(--dd-ink);
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1.4;
-    cursor: pointer;
-    transition: background-color var(--dd-ease), border-color var(--dd-ease), color var(--dd-ease);
-}
-
-.lsm .dd-chip:hover {
-    border-color: var(--dd-line-hover);
-    background: var(--dd-surface-2);
-}
-
-.lsm .dd-chip:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 0 3px var(--dd-ring);
-}
-
-.lsm .dd-chip[aria-pressed=true] {
-    border-color: var(--dd-primary);
-    background: var(--dd-primary-soft);
-    color: var(--dd-primary-ink);
-    font-weight: 600;
-}
-
-.lsm .dd-chip[aria-pressed=true] .dd-chip-count {
-    background: var(--dd-primary);
-    color: #fff;
-}
-
-.lsm .dd-chip-count {
-    padding: 0 0.4rem;
-    border-radius: 999px;
-    background: var(--dd-surface-3);
-    color: var(--dd-muted);
-    font-size: 0.75rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
 .lsm .card {
     overflow: hidden;
     border: 1px solid var(--dd-hairline);
@@ -290,28 +232,6 @@
     color: var(--dd-ink);
     font-size: 1rem;
     font-weight: 700;
-}
-
-.lsm .table-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem 1rem;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--dd-hairline);
-}
-
-.lsm .table-toolbar-start,
-.lsm .table-toolbar-end {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.lsm .table-toolbar-start {
-    flex: 1 1 18rem;
 }
 
 .lsm .table-responsive {
@@ -339,8 +259,14 @@
 .lsm [data-region=empty]:not([hidden]),
 .lsm [data-region=error]:not([hidden]) {
     display: grid;
-    min-block-size: var(--dd-table-h);
+    min-block-size: calc(var(--dd-table-h) + var(--dd-foot-h, 0px));
     place-content: center;
+}
+
+.lsm [data-region=tablewrap]:has(> :is([data-region=empty], [data-region=empty-state]):not([hidden])) {
+    display: grid;
+    place-content: center;
+    block-size: calc(var(--dd-table-h) + var(--dd-foot-h, 0px));
 }
 
 .lsm .table {
@@ -384,12 +310,12 @@
     box-shadow: none;
 }
 
-.lsm .table .table-select {
+.lsm .table [data-column=select] {
     width: 2.75rem;
     padding-right: 0;
 }
 
-.lsm .table .table-select .form-check-input {
+.lsm .table [data-column=select] .form-check-input {
     position: static;
     display: block;
     width: 1.125rem;
@@ -398,7 +324,7 @@
     cursor: pointer;
 }
 
-.lsm .table .table-actions {
+.lsm .table [data-column=actions] {
     width: 1%;
     text-align: right;
     white-space: nowrap;
@@ -414,7 +340,7 @@
     max-width: 16rem;
 }
 
-.lsm .table-sort {
+.lsm thead th > .btn.btn-link {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
@@ -428,7 +354,7 @@
     cursor: pointer;
 }
 
-.lsm .table-sort::after {
+.lsm thead th > .btn.btn-link::after {
     content: "";
     flex: none;
     width: 0.4375rem;
@@ -440,15 +366,15 @@
     transition: transform 200ms cubic-bezier(0.2, 0, 0, 1), opacity 150ms;
 }
 
-.lsm .table-sort:hover {
+.lsm thead th > .btn.btn-link:hover {
     color: var(--dd-ink);
 }
 
-.lsm .table-sort:hover::after {
+.lsm thead th > .btn.btn-link:hover::after {
     opacity: 0.8;
 }
 
-.lsm .table-sort:focus-visible {
+.lsm thead th > .btn.btn-link:focus-visible {
     outline: 0;
     border-radius: 0.25rem;
     box-shadow: 0 0 0 3px var(--dd-ring);
@@ -458,104 +384,29 @@
     color: var(--dd-ink);
 }
 
-.lsm th[aria-sort] .table-sort {
+.lsm th[aria-sort] thead th > .btn.btn-link {
     color: var(--dd-primary-ink);
 }
 
-.lsm th[aria-sort] .table-sort::after {
+.lsm th[aria-sort] thead th > .btn.btn-link::after {
     opacity: 1;
     color: var(--dd-primary);
 }
 
-.lsm th[aria-sort=ascending] .table-sort::after {
+.lsm th[aria-sort=ascending] > .btn.btn-link::after {
     transform: translateY(2px) rotate(-135deg);
 }
 
-.lsm .table-foot {
-    padding: 0.75rem 1rem;
-    border-top: 1px solid var(--dd-hairline);
-}
-
-.lsm .dd-pager {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem 1.5rem;
-    color: var(--dd-muted);
-    font-size: 0.875rem;
-}
-
-.lsm .dd-pager-size {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-}
-
-.lsm .dd-pager-size select {
-    width: auto;
-}
-
-.lsm .dd-pager-end {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1rem;
-}
-
-.lsm .dd-pager-range {
-    color: var(--dd-ink);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-}
-
-.lsm .dd-pager-arrows {
-    display: flex;
-    gap: 0.25rem;
-}
-
-.lsm .dd-skeleton {
+.lsm .placeholder {
     display: block;
+    min-height: 0;
+    opacity: 1;
+    cursor: default;
     height: 0.875rem;
     border-radius: 0.375rem;
     background: linear-gradient(90deg, var(--dd-hairline) 0%, var(--dd-surface-3) 50%, var(--dd-hairline) 100%);
     background-size: 200% 100%;
     animation: lsm-shimmer 1.4s linear infinite;
-}
-
-.lsm .dd-empty {
-    display: grid;
-    justify-items: center;
-    gap: 0.5rem;
-    padding: 2.5rem 1.5rem;
-    text-align: center;
-}
-
-.lsm .dd-empty .dd-tile {
-    width: 3.5rem;
-    height: 3.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 1rem;
-    font-size: 1.5rem;
-}
-
-.lsm .dd-empty .btn {
-    margin-top: 0.75rem;
-}
-
-.lsm .dd-empty-title {
-    margin: 0;
-    color: var(--dd-ink);
-    font-size: 1.0625rem;
-    font-weight: 700;
-}
-
-.lsm .dd-empty-text {
-    max-width: 28rem;
-    margin: 0;
-    color: var(--dd-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
 }
 
 .lsm .card > .alert {
@@ -575,24 +426,20 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-    .lsm .dd-skeleton {
+    .lsm .placeholder {
         animation: none;
     }
 }
 
 @media (max-width: 576px) {
 
-    .lsm .dd-searchbox {
+    .lsm [role=search] {
         max-width: none;
-    }
-
-    .lsm .dd-pager-size {
-        display: none;
     }
 }
 
-.lsm .dd-searchbox,
-.path-local-servicemanager .modal .dd-searchbox {
+.lsm [role=search],
+.path-local-servicemanager .modal [role=search] {
     position: relative;
     display: flex;
     align-items: center;
@@ -600,13 +447,20 @@
     max-width: 22rem;
 }
 
-.lsm .dd-searchbox.mw-100,
-.path-local-servicemanager .modal .dd-searchbox.mw-100 {
+.lsm [role=search].mw-100,
+.path-local-servicemanager .modal [role=search].mw-100 {
     max-width: 100%;
 }
 
-.lsm .dd-searchbox .icon,
-.path-local-servicemanager .modal .dd-searchbox .icon {
+.lsm [role=search] .form-control,
+.path-local-servicemanager .modal [role=search] .form-control {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+}
+
+.lsm [role=search] .icon,
+.path-local-servicemanager .modal [role=search] .icon {
     position: absolute;
     left: 0.75rem;
     margin: 0;
@@ -614,18 +468,18 @@
     pointer-events: none;
 }
 
-.lsm .dd-searchbox .form-control,
-.path-local-servicemanager .modal .dd-searchbox .form-control {
+.lsm [role=search] .form-control,
+.path-local-servicemanager .modal [role=search] .form-control {
     min-height: var(--dd-h);
     padding-left: 2.25rem;
     border-color: var(--dd-line);
     border-radius: 999px;
 }
 
-.lsm .dd-select,
-.path-local-servicemanager .modal .dd-select {
+.lsm :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select),
+.path-local-servicemanager .modal :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select) {
     width: auto;
-    min-width: 12rem;
+    min-width: 0;
     max-width: 20rem;
     min-height: var(--dd-h);
     padding-left: 1rem;
@@ -638,34 +492,39 @@
     transition: border-color var(--dd-ease), box-shadow var(--dd-ease);
 }
 
-.lsm .dd-select:hover,
-.path-local-servicemanager .modal .dd-select:hover {
+.lsm :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):is(select):not(.form-select-sm),
+.path-local-servicemanager .modal :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):is(select):not(.form-select-sm) {
+    min-width: 12rem;
+}
+
+.lsm :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):hover,
+.path-local-servicemanager .modal :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):hover {
     border-color: var(--dd-line-hover);
 }
 
-.lsm .dd-select:focus,
-.path-local-servicemanager .modal .dd-select:focus {
+.lsm :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):focus,
+.path-local-servicemanager .modal :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):focus {
     border-color: var(--dd-primary);
     outline: 0;
     box-shadow: 0 0 0 3px var(--dd-ring);
 }
 
-.lsm .dd-select.border-primary,
-.path-local-servicemanager .modal .dd-select.border-primary {
+.lsm :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select).border-primary,
+.path-local-servicemanager .modal :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select).border-primary {
     border-color: var(--dd-primary);
     background-color: var(--dd-primary-soft);
     color: var(--dd-primary-ink);
     font-weight: 600;
 }
 
-.lsm .dd-select.dd-select-set,
-.path-local-servicemanager .modal .dd-select.dd-select-set {
+.lsm :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select).border-primary,
+.path-local-servicemanager .modal :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select).border-primary {
     padding-right: 2.5rem;
     background-image: none;
 }
 
-.lsm .dd-select:is(button),
-.path-local-servicemanager .modal .dd-select:is(button) {
+.lsm :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):is(button),
+.path-local-servicemanager .modal :is([data-region=filters], [data-region=foot]) :is(.form-select, .custom-select):is(button) {
     display: block;
     overflow: hidden;
     text-align: start;
@@ -673,15 +532,15 @@
     white-space: nowrap;
 }
 
-.lsm .dd-select-filter,
-.path-local-servicemanager .modal .dd-select-filter {
+.lsm .dropdown,
+.path-local-servicemanager .modal .dropdown {
     position: relative;
     display: inline-flex;
     max-width: 100%;
 }
 
-.lsm .dd-select-clear,
-.path-local-servicemanager .modal .dd-select-clear {
+.lsm [data-menu-clear],
+.path-local-servicemanager .modal [data-menu-clear] {
     position: absolute;
     top: 50%;
     right: 0.5rem;
@@ -699,21 +558,21 @@
     transition: background-color var(--dd-ease);
 }
 
-.lsm .dd-select-clear .icon,
-.path-local-servicemanager .modal .dd-select-clear .icon {
+.lsm [data-menu-clear] .icon,
+.path-local-servicemanager .modal [data-menu-clear] .icon {
     width: 0.875rem;
     height: 0.875rem;
     margin: 0;
     font-size: 0.875rem;
 }
 
-.lsm .dd-select-clear:hover,
-.path-local-servicemanager .modal .dd-select-clear:hover {
+.lsm [data-menu-clear]:hover,
+.path-local-servicemanager .modal [data-menu-clear]:hover {
     background-color: color-mix(in srgb, var(--dd-primary) 14%, transparent);
 }
 
-.lsm .dd-select-clear:focus-visible,
-.path-local-servicemanager .modal .dd-select-clear:focus-visible {
+.lsm [data-menu-clear]:focus-visible,
+.path-local-servicemanager .modal [data-menu-clear]:focus-visible {
     outline: 0;
     box-shadow: 0 0 0 3px var(--dd-ring);
 }
@@ -805,84 +664,43 @@
     pointer-events: auto;
 }
 
-.lsm .table-actions,
-.path-local-servicemanager .modal .table-actions {
+.lsm [data-column=actions],
+.path-local-servicemanager .modal [data-column=actions] {
     white-space: nowrap;
 }
 
-.lsm .table-actions .btn-icon + .btn-icon,
-.path-local-servicemanager .modal .table-actions .btn-icon + .btn-icon {
+.lsm [data-column=actions] .btn-icon + .btn-icon,
+.path-local-servicemanager .modal [data-column=actions] .btn-icon + .btn-icon {
     margin-left: 0.25rem;
 }
 
-.lsm .btn.btn-tonal,
-.path-local-servicemanager .modal .btn.btn-tonal {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    border-color: transparent;
-    background-color: var(--dd-c-soft);
-    box-shadow: none;
-    color: var(--dd-c-ink);
-}
-
-.lsm .btn.btn-tonal:hover,
-.lsm .btn.btn-tonal:focus-visible,
-.path-local-servicemanager .modal .btn.btn-tonal:hover,
-.path-local-servicemanager .modal .btn.btn-tonal:focus-visible {
+.lsm .icon-box,
+.path-local-servicemanager .modal .icon-box {
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    border-radius: 1rem;
     background-color: var(--dd-c-soft-2);
     color: var(--dd-c-ink);
-}
-
-.lsm .btn.btn-tonal .icon,
-.path-local-servicemanager .modal .btn.btn-tonal .icon {
-    margin: 0;
-    color: inherit;
-}
-
-.lsm .badge-dot::before,
-.path-local-servicemanager .modal .badge-dot::before {
-    content: "";
-    flex: none;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background-color: var(--dd-c);
-}
-
-.lsm .dd-tile,
-.path-local-servicemanager .modal .dd-tile {
-    display: inline-grid;
-    flex: none;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 0.75rem;
-    background-color: var(--dd-c-soft-2);
-    color: var(--dd-c-ink);
-    font-size: 1.0625rem;
+    font-size: 1.375rem;
     line-height: 1;
 }
 
-.lsm .dd-tile .icon,
-.path-local-servicemanager .modal .dd-tile .icon {
+.lsm .icon-box .icon,
+.path-local-servicemanager .modal .icon-box .icon {
+    width: auto;
+    height: auto;
     margin: 0;
     color: inherit;
+    font-size: inherit;
 }
 
-.lsm .dd-tile-lg,
-.path-local-servicemanager .modal .dd-tile-lg {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 1rem;
-    font-size: 1.375rem;
-}
-
-.lsm .dd-select-menu,
-.path-local-servicemanager .modal .dd-select-menu {
+.lsm .dropdown-menu,
+.path-local-servicemanager .modal .dropdown-menu {
     position: fixed;
     z-index: 1060;
-    display: block;
+    display: none;
     min-width: 10rem;
     margin: 0;
     padding: 0.375rem;
@@ -896,8 +714,13 @@
     animation: lsm-pop 140ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.lsm .dd-select-menu .dropdown-header,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-header {
+.lsm .dropdown-menu.show:not([hidden]),
+.path-local-servicemanager .modal .dropdown-menu.show:not([hidden]) {
+    display: block;
+}
+
+.lsm .dropdown-menu .dropdown-header,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-header {
     padding: 0.5rem 0.75rem 0.25rem;
     color: var(--dd-muted);
     font-size: 0.75rem;
@@ -906,11 +729,11 @@
     text-transform: uppercase;
 }
 
-.lsm .dd-select-menu .dropdown-item,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item {
+.lsm .dropdown-menu .dropdown-item,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 0.625rem;
     width: 100%;
     padding: 0.5rem 0.75rem;
@@ -924,31 +747,31 @@
     transition: background-color var(--dd-ease), color var(--dd-ease);
 }
 
-.lsm .dd-select-menu .dropdown-item + .dropdown-item,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item + .dropdown-item {
+.lsm .dropdown-menu .dropdown-item + .dropdown-item,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item + .dropdown-item {
     margin-top: 2px;
 }
 
-.lsm .dd-select-menu .dropdown-item:hover,
-.lsm .dd-select-menu .dropdown-item:focus,
-.lsm .dd-select-menu .dropdown-item.active,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item:hover,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item:focus,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item.active {
+.lsm .dropdown-menu .dropdown-item:hover,
+.lsm .dropdown-menu .dropdown-item:focus,
+.lsm .dropdown-menu .dropdown-item.active,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item:hover,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item:focus,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item.active {
     outline: 0;
     background-color: var(--dd-surface-2);
     color: var(--dd-ink);
 }
 
-.lsm .dd-select-menu .dropdown-item[aria-selected=true],
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item[aria-selected=true] {
+.lsm .dropdown-menu .dropdown-item[aria-selected=true],
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item[aria-selected=true] {
     background-color: var(--dd-primary-soft);
     color: var(--dd-primary-ink);
     font-weight: 600;
 }
 
-.lsm .dd-select-menu .dropdown-item[aria-selected=true]::after,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item[aria-selected=true]::after {
+.lsm .dropdown-menu .dropdown-item[aria-selected=true]::after,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item[aria-selected=true]::after {
     content: "";
     flex: none;
     width: 0.3rem;
@@ -959,21 +782,21 @@
     transform: rotate(45deg) translateY(-1px);
 }
 
-.lsm .dd-select-menu .dropdown-item[aria-selected=true]:focus,
-.lsm .dd-select-menu .dropdown-item[aria-selected=true].active,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item[aria-selected=true]:focus,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item[aria-selected=true].active {
+.lsm .dropdown-menu .dropdown-item[aria-selected=true]:focus,
+.lsm .dropdown-menu .dropdown-item[aria-selected=true].active,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item[aria-selected=true]:focus,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item[aria-selected=true].active {
     background-color: var(--dd-primary-soft-2);
 }
 
-.lsm .dd-select-menu .dropdown-item[aria-selected=true]::before,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item[aria-selected=true]::before {
+.lsm .dropdown-menu .dropdown-item[aria-selected=true]::before,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item[aria-selected=true]::before {
     content: none;
     display: none;
 }
 
-.lsm .dd-select-menu .dropdown-item.disabled,
-.path-local-servicemanager .modal .dd-select-menu .dropdown-item.disabled {
+.lsm .dropdown-menu .dropdown-item.disabled,
+.path-local-servicemanager .modal .dropdown-menu .dropdown-item.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -999,13 +822,13 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-    .lsm .dd-select-menu,
-    .path-local-servicemanager .modal .dd-select-menu {
+    .lsm .dropdown-menu,
+    .path-local-servicemanager .modal .dropdown-menu {
         animation: none;
     }
 }
 
-.lsm .dd-select.form-select-sm {
+.lsm :is(.form-select, .custom-select).form-select-sm {
     min-width: 4.75rem;
     min-height: var(--dd-h-sm);
     padding-top: 0.125rem;
@@ -1015,8 +838,8 @@
 
 /* stylelint-disable declaration-no-important */
 
-.lsm .badge.badge-soft,
-.path-local-servicemanager .modal .badge.badge-soft {
+.lsm .badge,
+.path-local-servicemanager .modal .badge {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
@@ -1029,39 +852,36 @@
     line-height: 1.2;
 }
 
-.lsm .badge.badge-outline,
-.path-local-servicemanager .modal .badge.badge-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.35em 0.8em;
-    border-radius: 999px;
+.lsm .badge.border,
+.path-local-servicemanager .modal .badge.border {
+    border-color: var(--dd-c) !important;
     background-color: transparent !important;
-    box-shadow: inset 0 0 0 1px var(--dd-c);
-    color: var(--dd-c-ink) !important;
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1.2;
+}
+
+.lsm code.badge,
+.path-local-servicemanager .modal code.badge {
+    gap: 0;
 }
 
 /* stylelint-enable declaration-no-important */
 
-.lsm .dd-searchbox > span[aria-hidden=true],
-.path-local-servicemanager .modal .dd-searchbox > span[aria-hidden=true] {
+.lsm [role=search] > span[aria-hidden=true],
+.path-local-servicemanager .modal [role=search] > span[aria-hidden=true] {
     position: absolute;
     left: 0.75rem;
     color: var(--dd-muted);
     pointer-events: none;
 }
 
-.lsm .dd-searchbox > span[aria-hidden=true] .icon,
-.path-local-servicemanager .modal .dd-searchbox > span[aria-hidden=true] .icon {
+.lsm [role=search] > span[aria-hidden=true] .icon,
+.path-local-servicemanager .modal [role=search] > span[aria-hidden=true] .icon {
     position: static;
     margin: 0;
 }
 
-.lsm .dd-floatbar {
+.lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card {
     position: fixed;
+    flex-direction: row;
     bottom: 1.5rem;
     left: 50%;
     z-index: 1030;
@@ -1078,69 +898,8 @@
     animation: lsm-rise 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.lsm .dd-floatbar[hidden] {
+.lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card[hidden] {
     display: none;
-}
-
-.lsm .dd-floatbar .dd-floatbar-count {
-    color: var(--dd-ink);
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.lsm .dd-floatbar .dd-floatbar-all {
-    padding: 0;
-    font-size: 0.875rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.lsm .dd-floatbar .dd-floatbar-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-}
-
-.lsm .dd-floatbar .dd-floatbar-clear {
-    position: relative;
-    display: inline-grid;
-    flex: none;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    border: 0;
-    border-radius: 0.5rem;
-    background: transparent;
-    color: var(--dd-muted);
-    transition: background-color var(--dd-ease), color var(--dd-ease);
-}
-
-.lsm .dd-floatbar .dd-floatbar-clear::before,
-.lsm .dd-floatbar .dd-floatbar-clear::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0.75rem;
-    height: 2px;
-    border-radius: 2px;
-    background: currentColor;
-}
-
-.lsm .dd-floatbar .dd-floatbar-clear::before {
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.lsm .dd-floatbar .dd-floatbar-clear::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.lsm .dd-floatbar .dd-floatbar-clear:hover,
-.lsm .dd-floatbar .dd-floatbar-clear:focus-visible {
-    outline: 0;
-    background-color: var(--dd-primary-soft);
-    color: var(--dd-primary-ink);
 }
 
 @keyframes lsm-rise {
@@ -1158,17 +917,23 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-    .lsm .dd-floatbar {
+    .lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card {
         animation: none;
     }
 }
 
 @media (max-width: 576px) {
 
-    .lsm .dd-floatbar {
+    .lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card {
+        right: 0.75rem;
+        left: 0.75rem;
         flex-wrap: wrap;
+        gap: 0.5rem;
         justify-content: center;
+        max-width: none;
         border-radius: var(--dd-radius-lg);
+        transform: none;
+        animation: none;
     }
 }
 
@@ -1176,21 +941,20 @@
     overflow: visible;
 }
 
-.lsm .card > .table-responsive:last-child,
-.lsm .card > .table-foot:last-child {
+.lsm .card > .table-responsive:last-child {
     border-radius: 0 0 var(--dd-radius-lg) var(--dd-radius-lg);
 }
 
-.lsm .table-toolbar-start {
+.lsm [data-region=filters] > :first-child {
     gap: 0.5rem;
 }
 
-.lsm .dd-menu {
+.lsm .dropdown {
     position: relative;
     display: inline-flex;
 }
 
-.lsm button.dd-select {
+.lsm button:is(.form-select, .custom-select) {
     display: block;
     min-width: 0;
     max-width: 18rem;
@@ -1200,11 +964,7 @@
     white-space: nowrap;
 }
 
-.lsm button.dd-select .dd-chip-count {
-    margin-left: 0.5rem;
-}
-
-.lsm .dd-menu > .dd-select-menu {
+.lsm .dropdown > .dropdown-menu {
     position: absolute;
     inset: calc(100% + 2px) auto auto 0;
     width: max-content;
@@ -1213,78 +973,69 @@
     max-height: 20rem;
 }
 
-.lsm .dd-menu-end > .dd-select-menu {
+.lsm .dropdown > .dropdown-menu-end {
     inset: calc(100% + 2px) 0 auto auto;
 }
 
-.lsm .dd-menu-up > .dd-select-menu {
+.lsm .table-responsive .dropdown > .dropdown-menu {
+    min-width: 10rem;
+}
+
+.lsm .dropup > .dropdown-menu {
     inset: auto auto calc(100% + 2px) 0;
 }
 
-.lsm .dd-select-menu label.dropdown-item {
+.lsm .dropdown-menu label.dropdown-item {
     margin: 0;
     font-weight: 400;
 }
 
-.lsm .dd-select-menu .dropdown-item .form-check-input {
+.lsm .dropdown-menu .dropdown-item .form-check-input {
     position: static;
     flex: none;
     margin: 0;
 }
 
-.lsm .dd-select-menu .dropdown-item > span:first-of-type {
+.lsm .dropdown-menu .dropdown-item > span:first-of-type {
     flex: 1 1 auto;
 }
 
-.lsm .dd-select-menu .dd-menu-form {
-    display: grid;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem 0.75rem;
-}
-
-.lsm .dd-select-menu .dd-menu-dates {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-}
-
-.lsm .dd-select-menu hr {
+.lsm .dropdown-menu hr {
     margin: 0.375rem 0;
     border-color: var(--dd-hairline);
 }
 
-.lsm .dd-chip-count {
-    padding: 0 0.4rem;
-    border-radius: 999px;
-    background: var(--dd-surface-3);
-    color: var(--dd-muted);
-    font-size: 0.75rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
 @media (max-width: 576px) {
 
-    .lsm .table-toolbar-start {
+    .lsm [data-region=filters] > :first-child {
         flex: 1 1 100%;
     }
 }
 
-.lsm [data-region=filters] > .table-toolbar-start {
+.lsm [data-region=filters] > :first-child {
     flex-wrap: nowrap;
     min-width: 0;
 }
 
-.lsm [data-region=filters] > .table-toolbar-start > .dd-searchbox {
+.lsm [data-region=filters] > :first-child > [role=search] {
     flex: 1 1 10rem;
     min-width: 10rem;
 }
 
 @media (max-width: 400px) {
 
-    .lsm [data-region=filters] > .table-toolbar-start > .dd-searchbox {
+    .lsm [data-region=filters] > :first-child > [role=search] {
         min-width: 7rem;
     }
+}
+
+.lsm [data-region=filters]:has([data-menu=filters]:not([hidden])) > :last-child:not(:first-child) {
+    /* stylelint-disable-next-line declaration-no-important */
+    display: none !important;
+}
+
+.lsm [data-region=filter-panel] > :has(> [data-action=reset-all]) {
+    justify-content: flex-end;
 }
 
 .lsm [data-region=filter-menus] {
@@ -1295,17 +1046,17 @@
     gap: 0.5rem;
 }
 
-.lsm [data-region=filter-menus] button.dd-select {
+.lsm [data-region=filter-menus] button:is(.form-select, .custom-select) {
     max-width: 14rem;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-.lsm [data-menu=filters] > button.dd-select {
+.lsm [data-menu=filters] > button:is(.form-select, .custom-select) {
     min-width: 0;
 }
 
-.lsm [data-menu=filters] > .dd-select-menu {
+.lsm [data-menu=filters] > .dropdown-menu {
     min-width: 17rem;
     max-height: none;
     overflow: visible;
@@ -1317,9 +1068,9 @@
     padding: 0.5rem;
 }
 
-.lsm [data-region=filter-panel] .dd-menu,
-.lsm [data-region=filter-panel] .dd-select-filter,
-.lsm [data-region=filter-panel] button.dd-select {
+.lsm [data-region=filter-panel] .dropdown,
+.lsm [data-region=filter-panel] .dropdown,
+.lsm [data-region=filter-panel] button:is(.form-select, .custom-select) {
     width: 100%;
     max-width: none;
 }
@@ -1357,27 +1108,56 @@
         z-index: 2;
     }
 
-    .lsm .dd-chips {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scrollbar-width: none;
+    .lsm .table-responsive .table th[data-column=select],
+    .lsm .table-responsive .table td[data-column=select] {
+        width: 2.75rem;
+        min-width: 2.75rem;
+        max-width: 2.75rem;
+        box-shadow: none;
     }
 
-    .lsm .dd-chip {
-        flex: none;
-        white-space: nowrap;
+    .lsm .table-responsive .table :is(th, td)[data-column=select] + :is(th, td) {
+        position: sticky;
+        inset-inline-start: 2.75rem;
+        z-index: 1;
+        padding-inline-start: 0.5rem;
+        background-color: var(--dd-surface);
+        box-shadow: inset -1px 0 0 var(--dd-hairline, rgba(0, 0, 0, 0.08));
     }
 
-    .lsm .table-toolbar[data-region=filters] {
+    .lsm .table-responsive .table thead th[data-column=select] + th {
+        z-index: 2;
+    }
+
+    .lsm .table-responsive .table th:first-child:not([data-column=select]),
+    .lsm .table-responsive .table td:first-child:not([data-column=select]),
+    .lsm .table-responsive .table :is(th, td)[data-column=select] + :is(th, td) {
+        max-width: 12rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .lsm .table-responsive .table th:first-child:not([data-column=select]) .text-truncate,
+    .lsm .table-responsive .table th:first-child:not([data-column=select]) a,
+    .lsm .table-responsive .table td:first-child:not([data-column=select]) .text-truncate,
+    .lsm .table-responsive .table td:first-child:not([data-column=select]) a,
+    .lsm .table-responsive .table :is(th, td)[data-column=select] + :is(th, td) .text-truncate,
+    .lsm .table-responsive .table :is(th, td)[data-column=select] + :is(th, td) a {
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .lsm [data-region=filters] {
         position: relative;
     }
 
-    .lsm .table-toolbar[data-region=filters] > .table-toolbar-start {
+    .lsm [data-region=filters] > :first-child {
         padding-inline-end: 3rem;
     }
 
-    .lsm .table-toolbar[data-region=filters] > .table-toolbar-end {
+    .lsm [data-region=filters] > :last-child:not(:first-child) {
         position: absolute;
         inset-block-start: 0.75rem;
         inset-inline-end: 0.75rem;
@@ -1426,118 +1206,13 @@
 }
 
 .lsm [data-region=filters] .form-control {
-    min-width: 10rem;
     border-color: var(--dd-line);
 }
 
-.lsm .dd-dl {
-    display: grid;
-    grid-template-columns: minmax(7rem, 11rem) 1fr;
-    margin: 0;
+.lsm [data-region=filters] .form-control:not([type=search]) {
+    min-width: 10rem;
 }
 
-.lsm .dd-dl dt,
-.lsm .dd-dl dd {
-    margin: 0;
-    padding: 0.625rem 0;
-    border-bottom: 1px solid var(--dd-hairline);
-}
-
-.lsm .dd-dl dt {
-    padding-right: 1rem;
-    color: var(--dd-muted);
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.lsm .dd-dl dd {
-    color: var(--dd-ink);
-    font-size: 0.9375rem;
-    overflow-wrap: anywhere;
-}
-
-.lsm .dd-dl dt:last-of-type,
-.lsm .dd-dl dd:last-of-type {
-    border-bottom: 0;
-}
-
-.lsm .dd-timeline {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.lsm .dd-timeline-item {
-    position: relative;
-    display: grid;
-    gap: 0.125rem;
-    padding: 0 0 1.25rem 1.75rem;
-}
-
-.lsm .dd-timeline-item::before {
-    content: "";
-    position: absolute;
-    top: 0.3125rem;
-    left: 0.1875rem;
-    width: 0.75rem;
-    height: 0.75rem;
-    border: 2px solid var(--dd-primary);
-    border-radius: 50%;
-    background: var(--dd-surface);
-}
-
-.lsm .dd-timeline-item::after {
-    content: "";
-    position: absolute;
-    top: 1.25rem;
-    bottom: 0.25rem;
-    left: 0.5rem;
-    width: 2px;
-    border-radius: 2px;
-    background: var(--dd-hairline);
-}
-
-.lsm .dd-timeline-item:last-child {
-    padding-bottom: 0;
-}
-
-.lsm .dd-timeline-item:last-child::after {
-    display: none;
-}
-
-.lsm .dd-timeline-item.is-success::before {
-    border-color: var(--dd-success);
-    background: var(--dd-success);
-}
-
-.lsm .dd-timeline-item.is-danger::before {
-    border-color: var(--dd-danger);
-    background: var(--dd-danger);
-}
-
-.lsm .dd-timeline-title {
-    color: var(--dd-ink);
-    font-size: 0.9375rem;
-    font-weight: 600;
-}
-
-.lsm .dd-timeline-meta {
-    color: var(--dd-muted);
-    font-size: 0.8125rem;
-}
-
-@media (max-width: 480px) {
-
-    .lsm .dd-dl {
-        grid-template-columns: 1fr;
-    }
-
-    .lsm .dd-dl dt {
-        padding-bottom: 0;
-        border-bottom: 0;
-    }
-}
 /* stylelint-disable declaration-no-important */
 
 .lsm .gap-1,
@@ -1643,10 +1318,10 @@
 .lsm .dropdown-item.dropdown-item:active:focus:not(:focus-visible),
 .lsm .list-group-item-action.list-group-item-action:focus:not(:focus-visible),
 .lsm .list-group-item-action.list-group-item-action:active:focus:not(:focus-visible),
-.lsm .dd-select.dd-select:focus:not(:focus-visible),
-.lsm .dd-select.dd-select:active:focus:not(:focus-visible),
-.lsm .dd-select-clear.dd-select-clear:focus:not(:focus-visible),
-.lsm .dd-select-clear.dd-select-clear:active:focus:not(:focus-visible),
+.lsm button:is(.form-select, .custom-select):focus:not(:focus-visible),
+.lsm button:is(.form-select, .custom-select):active:focus:not(:focus-visible),
+.lsm [data-menu-clear][data-menu-clear]:focus:not(:focus-visible),
+.lsm [data-menu-clear][data-menu-clear]:active:focus:not(:focus-visible),
 .lsm select.custom-select:focus:not(:focus-visible),
 .lsm select.custom-select:active:focus:not(:focus-visible),
 .lsm select.form-select:focus:not(:focus-visible),
@@ -1659,10 +1334,10 @@
 .path-local-servicemanager .modal .dropdown-item.dropdown-item:active:focus:not(:focus-visible),
 .path-local-servicemanager .modal .list-group-item-action.list-group-item-action:focus:not(:focus-visible),
 .path-local-servicemanager .modal .list-group-item-action.list-group-item-action:active:focus:not(:focus-visible),
-.path-local-servicemanager .modal .dd-select.dd-select:focus:not(:focus-visible),
-.path-local-servicemanager .modal .dd-select.dd-select:active:focus:not(:focus-visible),
-.path-local-servicemanager .modal .dd-select-clear.dd-select-clear:focus:not(:focus-visible),
-.path-local-servicemanager .modal .dd-select-clear.dd-select-clear:active:focus:not(:focus-visible),
+.path-local-servicemanager .modal button:is(.form-select, .custom-select):focus:not(:focus-visible),
+.path-local-servicemanager .modal button:is(.form-select, .custom-select):active:focus:not(:focus-visible),
+.path-local-servicemanager .modal [data-menu-clear][data-menu-clear]:focus:not(:focus-visible),
+.path-local-servicemanager .modal [data-menu-clear][data-menu-clear]:active:focus:not(:focus-visible),
 .path-local-servicemanager .modal select.custom-select:focus:not(:focus-visible),
 .path-local-servicemanager .modal select.custom-select:active:focus:not(:focus-visible),
 .path-local-servicemanager .modal select.form-select:focus:not(:focus-visible),
@@ -1675,16 +1350,16 @@
 .lsm .page-link.page-link:focus-visible,
 .lsm .dropdown-item.dropdown-item:focus-visible,
 .lsm .list-group-item-action.list-group-item-action:focus-visible,
-.lsm .dd-select.dd-select:focus-visible,
-.lsm .dd-select-clear.dd-select-clear:focus-visible,
+.lsm button:is(.form-select, .custom-select):focus-visible,
+.lsm [data-menu-clear][data-menu-clear]:focus-visible,
 .lsm select.custom-select:focus-visible,
 .lsm select.form-select:focus-visible,
 .path-local-servicemanager .modal .btn.btn:focus-visible,
 .path-local-servicemanager .modal .page-link.page-link:focus-visible,
 .path-local-servicemanager .modal .dropdown-item.dropdown-item:focus-visible,
 .path-local-servicemanager .modal .list-group-item-action.list-group-item-action:focus-visible,
-.path-local-servicemanager .modal .dd-select.dd-select:focus-visible,
-.path-local-servicemanager .modal .dd-select-clear.dd-select-clear:focus-visible,
+.path-local-servicemanager .modal button:is(.form-select, .custom-select):focus-visible,
+.path-local-servicemanager .modal [data-menu-clear][data-menu-clear]:focus-visible,
 .path-local-servicemanager .modal select.custom-select:focus-visible,
 .path-local-servicemanager .modal select.form-select:focus-visible {
     outline: 0;
@@ -1693,10 +1368,10 @@
 
 .lsm select.custom-select:focus:not(:focus-visible),
 .lsm select.form-select:focus:not(:focus-visible),
-.lsm .dd-select.dd-select:focus:not(:focus-visible),
+.lsm button:is(.form-select, .custom-select):focus:not(:focus-visible),
 .path-local-servicemanager .modal select.custom-select:focus:not(:focus-visible),
 .path-local-servicemanager .modal select.form-select:focus:not(:focus-visible),
-.path-local-servicemanager .modal .dd-select.dd-select:focus:not(:focus-visible) {
+.path-local-servicemanager .modal button:is(.form-select, .custom-select):focus:not(:focus-visible) {
     border-color: var(--dd-line-hover);
 }
 

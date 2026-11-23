@@ -39,12 +39,19 @@ let started = false;
  */
 const fit = () => {
     document.querySelectorAll('[data-region="tablewrap"]').forEach((element) => {
+        // While the empty state takes the place of the rows, the box keeps the height measured while they were shown.
+        if (!element.offsetParent || element.querySelector('[data-region="empty-state"]:not([hidden])')) {
+            return;
+        }
         const box = element.getBoundingClientRect();
         const card = element.closest('.card');
-        const below = card ? Math.max(0, card.getBoundingClientRect().bottom - box.bottom) : 0;
+        // The line of the card stays under the empty state, so it is not part of what the empty state takes the place of.
+        const line = card ? parseFloat(window.getComputedStyle(card).borderBottomWidth) || 0 : 0;
+        const below = card ? Math.max(0, card.getBoundingClientRect().bottom - box.bottom - line) : 0;
         const height = Math.max(LEAST, window.innerHeight - (box.top + window.scrollY) - below - ROOM);
-        // On the card, so the empty state that may take the place of the table has the same height.
+        // On the card, so the empty state that may take the place of the table and of its pager has the same height.
         (card || element).style.setProperty('--dd-table-h', height + 'px');
+        (card || element).style.setProperty('--dd-foot-h', below + 'px');
     });
 };
 

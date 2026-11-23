@@ -126,7 +126,7 @@ export const init = () => {
         const applied = state.from || state.to ? 1 : 0;
         toolbar.dataset.applied = String(applied);
         filters.fit(applied);
-        toolbar.querySelector('.table-toolbar-end [data-action="reset-all"]').disabled = applied === 0 && state.query === '';
+        toolbar.querySelector('[data-action="reset-all"]').disabled = applied === 0 && state.query === '';
         list.hidden = found.length === 0;
         empty.hidden = found.length !== 0;
         drawPager(pagination, state.page, state.perpage, found.length, pager);

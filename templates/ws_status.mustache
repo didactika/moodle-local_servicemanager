@@ -46,7 +46,7 @@
     }
 }}
 <div class="d-flex flex-wrap align-items-center border-top pt-3 mt-3" data-region="ws-status">
-    <span class="badge badge-soft badge-dot rounded-pill text-bg-{{tone}} mr-3 me-3 my-1">{{#str}}tile_services, local_servicemanager{{/str}}: {{label}}</span>
+    <span class="badge rounded-pill text-bg-{{tone}} mr-3 me-3 my-1">{{#str}}tile_services, local_servicemanager{{/str}}: {{label}}</span>
     {{#protocols}}
         {{#canconfigure}}
             <form method="post" action="{{toggleurl}}" class="mr-2 me-2 my-1" data-region="protocol">
@@ -55,17 +55,17 @@
                 <input type="hidden" name="protocol" value="{{key}}">
                 <input type="hidden" name="enable" value="{{#turnedon}}0{{/turnedon}}{{^turnedon}}1{{/turnedon}}">
                 {{#turnedon}}
-                    <button type="submit" class="btn btn-sm btn-tonal btn-success rounded-pill" aria-pressed="true"
+                    <button type="submit" class="btn btn-sm btn-outline-success rounded-pill" aria-pressed="true"
                         title="{{#str}}ws_protocol_turn_off, local_servicemanager, {{name}}{{/str}}">{{#pix}}i/checkedcircle, core{{/pix}} {{name}}</button>
                 {{/turnedon}}
                 {{^turnedon}}
-                    <button type="submit" class="btn btn-sm btn-tonal btn-secondary rounded-pill" aria-pressed="false"
+                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill" aria-pressed="false"
                         title="{{#str}}ws_protocol_turn_on, local_servicemanager, {{name}}{{/str}}">{{#pix}}i/uncheckedcircle, core{{/pix}} {{name}}</button>
                 {{/turnedon}}
             </form>
         {{/canconfigure}}
         {{^canconfigure}}
-            <span class="badge badge-outline rounded-pill {{#turnedon}}text-bg-success{{/turnedon}}{{^turnedon}}text-bg-secondary{{/turnedon}} mr-2 me-2 my-1">{{name}}<span class="sr-only visually-hidden"> {{#turnedon}}{{#str}}ws_enabled_label, local_servicemanager{{/str}}{{/turnedon}}{{^turnedon}}{{#str}}ws_disabled_label, local_servicemanager{{/str}}{{/turnedon}}</span></span>
+            <span class="badge border rounded-pill {{#turnedon}}text-bg-success{{/turnedon}}{{^turnedon}}text-bg-secondary{{/turnedon}} mr-2 me-2 my-1">{{name}}<span class="sr-only visually-hidden"> {{#turnedon}}{{#str}}ws_enabled_label, local_servicemanager{{/str}}{{/turnedon}}{{^turnedon}}{{#str}}ws_disabled_label, local_servicemanager{{/str}}{{/turnedon}}</span></span>
         {{/canconfigure}}
     {{/protocols}}
     {{#canconfigure}}
@@ -75,14 +75,14 @@
                 <input type="hidden" name="returnurl" value="{{returnurl}}">
                 <input type="hidden" name="enable" value="{{#enabled}}0{{/enabled}}{{^enabled}}1{{/enabled}}">
                 {{#enabled}}
-                    <button type="submit" class="btn btn-sm btn-tonal btn-secondary rounded-pill" data-action="ws-off">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_disable_services, local_servicemanager{{/str}}</button>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill" data-action="ws-off">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_disable_services, local_servicemanager{{/str}}</button>
                 {{/enabled}}
                 {{^enabled}}
                     <button type="submit" class="btn btn-sm btn-primary rounded-pill">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_enable_services, local_servicemanager{{/str}}</button>
                 {{/enabled}}
             </form>
             {{#protocolsurl}}
-                <a href="{{protocolsurl}}" class="btn btn-sm btn-tonal btn-secondary rounded-pill my-1">{{#pix}}i/settings, core{{/pix}} {{#str}}tile_manage, local_servicemanager{{/str}}</a>
+                <a href="{{protocolsurl}}" class="btn btn-sm btn-outline-secondary rounded-pill my-1">{{#pix}}i/settings, core{{/pix}} {{#str}}tile_manage, local_servicemanager{{/str}}</a>
             {{/protocolsurl}}
         </div>
     {{/canconfigure}}

@@ -46,13 +46,13 @@
     }
 }}
 <div class="lsm servicemanager-dashboard" data-region="servicemanager-dashboard" data-bulk-url="{{urls.bulk}}" data-sesskey="{{sesskey}}">
-    <header class="dd-page-header mb-3">
-        <div class="dd-page-header-row">
-            <div class="dd-page-header-main">
-                <span class="dd-tile dd-tile-lg">{{#pix}}plug, local_servicemanager{{/pix}}</span>
-                <p class="dd-page-subtitle">{{#str}}dashboard_subtitle, local_servicemanager{{/str}}</p>
+    <header class="d-grid gap-3 pb-3 border-bottom mb-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <span class="icon-box">{{#pix}}plug, local_servicemanager{{/pix}}</span>
+                <p class="text-muted mb-0">{{#str}}dashboard_subtitle, local_servicemanager{{/str}}</p>
             </div>
-            <div class="dd-page-actions">
+            <div class="d-flex flex-wrap align-items-center gap-2">
                 <div class="dropdown">
                     <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-sm-menu aria-haspopup="true" aria-expanded="false">
                         {{#pix}}docs, core{{/pix}} {{#str}}docs_menu, local_servicemanager{{/str}}
@@ -82,7 +82,7 @@
                 </div>
                 <ul class="list-inline mb-0">
                     {{#statuses}}
-                        <li class="list-inline-item"><span class="badge badge-soft rounded-pill text-bg-{{tone}}">{{count}} {{label}}</span></li>
+                        <li class="list-inline-item"><span class="badge rounded-pill text-bg-{{tone}}">{{count}} {{label}}</span></li>
                     {{/statuses}}
                 </ul>
             </div>
@@ -94,10 +94,10 @@
 
     {{^hasschemas}}
         <div class="card">
-            <div class="dd-empty" data-region="empty">
-                <span class="dd-tile dd-tile-lg">{{#pix}}plug, local_servicemanager{{/pix}}</span>
-                <p class="dd-empty-title">{{#str}}empty_title, local_servicemanager{{/str}}</p>
-                <p class="dd-empty-text">{{#str}}no_schemas, local_servicemanager{{/str}}</p>
+            <div class="d-flex flex-column align-items-center gap-2 px-4 py-5 text-center" data-region="empty">
+                <span class="icon-box">{{#pix}}plug, local_servicemanager{{/pix}}</span>
+                <p class="fw-bold mb-0">{{#str}}empty_title, local_servicemanager{{/str}}</p>
+                <p class="text-muted mb-0">{{#str}}no_schemas, local_servicemanager{{/str}}</p>
                 {{#canmanage}}
                     <div class="d-flex flex-wrap justify-content-center">
                         <a href="{{urls.create}}" class="btn btn-primary mr-2 me-2">{{#pix}}t/add, core{{/pix}} {{#str}}new_schema, local_servicemanager{{/str}}</a>
@@ -110,43 +110,43 @@
 
     {{#hasschemas}}
         <div class="card">
-            <div class="table-toolbar" data-region="filters">
-                <div class="table-toolbar-start">
-                    <div class="dd-searchbox" role="search">
+            <div class="d-flex align-items-center justify-content-between gap-3 px-3 py-2 border-bottom" data-region="filters">
+                <div class="d-flex align-items-center gap-2 flex-grow-1">
+                    <div class="position-relative d-flex align-items-center" role="search">
                         {{#pix}}a/search, core{{/pix}}
                         <label class="sr-only visually-hidden" for="lsm-search">{{#str}}filter_name, local_servicemanager{{/str}}</label>
                         <input class="form-control" type="search" id="lsm-search" placeholder="{{#str}}filter_name, local_servicemanager{{/str}}" autocomplete="off">
                     </div>
                     <div data-region="filter-menus">
-                        <div class="dd-menu dd-select-filter" data-menu="status">
-                            <button type="button" class="custom-select form-select dd-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
+                        <div class="dropdown d-inline-flex" data-menu="status">
+                            <button type="button" class="custom-select form-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
                                 aria-label="{{#str}}filter_status, local_servicemanager{{/str}}"><span data-region="menu-label"
                                 data-label="{{#str}}filter_status, local_servicemanager{{/str}}">{{#str}}filter_status, local_servicemanager{{/str}}</span></button>
-                            <button type="button" class="dd-select-clear" data-menu-clear hidden
+                            <button type="button" class="btn btn-link p-0" data-menu-clear hidden
                                 title="{{#str}}filter_clear, local_servicemanager{{/str}}: {{#str}}filter_status, local_servicemanager{{/str}}"
                                 aria-label="{{#str}}filter_clear, local_servicemanager{{/str}}: {{#str}}filter_status, local_servicemanager{{/str}}">{{#pix}}e/cancel, core{{/pix}}</button>
-                            <div class="dd-select-menu" role="group" aria-label="{{#str}}filter_status, local_servicemanager{{/str}}" hidden>
+                            <div class="dropdown-menu show" role="group" aria-label="{{#str}}filter_status, local_servicemanager{{/str}}" hidden>
                                 {{#statuses}}
                                     <label class="dropdown-item" for="lsm-status-{{key}}">
                                         <input type="checkbox" class="form-check-input" id="lsm-status-{{key}}" value="{{key}}" data-label="{{label}}">
                                         <span>{{label}}</span>
-                                        <span class="dd-chip-count" data-status-count="{{key}}">{{count}}</span>
+                                        <span class="badge text-bg-secondary ms-auto" data-status-count="{{key}}">{{count}}</span>
                                     </label>
                                 {{/statuses}}
                             </div>
                         </div>
                         {{> local_servicemanager/date_menu }}
-                        <div class="dd-menu dd-menu-end" data-menu="filters" hidden>
-                            <button type="button" class="custom-select form-select dd-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
+                        <div class="dropdown" data-menu="filters" hidden>
+                            <button type="button" class="custom-select form-select" data-menu-toggle aria-haspopup="true" aria-expanded="false"
                                 aria-label="{{#str}}filters, local_servicemanager{{/str}}">{{#pix}}i/filter, core{{/pix}} <span data-region="menu-label"
                                 data-label="{{#str}}filters, local_servicemanager{{/str}}">{{#str}}filters, local_servicemanager{{/str}}</span></button>
-                            <div class="dd-select-menu" role="group" aria-label="{{#str}}filters, local_servicemanager{{/str}}" hidden>
+                            <div class="dropdown-menu show dropdown-menu-end dropdown-menu-right" role="group" aria-label="{{#str}}filters, local_servicemanager{{/str}}" hidden>
                                 <div data-region="filter-panel"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="table-toolbar-end">
+                <div class="d-flex align-items-center gap-2 flex-shrink-0">
                     <button type="button" class="btn btn-link btn-icon" data-action="reset-all" disabled
                         title="{{#str}}filters_reset, local_servicemanager{{/str}}" aria-label="{{#str}}filters_reset, local_servicemanager{{/str}}">{{#pix}}i/reload, core{{/pix}}</button>
                 </div>
@@ -157,7 +157,7 @@
                     <thead>
                         <tr>
                             {{#canmanage}}
-                                <th scope="col" class="table-select">
+                                <th scope="col" class="align-middle" data-column="select">
                                     <input type="checkbox" class="form-check-input" id="lsm-select-all">
                                     <label for="lsm-select-all" class="sr-only visually-hidden">{{#str}}select_all, local_servicemanager{{/str}}</label>
                                 </th>
@@ -166,7 +166,7 @@
                             <th scope="col">{{#str}}schema_version, local_servicemanager{{/str}}</th>
                             <th scope="col">{{#str}}schema_status, local_servicemanager{{/str}}</th>
                             <th scope="col" class="d-none d-md-table-cell">{{#str}}schema_modified, local_servicemanager{{/str}}</th>
-                            <th scope="col" class="table-actions"><span class="sr-only visually-hidden">{{#str}}actions, moodle{{/str}}</span></th>
+                            <th scope="col" class="text-end text-nowrap" data-column="actions"><span class="sr-only visually-hidden">{{#str}}actions, moodle{{/str}}</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,7 +174,7 @@
                             <tr data-region="schema-row" data-id="{{id}}" data-status="{{status}}" data-enabled="{{enabledvalue}}"
                                 data-modified="{{modifiedat}}" data-text="{{name}} {{schemaid}} {{version}}"{{#hidden}} hidden{{/hidden}}>
                                 {{#canmanage}}
-                                    <td class="table-select">
+                                    <td class="align-middle" data-column="select">
                                         <input type="checkbox" class="form-check-input" id="lsm-schema-{{id}}" value="{{id}}" data-region="schema-check">
                                         <label for="lsm-schema-{{id}}" class="sr-only visually-hidden">{{name}}</label>
                                     </td>
@@ -183,15 +183,15 @@
                                     <span class="d-flex flex-column">
                                         <span>
                                             <a href="{{viewurl}}" class="font-weight-bold fw-bold">{{name}}</a>
-                                            {{^enabled}}<span class="badge badge-soft rounded-pill text-bg-secondary ml-2 ms-2">{{#str}}disabled, local_servicemanager{{/str}}</span>{{/enabled}}
+                                            {{^enabled}}<span class="badge rounded-pill text-bg-secondary ml-2 ms-2">{{#str}}disabled, local_servicemanager{{/str}}</span>{{/enabled}}
                                         </span>
                                         <small class="text-muted">{{#pix}}fingerprint, local_servicemanager{{/pix}} {{schemaid}}</small>
                                     </span>
                                 </td>
                                 <td>{{version}}</td>
-                                <td><span class="badge badge-soft badge-dot rounded-pill text-bg-{{tone}}">{{statuslabel}}</span></td>
+                                <td><span class="badge rounded-pill text-bg-{{tone}}">{{statuslabel}}</span></td>
                                 <td class="d-none d-md-table-cell"><small class="text-muted">{{modified}}</small></td>
-                                <td class="table-actions">
+                                <td class="text-end text-nowrap" data-column="actions">
                                     <a class="btn btn-link btn-icon btn-sm text-primary" href="{{viewurl}}" title="{{#str}}action_view, local_servicemanager{{/str}}"
                                         aria-label="{{#str}}action_view, local_servicemanager{{/str}}: {{name}}">{{#pix}}view, local_servicemanager{{/pix}}</a>
                                     {{#canmanage}}
@@ -217,27 +217,29 @@
                         {{/schemas}}
                     </tbody>
                 </table>
-                <div class="dd-empty" data-region="empty-state" hidden>
-                    <span class="dd-tile dd-tile-lg">{{#pix}}a/search, core{{/pix}}</span>
-                    <p class="dd-empty-text">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-action="reset-all">{{#str}}filters_reset, local_servicemanager{{/str}}</button>
+                <div data-region="empty-state" hidden>
+                    <div class="d-flex flex-column align-items-center gap-2 px-4 py-5 text-center">
+                        <span class="icon-box">{{#pix}}a/search, core{{/pix}}</span>
+                        <p class="text-muted mb-0">{{#str}}no_schemas_filtered, local_servicemanager{{/str}}</p>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-action="reset-all">{{#str}}filters_reset, local_servicemanager{{/str}}</button>
+                    </div>
                 </div>
             </div>
-            <div class="table-foot" data-region="pagination" hidden></div>
+            <div class="px-3 py-2 border-top" data-region="pagination" hidden></div>
         </div>
         {{#truncated}}<p class="text-muted small text-center mt-2">{{truncatedtext}}</p>{{/truncated}}
 
         {{#canmanage}}
-            <div class="dd-floatbar" data-region="bulk-actions" role="region" aria-label="{{#str}}actions, moodle{{/str}}" hidden>
-                <span class="dd-floatbar-count" role="status" data-region="selected-count"></span>
-                <div class="dd-floatbar-actions">
-                    <button type="button" class="btn btn-secondary btn-tonal btn-sm" data-bulk="enable">{{#pix}}t/show, core{{/pix}} {{#str}}bulk_enable, local_servicemanager{{/str}}</button>
-                    <button type="button" class="btn btn-secondary btn-tonal btn-sm" data-bulk="disable">{{#pix}}t/hide, core{{/pix}} {{#str}}bulk_disable, local_servicemanager{{/str}}</button>
-                    <button type="button" class="btn btn-secondary btn-tonal btn-sm" data-bulk="export">{{#pix}}t/download, core{{/pix}} {{#str}}bulk_export, local_servicemanager{{/str}}</button>
-                    <button type="button" class="btn btn-danger btn-tonal btn-sm" data-bulk="delete">{{#pix}}t/delete, core{{/pix}} {{#str}}bulk_delete, local_servicemanager{{/str}}</button>
+            <div class="card" data-region="bulk-actions" role="region" aria-label="{{#str}}actions, moodle{{/str}}" hidden>
+                <span class="fw-bold text-nowrap" role="status" data-region="selected-count"></span>
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bulk="enable">{{#pix}}t/show, core{{/pix}} {{#str}}bulk_enable, local_servicemanager{{/str}}</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bulk="disable">{{#pix}}t/hide, core{{/pix}} {{#str}}bulk_disable, local_servicemanager{{/str}}</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bulk="export">{{#pix}}t/download, core{{/pix}} {{#str}}bulk_export, local_servicemanager{{/str}}</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-bulk="delete">{{#pix}}t/delete, core{{/pix}} {{#str}}bulk_delete, local_servicemanager{{/str}}</button>
                 </div>
-                <button type="button" class="dd-floatbar-clear" data-action="clear-selection"
-                    title="{{#str}}clear_selection, local_servicemanager{{/str}}" aria-label="{{#str}}clear_selection, local_servicemanager{{/str}}"></button>
+                <button type="button" class="btn btn-link btn-icon" data-action="clear-selection"
+                    title="{{#str}}clear_selection, local_servicemanager{{/str}}" aria-label="{{#str}}clear_selection, local_servicemanager{{/str}}">{{#pix}}e/cancel, core{{/pix}}</button>
             </div>
         {{/canmanage}}
     {{/hasschemas}}

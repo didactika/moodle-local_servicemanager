@@ -220,7 +220,7 @@ export const init = () => {
         const applied = (chosenStatuses.length ? 1 : 0) + (state.from || state.to ? 1 : 0);
         toolbar.dataset.applied = String(applied);
         filters.fit(applied);
-        root.querySelector('.table-toolbar-end [data-action="reset-all"]').disabled = applied === 0 && state.query === '';
+        root.querySelector('[data-action="reset-all"]').disabled = applied === 0 && state.query === '';
     };
 
     const render = () => {
