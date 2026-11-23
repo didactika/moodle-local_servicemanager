@@ -211,13 +211,13 @@
             }
         }
 
-        & .nav-tabs,
         & .dd-chips {
             flex-wrap: nowrap;
             overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
         }
 
-        & .nav-tabs .nav-link,
         & .dd-chip {
             flex: none;
             white-space: nowrap;

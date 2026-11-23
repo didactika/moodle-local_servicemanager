@@ -34,10 +34,10 @@ En una pantalla estrecha, como la de un teléfono, los botones pasan debajo de l
 
 La primera línea muestra cuántos esquemas hay y cómo se reparten entre **Correcto**, **Advertencia** y **Crítico**, como una barra y como el número de cada estado. Un esquema se comprueba según un calendario (véase [permisos, ajustes y comprobación de salud](page:reference/settings)) y su estado es lo peor que encontró la comprobación.
 
-La segunda línea muestra si los servicios web del sitio están **Operativos**, **Desactivados** o con **Ningún protocolo activado**, y un interruptor para cada protocolo (REST, SOAP). Una persona que puede cambiar la configuración del sitio los activa o desactiva desde aquí, sin abrir la administración de Moodle:
+La segunda línea muestra si los servicios web del sitio están **Operativos**, **Desactivados** o con **Ningún protocolo activado**, y un botón para cada protocolo (REST, SOAP), marcado cuando está activado. Una persona que puede cambiar la configuración del sitio los activa o desactiva desde aquí, sin abrir la administración de Moodle y sin recargar la página; un mensaje confirma cada cambio:
 
 - **Activar los servicios web** activa los servicios web del sitio. **Desactivar los servicios web** los desactiva, tras una confirmación, ya que todos los servicios web del sitio dejan de responder.
-- El interruptor de un protocolo activa o desactiva ese protocolo.
+- El botón de un protocolo activa o desactiva ese protocolo.
 
 Cada cambio se guarda como lo guarda la administración de Moodle, de modo que queda en el registro de la configuración del sitio con su valor anterior. **Gestionar** abre los ajustes de los protocolos. La [página de un esquema](page:guides/schema-page) muestra el mismo estado de los servicios web en su parte superior.
 

@@ -22,9 +22,11 @@ extends:
 
 | Element | Kind | Location | Verified |
 | --- | --- | --- | --- |
-| Web services page | page | `pages/web_services.php` | yes |
+| Web service that turns them on or off | external function | `classes/external/set_web_services.php` | yes |
+| The change, as the administration writes it | service | `classes/local/web_services.php` | yes |
+| Web services page, for a browser without script | page | `pages/web_services.php` | yes |
 | State of the web services | view model | `classes/output/ws_status.php` | yes |
-| Summary of the dashboard | template / component | `templates/dashboard.mustache`, `js/esm/src/components/dashboard/Summary.tsx` | yes |
+| Summary of the dashboard | template / component | `templates/ws_status.mustache`, `amd/src/dashboard.js`, `js/esm/src/components/dashboard/Summary.tsx` | yes |
 
 ## Tests
 

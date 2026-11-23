@@ -5,16 +5,18 @@ skinparam responseMessageBelowArrow true
 
 actor "Administrator" as actor
 participant "dashboard" as dashboard
-participant "web_services.php" as page
+participant "set_web_services" as service
+participant "web_services" as apply
 participant "Moodle" as moodle
 database "config, config_log" as config
 
-actor -> dashboard : Enable web services, or a switch
-dashboard -> page : POST sesskey, enable, protocol
-page -> page : require_capability(moodle/site:config)
-page -> moodle : admin_write_settings or enable_plugin
+actor -> dashboard : Enable web services, or the button of a protocol
+dashboard -> service : local_servicemanager_set_web_services(enable, protocol)
+service -> service : require_capability(moodle/site:config)
+service -> apply : apply(enable, protocol)
+apply -> moodle : admin_write_settings or enable_plugin
 moodle -> config : new value and its log (config_log_created)
-page --> dashboard : redirect to the dashboard with a message
-dashboard --> actor : the new state
+service --> dashboard : message and the new state
+dashboard --> actor : the new state and the message, without reloading the page
 
 @enduml

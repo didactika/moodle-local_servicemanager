@@ -87,40 +87,7 @@
                 </ul>
             </div>
             {{#ws}}
-                <div class="d-flex flex-wrap align-items-center border-top pt-3 mt-3" data-region="ws-status">
-                    <span class="badge badge-soft badge-dot rounded-pill text-bg-{{tone}} mr-3 me-3">{{#str}}tile_services, local_servicemanager{{/str}}: {{label}}</span>
-                    {{#protocols}}
-                        <form method="post" action="{{toggleurl}}" class="mr-3 me-3" data-region="protocol">
-                            <input type="hidden" name="sesskey" value="{{sesskey}}">
-                            <input type="hidden" name="returnurl" value="{{returnurl}}">
-                            <input type="hidden" name="protocol" value="{{key}}">
-                            <input type="hidden" name="enable" value="{{#turnedon}}0{{/turnedon}}{{^turnedon}}1{{/turnedon}}">
-                            <div class="custom-control custom-switch form-check form-switch mb-0">
-                                <input type="checkbox" class="custom-control-input form-check-input" role="switch" id="lsm-protocol-{{key}}"
-                                    {{#turnedon}}checked{{/turnedon}} {{^canconfigure}}disabled{{/canconfigure}} data-action="protocol">
-                                <label class="custom-control-label form-check-label" for="lsm-protocol-{{key}}">{{name}}</label>
-                            </div>
-                        </form>
-                    {{/protocols}}
-                    {{#canconfigure}}
-                        <div class="ml-auto ms-auto d-flex flex-wrap align-items-center">
-                            <form method="post" action="{{toggleurl}}" class="mr-2 me-2" data-region="ws-toggle">
-                                <input type="hidden" name="sesskey" value="{{sesskey}}">
-                                <input type="hidden" name="returnurl" value="{{returnurl}}">
-                                <input type="hidden" name="enable" value="{{#enabled}}0{{/enabled}}{{^enabled}}1{{/enabled}}">
-                                {{#enabled}}
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" data-action="ws-off">{{#str}}ws_disable_services, local_servicemanager{{/str}}</button>
-                                {{/enabled}}
-                                {{^enabled}}
-                                    <button type="submit" class="btn btn-primary btn-sm">{{#str}}ws_enable_services, local_servicemanager{{/str}}</button>
-                                {{/enabled}}
-                            </form>
-                            {{#protocolsurl}}
-                                <a href="{{protocolsurl}}" class="btn btn-outline-secondary btn-sm">{{#pix}}i/settings, core{{/pix}} {{#str}}tile_manage, local_servicemanager{{/str}}</a>
-                            {{/protocolsurl}}
-                        </div>
-                    {{/canconfigure}}
-                </div>
+                {{> local_servicemanager/ws_status }}
             {{/ws}}
         </div>
     </div>

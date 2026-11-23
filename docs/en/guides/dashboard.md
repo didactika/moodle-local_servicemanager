@@ -36,12 +36,13 @@ On a narrow screen, such as a phone, the buttons go under the description of the
 The first line shows how many schemas there are and how they split into **Healthy**, **Warning** and **Critical**, as a bar and as a count of each status. A
 schema is checked on a schedule (see [Administration](page:reference/settings)) and its status is the worst thing the check found.
 
-The second line shows whether the web services of the site are **Operational**, **Disabled** or have **No protocols enabled**, and a switch for each protocol
-(REST, SOAP). A person who can change the configuration of the site turns them on or off from here, without opening the administration of Moodle:
+The second line shows whether the web services of the site are **Operational**, **Disabled** or have **No protocols enabled**, and a button for each protocol
+(REST, SOAP), marked when it is on. A person who can change the configuration of the site turns them on or off from here, without opening the
+administration of Moodle and without reloading the page; a message confirms each change:
 
 - **Enable web services** turns the web services of the site on. **Turn off web services** turns them off, after a confirmation, since every web service of the
   site stops answering.
-- The switch of a protocol turns that protocol on or off.
+- The button of a protocol turns that protocol on or off.
 
 Each change is saved as the administration of Moodle saves it, so it is kept in the log of the configuration of the site with its previous value. **Manage**
 opens the settings of the protocols. The [page of a schema](page:guides/schema-page) shows the same state of the web services at its top.

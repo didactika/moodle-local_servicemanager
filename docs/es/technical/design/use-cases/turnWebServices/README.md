@@ -22,7 +22,9 @@ extends:
 
 | Elemento de diseño | Tipo | Destino en el código |
 | --- | --- | --- |
-| `pages/web_services.php` | página | `pages/web_services.php` |
+| `set_web_services` | servicio web (AJAX) | `classes/external/set_web_services.php` |
+| `web_services::apply` | servicio | `classes/local/web_services.php` |
+| `pages/web_services.php` | página, para un navegador sin script | `pages/web_services.php` |
 | `admin_write_settings` | servicio de Moodle | `lib/adminlib.php` |
 | `webservice::enable_plugin` | servicio de Moodle | `lib/classes/plugininfo/webservice.php` |
 | `ws_status::describe` | modelo de vista | `classes/output/ws_status.php` |
@@ -35,6 +37,7 @@ extends:
 
 | Operación | Entrada | Salida | Errores |
 | --- | --- | --- | --- |
+| `local_servicemanager_set_web_services` | `enable` y `protocol` opcional (y `returnurl` en Moodle 4.x) | un mensaje y el estado nuevo (la franja dibujada de nuevo en Moodle 4.x) | sin capacidad, un protocolo que no está instalado |
 | POST `pages/web_services.php` | `sesskey`, `enable`, `protocol` y `returnurl` opcionales | la página pedida, con un mensaje | sin capacidad, una clave de sesión errónea, un protocolo que no está instalado |
 
 ## Datos afectados

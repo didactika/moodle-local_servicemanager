@@ -25,6 +25,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+import Ajax from 'core/ajax';
+import Notification from 'core/notification';
+import Templates from 'core/templates';
+import {add as addToast} from 'core/toast';
 import {get_strings as getStrings} from 'core/str';
 import {confirm} from 'local_servicemanager/dialogue';
 import {init as initMenus, close as closeMenus} from 'local_servicemanager/menu';
@@ -70,22 +74,57 @@ const keepColumns = (table) => {
 };
 
 /**
- * The switches of the protocols and the button that turns the web services off, which asks first.
+ * Sends a change of the web services, or of one protocol, to the web service that makes it, and draws the strip again with the
+ * new state and a message. The page is not reloaded.
+ *
+ * @param {HTMLElement} region The strip of the state.
+ * @param {HTMLFormElement} form The form of the button that was pressed.
+ * @returns {Promise<void>}
+ */
+const sendWebServices = (region, form) => {
+    const buttons = region.querySelectorAll('button');
+    buttons.forEach((button) => {
+        button.disabled = true;
+    });
+    return Ajax.call([{
+        methodname: 'local_servicemanager_set_web_services',
+        args: {
+            enable: form.elements.enable.value === '1',
+            protocol: form.elements.protocol ? form.elements.protocol.value : '',
+            returnurl: window.location.pathname + window.location.search,
+        },
+    }])[0].then((result) => {
+        Templates.replaceNode(region, result.html, '');
+        return addToast(result.message, {type: 'success'});
+    }).catch((error) => {
+        buttons.forEach((button) => {
+            button.disabled = false;
+        });
+        Notification.exception(error);
+    });
+};
+
+/**
+ * The buttons of the web services and of the protocols send their change without reloading the page; the one that turns the web
+ * services off asks first. The strip is drawn again after each change, so the buttons are found by delegation.
  *
  * @param {HTMLElement} root The dashboard.
  * @param {Object} strings The texts of the confirmation.
  */
 const initWebServices = (root, strings) => {
-    root.querySelectorAll('[data-action="protocol"]').forEach((box) => {
-        box.addEventListener('change', () => box.form.submit());
+    root.addEventListener('submit', (event) => {
+        const form = event.target.closest('[data-region="ws-status"] form');
+        if (!form) {
+            return;
+        }
+        event.preventDefault();
+        const region = form.closest('[data-region="ws-status"]');
+        if (form.querySelector('[data-action="ws-off"]')) {
+            confirm(strings.wsOff, strings.wsOffBody, strings.wsOff, () => sendWebServices(region, form)).catch(() => null);
+        } else {
+            sendWebServices(region, form);
+        }
     });
-    const off = root.querySelector('[data-action="ws-off"]');
-    if (off) {
-        off.addEventListener('click', (event) => {
-            event.preventDefault();
-            confirm(strings.wsOff, strings.wsOffBody, strings.wsOff, () => off.form.submit()).catch(() => null);
-        });
-    }
 };
 
 /**

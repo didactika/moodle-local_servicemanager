@@ -22,7 +22,9 @@ extends:
 
 | Design element | Kind | Code target |
 | --- | --- | --- |
-| `pages/web_services.php` | page | `pages/web_services.php` |
+| `set_web_services` | web service (AJAX) | `classes/external/set_web_services.php` |
+| `web_services::apply` | service | `classes/local/web_services.php` |
+| `pages/web_services.php` | page, for a browser without script | `pages/web_services.php` |
 | `admin_write_settings` | service of Moodle | `lib/adminlib.php` |
 | `webservice::enable_plugin` | service of Moodle | `lib/classes/plugininfo/webservice.php` |
 | `ws_status::describe` | view model | `classes/output/ws_status.php` |
@@ -35,6 +37,7 @@ extends:
 
 | Operation | Input | Output | Errors |
 | --- | --- | --- | --- |
+| `local_servicemanager_set_web_services` | `enable`, optional `protocol` (and `returnurl` on Moodle 4.x) | a message and the new state (the strip drawn again on Moodle 4.x) | no capability, a protocol that is not installed |
 | POST `pages/web_services.php` | `sesskey`, `enable`, optional `protocol` and `returnurl` | the page asked for, with a message | no capability, a wrong session key, a protocol that is not installed |
 
 ## Data touched

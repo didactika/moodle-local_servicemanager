@@ -22,9 +22,11 @@ extends:
 
 | Elemento | Tipo | Ubicación | Verificado |
 | --- | --- | --- | --- |
-| Página de servicios web | página | `pages/web_services.php` | sí |
+| Servicio web que los activa o desactiva | función externa | `classes/external/set_web_services.php` | sí |
+| El cambio, como lo escribe la administración | servicio | `classes/local/web_services.php` | sí |
+| Página de servicios web, para un navegador sin script | página | `pages/web_services.php` | sí |
 | Estado de los servicios web | modelo de vista | `classes/output/ws_status.php` | sí |
-| Resumen del panel | plantilla / componente | `templates/dashboard.mustache`, `js/esm/src/components/dashboard/Summary.tsx` | sí |
+| Resumen del panel | plantilla / componente | `templates/ws_status.mustache`, `amd/src/dashboard.js`, `js/esm/src/components/dashboard/Summary.tsx` | sí |
 
 ## Pruebas
 
