@@ -51,7 +51,8 @@ const fit = () => {
         const height = Math.max(LEAST, window.innerHeight - (box.top + window.scrollY) - below - ROOM);
         // On the card, so the empty state that may take the place of the table and of its pager has the same height.
         (card || element).style.setProperty('--dd-table-h', height + 'px');
-        (card || element).style.setProperty('--dd-foot-h', below + 'px');
+        // The height of the pager as a number of pixels, which the styles turn into a length; with no script it is 0.
+        (card || element).style.setProperty('--dd-foot-n', String(below));
     });
 };
 

@@ -259,14 +259,14 @@
 .lsm [data-region=empty]:not([hidden]),
 .lsm [data-region=error]:not([hidden]) {
     display: grid;
-    min-block-size: calc(var(--dd-table-h) + var(--dd-foot-h, 0px));
+    min-block-size: calc(var(--dd-table-h) + var(--dd-foot-n, 0) * 1px);
     place-content: center;
 }
 
 .lsm [data-region=tablewrap]:has(> :is([data-region=empty], [data-region=empty-state]):not([hidden])) {
     display: grid;
     place-content: center;
-    block-size: calc(var(--dd-table-h) + var(--dd-foot-h, 0px));
+    block-size: calc(var(--dd-table-h) + var(--dd-foot-n, 0) * 1px);
 }
 
 .lsm .table {
