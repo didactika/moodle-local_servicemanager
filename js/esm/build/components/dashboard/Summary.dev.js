@@ -170,7 +170,7 @@ const Summary = /* @__PURE__ */ __name(({ counts, ws: initial, text }) => {
           columnNumber: 23
         })),
         ws.canConfigure && /* @__PURE__ */ jsxDEV("div", { className: "ms-auto d-flex flex-wrap gap-2", children: [
-          ws.enabled ? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-sm btn-outline-secondary rounded-pill", onClick: () => setAsking(true), children: [
+          ws.enabled ? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-sm btn-outline-danger rounded-pill", onClick: () => setAsking(true), children: [
             /* @__PURE__ */ jsxDEV(Icon, { name: "power", text }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/components/dashboard/Summary.tsx",
               lineNumber: 91,

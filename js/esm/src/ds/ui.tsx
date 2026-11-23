@@ -245,7 +245,7 @@ export function Pager({page, perpage, total, disabled, text, onChange}: {
     const {from, to} = pageRange(page, perpage, total);
     // Only the sizes smaller than the list are offered, besides all of it, and the select always shows one of them.
     const {sizes, shown} = fitPageSizes(perpage, total);
-    return <div className="px-3 py-2 border-top">
+    return <div className="px-3 py-2 border-top" data-region="pager">
         <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 small text-muted">
             <div className="d-none d-sm-flex align-items-center gap-2">
                 <span>{text('pagination_per_page')}</span>
@@ -259,7 +259,7 @@ export function Pager({page, perpage, total, disabled, text, onChange}: {
                 />
             </div>
             <div className="d-flex flex-wrap align-items-center gap-3 ms-auto">
-                <span className="text-body text-nowrap" role="status">{text('pagination_range', {from, to, total})}</span>
+                <span className="text-body text-nowrap" role="status" data-region="range">{text('pagination_range', {from, to, total})}</span>
                 <div className="d-flex gap-1">
                     <button
                         type="button"

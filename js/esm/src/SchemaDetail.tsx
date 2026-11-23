@@ -20,7 +20,6 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
 import StatusBadge from './components/common/StatusBadge';
-import WsPill from './components/dashboard/WsPill';
 import AccessPanel from './components/schema/AccessPanel';
 import DetailsPanel from './components/schema/DetailsPanel';
 import FunctionsPanel from './components/schema/FunctionsPanel';
@@ -77,7 +76,6 @@ const SchemaDetail = (props: SchemaDetailProps) => {
                     <StatusBadge status={schema.status} label={schema.statusLabel} />
                     {!isHistory && !enabled && <span className="badge rounded-pill text-bg-secondary">{text('disabled')}</span>}
                 </>}
-                actions={props.wsStatus ? <WsPill status={props.wsStatus} canManage={canManage} text={text} /> : undefined}
                 subtitle={<span className="small text-muted" title={text('schema_id')}><Icon name="fingerprint" gap />{schema.schemaId}</span>}
             />
 

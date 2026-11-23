@@ -424,7 +424,7 @@
 }
 
 // The floating bar of a selection: how many rows are chosen, what to do with them and a button that clears the choice.
-.lsm :is([data-region="bulk-actions"], [data-region="compare-bar"]).card {
+.lsm :is([data-region="bulk-actions"], [data-region="compare-bar"], [data-region="change-navigator"]).card {
     position: fixed;
     flex-direction: row;
     bottom: 1.5rem;
@@ -461,14 +461,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .lsm :is([data-region="bulk-actions"], [data-region="compare-bar"]).card {
+    .lsm :is([data-region="bulk-actions"], [data-region="compare-bar"], [data-region="change-navigator"]).card {
         animation: none;
     }
 }
 
 @media (max-width: 576px) {
     // On a phone the bar takes the width of the screen, so its actions keep one row or two, never a column.
-    .lsm :is([data-region="bulk-actions"], [data-region="compare-bar"]).card {
+    .lsm :is([data-region="bulk-actions"], [data-region="compare-bar"], [data-region="change-navigator"]).card {
         right: 0.75rem;
         left: 0.75rem;
         flex-wrap: wrap;

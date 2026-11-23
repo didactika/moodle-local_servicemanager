@@ -879,7 +879,7 @@
     margin: 0;
 }
 
-.lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card {
+.lsm :is([data-region=bulk-actions], [data-region=compare-bar], [data-region=change-navigator]).card {
     position: fixed;
     flex-direction: row;
     bottom: 1.5rem;
@@ -898,7 +898,7 @@
     animation: lsm-rise 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card[hidden] {
+.lsm :is([data-region=bulk-actions], [data-region=compare-bar], [data-region=change-navigator]).card[hidden] {
     display: none;
 }
 
@@ -917,14 +917,14 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-    .lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card {
+    .lsm :is([data-region=bulk-actions], [data-region=compare-bar], [data-region=change-navigator]).card {
         animation: none;
     }
 }
 
 @media (max-width: 576px) {
 
-    .lsm :is([data-region=bulk-actions], [data-region=compare-bar]).card {
+    .lsm :is([data-region=bulk-actions], [data-region=compare-bar], [data-region=change-navigator]).card {
         right: 0.75rem;
         left: 0.75rem;
         flex-wrap: wrap;

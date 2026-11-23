@@ -22,10 +22,10 @@ Feature: The screenshots of the user manual
       | selector                    | number | where     |
       | [data-region='ws-status']   | 1      | top-left  |
       | [data-region='summary']     | 2      | top-left  |
-      | .dd-searchbox              | 3      | top-left  |
+      | [role='search']              | 3      | top-left  |
       | [data-region='filter-menus'] | 4      | top-left  |
-      | .dd-page-actions           | 5      | top-right |
-      | table tbody tr .table-actions | 6      | top-right |
+      | .lsm header > div > div:last-child           | 5      | top-right |
+      | table tbody tr [data-column='actions'] | 6      | top-right |
     And I take a screenshot of the page as "dashboard-marked"
     And I remove the numbered marks
     And I click on "Select all" "checkbox"
@@ -46,11 +46,10 @@ Feature: The screenshots of the user manual
     And I take a screenshot of the page as "schema"
     And I draw the numbered marks:
       | selector                    | number | where     |
-      | [data-region='ws-status']   | 1      | top-left  |
-      | [data-region='details']     | 2      | top-left  |
-      | [data-region='details'] .card-header > .d-flex | 3 | top-right |
-      | .col-lg-4 .card | 4 | top-left |
-      | [data-region='functions'] | 5 | top-left |
+      | [data-region='details']     | 1      | top-left  |
+      | [data-region='details'] .card-header > .d-flex | 2 | top-right |
+      | .col-lg-4 .card | 3 | top-left |
+      | [data-region='functions'] | 4 | top-left |
     And I take a screenshot of the page as "schema-marked"
     And I remove the numbered marks
 
@@ -60,10 +59,10 @@ Feature: The screenshots of the user manual
     And I take a screenshot of the page as "history"
     And I draw the numbered marks:
       | selector                | number | where    |
-      | .dd-searchbox           | 1      | top-left |
+      | [role='search']           | 1      | top-left |
       | [data-region='filter-menus'] | 2      | top-left |
       | [data-region='version'] | 3      | top-left |
-      | [data-region='version'] .table-actions | 4 | top-right |
+      | [data-region='version'] [data-column='actions'] | 4 | top-right |
     And I take a screenshot of the page as "history-marked"
     And I remove the numbered marks
     And I click on "Choose version 2.1.0" "checkbox"

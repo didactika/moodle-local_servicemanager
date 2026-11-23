@@ -87,7 +87,7 @@ const Summary = ({counts, ws: initial, text}: {counts: Record<string, number>; w
                     </span>)}
                 {ws.canConfigure && <div className="ms-auto d-flex flex-wrap gap-2">
                     {ws.enabled
-                        ? <button type="button" className="btn btn-sm btn-outline-secondary rounded-pill" onClick={() => setAsking(true)}>
+                        ? <button type="button" className="btn btn-sm btn-outline-danger rounded-pill" onClick={() => setAsking(true)}>
                             <Icon name="power" text={text} /> {text('ws_disable_services')}
                         </button>
                         : <button type="button" className="btn btn-sm btn-primary rounded-pill" disabled={busy} onClick={() => void change(true)}>
