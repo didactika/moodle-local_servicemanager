@@ -33,7 +33,7 @@ const Pager = ({page, perpage, total, onChange, text}: PagerProps) => {
     const {from, to} = pageRange(page, perpage, total);
     // Only the sizes smaller than the list are offered, besides all of it, and the select always shows one of them.
     const {sizes, shown} = fitPageSizes(perpage, total);
-    return <div className="px-3 py-2 border-top">
+    return <div className="px-3 py-2 border-top" data-region="pager">
         <nav className="d-flex flex-wrap align-items-center justify-content-between gap-3 small text-muted" aria-label={text('pagination_aria_label')}>
             <div className="d-none d-sm-flex align-items-center gap-2">
                 <label htmlFor={id} className="mb-0">{text('pagination_per_page')}</label>
@@ -47,7 +47,7 @@ const Pager = ({page, perpage, total, onChange, text}: PagerProps) => {
                 </select>
             </div>
             <div className="d-flex flex-wrap align-items-center gap-3 ms-auto">
-                <span className="text-body text-nowrap" role="status">{text('pagination_range', {from, to, total})}</span>
+                <span className="text-body text-nowrap" role="status" data-region="range">{text('pagination_range', {from, to, total})}</span>
                 <div className="d-flex gap-1">
                     <button type="button" className="btn btn-outline-secondary btn-sm btn-icon" disabled={page === 0}
                         title={text('pagination_previous')} aria-label={text('pagination_previous')}
