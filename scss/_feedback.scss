@@ -41,8 +41,10 @@
         // Small and quiet as the cross of the browser was, and a button all the same: the pointer, and a tint under it on hover.
         & > [data-action="clear-search"].btn-link.btn-icon {
             position: absolute;
-            top: 50%;
+            top: 0;
+            bottom: 0;
             right: 0.375rem;
+            margin-block: auto;
             width: 1.5rem;
             min-width: 0;
             height: 1.5rem;
@@ -52,7 +54,15 @@
             color: var(--dd-muted);
             font-size: 0.75rem;
             cursor: pointer;
-            transform: translateY(-50%);
+            // Centred with auto margins, not with a transform: the theme lifts a button on hover with a transform
+            // of its own, which would move this one.
+            transform: none;
+
+            &:hover,
+            &:focus,
+            &:active {
+                transform: none;
+            }
 
             &:hover {
                 background-color: color-mix(in srgb, var(--dd-ink) 10%, transparent);
