@@ -31,7 +31,7 @@ use local_servicemanager\schema\manager;
  */
 class dashboard_page implements \renderable, \templatable {
     /** @var int[] The sizes of page that can be chosen. */
-    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+    public const PERPAGE_OPTIONS = [12, 24, 48, 96, 0];
 
     /** @var int Most schemas that are drawn; a site that has more is told so. */
     public const MAX_SCHEMAS = 1000;
@@ -76,6 +76,14 @@ class dashboard_page implements \renderable, \templatable {
             'truncated' => $total > self::MAX_SCHEMAS,
             'truncatedtext' => get_string('list_truncated', 'local_servicemanager', count($rows)),
             'ws' => $status,
+            'statuses' => array_map(static fn(string $key, string $tone) => [
+                'key' => $key,
+                'label' => get_string('status_' . $key, 'local_servicemanager'),
+                'tone' => $tone,
+                'count' => $status[$key],
+                'share' => $count > 0 ? round(100 * $status[$key] / $count, 2) : 0,
+            ], ['healthy', 'warning', 'critical'], ['success', 'warning', 'danger']),
+            'datelabel' => get_string('schema_modified', 'local_servicemanager'),
             'total' => $count,
             'totallabel' => get_string($count === 1 ? 'tile_schema' : 'tile_schemas', 'local_servicemanager'),
             'perpage' => array_map(
@@ -88,7 +96,8 @@ class dashboard_page implements \renderable, \templatable {
                 'exportall' => $this->url('export.php', ['all' => 1]),
                 'bulk' => $this->url('bulk_action.php'),
                 'documentation' => $this->url('documentation.php'),
-                'wiki' => 'https://github.com/didactika/moodle-local_servicemanager/wiki',
+                'manual' => 'https://docs.didactika.org/' . (substr(current_language(), 0, 2) === 'es' ? 'es' : 'en') .
+                    '/plugins/local-servicemanager/',
                 'moodledocs' => get_docs_url('Web_services'),
             ],
         ];

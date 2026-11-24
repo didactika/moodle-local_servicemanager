@@ -6,7 +6,7 @@ order: 60
 
 ## Importar
 
-Desde el panel, la flecha verde (**Importar esquemas**) abre la página de importación.
+Desde el panel, **Importar esquemas**, en la parte superior de la página, abre la página de importación.
 
 ![Importar](asset:import.webp)
 

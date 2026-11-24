@@ -18,6 +18,7 @@ sourceOfTruth: code
 | RF-005 | A maintainer can enable, disable, delete, import and export schemas, alone or several at once. | Must | `external\set_enabled`, `schema\importer` | |
 | RF-006 | A maintainer can compare two versions of a schema, line by line and by what changed. | Could | `schema\line_diff`, `schema\version_summary` | |
 | RF-007 | The plugin offers its own web services to create and update schemas from scripts. | Could | `db/services.php` | UC-001, UC-002 |
+| RF-008 | An administrator turns the web services of the site, and each protocol, on or off from the dashboard, without reloading the page; every change is kept in the log of the configuration. | Should | `external\set_web_services`, `local\web_services` | UC-005 |
 
 ## Non-functional
 

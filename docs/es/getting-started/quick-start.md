@@ -12,7 +12,7 @@ order: 20
 ## Cree el esquema
 
 1. Abra **Administración del sitio → Servidor → Web Service Manager → Panel**.
-2. Pulse el **+** azul redondo (**Nuevo esquema**).
+2. Pulse **Nuevo esquema**, arriba a la derecha del panel.
 3. En **Formulario guiado**, complete:
    - **ID del esquema**: un nombre corto que no cambia, como `crm.sync`.
    - **Nombre**, y la **Versión** si desea una (si se deja vacía es 1.0.0 y el plugin la sube por usted más adelante).

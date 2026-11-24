@@ -1,0 +1,259 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// What the lists of the plugin add to the sheets of the design system, as the Autograder report draws its lists: the row of
+// filters, the menus that hold a form, the menu that groups the filters, the columns that keep their width and narrow screens.
+// @copyright 2026 Didactika.org
+// @author Hector Arrechea <hectorlazaroarrechea@gmail.com>
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm {
+    // The card of a list holds menus, so it does not cut them.
+    & .card {
+        overflow: visible;
+    }
+
+    & .card > .table-responsive:last-child {
+        border-radius: 0 0 var(--dd-radius-lg) var(--dd-radius-lg);
+    }
+
+    // Every filter is a menu with the shape of a select, in one row beside the search.
+    & [data-region="filters"] > :first-child {
+        gap: 0.5rem;
+    }
+
+    & .dropdown {
+        position: relative;
+        display: inline-flex;
+    }
+
+    // A block, not a flex box: only a block cuts its text with an ellipsis where the text ends, before the cross of a set filter.
+    & button:is(.form-select, .custom-select) {
+        display: block;
+        min-width: 0;
+        max-width: 18rem;
+        overflow: hidden;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    & .dropdown > .dropdown-menu {
+        position: absolute;
+        inset: calc(100% + 2px) auto auto 0;
+        width: max-content;
+        min-width: 100%;
+        max-width: 22rem;
+        max-height: 20rem;
+    }
+
+    & .dropdown > .dropdown-menu-end {
+        inset: calc(100% + 2px) 0 auto auto;
+    }
+
+    // A menu in a row floats next to its button (its script places it), so its width is its own, not its holder's.
+    & .table-responsive .dropdown > .dropdown-menu {
+        min-width: 10rem;
+    }
+
+    & .dropup > .dropdown-menu {
+        inset: auto auto calc(100% + 2px) 0;
+    }
+
+    & .dropdown-menu label.dropdown-item {
+        margin: 0;
+        font-weight: 400;
+    }
+
+    & .dropdown-menu .dropdown-item .form-check-input {
+        position: static;
+        flex: none;
+        margin: 0;
+    }
+
+    & .dropdown-menu .dropdown-item > span:first-of-type {
+        flex: 1 1 auto;
+    }
+
+    & .dropdown-menu hr {
+        margin: 0.375rem 0;
+        border-color: var(--dd-hairline);
+    }
+
+}
+
+@media (max-width: 576px) {
+    .lsm [data-region="filters"] > :first-child {
+        flex: 1 1 100%;
+    }
+}
+
+.lsm {
+    // The toolbar keeps one row: the search shrinks down to its own room and the filters keep their width beside it. When they
+    // do not fit, the component groups them in one menu, Filters, so the row never breaks in two.
+    & [data-region="filters"] > :first-child {
+        flex-wrap: nowrap;
+        min-width: 0;
+
+        & > [role="search"] {
+            flex: 1 1 10rem;
+            min-width: 10rem;
+        }
+
+        // On a phone the search gives up room down to 7rem, so the grouped filters and the button that clears them fit beside it.
+        @media (max-width: 400px) {
+            & > [role="search"] {
+                min-width: 7rem;
+            }
+        }
+    }
+
+    // While the filters are grouped, the button that clears them is the last thing of the group, at its end, and the row does not
+    // repeat it.
+    & [data-region="filters"]:has([data-menu="filters"]:not([hidden])) > :last-child:not(:first-child) {
+        /* stylelint-disable-next-line declaration-no-important */
+        display: none !important;
+    }
+
+    & [data-region="filter-panel"] > :has(> [data-action="reset-all"]) {
+        justify-content: flex-end;
+    }
+
+    & [data-region="filter-menus"] {
+        display: flex;
+        flex: none;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.5rem;
+
+        & button:is(.form-select, .custom-select) {
+            max-width: 14rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    // The button that groups the filters is as wide as what it says (the funnel, Filters and the count), so it fits a phone.
+    & [data-menu="filters"] > button:is(.form-select, .custom-select) {
+        min-width: 0;
+    }
+
+    // The menu that groups the filters holds them one under the other, each as wide as the menu, and lets their own lists show.
+    & [data-menu="filters"] > .dropdown-menu {
+        min-width: 17rem;
+        max-height: none;
+        overflow: visible;
+    }
+
+    & [data-region="filter-panel"] {
+        display: grid;
+        gap: 0.5rem;
+        padding: 0.5rem;
+
+        & .dropdown,
+        & .dropdown,
+        & button:is(.form-select, .custom-select) {
+            width: 100%;
+            max-width: none;
+        }
+    }
+
+    // The columns keep their width whatever the page shows: the component measures them once the table has rows and keeps them
+    // (table-layout: fixed), so a filter, a sort or another page moves nothing. What does not fit wraps, or ends with an ellipsis
+    // in the cells that keep one line.
+    & .table-responsive[data-region="tablewrap"] > .table {
+        & td {
+            overflow-wrap: break-word;
+        }
+
+        & td.text-nowrap {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+// Narrow screens: the cells keep one line and the table scrolls sideways inside its box, with its first column fixed so each row
+// keeps its name in view; tabs and chips keep one row that scrolls sideways instead of piling up.
+@media (max-width: 767.98px) {
+    .lsm {
+        // The column of the page is never wider than the screen, whatever a row of tabs or chips holds.
+        grid-template-columns: minmax(0, 1fr);
+
+        & .table-responsive .table {
+            & th,
+            & td {
+                white-space: nowrap;
+            }
+
+            & th:first-child,
+            & td:first-child {
+                position: sticky;
+                inset-inline-start: 0;
+                z-index: 1;
+                background-color: var(--dd-surface);
+                box-shadow: inset -1px 0 0 var(--dd-hairline, rgba(0, 0, 0, 0.08));
+            }
+
+            & thead th:first-child {
+                z-index: 2;
+            }
+
+            // When the first column is the one of the checkboxes, the name beside it stays in view too: the checkbox keeps a
+            // column of its own width, and the line that marks the fixed columns moves after the name.
+            & th[data-column="select"],
+            & td[data-column="select"] {
+                width: 2.75rem;
+                min-width: 2.75rem;
+                max-width: 2.75rem;
+                box-shadow: none;
+            }
+
+            & :is(th, td)[data-column="select"] + :is(th, td) {
+                position: sticky;
+                inset-inline-start: 2.75rem;
+                z-index: 1;
+                padding-inline-start: 0.5rem;
+                background-color: var(--dd-surface);
+                box-shadow: inset -1px 0 0 var(--dd-hairline, rgba(0, 0, 0, 0.08));
+            }
+
+            & thead th[data-column="select"] + th {
+                z-index: 2;
+            }
+
+            // A fixed column never takes the whole width: a long name ends with an ellipsis, so the rest of the row always has
+            // room to scroll beside it.
+            & th:first-child:not([data-column="select"]),
+            & td:first-child:not([data-column="select"]),
+            & :is(th, td)[data-column="select"] + :is(th, td) {
+                max-width: 12rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                & .text-truncate,
+                & a {
+                    display: block;
+                    max-width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
+        // The button that clears the filters stays at the top right of the toolbar, beside the search.
+        & [data-region="filters"] {
+            position: relative;
+
+            & > :first-child {
+                padding-inline-end: 3rem;
+            }
+
+            & > :last-child:not(:first-child) {
+                position: absolute;
+                inset-block-start: 0.75rem;
+                inset-inline-end: 0.75rem;
+            }
+        }
+    }
+}

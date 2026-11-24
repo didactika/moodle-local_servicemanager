@@ -51,6 +51,10 @@ if (!$schema) {
     );
 }
 
+// The breadcrumb takes the person back to the dashboard; the page repeats no link of its own.
+$PAGE->navbar->add(get_string('pluginname', 'local_servicemanager'), new moodle_url('/local/servicemanager/pages/dashboard.php'));
+$PAGE->navbar->add($schema->name);
+
 // Check for a freshly generated token to display once.
 $tokenvalue = null;
 if ($newtoken) {

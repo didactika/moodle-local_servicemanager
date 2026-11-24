@@ -80,13 +80,14 @@ final class health_page_test extends \advanced_testcase {
         $first = $this->export(new health_page($schema));
         $second = $this->export(new health_page($schema, '', 1));
 
-        $this->assertCount(25, $first['rows']);
-        $this->assertSame('Showing 1 to 25 of 30', $first['showing']);
+        $this->assertCount(12, $first['rows']);
+        $this->assertSame('Showing 1 to 12 of 30', $first['showing']);
         $this->assertSame('healthy', $first['rows'][0]['status']);
         $this->assertSame('Healthy', $first['rows'][0]['statuslabel']);
-        $this->assertStringContainsString('page=1', $first['pagingbar']);
-        $this->assertCount(5, $second['rows']);
-        $this->assertSame('Showing 26 to 30 of 30', $second['showing']);
+        $this->assertStringContainsString('page=1', $first['pager']['nexturl']);
+        $this->assertSame(['12', '24', 'All'], array_map('strval', array_column($first['pager']['sizes'], 'label')));
+        $this->assertCount(12, $second['rows']);
+        $this->assertSame('Showing 13 to 24 of 30', $second['showing']);
         $this->assertSame([30, 10, 10, 10], array_column($first['filters'], 'count'));
         $this->assertSame([true, false, false, false], array_column($first['filters'], 'active'));
     }
@@ -119,8 +120,8 @@ final class health_page_test extends \advanced_testcase {
 
         $context = $this->export(new health_page($schema, 'bogus', 99, 7));
 
-        $this->assertCount(5, $context['rows']);
-        $this->assertSame('Showing 26 to 30 of 30', $context['showing']);
+        $this->assertCount(6, $context['rows']);
+        $this->assertSame('Showing 25 to 30 of 30', $context['showing']);
         $this->assertTrue($context['filters'][0]['active']);
     }
 

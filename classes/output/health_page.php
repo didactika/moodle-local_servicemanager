@@ -29,10 +29,10 @@ namespace local_servicemanager\output;
  */
 class health_page implements \renderable, \templatable {
     /** @var int[] The sizes of page that can be chosen. */
-    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+    public const PERPAGE_OPTIONS = [12, 24, 48, 96, 0];
 
     /** @var int The size of page when none is chosen. */
-    public const PERPAGE_DEFAULT = 25;
+    public const PERPAGE_DEFAULT = 12;
 
     /** @var string[] The colour of each status a check can have. */
     public const TONES = ['healthy' => 'success', 'warning' => 'warning', 'critical' => 'danger'];
@@ -70,18 +70,22 @@ class health_page implements \renderable, \templatable {
     /**
      * What the page shows and the places it links to.
      *
-     * @param \renderer_base $output The renderer, which draws the paging bar and the choice of the size of page.
+     * @param \renderer_base $output The renderer; the page draws its pager itself.
      * @return array The context of the template.
      */
     public function export_for_template(\renderer_base $output): array {
         global $DB;
 
+        unset($output);
+
         $id = (int) $this->schema->id;
         $counts = self::counts($id);
         $all = $DB->count_records('local_servicemanager_logs', ['schemaid' => $id]);
         $total = $this->status === '' ? $all : $counts[$this->status];
+        // A size of 0 is every check at once.
+        $size = $this->perpage ?: max(1, $total);
         // A page after the last one, as an old link may ask for, shows the last one.
-        $page = min($this->page, max(0, (int) ceil($total / $this->perpage) - 1));
+        $page = min($this->page, max(0, (int) ceil($total / $size) - 1));
 
         $conditions = ['schemaid' => $id] + ($this->status === '' ? [] : ['status' => $this->status]);
         $records = $DB->get_records(
@@ -89,19 +93,27 @@ class health_page implements \renderable, \templatable {
             $conditions,
             'timecreated DESC, id DESC',
             'id, status, message, timecreated',
-            $page * $this->perpage,
-            $this->perpage
+            $page * $size,
+            $size
         );
         $rows = array_map([self::class, 'row'], array_values($records));
+        $from = $rows ? $page * $size + 1 : 0;
+        $to = $page * $size + count($rows);
 
-        $perpage = new \single_select(
-            $this->url(['status' => $this->status]),
-            'perpage',
-            array_combine(self::PERPAGE_OPTIONS, self::PERPAGE_OPTIONS),
-            $this->perpage,
-            false
-        );
-        $perpage->set_label(get_string('perpage', 'moodle'));
+        // The sizes smaller than the list, and All: a list of up to 12 checks offers All only, one of 13 to 24 offers 12 and All,
+        // and so on. The select shows All when every check fits on the page.
+        $shown = $this->perpage > 0 && $this->perpage < $total ? $this->perpage : 0;
+        $sizes = [];
+        foreach (self::PERPAGE_OPTIONS as $option) {
+            if ($option === 0 || $option < $total) {
+                $sizes[] = [
+                    'value' => $option,
+                    'label' => $option ?: get_string('pagination_all', 'local_servicemanager'),
+                    'selected' => $option === $shown,
+                ];
+            }
+        }
+        $keep = ['status' => $this->status, 'perpage' => $this->perpage];
 
         return [
             'backurl' => (new \moodle_url('/local/servicemanager/pages/view.php', ['id' => $id]))->out(false),
@@ -111,17 +123,25 @@ class health_page implements \renderable, \templatable {
             'rows' => $rows,
             'filters' => $this->filters($counts, $all),
             'showing' => get_string('health_showing', 'local_servicemanager', (object) [
-                'from' => $rows ? $page * $this->perpage + 1 : 0,
-                'to' => $page * $this->perpage + count($rows),
+                'from' => $from,
+                'to' => $to,
                 'total' => $total,
             ]),
-            'pagingbar' => $output->paging_bar(
-                $total,
-                $page,
-                $this->perpage,
-                $this->url(['status' => $this->status, 'perpage' => $this->perpage])
-            ),
-            'perpageselect' => $output->render($perpage),
+            'pager' => $total === 0 ? null : [
+                'formurl' => $this->url([])->out_omit_querystring(),
+                'id' => $id,
+                'status' => $this->status,
+                'sizes' => $sizes,
+                'range' => get_string('pagination_range', 'local_servicemanager', (object) [
+                    'from' => $from,
+                    'to' => $to,
+                    'total' => $total,
+                ]),
+                'hasprev' => $page > 0,
+                'hasnext' => $to < $total,
+                'prevurl' => $this->url($keep + ['page' => $page - 1])->out(false),
+                'nexturl' => $this->url($keep + ['page' => $page + 1])->out(false),
+            ],
         ];
     }
 

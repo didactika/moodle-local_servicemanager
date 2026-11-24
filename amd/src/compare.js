@@ -26,13 +26,21 @@
 import {get_strings as getStrings} from 'core/str';
 
 /** The selector of a cell that holds a difference. */
-const CHANGED = '.sm-diff-added, .sm-diff-removed, .sm-diff-changed';
+const CHANGED = 'td[data-kind="added"], td[data-kind="removed"], td[data-kind="changed"]';
+
+/** The colour of a line by what happened to it, from the rows of the tables of Bootstrap. */
+const TONES = {added: 'table-success', removed: 'table-danger', changed: 'table-warning', empty: 'table-light'};
 
 /**
  * Start the page.
  */
 export const init = () => {
     const root = document.querySelector('[data-region="servicemanager-compare"]');
+    root?.querySelectorAll('td[data-kind]').forEach((cell) => {
+        if (TONES[cell.dataset.kind]) {
+            cell.classList.add(TONES[cell.dataset.kind]);
+        }
+    });
     if (!root) {
         return;
     }
@@ -87,13 +95,13 @@ export const init = () => {
                 return;
             }
             if (index === 0 || !changed(rows[index - 1])) {
-                const cells = row.querySelectorAll('.sm-line-no');
+                const cells = row.querySelectorAll('[data-region="line-no"]');
                 const numbers = [...cells].map((cell) => cell.textContent.trim()).filter((value) => value !== '');
                 result.push({row, line: numbers.length ? numbers[numbers.length - 1] : '', kinds: new Set()});
             }
             const kinds = result[result.length - 1].kinds;
             ['added', 'removed', 'changed'].forEach((kind) => {
-                if (row.querySelector('.sm-diff-' + kind)) {
+                if (row.querySelector('td[data-kind="' + kind + '"]')) {
                     kinds.add(kind);
                 }
             });

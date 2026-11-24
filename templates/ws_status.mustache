@@ -1,0 +1,89 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_servicemanager/ws_status
+
+    Whether the web services of the site work, each protocol, and the buttons that turn the web services and each protocol on or
+    off. The buttons are forms that the dashboard sends to a web service, so the page is not reloaded; without script they are
+    sent to the page that turns them on or off.
+
+    Context variables required for this template:
+    * tone - Colour of the state
+    * label - What the state is called
+    * protocols - Each protocol: key, name and whether it is turned on
+    * canconfigure - Whether the person can change the configuration of the site
+    * enabled - Whether the web services are turned on
+    * toggleurl - The page that turns them on or off without script
+    * returnurl - Where that page comes back
+    * sesskey - The key of the session
+    * protocolsurl - The page of the protocols, or empty
+
+    Example context (json):
+    {
+        "tone": "success",
+        "label": "Operational",
+        "protocols": [{"key": "rest", "name": "REST", "turnedon": true}],
+        "canconfigure": true,
+        "enabled": true,
+        "toggleurl": "https://moodle.example/local/servicemanager/pages/web_services.php",
+        "returnurl": "https://moodle.example/local/servicemanager/pages/dashboard.php",
+        "sesskey": "abc",
+        "protocolsurl": ""
+    }
+}}
+<div class="d-flex flex-wrap align-items-center border-top pt-3 mt-3" data-region="ws-status">
+    <span class="badge rounded-pill text-bg-{{tone}} mr-3 me-3 my-1">{{#str}}tile_services, local_servicemanager{{/str}}: {{label}}</span>
+    {{#protocols}}
+        {{#canconfigure}}
+            <form method="post" action="{{toggleurl}}" class="mr-2 me-2 my-1" data-region="protocol">
+                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                <input type="hidden" name="returnurl" value="{{returnurl}}">
+                <input type="hidden" name="protocol" value="{{key}}">
+                <input type="hidden" name="enable" value="{{#turnedon}}0{{/turnedon}}{{^turnedon}}1{{/turnedon}}">
+                {{#turnedon}}
+                    <button type="submit" class="btn btn-sm btn-outline-success rounded-pill" aria-pressed="true"
+                        title="{{#str}}ws_protocol_turn_off, local_servicemanager, {{name}}{{/str}}">{{#pix}}i/checkedcircle, core{{/pix}} {{name}}</button>
+                {{/turnedon}}
+                {{^turnedon}}
+                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill" aria-pressed="false"
+                        title="{{#str}}ws_protocol_turn_on, local_servicemanager, {{name}}{{/str}}">{{#pix}}i/uncheckedcircle, core{{/pix}} {{name}}</button>
+                {{/turnedon}}
+            </form>
+        {{/canconfigure}}
+        {{^canconfigure}}
+            <span class="badge border rounded-pill {{#turnedon}}text-bg-success{{/turnedon}}{{^turnedon}}text-bg-secondary{{/turnedon}} mr-2 me-2 my-1">{{name}}<span class="sr-only visually-hidden"> {{#turnedon}}{{#str}}ws_enabled_label, local_servicemanager{{/str}}{{/turnedon}}{{^turnedon}}{{#str}}ws_disabled_label, local_servicemanager{{/str}}{{/turnedon}}</span></span>
+        {{/canconfigure}}
+    {{/protocols}}
+    {{#canconfigure}}
+        <div class="ml-auto ms-auto d-flex flex-wrap align-items-center">
+            <form method="post" action="{{toggleurl}}" class="mr-2 me-2 my-1" data-region="ws-toggle">
+                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                <input type="hidden" name="returnurl" value="{{returnurl}}">
+                <input type="hidden" name="enable" value="{{#enabled}}0{{/enabled}}{{^enabled}}1{{/enabled}}">
+                {{#enabled}}
+                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill" data-action="ws-off">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_disable_services, local_servicemanager{{/str}}</button>
+                {{/enabled}}
+                {{^enabled}}
+                    <button type="submit" class="btn btn-sm btn-primary rounded-pill">{{#pix}}power, local_servicemanager{{/pix}} {{#str}}ws_enable_services, local_servicemanager{{/str}}</button>
+                {{/enabled}}
+            </form>
+            {{#protocolsurl}}
+                <a href="{{protocolsurl}}" class="btn btn-sm btn-outline-secondary rounded-pill my-1">{{#pix}}i/settings, core{{/pix}} {{#str}}tile_manage, local_servicemanager{{/str}}</a>
+            {{/protocolsurl}}
+        </div>
+    {{/canconfigure}}
+</div>

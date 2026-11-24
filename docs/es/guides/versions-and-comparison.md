@@ -11,15 +11,15 @@ Cada vez que cambia la definición de un esquema, el plugin conserva la versión
 | # | Parte |
 |---|---|
 | 1 | Búsqueda, por versión, usuario, fecha o motivo. |
-| 2 | Filtros: fechas y tamaño de la página, con el recuento de los activos. |
+| 2 | **Fecha**: el menú que limita el historial a un periodo. |
 | 3 | Una versión: márquela para compararla. |
 | 4 | Lo que puede hacer con una versión. |
 
 ## La lista
 
-Cada versión es una fila: su número, **Actual** si es la que tiene ahora el esquema, quién la hizo y cuándo, y por qué. La búsqueda y los filtros funcionan como en el panel. Aquí no hay botón de editar: para cambiar el esquema, edítelo desde el [panel](page:guides/dashboard) o su [página](page:guides/schema-page). Al final de cada fila hay tres botones redondos, siempre en el mismo sitio: el que una fila no tiene (a la versión actual no se puede volver) deja su lugar vacío, de modo que los botones del mismo tipo quedan alineados de una fila a otra.
+Cada versión es una fila de una tabla: su número, **Actual** si es la que tiene ahora el esquema, quién la hizo y cuándo, y por qué. La búsqueda, el menú de la fecha y el paginador funcionan como en el panel. Aquí no hay botón de editar: para cambiar el esquema, edítelo desde el [panel](page:guides/dashboard) o su [página](page:guides/schema-page). Al final de cada fila hay botones redondos:
 
-- el icono de código abre su YAML bajo la fila, cargado cuando lo pide, con un botón **Copiar**;
+- el icono de código abre su YAML en una ventana, cargado cuando lo pide;
 - el ojo abre la página del esquema tal como era en esa versión;
 - la flecha que vuelve atrás (**Deshacer hasta aquí**) devuelve el esquema a esa versión; no se ofrece para la actual. Abre una ventana que pide confirmación, y el historial cambia donde está: la versión actual se desplaza, el estado que se deja se conserva como copia de seguridad si no estaba ya en el historial, y un mensaje lo dice. La página no se recarga.
 

@@ -54,3 +54,37 @@ function local_servicemanager_id_to_shortname(string $schemaid): string {
 function local_servicemanager_validate_schema_id(string $schemaid): bool {
     return preg_match('/^[a-zA-Z0-9.]+$/', $schemaid) === 1;
 }
+
+/**
+ * The icons of the plugin, for what Moodle has no icon of its own, mapped to Font Awesome as Moodle maps its icons, so they are
+ * asked for by id and a theme can change them. Moodle 4.0 and 4.1 have Font Awesome 4, and the later releases Font Awesome 6, so
+ * each icon has the name it has in the font of the release.
+ *
+ * @return string[] Font Awesome class of each icon.
+ */
+function local_servicemanager_get_fontawesome_icon_map(): array {
+    global $CFG;
+
+    $fa4 = (int) ($CFG->branch ?? 0) < 402;
+    $icons = [
+        'branch' => ['fa-code-fork', 'fa-code-branch'],
+        'code' => ['fa-code', 'fa-code'],
+        'columns' => ['fa-columns', 'fa-table-columns'],
+        'compare' => ['fa-exchange', 'fa-code-compare'],
+        'fingerprint' => ['fa-id-badge', 'fa-fingerprint'],
+        'health' => ['fa-heartbeat', 'fa-heart-pulse'],
+        'history' => ['fa-history', 'fa-clock-rotate-left'],
+        'key' => ['fa-key', 'fa-key'],
+        'list' => ['fa-list', 'fa-table-list'],
+        'plug' => ['fa-plug', 'fa-plug'],
+        'plugin' => ['fa-puzzle-piece', 'fa-puzzle-piece'],
+        'power' => ['fa-power-off', 'fa-power-off'],
+        'server' => ['fa-server', 'fa-server'],
+        'view' => ['fa-eye', 'fa-eye'],
+    ];
+    $map = [];
+    foreach ($icons as $name => [$old, $new]) {
+        $map['local_servicemanager:' . $name] = $fa4 ? $old : $new;
+    }
+    return $map;
+}

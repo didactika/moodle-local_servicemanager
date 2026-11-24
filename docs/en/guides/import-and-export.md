@@ -6,7 +6,7 @@ order: 60
 
 ## Import
 
-From the dashboard, the green arrow (**Import Schemas**) opens the import page.
+From the dashboard, **Import Schemas**, at the top of the page, opens the import page.
 
 ![Import](asset:import.webp)
 

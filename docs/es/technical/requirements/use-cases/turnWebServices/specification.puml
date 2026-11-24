@@ -1,0 +1,11 @@
+@startuml
+start
+:Administrator pulsa Activar los servicios web o un interruptor;
+if (¿Desactivar los servicios web?) then (yes)
+  :confirma;
+endif
+:comprueba la clave de sesión y la capacidad;
+:escribe el ajuste (valor, registro, llamadas);
+:el panel de nuevo, con un mensaje;
+stop
+@enduml

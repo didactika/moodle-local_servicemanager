@@ -1,0 +1,18 @@
+@startuml
+!theme plain
+hide empty members
+skinparam linetype polyline
+top to bottom direction
+
+class "Administrator" as user <<actor>>
+class "Resumen del panel" as screen <<boundary>>
+class "Página de servicios web" as page <<control>>
+class "Administración de Moodle" as admin <<control>>
+class "Estado de los servicios web" as state <<entity>>
+
+user --> screen : 1: Activar los servicios web / un interruptor
+screen --> page : 2: POST sesskey, enable, protocol
+page --> admin : 3: admin_write_settings / enable_plugin
+admin --> state : 4: valor, registro, llamadas
+
+@enduml

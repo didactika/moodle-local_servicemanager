@@ -21,6 +21,7 @@ The vertical position of an entity expresses its importance to the project objec
 | 2 | Structural: depend directly on the core | SchemaVersion, ServiceUser, ServiceRole, ExternalService, Token | What a schema creates, and the history it keeps. |
 | 3 | Detail: qualify or specialise level 2 | WebServiceFunction, Capability, RoleSettings, HealthLog | What defines the service and its role, and the record of its checks. |
 | 4 | Support: catalogues, audit, configuration | SiteSettings | Bound the retention of versions and logs and the notifications. |
+| WebServiceState | 4 | Whether the web services of the site are on and which protocols answer; the dashboard shows it and turns it on or off. | `enablewebservices`, `webserviceprotocols` | They are settings of Moodle, not a table of the plugin. |
 
 ## Diagrams
 
@@ -57,6 +58,8 @@ The vertical position of an entity expresses its importance to the project objec
 | RN-007 | A rollback is the only way a schema returns to a lower version. | SchemaVersion | `version_policy::check_rollback` |
 | RN-008 | A schema takes the worst status of its parts: healthy, warning or critical. | HealthLog | `inspector::inspect` |
 | RN-009 | A disabled schema suspends its user and its service and is not checked. | Schema | `provisioner::set_enabled`, `health_check::execute` |
+| RN-010 | The web services and their protocols are changed only by a person who can change the configuration of the site, and every change is kept in the log of the configuration with its previous value. | WebServiceState | `pages/web_services.php` |
+| RN-011 | The list of the dashboard is narrowed by a search, by one or more statuses (each with its schemas, counted inside the other filters) and by a period of the last change that never goes the wrong way round; its box takes the height the window leaves it and its columns keep their width. When nothing matches, the empty state takes the height of the list and of its pager; when the filters are grouped in one menu, the button that clears the search and every filter is the last item of that menu. | Schema | `amd/src/dashboard.js`, `amd/src/filters.js`, `js/esm/src/Dashboard.tsx`, `js/esm/src/ds/Filters.tsx` |
 
 ## Lifecycles
 

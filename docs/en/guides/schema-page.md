@@ -10,23 +10,17 @@ The page of a schema is where you see everything the schema is and has made, and
 
 | # | Part | What it is for |
 |---|---|---|
-| 1 | [State of the web services](#1-state-of-the-web-services) | The same line as in the dashboard, with the buttons to turn on what is off. |
-| 2 | [Schema Information](#2-schema-information) | The description, version, dates and whether it is enabled. |
-| 3 | [The actions](#3-the-actions) | Edit, history, export, disable and delete, as round icons. |
-| 4 | [Access and requirements, and Role](#4-access-and-requirements) | The lists: token, file access, plugins, capabilities and the role. |
-| 5 | [Functions](#5-functions) | What the service can call. |
+| 1 | [Schema Information](#1-schema-information) | The description, version, dates and whether it is enabled. |
+| 2 | [The actions](#2-the-actions) | Edit, history, export, disable and delete, as round icons. |
+| 3 | [Access and requirements, and Role](#3-access-and-requirements) | The lists: token, file access, plugins, capabilities and the role. |
+| 4 | [Functions](#4-functions) | What the service can call. |
 
-## 1. State of the web services
-
-At the right of the title, at the same level as in the dashboard, you see whether the web services are **Operational**, **Disabled** or in **Warning**, each protocol, and the
-button **Enable web services** or **Enable a protocol** when something is off. A schema can be perfect and still not answer if the site has the web services off; this tells you so.
-
-## 2. Schema Information
+## 1. Schema Information
 
 The main column, at the left, has the information of the schema, its functions and what it created. It starts with the description and, in one row, the version, when it was created and last modified and whether it is enabled
 (and the maintainer, if the schema has one).
 
-## 3. The actions
+## 2. The actions
 
 At the right of the title of **Schema Information** there are the actions, as round icons:
 
@@ -38,7 +32,7 @@ At the right of the title of **Schema Information** there are the actions, as ro
 | Switch | **Disable** or **Enable**. A disabled schema suspends its service user and its service. The page changes where it is and says so in a message; it does not reload. |
 | Bin | **Delete**: removes the schema and everything it created. It asks you to confirm in a window. |
 
-## 4. Access and requirements
+## 3. Access and requirements
 
 The column at the right has the access and the role: the things that are lists.
 
@@ -54,7 +48,7 @@ assign, override, switch to and see, and which capabilities it is kept from or f
 
 ![A schema with a role](asset:schema-role.webp)
 
-## 5. Functions
+## 4. Functions
 
 Each function has an icon (a pen for the ones that write, an eye for the ones that read), its name, **Read** or **Write**, **Critical**
 if the schema needs it, what Moodle says it does, and a badge if this Moodle does not have it. With eight functions or more, a search box

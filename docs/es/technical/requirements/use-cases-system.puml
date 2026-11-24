@@ -8,7 +8,7 @@ actor "System" as A_System
 
 rectangle "local_servicemanager" {
   package "Health" {
-    usecase "Check the health of the schemas" as UC_checkHealth
+    usecase "Comprobar la salud de los esquemas" as UC_checkHealth
   }
 }
 

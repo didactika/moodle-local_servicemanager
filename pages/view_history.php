@@ -45,6 +45,18 @@ if (!$history) {
     throw new moodle_exception('historynotfound', 'local_servicemanager');
 }
 
+// The breadcrumb takes the person back to the schema and its history; the page repeats no link of its own.
+$schema = (new \local_servicemanager\schema\manager())->get_schema((int) $history->schemaid);
+$PAGE->navbar->add(get_string('pluginname', 'local_servicemanager'), new moodle_url('/local/servicemanager/pages/dashboard.php'));
+if ($schema) {
+    $PAGE->navbar->add($schema->name, new moodle_url('/local/servicemanager/pages/view.php', ['id' => $schema->id]));
+    $PAGE->navbar->add(
+        get_string('version_history', 'local_servicemanager'),
+        new moodle_url('/local/servicemanager/pages/history.php', ['id' => $schema->id])
+    );
+}
+$PAGE->navbar->add($history->version);
+
 echo $OUTPUT->header();
 echo \local_servicemanager\output\page_drawer::render(
     'schema_detail',

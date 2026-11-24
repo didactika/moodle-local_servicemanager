@@ -1,0 +1,11 @@
+@startuml
+start
+:Administrator presses Enable web services or a switch;
+if (Turn off web services?) then (yes)
+  :confirms;
+endif
+:checks the session key and the capability;
+:writes the setting (value, log, callbacks);
+:the dashboard again, with a message;
+stop
+@enduml

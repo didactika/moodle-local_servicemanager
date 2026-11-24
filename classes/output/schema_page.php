@@ -122,8 +122,6 @@ class schema_page implements \renderable, \templatable {
             'ishistory' => false,
             'canmanage' => $canmanage,
             'sesskey' => sesskey(),
-            'hasws' => true,
-            'ws' => ws_status::describe($canmanage),
             'backurl' => $this->url('dashboard.php'),
             'backlabel' => get_string('dashboard', 'local_servicemanager'),
             'schema' => $this->schema_summary([
@@ -193,7 +191,6 @@ class schema_page implements \renderable, \templatable {
             'ishistory' => true,
             'canmanage' => false,
             'sesskey' => '',
-            'hasws' => false,
             'backurl' => $this->url('history.php', ['id' => $history->schemaid]),
             'backlabel' => get_string('back', 'local_servicemanager'),
             'schema' => $this->schema_summary([
