@@ -105,8 +105,11 @@ export function Menu({button, label, name, active = false, small = false, place 
                 setOpen(false);
             }
         };
+        // On the window and in the capture phase, before Bootstrap 5 reads the keys of every dropdown menu of the page, which fails
+        // for a menu that no button of its own opens.
         const keys = (event: KeyboardEvent): void => {
             if (event.key === 'Escape') {
+                event.stopPropagation();
                 setOpen(false);
                 toggle.current?.focus();
             }
@@ -120,12 +123,12 @@ export function Menu({button, label, name, active = false, small = false, place 
         };
         const resized = (): void => setOpen(false);
         document.addEventListener('pointerdown', outside, true);
-        document.addEventListener('keydown', keys, true);
+        window.addEventListener('keydown', keys, true);
         document.addEventListener('scroll', scrolled, true);
         window.addEventListener('resize', resized);
         return () => {
             document.removeEventListener('pointerdown', outside, true);
-            document.removeEventListener('keydown', keys, true);
+            window.removeEventListener('keydown', keys, true);
             document.removeEventListener('scroll', scrolled, true);
             window.removeEventListener('resize', resized);
         };

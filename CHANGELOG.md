@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The badges of the file access of a schema sit in their column and on their line, as the other rows of the section.
 - The badge of the uploads of a schema shows its icon.
 
+- Closing a menu with the Escape key raises no error in the console on Moodle 5.3.
 ## [1.1.1-m503] - 2026-10-16
 
 ### Changed

@@ -117,6 +117,7 @@ function Menu({ button, label, name, active = false, small = false, place = "", 
     }, "outside");
     const keys = /* @__PURE__ */ __name((event) => {
       if (event.key === "Escape") {
+        event.stopPropagation();
         setOpen(false);
         toggle.current?.focus();
       }
@@ -129,12 +130,12 @@ function Menu({ button, label, name, active = false, small = false, place = "", 
     }, "scrolled");
     const resized = /* @__PURE__ */ __name(() => setOpen(false), "resized");
     document.addEventListener("pointerdown", outside, true);
-    document.addEventListener("keydown", keys, true);
+    window.addEventListener("keydown", keys, true);
     document.addEventListener("scroll", scrolled, true);
     window.addEventListener("resize", resized);
     return () => {
       document.removeEventListener("pointerdown", outside, true);
-      document.removeEventListener("keydown", keys, true);
+      window.removeEventListener("keydown", keys, true);
       document.removeEventListener("scroll", scrolled, true);
       window.removeEventListener("resize", resized);
     };
@@ -158,7 +159,7 @@ function Menu({ button, label, name, active = false, small = false, place = "", 
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 135,
+        lineNumber: 138,
         columnNumber: 9
       },
       this
@@ -178,7 +179,7 @@ function Menu({ button, label, name, active = false, small = false, place = "", 
         },
         children: text && /* @__PURE__ */ jsxDEV(Icon, { name: "e/cancel", text }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-          lineNumber: 157,
+          lineNumber: 160,
           columnNumber: 19
         }, this)
       },
@@ -186,7 +187,7 @@ function Menu({ button, label, name, active = false, small = false, place = "", 
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 147,
+        lineNumber: 150,
         columnNumber: 23
       },
       this
@@ -196,12 +197,12 @@ function Menu({ button, label, name, active = false, small = false, place = "", 
       toggle.current?.focus();
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 158,
+      lineNumber: 161,
       columnNumber: 18
     }, this)
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 134,
+    lineNumber: 137,
     columnNumber: 12
   }, this);
 }
@@ -239,7 +240,7 @@ function SelectMenu({ options: all, value, label, small = false, place = "", bas
         false,
         {
           fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-          lineNumber: 196,
+          lineNumber: 199,
           columnNumber: 45
         },
         this
@@ -249,7 +250,7 @@ function SelectMenu({ options: all, value, label, small = false, place = "", bas
     false,
     {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 187,
+      lineNumber: 190,
       columnNumber: 12
     },
     this
@@ -263,11 +264,11 @@ function SortHeader({ label, help, active, direction, onSort, col }) {
   }
   return /* @__PURE__ */ jsxDEV("th", { scope: "col", "aria-sort": ariaSort, "data-col": col, children: /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-link", title: help, onClick: onSort, children: label }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 231,
+    lineNumber: 234,
     columnNumber: 9
   }, this) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 230,
+    lineNumber: 233,
     columnNumber: 12
   }, this);
 }
@@ -282,7 +283,7 @@ function Pager({ page, perpage, total, disabled, text, onChange }) {
     /* @__PURE__ */ jsxDEV("div", { className: "d-none d-sm-flex align-items-center gap-2", children: [
       /* @__PURE__ */ jsxDEV("span", { children: text("pagination_per_page") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 259,
+        lineNumber: 262,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV(
@@ -299,20 +300,20 @@ function Pager({ page, perpage, total, disabled, text, onChange }) {
         false,
         {
           fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-          lineNumber: 260,
+          lineNumber: 263,
           columnNumber: 17
         },
         this
       )
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 258,
+      lineNumber: 261,
       columnNumber: 13
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap align-items-center gap-3 ms-auto", children: [
       /* @__PURE__ */ jsxDEV("span", { className: "text-body text-nowrap", role: "status", "data-region": "range", children: text("pagination_range", { from, to, total }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 270,
+        lineNumber: 273,
         columnNumber: 17
       }, this),
       /* @__PURE__ */ jsxDEV("div", { className: "d-flex gap-1", children: [
@@ -327,7 +328,7 @@ function Pager({ page, perpage, total, disabled, text, onChange }) {
             onClick: () => onChange({ page: page - 1 }),
             children: /* @__PURE__ */ jsxDEV(Icon, { name: "i/previous", text }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-              lineNumber: 280,
+              lineNumber: 283,
               columnNumber: 25
             }, this)
           },
@@ -335,7 +336,7 @@ function Pager({ page, perpage, total, disabled, text, onChange }) {
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 272,
+            lineNumber: 275,
             columnNumber: 21
           },
           this
@@ -351,7 +352,7 @@ function Pager({ page, perpage, total, disabled, text, onChange }) {
             onClick: () => onChange({ page: page + 1 }),
             children: /* @__PURE__ */ jsxDEV(Icon, { name: "i/next", text }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-              lineNumber: 290,
+              lineNumber: 293,
               columnNumber: 25
             }, this)
           },
@@ -359,28 +360,28 @@ function Pager({ page, perpage, total, disabled, text, onChange }) {
           false,
           {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 282,
+            lineNumber: 285,
             columnNumber: 21
           },
           this
         )
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 271,
+        lineNumber: 274,
         columnNumber: 17
       }, this)
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 269,
+      lineNumber: 272,
       columnNumber: 13
     }, this)
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 257,
+    lineNumber: 260,
     columnNumber: 9
   }, this) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 256,
+    lineNumber: 259,
     columnNumber: 12
   }, this);
 }
@@ -425,7 +426,7 @@ function TableBox({ busy, empty, children }) {
   useFitHeight(box);
   return /* @__PURE__ */ jsxDEV("div", { ref: box, className: "table-responsive", "data-region": "tablewrap", "aria-busy": busy, children: empty || children }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 360,
+    lineNumber: 363,
     columnNumber: 12
   }, this);
 }
@@ -434,26 +435,26 @@ function Empty({ icon, message, action, onAction, text }) {
   return /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-column align-items-center gap-2 px-4 py-5 text-center", "data-region": "empty", role: "status", children: [
     /* @__PURE__ */ jsxDEV("span", { className: "icon-box", children: /* @__PURE__ */ jsxDEV(Icon, { name: icon, text }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 380,
+      lineNumber: 383,
       columnNumber: 36
     }, this) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 380,
+      lineNumber: 383,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ jsxDEV("p", { className: "text-muted mb-0", children: message }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 381,
+      lineNumber: 384,
       columnNumber: 9
     }, this),
     action && onAction && /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-outline-secondary btn-sm", onClick: onAction, children: action }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 382,
+      lineNumber: 385,
       columnNumber: 32
     }, this)
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 379,
+    lineNumber: 382,
     columnNumber: 12
   }, this);
 }
@@ -486,40 +487,40 @@ function Dialog({ title, children, footer, onClose, text }) {
           /* @__PURE__ */ jsxDEV("div", { className: "modal-header", children: [
             /* @__PURE__ */ jsxDEV("h5", { className: "modal-title", id: titleId, children: title }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-              lineNumber: 425,
+              lineNumber: 428,
               columnNumber: 25
             }, this),
             /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn-close", "aria-label": text("core_closebuttontitle"), onClick: onClose }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-              lineNumber: 426,
+              lineNumber: 429,
               columnNumber: 25
             }, this)
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 424,
+            lineNumber: 427,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "modal-body", children }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 428,
+            lineNumber: 431,
             columnNumber: 21
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "modal-footer", children: footer ?? /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: onClose, children: text("core_closebuttontitle") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 430,
+            lineNumber: 433,
             columnNumber: 36
           }, this) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-            lineNumber: 429,
+            lineNumber: 432,
             columnNumber: 21
           }, this)
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-          lineNumber: 423,
+          lineNumber: 426,
           columnNumber: 17
         }, this) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-          lineNumber: 422,
+          lineNumber: 425,
           columnNumber: 13
         }, this)
       },
@@ -527,19 +528,19 @@ function Dialog({ title, children, footer, onClose, text }) {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 412,
+        lineNumber: 415,
         columnNumber: 9
       },
       this
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "modal-backdrop show" }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 435,
+      lineNumber: 438,
       columnNumber: 9
     }, this)
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 411,
+    lineNumber: 414,
     columnNumber: 25
   }, this), document.body);
 }
@@ -583,12 +584,12 @@ function FloatBar({ count, label, onClear, children, text }) {
   return /* @__PURE__ */ jsxDEV("div", { className: "card", role: "region", "aria-label": label, "data-region": "bulk-actions", children: [
     /* @__PURE__ */ jsxDEV("span", { className: "fw-bold text-nowrap", role: "status", children: text("selected_count", count) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 495,
+      lineNumber: 498,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "d-flex flex-wrap gap-2", children }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-      lineNumber: 496,
+      lineNumber: 499,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ jsxDEV(
@@ -604,14 +605,14 @@ function FloatBar({ count, label, onClear, children, text }) {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-        lineNumber: 497,
+        lineNumber: 500,
         columnNumber: 9
       },
       this
     )
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/ds/ui.tsx",
-    lineNumber: 494,
+    lineNumber: 497,
     columnNumber: 12
   }, this);
 }
