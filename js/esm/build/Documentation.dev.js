@@ -15,7 +15,6 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import { useMemo } from "react";
-import BackLink from "./components/common/BackLink";
 import CopyButton from "./components/common/CopyButton";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import Icon from "./components/common/Icon";
@@ -53,16 +52,7 @@ const NAMING = [
 const SECTIONS = ["structure", "meta", "definition", "role", "naming", "example"];
 const Documentation = /* @__PURE__ */ __name((props) => {
   const text = useMemo(() => createText(props.strings), [props.strings]);
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-documentation", children: [
-    /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: props.backUrl, label: text("back") }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-      lineNumber: 63,
-      columnNumber: 31
-    }) }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-      lineNumber: 63,
-      columnNumber: 9
-    }),
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-documentation d-grid gap-3", children: [
     /* @__PURE__ */ jsxDEV(
       PageHeader,
       {
@@ -70,13 +60,13 @@ const Documentation = /* @__PURE__ */ __name((props) => {
         actions: /* @__PURE__ */ jsxDEV("a", { href: props.downloadUrl, className: "btn btn-outline-primary", children: [
           /* @__PURE__ */ jsxDEV(Icon, { name: "download", gap: true }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 66,
+            lineNumber: 64,
             columnNumber: 86
           }),
           text("download_example")
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 66,
+          lineNumber: 64,
           columnNumber: 22
         })
       },
@@ -84,245 +74,249 @@ const Documentation = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 64,
+        lineNumber: 62,
         columnNumber: 9
       }
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "card", children: /* @__PURE__ */ jsxDEV("div", { className: "card-body", children: [
       /* @__PURE__ */ jsxDEV("h5", { className: "mb-3", children: text("quick_links") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 71,
+        lineNumber: 69,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("ul", { className: "list-unstyled mb-4", children: SECTIONS.map((section) => /* @__PURE__ */ jsxDEV("li", { children: /* @__PURE__ */ jsxDEV("a", { href: `#${section}`, children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "chevron-right", gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 74,
+          lineNumber: 72,
           columnNumber: 49
         }),
         text("doc_" + section)
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 74,
+        lineNumber: 72,
         columnNumber: 25
       }) }, section, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 73,
+        lineNumber: 71,
         columnNumber: 48
       })) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 72,
+        lineNumber: 70,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "alert alert-success mb-4", children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "download", gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 79,
+          lineNumber: 77,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV("a", { href: props.downloadUrl, className: "alert-link", children: text("download_example") }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 80,
+          lineNumber: 78,
           columnNumber: 21
         }),
         " - ",
         text("download_example_desc")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 78,
+        lineNumber: 76,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("h4", { id: "structure", className: "mt-4 mb-3 text-primary", children: text("doc_structure") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 84,
+        lineNumber: 82,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("p", { children: text("doc_structure_desc") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 85,
+        lineNumber: 83,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("pre", { className: "sm-code p-3 rounded", children: /* @__PURE__ */ jsxDEV("code", { children: props.structureCode }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("pre", { className: "bg-body-tertiary border p-3 rounded mw-100 overflow-auto", children: /* @__PURE__ */ jsxDEV("code", { children: props.structureCode }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 86,
-        columnNumber: 54
+        lineNumber: 84,
+        columnNumber: 91
       }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 86,
+        lineNumber: 84,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV(CopyButton, { value: props.structureCode, text, tone: "outline-secondary" }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 87,
+        lineNumber: 85,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("h4", { id: "meta", className: "mt-4 mb-3 text-primary", children: text("doc_meta") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 89,
+        lineNumber: 87,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV(FieldTable, { fields: META, text }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 90,
+        lineNumber: 88,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "mt-3", children: /* @__PURE__ */ jsxDEV(FieldTable, { fields: REQUIREMENTS, text }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 91,
+        lineNumber: 89,
         columnNumber: 39
       }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 91,
+        lineNumber: 89,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("h4", { id: "definition", className: "mt-4 mb-3 text-primary", children: text("doc_definition") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 93,
+        lineNumber: 91,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("p", { children: text("doc_definition_desc") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 94,
+        lineNumber: 92,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("h5", { className: "mt-3", children: text("functions") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 95,
+        lineNumber: 93,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("p", { children: text("doc_functions_desc") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 96,
+        lineNumber: 94,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("pre", { className: "sm-code p-3 rounded", children: /* @__PURE__ */ jsxDEV("code", { children: props.functionCode }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("pre", { className: "bg-body-tertiary border p-3 rounded mw-100 overflow-auto", children: /* @__PURE__ */ jsxDEV("code", { children: props.functionCode }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 97,
-        columnNumber: 54
+        lineNumber: 95,
+        columnNumber: 91
       }) }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 97,
+        lineNumber: 95,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "alert alert-info mt-3", children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "circle-info", gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 99,
+          lineNumber: 97,
           columnNumber: 21
         }),
         text("doc_default_capabilities"),
         " ",
         /* @__PURE__ */ jsxDEV("code", { children: "webservice/rest:use" }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 101,
+          lineNumber: 99,
           columnNumber: 26
         }),
         ", ",
         /* @__PURE__ */ jsxDEV("code", { children: "webservice/soap:use" }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 101,
+          lineNumber: 99,
           columnNumber: 60
         }),
         "."
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 98,
+        lineNumber: 96,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("h4", { id: "role", className: "mt-4 mb-3 text-primary", children: text("doc_role") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 104,
+        lineNumber: 102,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("p", { children: text("doc_role_desc") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 105,
+        lineNumber: 103,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV(FieldTable, { fields: ROLE, text }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 106,
+        lineNumber: 104,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "alert alert-info mt-3", children: [
         /* @__PURE__ */ jsxDEV(Icon, { name: "circle-info", gap: true }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 108,
+          lineNumber: 106,
           columnNumber: 21
         }),
         text("doc_role_note")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 107,
+        lineNumber: 105,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("h4", { id: "naming", className: "mt-4 mb-3 text-primary", children: text("doc_naming") }, void 0, false, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 111,
+        lineNumber: 109,
         columnNumber: 17
       }),
-      /* @__PURE__ */ jsxDEV("table", { className: "table table-bordered table-striped", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "table-responsive", children: /* @__PURE__ */ jsxDEV("table", { className: "table table-bordered table-striped", children: [
         /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
           /* @__PURE__ */ jsxDEV("th", { children: text("resource") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 115,
+            lineNumber: 114,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("th", { children: text("pattern") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 116,
+            lineNumber: 115,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("th", { children: text("doc_example_col") }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 117,
+            lineNumber: 116,
             columnNumber: 29
           })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 114,
+          lineNumber: 113,
           columnNumber: 25
         }) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 113,
+          lineNumber: 112,
           columnNumber: 21
         }),
         /* @__PURE__ */ jsxDEV("tbody", { children: NAMING.map((row) => /* @__PURE__ */ jsxDEV("tr", { children: [
           /* @__PURE__ */ jsxDEV("td", { children: text(row.resource) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 122,
+            lineNumber: 121,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("code", { children: row.pattern }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 123,
+            lineNumber: 122,
             columnNumber: 33
           }) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 123,
+            lineNumber: 122,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("code", { children: row.example }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 124,
+            lineNumber: 123,
             columnNumber: 33
           }) }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-            lineNumber: 124,
+            lineNumber: 123,
             columnNumber: 29
           })
         ] }, row.resource, true, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 121,
+          lineNumber: 120,
           columnNumber: 46
         })) }, void 0, false, {
           fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-          lineNumber: 120,
+          lineNumber: 119,
           columnNumber: 21
         })
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-        lineNumber: 112,
+        lineNumber: 111,
+        columnNumber: 17
+      }) }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
+        lineNumber: 110,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("h4", { id: "example", className: "mt-4 mb-3 text-primary", children: text("doc_example") }, void 0, false, {
@@ -354,20 +348,20 @@ const Documentation = /* @__PURE__ */ __name((props) => {
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-      lineNumber: 70,
+      lineNumber: 68,
       columnNumber: 13
     }) }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-      lineNumber: 69,
+      lineNumber: 67,
       columnNumber: 9
     })
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-    lineNumber: 62,
+    lineNumber: 61,
     columnNumber: 51
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/Documentation.tsx",
-    lineNumber: 62,
+    lineNumber: 61,
     columnNumber: 12
   });
 }, "Documentation");

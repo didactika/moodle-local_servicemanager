@@ -12,7 +12,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {useMemo} from 'react';
-import BackLink from './components/common/BackLink';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Icon from './components/common/Icon';
 import {createText} from './engine/text';
@@ -21,8 +20,7 @@ import type {ImportIntroProps} from './types';
 const ImportIntro = (props: ImportIntroProps) => {
     const text = useMemo(() => createText(props.strings), [props.strings]);
 
-    return <ErrorBoundary strings={props.strings}><div className="servicemanager-import-page">
-        <div className="mb-4"><BackLink href={props.backUrl} label={text('back')} /></div>
+    return <ErrorBoundary strings={props.strings}><div className="lsm servicemanager-import-page d-grid gap-3">
         <div className="alert alert-info">
             <h5><Icon name="circle-info" gap />{text('import_info_title')}</h5>
             <p>{text('import_info_text')}</p>

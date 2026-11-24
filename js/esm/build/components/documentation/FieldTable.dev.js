@@ -12,7 +12,7 @@ import { jsxDEV } from "react/jsx-dev-runtime";
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-const FieldTable = /* @__PURE__ */ __name(({ fields, text }) => /* @__PURE__ */ jsxDEV("table", { className: "table table-bordered table-striped", children: [
+const FieldTable = /* @__PURE__ */ __name(({ fields, text }) => /* @__PURE__ */ jsxDEV("div", { className: "table-responsive", children: /* @__PURE__ */ jsxDEV("table", { className: "table table-bordered table-striped", children: [
   /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
     /* @__PURE__ */ jsxDEV("th", { children: text("field") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/documentation/FieldTable.tsx",
@@ -48,7 +48,7 @@ const FieldTable = /* @__PURE__ */ __name(({ fields, text }) => /* @__PURE__ */ 
       lineNumber: 37,
       columnNumber: 13
     }),
-    /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `sm-badge tone-${field.required ? "success" : "secondary"}`, children: text(field.required ? "core_yes" : "core_no") }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("td", { children: /* @__PURE__ */ jsxDEV("span", { className: `badge rounded-pill text-bg-${field.required ? "success" : "secondary"}`, children: text(field.required ? "core_yes" : "core_no") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/components/documentation/FieldTable.tsx",
       lineNumber: 38,
       columnNumber: 17
@@ -72,6 +72,10 @@ const FieldTable = /* @__PURE__ */ __name(({ fields, text }) => /* @__PURE__ */ 
     columnNumber: 5
   })
 ] }, void 0, true, {
+  fileName: "public/local/servicemanager/js/esm/src/components/documentation/FieldTable.tsx",
+  lineNumber: 27,
+  columnNumber: 91
+}) }, void 0, false, {
   fileName: "public/local/servicemanager/js/esm/src/components/documentation/FieldTable.tsx",
   lineNumber: 27,
   columnNumber: 57

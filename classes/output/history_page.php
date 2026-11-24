@@ -30,7 +30,7 @@ use core\output\react_component_renderable;
  */
 class history_page implements react_component_renderable, \renderable {
     /** @var int[] The sizes of page that can be chosen. */
-    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+    public const PERPAGE_OPTIONS = [12, 24, 48, 96, 0];
 
     /** @var \stdClass The schema record. */
     private \stdClass $schema;

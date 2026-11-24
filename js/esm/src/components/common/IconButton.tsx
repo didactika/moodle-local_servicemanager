@@ -2,7 +2,8 @@
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * A button or a link that is only an icon, with its name as a tooltip and for assistive technology.
+ * A round icon button of the design system (btn-link btn-icon), as the actions of a row, or a filled one for the main
+ * action; the label is its title and what assistive technology says.
  *
  * @module     local_servicemanager/components/common/IconButton
  * @copyright  2026 Didactika.org
@@ -16,33 +17,31 @@ interface IconButtonProps {
     label: string;
     href?: string;
     onClick?: () => void;
-    /** Colour of what it does: primary, success, warning, info or danger; neutral when it is not given. */
+    /** Colour of the icon: primary, success, warning, info or danger; the colour of the text when it is not given. */
     tone?: string;
-    /** Draw it at the size of the other buttons of its row and not at the small one. */
+    /** The size of a button of the page rather than of a row. */
     large?: boolean;
-    /** Fill it with the colour, for the action of the page that matters most. */
+    /** Filled with its colour, for the main action of a page. */
     solid?: boolean;
-    /** Wait: the button does nothing while something it started is being saved. */
     disabled?: boolean;
 }
 
 /**
- * The class of the colour of a tone; the neutral one has none.
+ * The class that gives a button the colour of a tone.
  *
- * @param tone Name of the tone, with or without the outline prefix of Bootstrap.
- * @returns The class, with a space before it, or nothing.
+ * @param tone The tone.
+ * @returns The class, with a space before it, or nothing for the colour of the text.
  */
-export const toneClass = (tone: string): string => {
-    const name = tone.replace(/^outline-/, '');
-    return name === 'secondary' ? '' : ` tone-${name}`;
-};
+export const toneClass = (tone: string): string => (tone && tone !== 'secondary' ? ` text-${tone}` : '');
 
 const IconButton = ({icon, label, href, onClick, tone = 'secondary', large = false, solid = false, disabled = false}: IconButtonProps) => {
-    const content = <><Icon name={icon} /><span className="visually-hidden">{label}</span></>;
-    const className = `btn sm-pill icon-only${large ? '' : ' compact'}${toneClass(tone)}${solid ? ' solid' : ''}`;
+    const content = <Icon name={icon} />;
+    const className = solid
+        ? `btn btn-${tone === 'secondary' ? 'primary' : tone} btn-icon${large ? '' : ' btn-sm'}`
+        : `btn btn-link btn-icon${large ? '' : ' btn-sm'}${toneClass(tone)}`;
     return href
-        ? <a href={href} className={className} title={label}>{content}</a>
-        : <button type="button" className={className} title={label} onClick={onClick} disabled={disabled}>{content}</button>;
+        ? <a href={href} className={className} title={label} aria-label={label}>{content}</a>
+        : <button type="button" className={className} title={label} aria-label={label} onClick={onClick} disabled={disabled}>{content}</button>;
 };
 
 export default IconButton;

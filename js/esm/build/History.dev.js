@@ -17,16 +17,13 @@ import { Fragment, jsxDEV } from "react/jsx-dev-runtime";
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import { useCallback, useMemo, useState } from "react";
-import BackLink from "./components/common/BackLink";
 import EmptyState from "./components/common/EmptyState";
 import ErrorBoundary from "./components/common/ErrorBoundary";
-import Chips from "./components/common/Chips";
-import FilterMenu from "./components/common/FilterMenu";
 import ConfirmModal from "./components/common/ConfirmModal";
 import Icon from "./components/common/Icon";
 import PageHeader from "./components/common/PageHeader";
-import Pagination from "./components/common/Pagination";
-import SearchBox from "./components/common/SearchBox";
+import { Empty, Pager as DsPager, SearchBox as DsSearch, TableBox } from "./ds/ui";
+import { DateMenu, FilterGroup } from "./ds/Filters";
 import CompareBar from "./components/history/CompareBar";
 import VersionList from "./components/history/VersionList";
 import { createText } from "./engine/text";
@@ -47,6 +44,30 @@ const History = /* @__PURE__ */ __name((props) => {
   const [tooMany, setTooMany] = useState(false);
   const found = useMemo(() => rows.filter((row) => matches(findable(row), list.state)), [rows, list.state.query, list.state.from, list.state.to]);
   const page = paginate(found, list.state.page, list.state.perpage);
+  const asking = list.state.query !== "" || list.state.from !== "" || list.state.to !== "";
+  const resetButton = /* @__PURE__ */ jsxDEV(
+    "button",
+    {
+      type: "button",
+      className: "btn btn-link btn-icon",
+      disabled: !asking,
+      title: text("filters_reset"),
+      "aria-label": text("filters_reset"),
+      onClick: list.reset,
+      children: /* @__PURE__ */ jsxDEV(Icon, { name: "rotate" }, void 0, false, {
+        fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+        lineNumber: 55,
+        columnNumber: 9
+      })
+    },
+    void 0,
+    false,
+    {
+      fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+      lineNumber: 53,
+      columnNumber: 25
+    }
+  );
   const toggle = useCallback((id) => {
     if (!chosen.has(id) && chosen.size >= TO_COMPARE) {
       setTooMany(true);
@@ -78,16 +99,7 @@ const History = /* @__PURE__ */ __name((props) => {
     setChosen(/* @__PURE__ */ new Set());
     setTooMany(false);
   }, []);
-  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "servicemanager-history-page", children: [
-    /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: /* @__PURE__ */ jsxDEV(BackLink, { href: urls.back, label: text("back") }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 91,
-      columnNumber: 35
-    }) }, void 0, false, {
-      fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 91,
-      columnNumber: 13
-    }),
+  return /* @__PURE__ */ jsxDEV(ErrorBoundary, { strings: props.strings, children: /* @__PURE__ */ jsxDEV("div", { className: "lsm servicemanager-history-page d-grid gap-3", children: [
     /* @__PURE__ */ jsxDEV(
       PageHeader,
       {
@@ -98,7 +110,7 @@ const History = /* @__PURE__ */ __name((props) => {
           text("history_current", currentVersion)
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 95,
+          lineNumber: 97,
           columnNumber: 27
         })
       },
@@ -106,160 +118,134 @@ const History = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 93,
+        lineNumber: 95,
         columnNumber: 13
       }
     ),
     rows.length === 0 ? /* @__PURE__ */ jsxDEV(EmptyState, { icon: "clock-rotate-left", title: text("history_empty_title"), text: text("no_history") }, void 0, false, {
       fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 99,
+      lineNumber: 101,
       columnNumber: 19
     }) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
-      /* @__PURE__ */ jsxDEV("div", { className: "sm-toolbar", children: [
-        /* @__PURE__ */ jsxDEV(
-          SearchBox,
-          {
-            value: list.state.query,
-            onChange: (query) => list.set({ query }),
-            placeholder: text("filter_version"),
-            clearLabel: text("filter_clear")
-          },
-          void 0,
-          false,
-          {
-            fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 102,
-            columnNumber: 25
-          }
-        ),
-        /* @__PURE__ */ jsxDEV(FilterMenu, { text, count: list.extras, onReset: () => list.set({ from: "", to: "", perpage: perPageOptions[0] }), children: [
-          /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "sm-from", className: "form-label", children: text("filter_date_from") }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("div", { className: "card", children: [
+        /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center justify-content-between gap-3 px-3 py-2 border-bottom", "data-region": "filters", children: [
+          /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center gap-2 flex-grow-1", children: [
+            /* @__PURE__ */ jsxDEV(DsSearch, { value: list.state.query, onChange: (query) => list.set({ query }), label: text("filter_version"), text }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 110,
+              lineNumber: 106,
               columnNumber: 33
             }),
-            /* @__PURE__ */ jsxDEV("input", { type: "date", id: "sm-from", className: "form-control", value: list.state.from, onChange: (event) => list.set({ from: event.target.value }) }, void 0, false, {
+            /* @__PURE__ */ jsxDEV(FilterGroup, { count: list.state.from || list.state.to ? 1 : 0, text, reset: resetButton, children: /* @__PURE__ */ jsxDEV(
+              DateMenu,
+              {
+                label: text("history_date"),
+                from: list.state.from,
+                to: list.state.to,
+                text,
+                onChange: (from, to) => list.set({ from, to })
+              },
+              void 0,
+              false,
+              {
+                fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+                lineNumber: 108,
+                columnNumber: 37
+              }
+            ) }, void 0, false, {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 111,
+              lineNumber: 107,
               columnNumber: 33
             })
           ] }, void 0, true, {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 109,
+            lineNumber: 105,
             columnNumber: 29
           }),
-          /* @__PURE__ */ jsxDEV("div", { className: "mb-3", children: [
-            /* @__PURE__ */ jsxDEV("label", { htmlFor: "sm-to", className: "form-label", children: text("filter_date_to") }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 114,
-              columnNumber: 33
-            }),
-            /* @__PURE__ */ jsxDEV("input", { type: "date", id: "sm-to", className: "form-control", value: list.state.to, onChange: (event) => list.set({ to: event.target.value }) }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 115,
-              columnNumber: 33
-            })
-          ] }, void 0, true, {
+          /* @__PURE__ */ jsxDEV("div", { className: "d-flex align-items-center gap-2 flex-shrink-0", children: resetButton }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 113,
+            lineNumber: 112,
             columnNumber: 29
-          }),
-          /* @__PURE__ */ jsxDEV("div", { className: "sm-filter-title", children: text("filter_per_page") }, void 0, false, {
+          })
+        ] }, void 0, true, {
+          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+          lineNumber: 104,
+          columnNumber: 25
+        }),
+        /* @__PURE__ */ jsxDEV("form", { action: urls.compare, method: "get", className: "servicemanager-history", children: [
+          /* @__PURE__ */ jsxDEV("input", { type: "hidden", name: "id", value: props.schemaId }, void 0, false, {
             fileName: "public/local/servicemanager/js/esm/src/History.tsx",
             lineNumber: 117,
             columnNumber: 29
           }),
-          /* @__PURE__ */ jsxDEV(
-            Chips,
+          /* @__PURE__ */ jsxDEV(TableBox, { busy: false, empty: page.rows.length === 0 && /* @__PURE__ */ jsxDEV(
+            Empty,
             {
-              label: text("filter_per_page"),
-              value: String(list.state.perpage),
-              onChange: (value) => list.set({ perpage: Number(value) }),
-              chips: perPageOptions.map((option) => ({ value: String(option), label: String(option) }))
+              icon: "a/search",
+              message: text("no_schemas_filtered"),
+              action: text("filters_reset"),
+              onAction: list.reset,
+              text
             },
             void 0,
             false,
             {
               fileName: "public/local/servicemanager/js/esm/src/History.tsx",
               lineNumber: 118,
-              columnNumber: 29
+              columnNumber: 85
             }
-          )
+          ), children: /* @__PURE__ */ jsxDEV(VersionList, { rows: page.rows, chosen, onToggle: toggle, onRollback: setRollingBack, text }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+            lineNumber: 120,
+            columnNumber: 33
+          }) }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+            lineNumber: 118,
+            columnNumber: 29
+          }),
+          chosen.size > 0 && /* @__PURE__ */ jsxDEV(CompareBar, { chosen, needed: TO_COMPARE, tooMany, onClear: clear, text }, void 0, false, {
+            fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+            lineNumber: 122,
+            columnNumber: 49
+          })
         ] }, void 0, true, {
           fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 108,
+          lineNumber: 116,
           columnNumber: 25
-        })
+        }),
+        /* @__PURE__ */ jsxDEV(
+          DsPager,
+          {
+            page: page.page,
+            perpage: list.state.perpage,
+            total: page.total,
+            text,
+            onChange: (changes) => list.set({ ...changes, page: changes.page ?? 0 })
+          },
+          void 0,
+          false,
+          {
+            fileName: "public/local/servicemanager/js/esm/src/History.tsx",
+            lineNumber: 124,
+            columnNumber: 25
+          }
+        )
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 101,
+        lineNumber: 103,
         columnNumber: 21
       }),
-      page.rows.length === 0 ? /* @__PURE__ */ jsxDEV(
-        EmptyState,
-        {
-          icon: "filter-circle-xmark",
-          title: text("empty_filtered_title"),
-          text: text("no_schemas_filtered"),
-          actions: /* @__PURE__ */ jsxDEV("button", { type: "button", className: "btn btn-secondary", onClick: list.reset, children: [
-            /* @__PURE__ */ jsxDEV(Icon, { name: "xmark", gap: true }, void 0, false, {
-              fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-              lineNumber: 132,
-              columnNumber: 111
-            }),
-            text("filter_clear")
-          ] }, void 0, true, {
-            fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-            lineNumber: 132,
-            columnNumber: 38
-          })
-        },
-        void 0,
-        false,
-        {
-          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 128,
-          columnNumber: 27
-        }
-      ) : /* @__PURE__ */ jsxDEV("form", { action: urls.compare, method: "get", className: "servicemanager-history", children: [
-        /* @__PURE__ */ jsxDEV("input", { type: "hidden", name: "id", value: props.schemaId }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 135,
-          columnNumber: 29
-        }),
-        /* @__PURE__ */ jsxDEV("p", { className: "text-body-secondary small mb-2", children: [
-          text("history_count", found.length),
-          " ",
-          text("compare_hint")
-        ] }, void 0, true, {
-          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 136,
-          columnNumber: 29
-        }),
-        /* @__PURE__ */ jsxDEV(VersionList, { rows: page.rows, chosen, onToggle: toggle, onRollback: setRollingBack, text }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 137,
-          columnNumber: 29
-        }),
-        chosen.size > 0 && /* @__PURE__ */ jsxDEV(CompareBar, { chosen, needed: TO_COMPARE, tooMany, onClear: clear, text }, void 0, false, {
-          fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-          lineNumber: 138,
-          columnNumber: 49
-        })
+      /* @__PURE__ */ jsxDEV("p", { className: "text-muted small mb-0", children: [
+        text("history_count", found.length),
+        " ",
+        text("compare_hint")
       ] }, void 0, true, {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 134,
-        columnNumber: 27
-      }),
-      /* @__PURE__ */ jsxDEV(Pagination, { page: page.page, perpage: list.state.perpage, total: page.total, onPage: (next) => list.set({ page: next }), text }, void 0, false, {
-        fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 141,
+        lineNumber: 127,
         columnNumber: 21
       })
     ] }, void 0, true, {
       fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-      lineNumber: 100,
+      lineNumber: 102,
       columnNumber: 19
     }),
     /* @__PURE__ */ jsxDEV(
@@ -278,17 +264,17 @@ const History = /* @__PURE__ */ __name((props) => {
       false,
       {
         fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-        lineNumber: 144,
+        lineNumber: 130,
         columnNumber: 13
       }
     )
   ] }, void 0, true, {
     fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-    lineNumber: 90,
+    lineNumber: 93,
     columnNumber: 9
   }) }, void 0, false, {
     fileName: "public/local/servicemanager/js/esm/src/History.tsx",
-    lineNumber: 89,
+    lineNumber: 92,
     columnNumber: 12
   });
 }, "History");

@@ -10,7 +10,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {fetchOne} from '@moodle/lms/core/ajax';
-import type {HistoryRow} from '../types';
+import type {HistoryRow, WsStatus} from '../types';
 
 /**
  * Call one web service of the plugin.
@@ -43,6 +43,19 @@ export const setSchemaEnabled = async(id: number, enabled: boolean): Promise<boo
     const result = await call<{id: number; enabled: boolean}>('local_servicemanager_set_enabled', {id, enabled});
     return result.enabled;
 };
+
+/** The state of the web services after a change, and what was done. */
+type WsChange = Omit<WsStatus, 'healthy' | 'warning' | 'critical'> & {message: string};
+
+/**
+ * Turn the web services of the site, or one of their protocols, on or off, without reloading the page.
+ *
+ * @param enable Whether to turn it on.
+ * @param protocol The protocol, or empty for the web services of the site.
+ * @returns What was done, and the state of the web services now.
+ */
+export const setWebServices = (enable: boolean, protocol = ''): Promise<WsChange> =>
+    call('local_servicemanager_set_web_services', {enable, protocol});
 
 /**
  * Bring a schema back to one of its versions.

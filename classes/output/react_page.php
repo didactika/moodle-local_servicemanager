@@ -56,40 +56,30 @@ class react_page {
      * @return string The HTML.
      */
     private static function placeholder(string $shape): string {
+        // The placeholders of Bootstrap: grey bars in the shape of what is coming, which glow while the page loads.
         $line = static fn(string $width, string $class = '') =>
-            '<span class="sm-skeleton-line ' . $class . '" style="width:' . $width . '"></span>';
-        $card = static fn(string $body) => '<div class="sm-skeleton-card">' . $body . '</div>';
-        $head = '<div class="sm-skeleton-head">' . $line('14rem', 'title') . $line('7rem') . '</div>';
+            '<span class="placeholder d-block mb-2 ' . $class . '" style="width:' . $width . '"></span>';
+        $card = static fn(string $body) => '<div class="card mb-3"><div class="card-body">' . $body . '</div></div>';
+        $head = '<div class="mb-3">' . $line('14rem', 'placeholder-lg') . $line('7rem') . '</div>';
 
         switch ($shape) {
             case 'list':
-                $rows = str_repeat('<div class="sm-skeleton-row">' . $line('1rem') . $line('30%') . $line('10%') . $line('8%') .
+                $rows = str_repeat('<div class="d-flex gap-3">' . $line('1rem') . $line('30%') . $line('10%') . $line('8%') .
                     $line('18%') . '</div>', 5);
-                $body = $head . $card($line('100%', 'tall')) . '<div class="sm-skeleton-tools">' . $line('18rem', 'tall') .
-                    $line('6rem', 'tall') . '</div>' . $card($rows);
+                $body = $head . $card($line('100%', 'placeholder-lg')) . $card($line('18rem', 'placeholder-lg') . $rows);
                 break;
             case 'detail':
-                $round = '<span class="sm-skeleton-line round"></span>';
-                $facts = '<div class="sm-skeleton-facts">' . $line('4rem') . $line('9rem') . $line('9rem') . $line('3rem') .
-                    '</div>';
-                $fnrow = '<div class="sm-skeleton-row">' . $line('1.5rem') . $line('35%') . $line('12%') . '</div>' .
-                    $line('55%');
-                $info = $card('<div class="sm-skeleton-between">' . $line('11rem', 'title') . '<span class="sm-skeleton-actions">' .
-                    str_repeat($round, 5) . '</span></div>' . $line('60%') . $facts);
-                $functions = $card($line('8rem', 'title') . str_repeat($fnrow, 2));
-                $resources = $card($line('12rem', 'title') . str_repeat($fnrow, 3));
-                $accessrow = '<div class="sm-skeleton-row">' . $line('5rem') . $line('30%') . $line('2rem') . '</div>';
-                $access = $card($line('14rem', 'title') . str_repeat($accessrow, 3));
-                $role = $card($line('6rem', 'title') . str_repeat($line('35%') . $line('90%'), 3));
-                $head = '<div class="sm-skeleton-head sm-skeleton-between"><div>' . $line('14rem', 'title') . $line('7rem') .
-                    '</div><span class="sm-skeleton-actions">' . $line('22rem', 'tall') . '</span></div>';
-                $body = $head . '<div class="sm-skeleton-columns"><div>' . $info . $functions . $resources . '</div><div>' .
-                    $access . $role . '</div></div>';
+                $rows = static fn(int $count) => str_repeat($line('35%') . $line('90%'), $count);
+                $left = $card($line('11rem', 'placeholder-lg') . $line('60%') . $rows(2)) . $card($line('8rem', 'placeholder-lg') .
+                    $rows(2)) . $card($line('12rem', 'placeholder-lg') . $rows(3));
+                $right = $card($line('14rem', 'placeholder-lg') . $rows(3)) . $card($line('6rem', 'placeholder-lg') . $rows(3));
+                $body = $head . '<div class="row"><div class="col-lg-7">' . $left . '</div><div class="col-lg-5">' . $right .
+                    '</div></div>';
                 break;
             default:
                 $body = $head . $card($line('70%') . $line('95%') . $line('85%') . $line('60%') . $line('90%'));
         }
-        return '<div class="sm-skeleton" aria-hidden="true">' . $body . '</div>'
-            . '<span class="sm-skeleton-label" role="status">' . get_string('loading', 'local_servicemanager') . '</span>';
+        return '<div class="placeholder-glow" aria-hidden="true">' . $body . '</div>'
+            . '<span class="visually-hidden" role="status">' . get_string('loading', 'local_servicemanager') . '</span>';
     }
 }

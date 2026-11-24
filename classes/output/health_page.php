@@ -32,10 +32,10 @@ use core\output\react_component_renderable;
  */
 class health_page implements react_component_renderable, \renderable {
     /** @var int[] The sizes of page that can be chosen. */
-    public const PERPAGE_OPTIONS = [10, 25, 50, 100];
+    public const PERPAGE_OPTIONS = [12, 24, 48, 96, 0];
 
     /** @var int The size of page when none is chosen. */
-    public const PERPAGE_DEFAULT = 25;
+    public const PERPAGE_DEFAULT = 12;
 
     /** @var string[] The colour of each status a check can have. */
     public const TONES = ['healthy' => 'success', 'warning' => 'warning', 'critical' => 'danger'];
@@ -95,8 +95,10 @@ class health_page implements react_component_renderable, \renderable {
         $counts = self::counts($id);
         $all = $DB->count_records('local_servicemanager_logs', ['schemaid' => $id]);
         $total = $this->status === '' ? $all : $counts[$this->status];
+        // A size of 0 is every check at once.
+        $size = $this->perpage ?: max(1, $total);
         // A page after the last one, as an old link may ask for, shows the last one.
-        $page = min($this->page, max(0, (int) ceil($total / $this->perpage) - 1));
+        $page = min($this->page, max(0, (int) ceil($total / $size) - 1));
 
         $conditions = ['schemaid' => $id] + ($this->status === '' ? [] : ['status' => $this->status]);
         $records = $DB->get_records(
@@ -104,8 +106,8 @@ class health_page implements react_component_renderable, \renderable {
             $conditions,
             'timecreated DESC, id DESC',
             'id, status, message, timecreated',
-            $page * $this->perpage,
-            $this->perpage
+            $page * $size,
+            $size
         );
         $rows = array_map([self::class, 'row'], array_values($records));
 
@@ -116,8 +118,8 @@ class health_page implements react_component_renderable, \renderable {
             'rows' => $rows,
             'filters' => $this->filters($counts, $all),
             'showing' => get_string('health_showing', 'local_servicemanager', (object) [
-                'from' => $rows ? $page * $this->perpage + 1 : 0,
-                'to' => $page * $this->perpage + count($rows),
+                'from' => $rows ? $page * $size + 1 : 0,
+                'to' => $page * $size + count($rows),
                 'total' => $total,
             ]),
             'paging' => [

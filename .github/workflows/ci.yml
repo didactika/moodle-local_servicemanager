@@ -260,6 +260,12 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci mustache
 
+      # Git writes the reverse indexes of its packs (*.rev) read-only, and moodle-plugin-ci grunt copies the plugin, .git
+      # included, and back again; the copy fails on those files unless they can be written.
+      - name: Make the git objects of the plugin writable
+        if: ${{ !cancelled() }}
+        run: find "$GITHUB_WORKSPACE/moodle" -mindepth 2 -maxdepth 5 -type d -name .git -exec chmod -R u+w {} +
+
       - name: Grunt
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci grunt --max-lint-warnings 0

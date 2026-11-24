@@ -1,4 +1,4 @@
-import r from"./Icon";import{jsx as a,jsxs as i}from"react/jsx-runtime";/**
+import i from"./Icon";import{jsx as t,jsxs as c}from"react/jsx-runtime";/**
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
@@ -8,4 +8,4 @@ import r from"./Icon";import{jsx as a,jsxs as i}from"react/jsx-runtime";/**
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */const c=({value:s,onChange:e,placeholder:t,clearLabel:o,id:l="sm-search"})=>i("div",{className:"input-group sm-search",children:[a("span",{className:"input-group-text",children:a(r,{name:"magnifying-glass"})}),a("input",{type:"search",id:l,name:"q",value:s,className:"form-control",placeholder:t,"aria-label":t,autoComplete:"off",onChange:n=>e(n.target.value),onKeyDown:n=>{n.key==="Escape"&&e("")}}),s!==""&&i("button",{type:"button",className:"btn btn-outline-secondary",onClick:()=>e(""),title:o,children:[a(r,{name:"xmark"}),a("span",{className:"visually-hidden",children:o})]})]});var m=c;export{m as default};
+ */const s=({value:r,onChange:a,placeholder:o,clearLabel:n,id:l="lsm-search"})=>c("div",{className:"position-relative d-flex align-items-center",role:"search",children:[t(i,{name:"magnifying-glass"}),t("input",{type:"search",id:l,name:"q",value:r,className:"form-control",placeholder:o,"aria-label":o,title:n,autoComplete:"off",onChange:e=>a(e.target.value),onKeyDown:e=>{e.key==="Escape"&&a("")}}),r!==""&&t("button",{type:"button",className:"btn btn-link btn-icon btn-sm","data-action":"clear-search",title:n,"aria-label":n,onClick:e=>{a(""),e.currentTarget.parentElement?.querySelector("input")?.focus()},children:t(i,{name:"xmark"})})]});var p=s;export{p as default};

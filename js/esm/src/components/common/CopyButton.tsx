@@ -41,7 +41,7 @@ const CopyButton = ({value, text, label, tone = 'outline-success', compact = fal
     if (compact) {
         return <button
             type="button"
-            className={`btn sm-pill icon-only compact${copied ? ' tone-success' : ''}`}
+            className={`btn btn-link btn-icon btn-sm${copied ? ' text-success' : ''}`}
             onClick={() => copy(value)}
             title={text('copy')}
         >

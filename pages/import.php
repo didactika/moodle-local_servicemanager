@@ -34,9 +34,7 @@ $PAGE->set_title(get_string('pluginname', 'local_servicemanager') . ' - ' . get_
 $PAGE->set_heading(get_string('import_schemas', 'local_servicemanager'));
 $PAGE->set_pagelayout('admin');
 
-// Navigation.
-$PAGE->navbar->add(get_string('pluginname', 'local_servicemanager'), new moodle_url('/local/servicemanager/pages/dashboard.php'));
-$PAGE->navbar->add(get_string('import_schemas', 'local_servicemanager'));
+// The page is in the administration tree, so the breadcrumb already leads to it.
 
 $form = new \local_servicemanager\form\import_schema_form();
 

@@ -46,15 +46,22 @@ class ws_status {
 
         $enabled = !empty($CFG->enablewebservices);
         $active = self::active_protocols($enabled);
+        $configured = empty($CFG->webserviceprotocols) ? [] : array_map('trim', explode(',', $CFG->webserviceprotocols));
         $protocols = [];
         foreach (array_keys(\core_plugin_manager::instance()->get_plugins_of_type('webservice')) as $key) {
-            $protocols[] = ['name' => strtoupper($key), 'enabled' => in_array($key, $active)];
+            // Enabled: it answers now. On: it is turned on, and answers once the web services are.
+            $protocols[] = ['key' => $key, 'name' => strtoupper($key), 'enabled' => in_array($key, $active),
+                'on' => in_array($key, $configured)];
         }
         $level = self::level($enabled, count($active));
         $fix = self::fix($level, $canmanage);
+        $configure = has_capability('moodle/site:config', \context_system::instance());
 
         return [
             'enabled' => $enabled,
+            'canConfigure' => $configure,
+            'toggleUrl' => (new \moodle_url('/local/servicemanager/pages/web_services.php'))->out(false),
+            'returnUrl' => $configure ? qualified_me() : '',
             'level' => $level,
             'protocols' => $protocols,
             'enabledProtocols' => count($active),

@@ -1,0 +1,360 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// The chrome of the lists of the plugin, as the design system draws it, written as overrides of the Bootstrap components the
+// markup uses (card, nav-tabs, table, list-group) and as the design system's own pieces (dd-*), always inside .lsm so
+// nothing reaches the rest of Moodle. Buttons, fields, dialogs and alerts stay the ones of Moodle.
+// @copyright 2026 Didactika.org
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm {
+    display: grid;
+    gap: 1.25rem;
+    min-width: 0;
+
+    // What the grid of a page holds may shrink below its content, so a long line scrolls in its own box, not the page.
+    & > * {
+        min-width: 0;
+    }
+
+    // The cards of the page of a schema: two columns from 992 px, the wide one first, and one under the other below. The row of
+    // Bootstrap takes its gutters from negative margins that go past the column of a narrow page; a grid with a gap keeps the
+    // cards inside it.
+    & [data-region="cards"].row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.25rem;
+        margin: 0;
+
+        // Bootstrap 5 gives a column a share of the width of its row; in the grid it takes the width of its cell.
+        & > [class*="col-"] {
+            width: auto;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        @media (min-width: 992px) {
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        }
+    }
+
+    // The statuses of the health checks keep one row that scrolls sideways when it does not fit, with no scroll bar.
+    & [data-region="health-filters"] {
+        min-width: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        & > .nav-link {
+            flex: none;
+            white-space: nowrap;
+        }
+    }
+
+    // Tabs of the sections of a page, drawn as Moodle draws its secondary navigation: plain text, and the open one in the primary
+    // colour with a line under it. The line is a shadow inside the tab, so it never moves the row and never overflows it; the row
+    // keeps one line and scrolls sideways only when it does not fit, with no scroll bar. The selectors are doubled to weigh more
+    // than the rules of Moodle, which paint a narrow screen's tabs as blocks on a grey band and a clicked tab with a halo.
+    & .nav-tabs.nav-tabs {
+        flex-wrap: nowrap;
+        gap: 0.25rem;
+        margin: 0;
+        padding: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border: 0;
+        background-color: transparent;
+        box-shadow: inset 0 -1px 0 var(--dd-hairline);
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        & .nav-item {
+            flex: none;
+        }
+
+        & .nav-link.nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+            padding: 0.75rem 1rem;
+            border: 0;
+            border-radius: 0;
+            background: none;
+            box-shadow: none;
+            color: var(--dd-muted);
+            font-weight: 500;
+            white-space: nowrap;
+            transition: box-shadow var(--dd-ease), color var(--dd-ease);
+
+            &:hover {
+                box-shadow: inset 0 -2px 0 var(--dd-line);
+                color: var(--dd-ink);
+            }
+
+            &:focus {
+                outline: 0;
+            }
+
+            &:focus-visible {
+                border-radius: var(--dd-radius-sm);
+                box-shadow: inset 0 0 0 2px var(--dd-primary);
+            }
+
+            &.active:not(:disabled):not(.disabled) {
+                border: 0;
+                background: none;
+                box-shadow: inset 0 -3px 0 var(--dd-primary);
+                color: var(--dd-primary-ink);
+            }
+
+            &.active:focus-visible {
+                box-shadow: inset 0 -3px 0 var(--dd-primary), inset 0 0 0 2px var(--dd-primary);
+            }
+        }
+    }
+
+    // Cards: a thin line and the radius of the system, no shadow. A list is a card with its toolbar, table and pager.
+    & .card {
+        overflow: hidden;
+        border: 1px solid var(--dd-hairline);
+        border-radius: var(--dd-radius-lg);
+        background: var(--dd-surface);
+        box-shadow: none;
+    }
+
+    & .card-body {
+        padding: 1.25rem;
+    }
+
+    & .card-title {
+        margin-bottom: 0.75rem;
+        color: var(--dd-ink);
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    // Tables: quiet lines, a small header in capitals, and room to breathe.
+    & .table-responsive {
+        margin: 0;
+        transition: opacity var(--dd-ease);
+
+        &[aria-busy="true"] {
+            opacity: 0.6;
+        }
+
+        // A list keeps the same height whatever it holds: with few rows there is empty space below them, with many it scrolls
+        // and the header stays in view.
+        &[data-region="tablewrap"] {
+            block-size: var(--dd-table-h);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+
+            & thead th {
+                position: sticky;
+                inset-block-start: 0;
+                z-index: 1;
+                background-color: var(--dd-surface);
+            }
+        }
+    }
+
+    // The empty and error states take the height of the table and of the pager they replace, so the card does not change height
+    // when a search finds nothing.
+    & [data-region="empty"]:not([hidden]),
+    & [data-region="error"]:not([hidden]) {
+        display: grid;
+        min-block-size: calc(var(--dd-table-h) + var(--dd-foot-n, 0) * 1px);
+        place-content: center;
+    }
+
+    // When the empty state is drawn inside the box of the table, the box takes the room of the pager as well.
+    & [data-region="tablewrap"]:has(> :is([data-region="empty"], [data-region="empty-state"]):not([hidden])) {
+        display: grid;
+        place-content: center;
+        block-size: calc(var(--dd-table-h) + var(--dd-foot-n, 0) * 1px);
+    }
+
+    & .table {
+        margin-bottom: 0;
+        color: var(--dd-ink);
+        font-size: 0.9375rem;
+
+        & th,
+        & td {
+            padding: 0.75rem 1rem;
+            border-color: var(--dd-hairline);
+            vertical-align: middle;
+        }
+
+        & thead th {
+            border-top: 0;
+            border-bottom: 1px solid var(--dd-line);
+            color: var(--dd-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        & tbody th {
+            font-weight: 600;
+        }
+
+        & tbody tr:hover > * {
+            background-color: color-mix(in srgb, var(--dd-primary) 5%, var(--dd-surface));
+        }
+
+        // The last row keeps its line under it, also with Bootstrap 4, which draws the line of a cell above the cell.
+        & tbody tr:last-child > * {
+            border-bottom: 1px solid var(--dd-hairline);
+        }
+
+        & tbody tr.table-active > * {
+            background-color: var(--dd-primary-soft);
+            // Bootstrap 5 paints an active row with a grey inset shadow over its background; the tint is the one colour.
+            box-shadow: none;
+        }
+
+        & [data-column="select"] {
+            width: 2.75rem;
+            padding-right: 0;
+
+            // Bootstrap 4 places a check absolutely, beside a label; in a cell it stands on its own.
+            & .form-check-input {
+                position: static;
+                display: block;
+                width: 1.125rem;
+                height: 1.125rem;
+                margin: 0;
+                cursor: pointer;
+            }
+        }
+
+        & [data-column="actions"] {
+            width: 1%;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        // A person in a row: the name and, under it, the email, cut when the column is narrow.
+        & .userpicture,
+        & .userinitials {
+            flex: none;
+            margin: 0 0.75rem 0 0;
+        }
+
+        & .text-truncate {
+            max-width: 16rem;
+        }
+    }
+
+    & thead th > .btn.btn-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        letter-spacing: inherit;
+        text-transform: inherit;
+        cursor: pointer;
+
+        &::after {
+            content: "";
+            flex: none;
+            width: 0.4375rem;
+            height: 0.4375rem;
+            border: solid currentColor;
+            border-width: 0 2px 2px 0;
+            opacity: 0.35;
+            transform: translateY(-2px) rotate(45deg);
+            transition: transform 200ms cubic-bezier(0.2, 0, 0, 1), opacity 150ms;
+        }
+
+        &:hover {
+            color: var(--dd-ink);
+
+            &::after {
+                opacity: 0.8;
+            }
+        }
+
+        &:focus-visible {
+            outline: 0;
+            border-radius: 0.25rem;
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+    }
+
+    & th[aria-sort] {
+        color: var(--dd-ink);
+
+        & thead th > .btn.btn-link {
+            color: var(--dd-primary-ink);
+
+            &::after {
+                opacity: 1;
+                color: var(--dd-primary);
+            }
+        }
+    }
+
+    & th[aria-sort="ascending"] > .btn.btn-link::after {
+        transform: translateY(2px) rotate(-135deg);
+    }
+
+    // States of a list: skeleton rows while it loads, and an empty state when there is nothing to show.
+    & .placeholder {
+        display: block;
+        min-height: 0;
+        opacity: 1;
+        cursor: default;
+        height: 0.875rem;
+        border-radius: 0.375rem;
+        background: linear-gradient(90deg, var(--dd-hairline) 0%, var(--dd-surface-3) 50%, var(--dd-hairline) 100%);
+        background-size: 200% 100%;
+        animation: lsm-shimmer 1.4s linear infinite;
+    }
+
+    // The alert of a list that did not load sits where its rows were.
+    & .card > .alert {
+        margin: 1rem;
+    }
+}
+
+@keyframes lsm-shimmer {
+    from {
+        background-position: 100% 0;
+    }
+
+    to {
+        background-position: -100% 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lsm .placeholder {
+        animation: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .lsm {
+        & [role="search"] {
+            max-width: none;
+        }
+
+    }
+}

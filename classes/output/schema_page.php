@@ -132,7 +132,6 @@ class schema_page implements react_component_renderable, \renderable {
                 'modified' => userdate($schema->timemodified),
                 'hasToken' => !empty($schema->tokenid),
             ],
-            'wsStatus' => ws_status::describe($canmanage) + ['healthy' => 0, 'warning' => 0, 'critical' => 0],
             'newToken' => $this->newtoken,
             'functions' => $this->functions(schema_extractor::functions($data)),
             'resources' => [
@@ -192,7 +191,6 @@ class schema_page implements react_component_renderable, \renderable {
                 'modified' => userdate($history->timecreated),
                 'hasToken' => false,
             ],
-            'wsStatus' => null,
             'newToken' => null,
             'functions' => $this->functions(schema_extractor::functions($data)),
             'resources' => ['user' => null, 'role' => null, 'service' => null],

@@ -15,13 +15,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import {useMemo, useState} from 'react';
-import BackLink from './components/common/BackLink';
 import ConfirmModal from './components/common/ConfirmModal';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Icon from './components/common/Icon';
 import PageHeader from './components/common/PageHeader';
 import StatusBadge from './components/common/StatusBadge';
-import WsPill from './components/dashboard/WsPill';
 import AccessPanel from './components/schema/AccessPanel';
 import DetailsPanel from './components/schema/DetailsPanel';
 import FunctionsPanel from './components/schema/FunctionsPanel';
@@ -68,10 +66,7 @@ const SchemaDetail = (props: SchemaDetailProps) => {
     };
 
     return <ErrorBoundary strings={props.strings}>
-        <div className="servicemanager-detail">
-            <div className="mb-3">
-                <BackLink href={isHistory ? urls.back : urls.dashboard} label={text(isHistory ? 'back' : 'dashboard')} />
-            </div>
+        <div className="lsm servicemanager-detail d-grid gap-3">
 
             {props.newToken && <TokenAlert token={props.newToken} text={text} />}
 
@@ -79,13 +74,12 @@ const SchemaDetail = (props: SchemaDetailProps) => {
                 title={schema.name}
                 badges={<>
                     <StatusBadge status={schema.status} label={schema.statusLabel} />
-                    {!isHistory && !enabled && <span className="sm-badge">{text('disabled')}</span>}
+                    {!isHistory && !enabled && <span className="badge rounded-pill text-bg-secondary">{text('disabled')}</span>}
                 </>}
-                actions={props.wsStatus ? <WsPill status={props.wsStatus} canManage={canManage} text={text} /> : undefined}
-                subtitle={<span className="sm-id-chip" title={text('schema_id')}><Icon name="fingerprint" gap />{schema.schemaId}</span>}
+                subtitle={<span className="small text-muted" title={text('schema_id')}><Icon name="fingerprint" gap />{schema.schemaId}</span>}
             />
 
-            <div className="row">
+            <div className="row" data-region="cards">
                 <div className="col-lg-8">
                     <DetailsPanel schema={current} urls={urls} canManage={canManage} isHistory={isHistory} busy={busy} onToggle={toggle} text={text} />
                     {props.functions.length > 0 && <FunctionsPanel functions={props.functions} text={text} />}

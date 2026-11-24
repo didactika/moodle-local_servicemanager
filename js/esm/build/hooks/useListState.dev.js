@@ -33,7 +33,7 @@ const useListState = /* @__PURE__ */ __name((perpage, options) => {
   const reset = useCallback(() => {
     setState({ query: "", status: "", from: "", to: "", perpage, page: 0 });
   }, [perpage]);
-  const extras = (state.from ? 1 : 0) + (state.to ? 1 : 0) + (state.perpage !== perpage ? 1 : 0);
+  const extras = (state.from ? 1 : 0) + (state.to ? 1 : 0);
   return { state, set, reset, extras };
 }, "useListState");
 export {

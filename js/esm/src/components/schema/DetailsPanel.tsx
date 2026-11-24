@@ -28,7 +28,7 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}
     title={text('schema_information')}
     icon="circle-info"
     region="details"
-    actions={!isHistory ? <div className="sm-group" role="group" aria-label={text('core_actions')}>
+    actions={!isHistory ? <div className="d-flex flex-wrap gap-1" role="group" aria-label={text('core_actions')}>
         {canManage && <IconButton icon="pen-to-square" label={text('action_edit')} href={urls.edit} />}
         {canManage && <IconButton icon="clock-rotate-left" label={text('version_history')} href={urls.history} tone="primary" />}
         <IconButton icon="download" label={text('action_export')} href={urls.export} tone="info" />
@@ -43,17 +43,17 @@ const DetailsPanel = ({schema, urls, canManage, isHistory, busy, onToggle, text}
     </div> : undefined}
 >
     {schema.description && <p className="mb-3">{schema.description}</p>}
-    <dl className="sm-facts-row mb-0">
-        <div className="sm-fact"><dt>{text('schema_version')}</dt><dd>{schema.version}</dd></div>
-        {schema.maintainer && <div className="sm-fact"><dt>{text('schema_maintainer')}</dt><dd>{schema.maintainer}</dd></div>}
-        <div className="sm-fact"><dt>{text('schema_created')}</dt><dd>{schema.created}</dd></div>
-        <div className="sm-fact"><dt>{text('schema_modified')}</dt><dd>{schema.modified}</dd></div>
-        {!isHistory && <div className="sm-fact">
-            <dt>{text('schema_enabled')}</dt>
-            <dd>
-                <span className={`sm-badge tone-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
+    <dl className="row mx-0 mb-0">
+        <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_version')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.version}</dd>
+        {schema.maintainer && <><dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_maintainer')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.maintainer}</dd></>}
+        <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_created')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.created}</dd>
+        <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_modified')}</dt><dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">{schema.modified}</dd>
+        {!isHistory && <>
+            <dt className="col-sm-4 fw-normal text-muted px-0 py-2 mb-0 border-bottom">{text('schema_enabled')}</dt>
+            <dd className="col-sm-8 px-0 py-2 mb-0 border-bottom">
+                <span className={`badge rounded-pill text-bg-${schema.enabled ? 'success' : 'secondary'}`}>{text(schema.enabled ? 'core_yes' : 'core_no')}</span>
             </dd>
-        </div>}
+        </>}
     </dl>
 </Panel>;
 

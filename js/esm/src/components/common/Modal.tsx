@@ -2,16 +2,16 @@
  * This file is part of Moodle - https://moodle.org/
  * Moodle is free software under the GNU General Public License, version 3 or later.
  *
- * A window over the page, in a dialog of the browser: it takes the focus, closes with Escape or with its button and returns the focus to
- * where the person was.
+ * A window over the page, as Moodle and Bootstrap draw their dialogs: it takes the focus, closes with Escape, with its button or
+ * with a click outside it, and gives the focus back to where the person was.
  *
  * @module     local_servicemanager/components/common/Modal
  * @copyright  2026 Didactika.org
  * @author     Hector Arrechea <hectorlazaroarrechea@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-import {useEffect, useRef, type ReactNode} from 'react';
-import Icon from './Icon';
+import {useEffect, useId, useRef, type ReactNode} from 'react';
+import {createPortal} from 'react-dom';
 
 interface ModalProps {
     open: boolean;
@@ -20,45 +20,47 @@ interface ModalProps {
     closeLabel: string;
     children: ReactNode;
     footer?: ReactNode;
-    /** A wider dialogue, for lists. */
+    /** A wider dialog, for lists. */
     wide?: boolean;
 }
 
 const Modal = ({open, title, onClose, closeLabel, children, footer, wide = false}: ModalProps) => {
-    const dialog = useRef<HTMLDialogElement>(null);
+    const root = useRef<HTMLDivElement>(null);
+    const titleId = useId();
 
     useEffect(() => {
-        const element = dialog.current;
-        if (!element) {
-            return;
+        if (!open) {
+            return undefined;
         }
-        if (open && !element.open) {
-            element.showModal();
-        } else if (!open && element.open) {
-            element.close();
-        }
+        const previous = document.activeElement as HTMLElement | null;
+        document.body.classList.add('modal-open');
+        root.current?.focus();
+        return () => {
+            document.body.classList.remove('modal-open');
+            previous?.focus();
+        };
     }, [open]);
 
-    return <dialog ref={dialog} className={`sm-dialog${wide ? ' wide' : ''}`} onCancel={(event) => {
-        event.preventDefault();
-        onClose();
-    }} onClick={(event) => {
-        // A click on the backdrop is a click on the dialog itself and not on what is inside it.
-        if (event.target === dialog.current) {
-            onClose();
-        }
-    }}>
-        <div className="sm-dialog-body">
-            <header className="sm-dialog-head">
-                <h5 className="sm-dialog-title">{title}</h5>
-                <button type="button" className="sm-iconbtn" onClick={onClose} title={closeLabel}>
-                    <Icon name="xmark" /><span className="visually-hidden">{closeLabel}</span>
-                </button>
-            </header>
-            <div className="sm-dialog-scroll">{children}</div>
-            {footer && <footer className="sm-dialog-foot">{footer}</footer>}
+    if (!open) {
+        return null;
+    }
+    return createPortal(<>
+        <div ref={root} className="modal show d-block" role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1}
+            onKeyDown={(event) => event.key === 'Escape' && onClose()}
+            onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+            <div className={`modal-dialog modal-dialog-scrollable${wide ? ' modal-lg' : ''}`}>
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id={titleId}>{title}</h5>
+                        <button type="button" className="btn-close" aria-label={closeLabel} title={closeLabel} onClick={onClose} />
+                    </div>
+                    <div className="modal-body">{children}</div>
+                    {footer && <div className="modal-footer">{footer}</div>}
+                </div>
+            </div>
         </div>
-    </dialog>;
+        <div className="modal-backdrop show" />
+    </>, document.body);
 };
 
 export default Modal;
