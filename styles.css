@@ -473,8 +473,10 @@
 .lsm [role=search] > [data-action=clear-search].btn-link.btn-icon,
 .path-local-servicemanager .modal [role=search] > [data-action=clear-search].btn-link.btn-icon {
     position: absolute;
-    top: 50%;
+    top: 0;
+    bottom: 0;
     right: 0.375rem;
+    margin-block: auto;
     width: 1.5rem;
     min-width: 0;
     height: 1.5rem;
@@ -484,7 +486,16 @@
     color: var(--dd-muted);
     font-size: 0.75rem;
     cursor: pointer;
-    transform: translateY(-50%);
+    transform: none;
+}
+
+.lsm [role=search] > [data-action=clear-search].btn-link.btn-icon:hover,
+.lsm [role=search] > [data-action=clear-search].btn-link.btn-icon:focus,
+.lsm [role=search] > [data-action=clear-search].btn-link.btn-icon:active,
+.path-local-servicemanager .modal [role=search] > [data-action=clear-search].btn-link.btn-icon:hover,
+.path-local-servicemanager .modal [role=search] > [data-action=clear-search].btn-link.btn-icon:focus,
+.path-local-servicemanager .modal [role=search] > [data-action=clear-search].btn-link.btn-icon:active {
+    transform: none;
 }
 
 .lsm [role=search] > [data-action=clear-search].btn-link.btn-icon:hover,

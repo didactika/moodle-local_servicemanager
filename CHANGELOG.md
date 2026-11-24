@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- The button that clears a search field no longer moves when the pointer is over it: it is centred with auto margins and keeps its place whatever the theme does to a button on hover.
 - The menus of the dashboard (Documentation and the actions of each row) are closed until they are opened; the menu of a row floats next to its button and the table never cuts it.
 - On a narrow screen the search field gives up its width and the filters never cover it, the name of a schema stays in view while the table scrolls sideways, the bars of a selection take the width of the screen, and the tables of the documentation and the functions of a schema scroll or break inside their box instead of the page.
 - A search that finds nothing shows the empty state, at the height of the list and its pager; on Moodle 4.x it showed under the rows even with no filter.
