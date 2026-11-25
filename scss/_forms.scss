@@ -1,0 +1,258 @@
+// This file is part of Moodle - https://moodle.org/
+// Moodle is free software under the GNU General Public License, version 3 or later.
+
+// The forms of the plugin (new schema, guided form, import and upload), as the design system draws its controls: the fields with
+// the height, the line, the radius and the ring of focus of the system; the checkboxes and radios of a soft line that take the
+// primary colour; the autocomplete with the tags and the menu of the system; the file picker with its area. They are written as
+// overrides of the Bootstrap and Moodle classes the forms already use, under .lsm, so a theme restyles them by restyling
+// Bootstrap and nothing outside the plugin changes.
+// @copyright 2026 Didactika.org
+// @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+.lsm .mform {
+    // The fields.
+    & :is(.form-control, .form-select, .custom-select):not([type="file"]) {
+        min-height: var(--dd-h);
+        border-color: var(--dd-line);
+        border-radius: var(--dd-radius-sm);
+        background-color: var(--dd-surface);
+        box-shadow: none;
+        color: var(--dd-ink);
+        font-size: 0.9375rem;
+        transition: border-color var(--dd-ease), box-shadow var(--dd-ease);
+
+        &:hover:not(:disabled):not([readonly]) {
+            border-color: var(--dd-line-hover);
+        }
+
+        &:focus,
+        &[aria-expanded="true"] {
+            border-color: var(--dd-primary);
+            outline: 0;
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+
+        &::placeholder {
+            color: var(--dd-muted);
+        }
+    }
+
+    & select:is(.form-select, .custom-select) {
+        padding-right: 2.5rem;
+        cursor: pointer;
+    }
+
+    // The editor of the YAML keeps the room to read it.
+    & textarea.form-control {
+        padding: 0.625rem 0.75rem;
+        line-height: 1.5;
+    }
+
+    // The sections of a form: the legend is a title, and the sections are apart by a line.
+    & fieldset {
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--dd-hairline);
+    }
+
+    & legend,
+    & .ftoggler .fheader {
+        color: var(--dd-ink);
+        font-weight: 700;
+    }
+
+    // The checkboxes and radios, as the system draws them: a square of a soft line that takes the primary colour and a white
+    // mark when it is checked. A switch keeps the look of Bootstrap.
+    & :not(.form-switch) > .form-check-input {
+        flex: none;
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-top: 0.1875rem;
+        border: 1.5px solid var(--dd-line);
+        border-radius: 0.3rem;
+        background-color: var(--dd-surface);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        cursor: pointer;
+        appearance: none;
+        transition: background-color var(--dd-ease), border-color var(--dd-ease), box-shadow var(--dd-ease);
+
+        &[type="radio"] {
+            border-radius: 50%;
+        }
+
+        &:hover:not(:disabled) {
+            border-color: var(--dd-line-hover);
+        }
+
+        &:focus {
+            outline: 0;
+            box-shadow: none;
+        }
+
+        &:focus-visible {
+            box-shadow: 0 0 0 3px var(--dd-ring);
+        }
+
+        &:checked,
+        &:indeterminate {
+            border-color: var(--dd-primary);
+            background-color: var(--dd-primary);
+        }
+
+        &:checked[type="checkbox"] {
+            background-image: var(--dd-check);
+        }
+
+        &:indeterminate[type="checkbox"] {
+            background-image: var(--dd-dash);
+        }
+
+        &:checked[type="radio"] {
+            background-image: var(--dd-dot);
+        }
+
+        &:disabled {
+            cursor: default;
+            opacity: 0.5;
+        }
+    }
+
+    // The label of a checkbox sits beside the box, with the room of the system between them: Bootstrap 5 floats the box in the
+    // padding of its line, and Moodle 4 lays the line out as a flex row.
+    & .form-check-label {
+        color: var(--dd-ink);
+        cursor: pointer;
+    }
+
+    & .form-check:not(.form-switch):not(.form-check-inline) {
+        padding-left: 1.75rem;
+
+        & > .form-check-input {
+            margin-left: -1.75rem;
+        }
+
+        &.d-flex {
+            gap: 0.5rem;
+            padding-left: 0;
+
+            & > .form-check-input {
+                position: static;
+                margin-left: 0;
+            }
+        }
+    }
+
+    // Moodle's autocomplete: the values chosen are the tags of the system, the field to search them has the chevron of a select
+    // instead of the triangle Moodle writes, and its list of suggestions is a menu of the system.
+    & .form-autocomplete-selection {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.375rem;
+        min-height: 0;
+        margin-bottom: 0.5rem;
+
+        & > span:not([role="option"]) {
+            /* stylelint-disable-next-line declaration-no-important */
+            margin: 0 !important;
+            color: var(--dd-muted);
+            font-size: 0.875rem;
+        }
+
+        & > [role="option"] {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            /* stylelint-disable-next-line declaration-no-important */
+            margin: 0 !important;
+            padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+            border-radius: 999px;
+            /* stylelint-disable-next-line declaration-no-important */
+            background-color: var(--dd-primary-soft) !important;
+            /* stylelint-disable-next-line declaration-no-important */
+            color: var(--dd-primary-ink) !important;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+
+            // The tag reached with the keyboard has the ring; Moodle marks the last one chosen as reached even after a click.
+            &[data-active-selection="true"] {
+                box-shadow: none;
+            }
+        }
+
+        &:focus-visible > [role="option"][data-active-selection="true"] {
+            box-shadow: 0 0 0 2px var(--dd-ring);
+        }
+    }
+
+    & .form-autocomplete-input > .form-control {
+        min-width: 14rem;
+        padding-right: 2.5rem;
+    }
+
+    & .form-autocomplete-downarrow {
+        /* stylelint-disable-next-line declaration-no-important */
+        top: 50% !important;
+        /* stylelint-disable-next-line declaration-no-important */
+        right: 1rem !important;
+        width: 0.5rem;
+        height: 0.5rem;
+        /* stylelint-disable-next-line declaration-no-important */
+        padding: 0 !important;
+        border-right: 2px solid var(--dd-muted);
+        border-bottom: 2px solid var(--dd-muted);
+        color: transparent;
+        font-size: 0;
+        transform: translateY(-70%) rotate(45deg);
+        cursor: pointer;
+    }
+
+    & .form-autocomplete-suggestions {
+        z-index: 1060;
+        min-width: 14rem;
+        max-height: 17rem;
+        margin-top: 2px;
+        padding: 0.25rem;
+        border: 1px solid var(--dd-hairline);
+        border-radius: var(--dd-radius);
+        background-color: var(--dd-surface);
+        box-shadow: var(--dd-shadow-md);
+        list-style: none;
+
+        & > li {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            color: var(--dd-ink);
+            cursor: pointer;
+
+            & + li {
+                margin-top: 2px;
+            }
+
+            // The suggestion reached is shown by its tint, with no frame and in the weight of the others.
+            &:hover,
+            &[aria-selected="true"] {
+                outline: 0;
+                box-shadow: none;
+                background-color: var(--dd-surface-2);
+                color: var(--dd-ink);
+                font-weight: inherit;
+            }
+
+            // A suggestion with nothing to say is never drawn as an empty row.
+            &:empty {
+                display: none;
+            }
+        }
+    }
+
+    // The file picker: the area where a file is dropped, with the line and the radius of the system.
+    & .filepicker-filelist,
+    & .fp-content-center,
+    & .dndupload-target {
+        border-color: var(--dd-line);
+        border-radius: var(--dd-radius);
+    }
+}

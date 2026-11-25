@@ -34,6 +34,9 @@
     --dd-primary-soft: color-mix(in srgb, var(--dd-primary) 10%, var(--dd-surface));
     --dd-primary-soft-2: color-mix(in srgb, var(--dd-primary) 18%, var(--dd-surface));
     --dd-primary-ink: color-mix(in srgb, var(--dd-primary) 78%, var(--dd-ink));
+    --dd-check: url([[pix:local_servicemanager|mark_check]]);
+    --dd-dot: url([[pix:local_servicemanager|mark_dot]]);
+    --dd-dash: url([[pix:local_servicemanager|mark_dash]]);
     color: var(--dd-ink);
 }
 
@@ -1269,6 +1272,239 @@
 
 .lsm [data-region=filters] .form-control:not([type=search]) {
     min-width: 10rem;
+}
+
+.lsm .mform :is(.form-control, .form-select, .custom-select):not([type=file]) {
+    min-height: var(--dd-h);
+    border-color: var(--dd-line);
+    border-radius: var(--dd-radius-sm);
+    background-color: var(--dd-surface);
+    box-shadow: none;
+    color: var(--dd-ink);
+    font-size: 0.9375rem;
+    transition: border-color var(--dd-ease), box-shadow var(--dd-ease);
+}
+
+.lsm .mform :is(.form-control, .form-select, .custom-select):not([type=file]):hover:not(:disabled):not([readonly]) {
+    border-color: var(--dd-line-hover);
+}
+
+.lsm .mform :is(.form-control, .form-select, .custom-select):not([type=file]):focus,
+.lsm .mform :is(.form-control, .form-select, .custom-select):not([type=file])[aria-expanded=true] {
+    border-color: var(--dd-primary);
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--dd-ring);
+}
+
+.lsm .mform :is(.form-control, .form-select, .custom-select):not([type=file])::placeholder {
+    color: var(--dd-muted);
+}
+
+.lsm .mform select:is(.form-select, .custom-select) {
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.lsm .mform textarea.form-control {
+    padding: 0.625rem 0.75rem;
+    line-height: 1.5;
+}
+
+.lsm .mform fieldset {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--dd-hairline);
+}
+
+.lsm .mform legend,
+.lsm .mform .ftoggler .fheader {
+    color: var(--dd-ink);
+    font-weight: 700;
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.1875rem;
+    border: 1.5px solid var(--dd-line);
+    border-radius: 0.3rem;
+    background-color: var(--dd-surface);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    appearance: none;
+    transition: background-color var(--dd-ease), border-color var(--dd-ease), box-shadow var(--dd-ease);
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input[type=radio] {
+    border-radius: 50%;
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:hover:not(:disabled) {
+    border-color: var(--dd-line-hover);
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:focus {
+    outline: 0;
+    box-shadow: none;
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:focus-visible {
+    box-shadow: 0 0 0 3px var(--dd-ring);
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:checked,
+.lsm .mform :not(.form-switch) > .form-check-input:indeterminate {
+    border-color: var(--dd-primary);
+    background-color: var(--dd-primary);
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:checked[type=checkbox] {
+    background-image: var(--dd-check);
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:indeterminate[type=checkbox] {
+    background-image: var(--dd-dash);
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:checked[type=radio] {
+    background-image: var(--dd-dot);
+}
+
+.lsm .mform :not(.form-switch) > .form-check-input:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.lsm .mform .form-check-label {
+    color: var(--dd-ink);
+    cursor: pointer;
+}
+
+.lsm .mform .form-check:not(.form-switch):not(.form-check-inline) {
+    padding-left: 1.75rem;
+}
+
+.lsm .mform .form-check:not(.form-switch):not(.form-check-inline) > .form-check-input {
+    margin-left: -1.75rem;
+}
+
+.lsm .mform .form-check:not(.form-switch):not(.form-check-inline).d-flex {
+    gap: 0.5rem;
+    padding-left: 0;
+}
+
+.lsm .mform .form-check:not(.form-switch):not(.form-check-inline).d-flex > .form-check-input {
+    position: static;
+    margin-left: 0;
+}
+
+.lsm .mform .form-autocomplete-selection {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 0;
+    margin-bottom: 0.5rem;
+}
+
+.lsm .mform .form-autocomplete-selection > span:not([role=option]) {
+    /* stylelint-disable-next-line declaration-no-important */
+    margin: 0 !important;
+    color: var(--dd-muted);
+    font-size: 0.875rem;
+}
+
+.lsm .mform .form-autocomplete-selection > [role=option] {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    /* stylelint-disable-next-line declaration-no-important */
+    margin: 0 !important;
+    padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+    border-radius: 999px;
+    /* stylelint-disable-next-line declaration-no-important */
+    background-color: var(--dd-primary-soft) !important;
+    /* stylelint-disable-next-line declaration-no-important */
+    color: var(--dd-primary-ink) !important;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.lsm .mform .form-autocomplete-selection > [role=option][data-active-selection=true] {
+    box-shadow: none;
+}
+
+.lsm .mform .form-autocomplete-selection:focus-visible > [role=option][data-active-selection=true] {
+    box-shadow: 0 0 0 2px var(--dd-ring);
+}
+
+.lsm .mform .form-autocomplete-input > .form-control {
+    min-width: 14rem;
+    padding-right: 2.5rem;
+}
+
+.lsm .mform .form-autocomplete-downarrow {
+    /* stylelint-disable-next-line declaration-no-important */
+    top: 50% !important;
+    /* stylelint-disable-next-line declaration-no-important */
+    right: 1rem !important;
+    width: 0.5rem;
+    height: 0.5rem;
+    /* stylelint-disable-next-line declaration-no-important */
+    padding: 0 !important;
+    border-right: 2px solid var(--dd-muted);
+    border-bottom: 2px solid var(--dd-muted);
+    color: transparent;
+    font-size: 0;
+    transform: translateY(-70%) rotate(45deg);
+    cursor: pointer;
+}
+
+.lsm .mform .form-autocomplete-suggestions {
+    z-index: 1060;
+    min-width: 14rem;
+    max-height: 17rem;
+    margin-top: 2px;
+    padding: 0.25rem;
+    border: 1px solid var(--dd-hairline);
+    border-radius: var(--dd-radius);
+    background-color: var(--dd-surface);
+    box-shadow: var(--dd-shadow-md);
+    list-style: none;
+}
+
+.lsm .mform .form-autocomplete-suggestions > li {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    color: var(--dd-ink);
+    cursor: pointer;
+}
+
+.lsm .mform .form-autocomplete-suggestions > li + li {
+    margin-top: 2px;
+}
+
+.lsm .mform .form-autocomplete-suggestions > li:hover,
+.lsm .mform .form-autocomplete-suggestions > li[aria-selected=true] {
+    outline: 0;
+    box-shadow: none;
+    background-color: var(--dd-surface-2);
+    color: var(--dd-ink);
+    font-weight: inherit;
+}
+
+.lsm .mform .form-autocomplete-suggestions > li:empty {
+    display: none;
+}
+
+.lsm .mform .filepicker-filelist,
+.lsm .mform .fp-content-center,
+.lsm .mform .dndupload-target {
+    border-color: var(--dd-line);
+    border-radius: var(--dd-radius);
 }
 
 /* stylelint-disable declaration-no-important */

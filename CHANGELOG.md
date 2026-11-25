@@ -5,6 +5,12 @@ All notable changes to the Web Service Manager plugin will be documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1-m400] - 2026-11-25
+
+### Changed
+
+- The forms of the plugin (new schema, guided form, import and upload) are drawn as the Didactika design system draws its controls: the fields, the selects, the checkboxes and radios, the autocomplete with its tags and menu, and the file picker.
+
 ## [1.2.0-m400] - 2026-11-23
 
 ### Changed
