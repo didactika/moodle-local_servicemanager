@@ -1,7 +1,0 @@
-@startsalt
-{+
-  { **15 Esquemas** | [=====================] }
-  --
-  { (Servicios web: Desactivados) | [X] REST | [ ] SOAP | [Activar los servicios web] | [Gestionar] }
-}
-@endsalt
