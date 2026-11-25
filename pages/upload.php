@@ -86,5 +86,8 @@ if ($form->is_cancelled()) {
 }
 
 echo $OUTPUT->header();
+// The form is drawn as the design system draws its controls.
+echo html_writer::start_div('lsm');
 $form->display();
+echo html_writer::end_div();
 echo $OUTPUT->footer();

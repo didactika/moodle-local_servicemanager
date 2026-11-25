@@ -123,6 +123,9 @@ echo \local_servicemanager\output\react_page::render(
     new \local_servicemanager\output\import_intro(),
     'text'
 );
+// The form is drawn as the design system draws its controls.
+echo html_writer::start_div('lsm');
 $form->display();
+echo html_writer::end_div();
 
 echo $OUTPUT->footer();
