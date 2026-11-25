@@ -37,6 +37,11 @@
     --dd-primary-soft: color-mix(in srgb, var(--dd-primary) 10%, var(--dd-surface));
     --dd-primary-soft-2: color-mix(in srgb, var(--dd-primary) 18%, var(--dd-surface));
     --dd-primary-ink: color-mix(in srgb, var(--dd-primary) 78%, var(--dd-ink));
+    // The marks of a checkbox and a radio, white over the primary colour, as the design system draws them; Moodle serves them
+    // from the pix folder of the plugin.
+    --dd-check: url([[pix:local_servicemanager|mark_check]]);
+    --dd-dot: url([[pix:local_servicemanager|mark_dot]]);
+    --dd-dash: url([[pix:local_servicemanager|mark_dash]]);
 
     color: var(--dd-ink);
 
