@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+hide empty description
+
+state "rollbackSchema" as rollbackSchema {
+  state " " as History
+  state " " as Confirming
+  state " " as Restoring
+  state " " as Done
+
+  [*] --> History : Maintainer opens the version history
+  History --> Confirming : Maintainer chooses Rollback on a version
+  Confirming --> History : Maintainer cancels
+  Confirming --> Restoring : Maintainer confirms
+  Restoring --> History : System refuses and says why
+  Restoring --> Done : System keeps the state it leaves, then brings everything in line with the version
+  Done --> [*] : System shows the history with the new current version
+
+  note on link
+    Maintainer: confirms
+    System: backs up, restores
+  end note
+}
+
+@enduml

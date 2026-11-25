@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+hide empty members
+skinparam linetype polyline
+top to bottom direction
+
+class "Maintainer" as user <<actor>>
+class "Version history" as screen <<boundary>>
+class "History manager" as history <<control>>
+class "Schema manager" as manager <<control>>
+class "Schema version" as version <<entity>>
+class "Schema" as schema <<entity>>
+
+user --> screen : 1: confirms the rollback
+screen --> history : 2: rollback(schema, version)
+history --> version : 3: keeps the state it leaves
+history --> manager : 4: restore(id, yaml)
+manager --> schema : 5: reconciles and stores
+
+@enduml

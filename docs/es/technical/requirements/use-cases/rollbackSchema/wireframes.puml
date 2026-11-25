@@ -1,0 +1,15 @@
+@startsalt
+{
+  {* Dashboard | Settings }
+  ==
+  Version history - CRM integration
+  --
+  {#
+    Version | Created by | Reason | Actions
+    2.2.0 (Current) | Ada | Schema updated | [View] [YAML]
+    2.1.0 | Ada | Schema updated | [View] [YAML] [Rollback]
+    2.0.0 | Ada | Schema created | [View] [YAML] [Rollback]
+  }
+  [ Compare versions ]
+}
+@endsalt

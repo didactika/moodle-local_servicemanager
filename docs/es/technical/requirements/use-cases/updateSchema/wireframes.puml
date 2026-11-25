@@ -1,0 +1,16 @@
+@startsalt
+{
+  {* Dashboard | Settings }
+  ==
+  Edit schema
+  --
+  {/ <b>Guided form | YAML editor }
+  {
+    Schema ID | "crm.sync" (cannot be changed)
+    Name | "CRM synchronisation  "
+    Version | "                    "
+    Required functions | "core_user_get_users"
+  }
+  [ Save changes ] | [ Cancel ]
+}
+@endsalt

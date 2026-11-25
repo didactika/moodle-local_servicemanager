@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+hide empty members
+skinparam linetype polyline
+top to bottom direction
+
+package "Entry points" {
+  class "external functions" as External
+  class "pages and AMD" as Pages
+  class "scheduled tasks" as Tasks
+  class "observer" as Observer
+}
+
+package "Schema" {
+  class "schema manager" as Manager
+  class validator
+  class version_resolver
+  class version_policy
+  class provisioner
+  class history_manager
+  class importer
+}
+
+package "Automation" {
+  class user_manager
+  class role_manager
+  class service_manager
+  class token_manager
+  class capability_calculator
+}
+
+package "Health" {
+  class inspector
+  class "notification manager" as Notifier
+}
+
+External --> Manager
+Pages --> Manager
+Pages --> importer
+Tasks --> inspector
+Tasks --> Notifier
+Observer --> Manager
+Manager --> validator
+Manager --> version_resolver
+Manager --> version_policy
+Manager --> provisioner
+Manager --> history_manager
+importer --> Manager
+provisioner --> user_manager
+provisioner --> role_manager
+provisioner --> service_manager
+provisioner --> token_manager
+provisioner --> capability_calculator
+inspector --> capability_calculator
+
+@enduml

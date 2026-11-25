@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+skinparam responseMessageBelowArrow true
+
+actor "Maintainer" as actor
+participant "history page" as page
+participant "history_manager" as history
+participant "schema manager" as manager
+participant "provisioner" as provisioner
+database "history" as table
+
+actor -> page : Rollback on a version
+page -> history : rollback(schema, version)
+history -> table : keep the current state as "Backup before rollback" if it is not there
+history -> manager : restore_schema(id, yaml of the version)
+manager -> manager : check_rollback(existing, version)
+manager -> provisioner : reconcile(existing, definition)
+manager -> table : update schema
+history --> page : done
+page --> actor : the history with the new current version
+
+@enduml

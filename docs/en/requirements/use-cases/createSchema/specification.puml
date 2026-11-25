@@ -1,0 +1,26 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+hide empty description
+
+state "createSchema" as createSchema {
+  state " " as Form
+  state " " as Checking
+  state " " as Provisioning
+  state " " as Saved
+
+  [*] --> Form : Maintainer opens New schema
+  Form --> Checking : Maintainer submits the form or the YAML
+  Checking --> Form : System reports what is wrong, at its field
+  Checking --> Provisioning : System accepts the schema
+  Provisioning --> Form : System discards what it created and reports the failure
+  Provisioning --> Saved : System stores the schema and its first version
+  Saved --> [*] : System opens the schema page, with the token once
+
+  note on link
+    Maintainer: submits
+    System: validates, provisions, stores
+  end note
+}
+
+@enduml

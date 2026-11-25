@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+skinparam responseMessageBelowArrow true
+
+actor "Administrator" as actor
+participant "panel" as dashboard
+participant "set_web_services" as service
+participant "web_services" as apply
+participant "Moodle" as moodle
+database "config, config_log" as config
+
+actor -> dashboard : Activar los servicios web, o el botón de un protocolo
+dashboard -> service : local_servicemanager_set_web_services(enable, protocol)
+service -> service : require_capability(moodle/site:config)
+service -> apply : apply(enable, protocol)
+apply -> moodle : admin_write_settings o enable_plugin
+moodle -> config : valor nuevo y su registro (config_log_created)
+service --> dashboard : mensaje y el estado nuevo
+dashboard --> actor : el estado nuevo y el mensaje, sin recargar la página
+
+@enduml

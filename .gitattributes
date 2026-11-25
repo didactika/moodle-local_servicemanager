@@ -15,3 +15,4 @@ amd/build/** linguist-generated=true
 /lang/fr export-ignore
 /lang/it export-ignore
 /lang/pt export-ignore
+/rup.config.json export-ignore
