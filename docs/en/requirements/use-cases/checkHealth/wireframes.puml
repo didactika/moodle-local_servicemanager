@@ -1,0 +1,17 @@
+@startsalt
+{
+  {* Dashboard | Settings }
+  ==
+  Dashboard
+  --
+  {
+    3 schemas | [ 3 Healthy ] | [ 0 Warning ] | [ 0 Critical ]
+  }
+  --
+  Health check of CRM integration
+  {#
+    Date | Status | Message
+    Today 06:00 | Healthy | Everything is in place
+  }
+}
+@endsalt

@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+hide empty description
+
+[*] --> Enabled : created
+Enabled --> Disabled : disabled, or its web service is turned off
+Disabled --> Enabled : enabled, or its web service is turned on
+Enabled --> Disabled : rolled back and kept
+Enabled --> [*] : deleted
+Disabled --> [*] : deleted
+
+state Enabled {
+  [*] --> Healthy
+  Healthy --> Warning : a non-critical part is missing
+  Healthy --> Critical : a needed part is missing
+  Warning --> Critical : a needed part is missing
+  Warning --> Healthy : the check finds everything
+  Critical --> Warning : the check finds the rest
+  Critical --> Healthy : the check finds everything
+}
+
+note right of Disabled
+  Disabling suspends the service user and
+  the external service. Nothing is deleted
+  and the health check skips the schema.
+end note
+
+@enduml

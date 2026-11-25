@@ -1,0 +1,22 @@
+@startuml
+!theme plain
+hide empty members
+skinparam linetype polyline
+top to bottom direction
+
+class "Maintainer" as user <<actor>>
+class "Schema form" as screen <<boundary>>
+class "Schema manager" as manager <<control>>
+class "Version resolver" as resolver <<control>>
+class "Validator" as validator <<control>>
+class "Provisioner" as provisioner <<control>>
+class "Schema" as schema <<entity>>
+
+user --> screen : 1: saves
+screen --> manager : 2: update(id, yaml)
+manager --> resolver : 3: works out the version
+manager --> validator : 4: validates
+manager --> provisioner : 5: reconciles
+manager --> schema : 6: stores and keeps the version
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+!theme plain
+hide empty members
+skinparam linetype polyline
+top to bottom direction
+
+class "Schema form and YAML editor" as Editor <<boundary>>
+class "Schema page and history" as SchemaPage <<boundary>>
+class "Dashboard" as Dashboard <<boundary>>
+class "Web services" as WebServices <<boundary>>
+
+class "Schema manager" as SchemaManager <<control>>
+class "Validator" as Validator <<control>>
+class "Version resolver" as VersionResolver <<control>>
+class "Provisioner" as Provisioner <<control>>
+class "History manager" as HistoryManager <<control>>
+class "Health inspector" as Inspector <<control>>
+
+class Schema <<entity>>
+class "Schema version" as SchemaVersion <<entity>>
+class "Health log" as HealthLog <<entity>>
+
+Editor --> SchemaManager
+SchemaPage --> HistoryManager
+Dashboard --> SchemaManager
+WebServices --> SchemaManager
+SchemaManager --> Validator
+SchemaManager --> VersionResolver
+SchemaManager --> Provisioner
+SchemaManager --> HistoryManager
+SchemaManager --> Schema
+HistoryManager --> SchemaVersion
+Inspector --> Schema
+Inspector --> HealthLog
+
+@enduml

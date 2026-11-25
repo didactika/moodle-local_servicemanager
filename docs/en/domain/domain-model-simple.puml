@@ -1,0 +1,23 @@
+@startuml
+!theme plain
+hide empty members
+hide circle
+skinparam linetype polyline
+top to bottom direction
+
+class Schema
+class SchemaVersion
+class ServiceUser
+class ServiceRole
+class ExternalService
+class Token
+class HealthLog
+
+Schema "1" o-- "1..*" SchemaVersion
+Schema "1" -- "1" ServiceUser
+Schema "1" -- "1" ServiceRole
+Schema "1" -- "1" ExternalService
+Schema "1" -- "0..1" Token
+Schema "1" o-- "0..*" HealthLog
+
+@enduml

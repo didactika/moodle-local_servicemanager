@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+skinparam linetype polyline
+skinparam responseMessageBelowArrow true
+
+participant "Moodle scheduler" as cron
+participant "health_check task" as task
+participant "schema manager" as manager
+participant "inspector" as inspector
+database "schemas and logs" as table
+participant "notification manager" as notifier
+
+cron -> task : execute()
+task -> manager : adopt_service_state(each schema)
+alt checks turned off
+  task --> cron : nothing is checked
+else
+  loop each enabled schema
+    task -> inspector : inspect(schema)
+    inspector -> inspector : functions, user, service, token
+    inspector --> task : status, message, details
+    task -> table : update status, write the log
+  end
+  task -> notifier : send_daily_report(issues, healthy)
+end
+
+@enduml

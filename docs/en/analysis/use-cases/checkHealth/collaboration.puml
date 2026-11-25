@@ -1,0 +1,20 @@
+@startuml
+!theme plain
+hide empty members
+skinparam linetype polyline
+top to bottom direction
+
+class "Moodle scheduler" as user <<actor>>
+class "Health task" as task <<control>>
+class "Health inspector" as inspector <<control>>
+class "Notifier" as notifier <<control>>
+class "Schema" as schema <<entity>>
+class "Health log" as log <<entity>>
+
+user --> task : 1: runs
+task --> schema : 2: takes the state of the web service
+task --> inspector : 3: inspects each enabled schema
+inspector --> log : 4: writes the status and its details
+task --> notifier : 5: sends the report
+
+@enduml

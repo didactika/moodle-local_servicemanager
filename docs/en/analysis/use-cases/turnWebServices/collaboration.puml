@@ -1,0 +1,18 @@
+@startuml
+!theme plain
+hide empty members
+skinparam linetype polyline
+top to bottom direction
+
+class "Administrator" as user <<actor>>
+class "Summary of the dashboard" as screen <<boundary>>
+class "Web services page" as page <<control>>
+class "Administration of Moodle" as admin <<control>>
+class "Web service state" as state <<entity>>
+
+user --> screen : 1: Enable web services / a switch
+screen --> page : 2: POST sesskey, enable, protocol
+page --> admin : 3: admin_write_settings / enable_plugin
+admin --> state : 4: value, log, callbacks
+
+@enduml
